@@ -1,9 +1,19 @@
+from typing import Callable, Optional, Union, cast
+
 import numpy as np
+from numpy.typing import ArrayLike
 
-from .utils import TWO_PI, combine_segmets, quad_segments
+from .utils import TWO_PI, Seq_float, combine_segmets, quad_segments
 
 
-def secondvirial(phi, beta, segments, err=False, full_output=False, **kws):
+def secondvirial(
+    phi: Callable,
+    beta: float,
+    segments: Seq_float,
+    err: bool = False,
+    full_output: bool = False,
+    **kws
+):
     """
     Calculate the second virial coefficient
     """
@@ -22,7 +32,14 @@ def secondvirial(phi, beta, segments, err=False, full_output=False, **kws):
     )
 
 
-def secondvirial_dbeta(phi, beta, segments, err=False, full_output=False, **kws):
+def secondvirial_dbeta(
+    phi: Callable,
+    beta: float,
+    segments: Seq_float,
+    err: bool = False,
+    full_output: bool = False,
+    **kws
+):
     """
     derivative w.r.t beta of second virial coefficient
     """
@@ -45,7 +62,7 @@ def secondvirial_dbeta(phi, beta, segments, err=False, full_output=False, **kws)
     )
 
 
-def secondvirial_sw(beta, sig, eps, lam):
+def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
     """
     Second virial coefficient for a square well (SW) fluid. Note that this assumes that
     the SW fluid is defined by the potential phi:
@@ -61,7 +78,28 @@ def secondvirial_sw(beta, sig, eps, lam):
     )
 
 
-def kl_diverg_disc(P, Q, axis=None):
+def diverg_kl_integrand(
+    p: ArrayLike, q: ArrayLike, volume: Optional[ArrayLike] = None
+) -> np.ndarray:
+    p, q = np.asarray(p), np.asarray(q)
+
+    out = np.empty_like(p)
+
+    zero = p == 0.0
+    hero = ~zero
+
+    out[zero] = 0.0
+    out[hero] = p[hero] * np.log(p[hero] / q[hero])
+
+    if volume is not None:
+        out *= np.asarray(volume)
+
+    return out
+
+
+def diverg_kl_disc(
+    P: ArrayLike, Q: ArrayLike, axis: Optional[int] = None
+) -> Union[float, np.ndarray]:
     """
     calculate discrete Kullback–Leibler divergence
 
@@ -80,12 +118,40 @@ def kl_diverg_disc(P, Q, axis=None):
     """
 
     P, Q = np.asarray(P), np.asarray(Q)
-    result = np.sum(P * np.log(P / Q), axis=axis)
+    out = diverg_kl_integrand(P, Q).sum(axis=axis)
 
-    return result
+    return cast(Union[float, np.ndarray], out)
 
 
-def kl_diverg_cont(p, q, segments, volume=None, err=False, full_output=False, **kws):
+def _check_volume_func(volume: Optional[Union[str, Callable]] = None) -> Callable:
+    if volume is None:
+        volume = "1d"
+
+    if isinstance(volume, str):
+        if volume == "1d":
+            volume = lambda x: 1.0
+        elif volume == "2d":
+            volume = lambda x: 2.0 * np.pi * x
+        elif volume == "3d":
+            volume = lambda x: 4 * np.pi * x ** 2
+        else:
+            raise ValueError("unknown dimension")
+    else:
+        assert callable(volume)
+
+    return volume
+
+
+def diverg_kl_cont(
+    p: Callable,
+    q: Callable,
+    segments: Seq_float,
+    segments_q: Optional[Seq_float] = None,
+    volume: Optional[Union[str, Callable]] = None,
+    err: bool = False,
+    full_output: bool = False,
+    **kws
+):
     """
     calculate discrete Kullback–Leibler divergence for contiuous pdf
 
@@ -96,6 +162,11 @@ def kl_diverg_cont(p, q, segments, volume=None, err=False, full_output=False, **
     volume : callable, optional
         volume element if not linear integration region
         For examle, use volume = lambda x: 4 * np.pi * x ** 2 for spherically symmetric p/q
+
+    segments : list
+        segments to integrate over
+    segments_q : list, optional
+        if supplied, build total segments by combining segments and seqments_q
     Returns
     -------
     result : float or array
@@ -105,17 +176,13 @@ def kl_diverg_cont(p, q, segments, volume=None, err=False, full_output=False, **
     --------
     https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence
     """
+    volume = _check_volume_func(volume)
 
-    if volume is None:
-        volume = lambda x: 1.0
+    if segments_q is not None:
+        segments = combine_segmets(segments, segments_q)
 
     def func(x):
-        pval, qval, f = p(x), q(x), volume(x)
-
-        if pval == 0.0:
-            return 0.0
-        else:
-            return f * pval * np.log(pval / qval)
+        return diverg_kl_integrand(p=p(x), q=q(x), volume=volume(x))
 
     return quad_segments(
         func,
@@ -128,7 +195,9 @@ def kl_diverg_cont(p, q, segments, volume=None, err=False, full_output=False, **
     )
 
 
-def js_diverg_disc(P, Q, axis=None):
+def diverg_js_disc(
+    P: ArrayLike, Q: ArrayLike, axis: Optional[int] = None
+) -> Union[float, np.ndarray]:
     """
     Jensen–Shannon divergence
 
@@ -150,10 +219,56 @@ def js_diverg_disc(P, Q, axis=None):
 
     M = 0.5 * (P + Q)
 
-    return 0.5 * (kl_diverg_disc(P, M) + kl_diverg_disc(Q, M))
+    out = 0.5 * (diverg_kl_disc(P, M, axis=axis) + diverg_kl_disc(Q, M, axis=axis))
+    return out
 
 
-def js_diverg_cont(p, q, segments, volume=None, err=False, full_output=False, **kws):
+def diverg_js_integrand(
+    p: ArrayLike, q: ArrayLike, volume: Optional[ArrayLike] = None
+) -> np.ndarray:
+    p = np.asarray(p)
+    q = np.asarray(q)
+
+    m = 0.5 * (p + q)
+
+    out = 0.5 * (diverg_kl_integrand(p, m) + diverg_kl_integrand(q, m))
+
+    if volume is not None:
+        out *= np.asarray(volume)
+
+    return cast(np.ndarray, out)
+
+
+# def _plogp(p):
+#     hero = p != 0.
+#     out = np.zeros_like(p)
+#     out[hero] = p[hero] * np.log(p[hero])
+#     return out
+
+# def diverg_js_integrandb(p, q, volume = None):
+
+#     p, q = np.asarray(p), np.asarray(q)
+
+#     m = 0.5 * (p + q)
+
+#     out = 0.5 * (_plogp(p) + _plogp(q)) - _plogp(m)
+
+#     if volume is not None:
+#         out *= np.asarray(volume)
+
+#     return out
+
+
+def diverg_js_cont(
+    p: Callable,
+    q: Callable,
+    segments: Seq_float,
+    segments_q: Optional[Seq_float] = None,
+    volume: Optional[Union[str, Callable]] = None,
+    err: bool = False,
+    full_output: bool = False,
+    **kws
+):
     """
     Jensen–Shannon divergence
 
@@ -171,24 +286,13 @@ def js_diverg_cont(p, q, segments, volume=None, err=False, full_output=False, **
     https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence
     """
 
-    if volume is None:
-        volume = lambda x: 1.0
+    volume = _check_volume_func(volume)
 
-    def plogp(p):
-        if p == 0.0:
-            return 0.0
-        else:
-            return p * np.log(p)
+    if segments_q is not None:
+        segments = combine_segmets(segments, segments_q)
 
     def func(x):
-        pval, qval, f = p(x), q(x), volume(x)
-
-        mval = 0.5 * (pval + qval)
-        # 2out/f = p log(p/m) + q log(q/m)
-        #         = p log(p) - p log(m) + q log(q) - q log(m)
-        #  out/f  = 0.5 * (p log(p) + q log(q)) - m log(m)
-
-        return f * (0.5 * (plogp(pval) + plogp(qval)) - plogp(mval))
+        return diverg_js_integrand(p(x), q(x), volume(x))
 
     return quad_segments(
         func,
@@ -201,59 +305,94 @@ def js_diverg_cont(p, q, segments, volume=None, err=False, full_output=False, **
     )
 
 
-class NormalizedFunc(object):
-    def __init__(self, func, segments, volume=None, norm_fac=None, **kws):
+# class DivergPhi:
 
-        self.func = lambda x: func(x) * volume(x)
-        self.segments = segments
-        self.kws = kws
+#     def __init__(self, func0, func1, segments0, segments1, volume='3d'):
+#         """
+#         Parameters
+#         ----------
+#         phi0, phi1 : Phi objects
+#         volume : callable or str
+#         if str, then
 
-        if volume is None:
-            volume = lambda x: 1.0
-        self.volume = volume
+#         * '1d': volume = 1.
+#         * '2d': volume = 2 * np.pi * r
+#         * '3d': volume = 4 * np.pi * r**2
+#         """
 
-        if norm_fac is None:
-            self.set_norm_fac()
-        self.norm_fac = norm_fac
+#         self.phi0 = phi0
+#         self.phi1 = phi1
 
-    def __call__(self, x):
-        return self.norm_fac * self.func(x)
+#         self.segments = combine_segmets(segments0, segments1)
 
-    def integrand(self, x):
-        return self.volume(x) * self(x)
 
-    def set_norm_fac(self, **kws):
-        self.norm_fac = 1.0
+#         if type(volume) == 'str':
+#             if volume == '1d':
+#                 volume = lambda x: 1.
+#             elif volume == '2d':
+#                 volume = lambda x: 2. * np.pi * r
+#             elif volume == '3d':
+#                 volume = lambda x: 4 * np.pi * r ** 2
+#             else:
+#                 raise ValueError('unknown dimension')
 
-        kws = dict(self.kws, **kws)
+#         assert callable(volume)
+#         self.volume = volume
 
-        value = quad_segments(
-            self.integrand,
-            segments=self.segments,
-            sum_integrals=True,
-            sum_errors=True,
-            err=False,
-            full_output=False,
-            **kws
-        )
-        self.norm_fac = 1.0 / value
 
-    def __add__(self, other):
-        # combine stuff
+# class NormalizedFunc(object):
+#     def __init__(self, func, segments, volume=None, norm_fac=None, **kws):
 
-        return type(self)(
-            func=lambda x: self(x) + other(x),
-            segments=combine_segmets(self.segments, other.segments),
-            volume=self.volume,
-            norm_fac=1.0,
-            kws=dict(other.kws, **self.kws),
-        )
+#         self.func = lambda x: func(x) * volume(x)
+#         self.segments = segments
+#         self.kws = kws
 
-    def __mul__(self, fac):
-        return type(self)(
-            func=self.func,
-            segments=self.segments,
-            volume=self.volume,
-            norm_fac=self.norm_fac * fac,
-            kws=dict(self.kws),
-        )
+#         if volume is None:
+#             volume = lambda x: 1.0
+#         self.volume = volume
+
+#         if norm_fac is None:
+#             self.set_norm_fac()
+#         self.norm_fac = norm_fac
+
+#     def __call__(self, x):
+#         return self.norm_fac * self.func(x)
+
+#     def integrand(self, x):
+#         return self.volume(x) * self(x)
+
+#     def set_norm_fac(self, **kws):
+#         self.norm_fac = 1.0
+
+#         kws = dict(self.kws, **kws)
+
+#         value = quad_segments(
+#             self.integrand,
+#             segments=self.segments,
+#             sum_integrals=True,
+#             sum_errors=True,
+#             err=False,
+#             full_output=False,
+#             **kws
+#         )
+#         self.norm_fac = 1.0 / value
+
+#     def __add__(self, other):
+#         # combine stuff
+
+#         return type(self)(
+#             func=lambda x: self(x) + other(x),
+#             segments=combine_segmets(self.segments, other.segments),
+#             volume=self.volume,
+#             norm_fac=1.0,
+#             kws=dict(other.kws, **self.kws),
+#         )
+
+#     def __mul__(self, fac):
+#         return type(self)(
+#             func=self.func,
+#             segments=self.segments,
+#             volume=self.volume,
+#             norm_fac=self.norm_fac * fac,
+#             kws=dict(self.kws),
+#         )

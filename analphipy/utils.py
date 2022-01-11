@@ -1,23 +1,30 @@
+from __future__ import annotations
+
+from typing import Any, Callable, Optional, Sequence, Union
+
 import numpy as np
+from numpy.typing import NDArray
 from scipy.integrate import quad
 from scipy.optimize import minimize
+
+Seq_float = Union[Sequence[float], NDArray[np.float_]]
 
 TWO_PI = 2.0 * np.pi
 
 
-def combine_segmets(a, b):
-    a, b = set(a), set(b)
-    return sorted(a.union(b))
+def combine_segmets(a: Seq_float, b: Seq_float) -> list[float]:
+    aa, bb = set(a), set(b)
+    return sorted(aa.union(bb))
 
 
 def quad_segments(
-    func,
-    segments,
-    args=(),
-    full_output=0,
-    sum_integrals=True,
-    sum_errors=False,
-    err=True,
+    func: Callable,
+    segments: Seq_float,
+    args: tuple = (),
+    full_output: bool = False,
+    sum_integrals: bool = True,
+    sum_errors: bool = False,
+    err: bool = True,
     **kws
 ):
     """
@@ -83,7 +90,9 @@ def quad_segments(
         return result
 
 
-def minimize_phi(phi, r0, bounds=None, **kws):
+def minimize_phi(
+    phi: Callable, r0: float, bounds: Optional[Seq_float] = None, **kws
+) -> tuple[float, float, Any]:
 
     if bounds is None:
         bounds = (0.0, np.inf)
