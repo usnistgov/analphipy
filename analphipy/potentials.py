@@ -4,7 +4,7 @@ import dataclasses
 from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
-from typing import Optional, Sequence, Union, cast
+from typing import Literal, Optional, Sequence, Union, cast
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -525,11 +525,18 @@ class CubicTable(Phi_base):
         return self.phidphi(r)[0]
 
 
+_PHI_NAMES = Literal["lj", "nm", "sw", "hs", "yk", "LJ", "NM", "SW", "HS", "YK"]
+
+
 def factory_phi(
-    name: str, rcut: Optional[float] = None, lfs: bool = False, cut: bool = False, **kws
+    potential_name: _PHI_NAMES,
+    rcut: Optional[float] = None,
+    lfs: bool = False,
+    cut: bool = False,
+    **kws,
 ) -> Phidphi_class:
 
-    name = name.lower()
+    name = potential_name.lower()
 
     phi: Phidphi_class
 
@@ -549,7 +556,7 @@ def factory_phi(
         phi = Phi_hs(**kws)
 
     else:
-        raise ValueError(f"did not recognize name {name}")
+        raise ValueError(f"{name} must be in {_PHI_NAMES}")
 
     if lfs or cut:
         assert rcut is not None

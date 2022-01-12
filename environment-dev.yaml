@@ -1,0 +1,46 @@
+dependencies:
+    # numerics/tests
+    - matplotlib
+    - pandas
+    # development
+    - isort
+    - black
+    - blackdoc
+    - flake8
+    # testing
+    - pytest
+    - pytest-cov
+    - tox-conda
+    # specials
+    - pre-commit
+    # repl
+    - ipython
+    - ipykernel
+    # build
+    - setuptools
+    - setuptools-scm
+    - twine
+    # conda specific
+    - conda-build
+    - anaconda-client
+    - greyskull
+    # doc stuff
+    - sphinx
+    - sphinx_rtd_theme
+    - recommonmark # if want markdown
+    - nbsphinx # if want notebooks
+    # lsp stuff
+    - autoflake
+    - pyls-mypy
+    - pyls-black
+    - pyls-isort
+    # mypy
+    - mypy
+    - pytest-mypy
+    # Monkeytype?
+    - MonkeyType
+    - pip
+    - pip:
+            - mypy-extensions
+            - pytest-monkeytype
+            - flake8-mypy
