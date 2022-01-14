@@ -1,14 +1,21 @@
 from __future__ import annotations
 
 from functools import wraps
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, cast
+from typing import Any, Callable, Mapping, Optional, Sequence, cast
 
 import numpy as np
-from numpy.typing import ArrayLike, NDArray
 
 from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
-from .utils import TWO_PI, Seq_float, minimize_phi, quad_segments
+from .utils import (
+    TWO_PI,
+    ArrayLike,
+    Float_or_Array,
+    Float_or_ArrayLike,
+    Phi_Signature,
+    minimize_phi,
+    quad_segments,
+)
 
 
 def add_quad_kws(func: Callable) -> Callable:
@@ -21,12 +28,12 @@ def add_quad_kws(func: Callable) -> Callable:
 
 
 def sig_nf(
-    phi_rep: Callable,
+    phi_rep: Phi_Signature,
     beta: float,
-    segments: Seq_float,
+    segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     """Noro-Frenkel/Barker-Henderson effective hard sphere diameter"""
 
@@ -40,17 +47,17 @@ def sig_nf(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
 def sig_nf_dbeta(
-    phi_rep: Callable,
+    phi_rep: Phi_Signature,
     beta: float,
-    segments: Seq_float,
+    segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     """derivative w.r.t. beta of sig_nf"""
 
@@ -68,7 +75,7 @@ def sig_nf_dbeta(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
@@ -123,10 +130,10 @@ def lam_nf_dbeta(
 class NoroFrenkelPair:
     def __init__(
         self,
-        phi: Callable,
-        segments: Seq_float,
+        phi: Phi_Signature,
+        segments: ArrayLike,
         x_min: float,
-        phi_min: Union[float, NDArray[np.float_]],
+        phi_min: Float_or_Array,
         quad_kws: Optional[Mapping[str, Any]] = None,
     ):
 
@@ -142,7 +149,18 @@ class NoroFrenkelPair:
             quad_kws = {}
         self.quad_kws = quad_kws
 
-    def phi_rep(self, r: ArrayLike) -> np.ndarray:
+    def __repr__(self):
+
+        params = ",\n    ".join(
+            [
+                f"{v}={getattr(self, v)}"
+                for v in ["phi", "segments", "x_min", "phi_min", "quad_kws"]
+            ]
+        )
+
+        return f"{type(self).__name__}({params})"
+
+    def phi_rep(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
         phi = np.empty_like(r)
         m = r <= self.x_min
@@ -155,12 +173,12 @@ class NoroFrenkelPair:
     @classmethod
     def from_phi(
         cls,
-        phi: Callable,
-        segments: Seq_float,
+        phi: Phi_Signature,
+        segments: ArrayLike,
         x_min: Optional[float] = None,
-        bounds: Optional[Seq_float] = None,
+        bounds: Optional[ArrayLike] = None,
         quad_kws: Optional[Mapping[str, Any]] = None,
-        **kws
+        **kws,
     ) -> NoroFrenkelPair:
 
         if bounds is None:
@@ -256,10 +274,10 @@ class NoroFrenkelPair:
 
     def table(
         self,
-        betas: Seq_float,
+        betas: ArrayLike,
         props: Sequence[str] = None,
         key_format: str = "{prop}",
-        **kws
+        **kws,
     ) -> dict[str, Any]:
         if props is None:
             props = ["B2", "sig", "eps", "lam"]

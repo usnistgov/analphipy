@@ -1,15 +1,21 @@
 from typing import Callable, Optional, Union, cast
 
 import numpy as np
-from numpy.typing import ArrayLike
 
-from .utils import TWO_PI, Seq_float, combine_segmets, quad_segments
+from .utils import (
+    TWO_PI,
+    ArrayLike,
+    Float_or_ArrayLike,
+    Phi_Signature,
+    combine_segmets,
+    quad_segments,
+)
 
 
 def secondvirial(
-    phi: Callable,
+    phi: Phi_Signature,
     beta: float,
-    segments: Seq_float,
+    segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
     **kws
@@ -33,9 +39,9 @@ def secondvirial(
 
 
 def secondvirial_dbeta(
-    phi: Callable,
+    phi: Phi_Signature,
     beta: float,
-    segments: Seq_float,
+    segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
     **kws
@@ -79,7 +85,9 @@ def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
 
 
 def diverg_kl_integrand(
-    p: ArrayLike, q: ArrayLike, volume: Optional[ArrayLike] = None
+    p: Float_or_ArrayLike,
+    q: Float_or_ArrayLike,
+    volume: Optional[Float_or_ArrayLike] = None,
 ) -> np.ndarray:
     p, q = np.asarray(p), np.asarray(q)
 
@@ -98,7 +106,7 @@ def diverg_kl_integrand(
 
 
 def diverg_kl_disc(
-    P: ArrayLike, Q: ArrayLike, axis: Optional[int] = None
+    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: Optional[int] = None
 ) -> Union[float, np.ndarray]:
     """
     calculate discrete Kullback–Leibler divergence
@@ -145,8 +153,8 @@ def _check_volume_func(volume: Optional[Union[str, Callable]] = None) -> Callabl
 def diverg_kl_cont(
     p: Callable,
     q: Callable,
-    segments: Seq_float,
-    segments_q: Optional[Seq_float] = None,
+    segments: ArrayLike,
+    segments_q: Optional[ArrayLike] = None,
     volume: Optional[Union[str, Callable]] = None,
     err: bool = False,
     full_output: bool = False,
@@ -196,7 +204,7 @@ def diverg_kl_cont(
 
 
 def diverg_js_disc(
-    P: ArrayLike, Q: ArrayLike, axis: Optional[int] = None
+    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: Optional[int] = None
 ) -> Union[float, np.ndarray]:
     """
     Jensen–Shannon divergence
@@ -224,7 +232,9 @@ def diverg_js_disc(
 
 
 def diverg_js_integrand(
-    p: ArrayLike, q: ArrayLike, volume: Optional[ArrayLike] = None
+    p: Float_or_ArrayLike,
+    q: Float_or_ArrayLike,
+    volume: Optional[Float_or_ArrayLike] = None,
 ) -> np.ndarray:
     p = np.asarray(p)
     q = np.asarray(q)
@@ -262,8 +272,8 @@ def diverg_js_integrand(
 def diverg_js_cont(
     p: Callable,
     q: Callable,
-    segments: Seq_float,
-    segments_q: Optional[Seq_float] = None,
+    segments: ArrayLike,
+    segments_q: Optional[ArrayLike] = None,
     volume: Optional[Union[str, Callable]] = None,
     err: bool = False,
     full_output: bool = False,

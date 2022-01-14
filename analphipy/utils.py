@@ -7,19 +7,30 @@ from numpy.typing import NDArray
 from scipy.integrate import quad
 from scipy.optimize import minimize
 
-Seq_float = Union[Sequence[float], NDArray[np.float_]]
+ArrayLike = Union[Sequence[float], NDArray[np.float_]]
+Float_or_ArrayLike = Union[float, ArrayLike]
+Float_or_Array = Union[float, NDArray[np.float_]]
+
+
+Phi_Signature = Callable[..., Union[float, np.ndarray]]
 
 TWO_PI = 2.0 * np.pi
 
+Vector = list[float]
 
-def combine_segmets(a: Seq_float, b: Seq_float) -> list[float]:
+
+def scale(scalar: float, vector: Vector) -> Vector:
+    return [scalar * num for num in vector]
+
+
+def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
     aa, bb = set(a), set(b)
     return sorted(aa.union(bb))
 
 
 def quad_segments(
     func: Callable,
-    segments: Seq_float,
+    segments: ArrayLike,
     args: tuple = (),
     full_output: bool = False,
     sum_integrals: bool = True,
@@ -91,7 +102,7 @@ def quad_segments(
 
 
 def minimize_phi(
-    phi: Callable, r0: float, bounds: Optional[Seq_float] = None, **kws
+    phi: Callable, r0: float, bounds: Optional[ArrayLike] = None, **kws
 ) -> tuple[float, float, Any]:
 
     if bounds is None:

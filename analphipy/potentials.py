@@ -7,19 +7,18 @@ from functools import partial
 from typing import Literal, Optional, Sequence, Union, cast
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 from analphipy.norofrenkel import NoroFrenkelPair
 
 from .measures import diverg_js_cont
-from .utils import minimize_phi
+from .utils import Float_or_ArrayLike, minimize_phi
 
 # classes to handle pair potentials
 
 
 class Phidphi_class:
     def __call__(
-        self, r: ArrayLike, dphi: bool = False
+        self, r: Float_or_ArrayLike, dphi: bool = False
     ) -> Union[np.ndarray, tuple[np.ndarray, np.ndarray]]:
         if dphi:
             return self.phidphi(r)
@@ -36,29 +35,33 @@ class Phidphi_class:
     def segments(self) -> list:
         raise NotImplementedError("to be implemented in subclass")
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         raise NotImplementedError("to be implemented in subclass if appropriate")
 
-    def phidphi(self, r: ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError("to be implemented in subclass if appropriate")
 
     @property
     def x_min(self) -> float:
         raise NotImplementedError("to be implemented in subclass")
 
-    def boltz(self, r: ArrayLike, beta: float) -> np.ndarray:
+    def boltz(self, r: Float_or_ArrayLike, beta: float) -> np.ndarray:
         return np.exp(-beta * self.phi(r))
 
-    def mayer(self, r: ArrayLike, beta: float) -> np.ndarray:
+    def mayer(self, r: Float_or_ArrayLike, beta: float) -> np.ndarray:
         return np.exp(-beta * self.phi(r)) - 1.0
 
-    def boltz_partial(self, beta: float) -> Callable:
+    def boltz_partial(
+        self, beta: float
+    ) -> Callable[[Float_or_ArrayLike], Union[float, np.ndarray]]:
         """
         returns callable function  boltz(x) = exp(-beta * phi(x))
         """
         return partial(self.boltz, beta=beta)
 
-    def mayer_partial(self, beta: float) -> Callable:
+    def mayer_partial(
+        self, beta: float
+    ) -> Callable[[Float_or_ArrayLike], Union[float, np.ndarray]]:
         """callable function mayer(x) = exp(-beta * phi(x)) - 1."""
         return partial(self.mayer, beta=beta)
 
@@ -88,7 +91,7 @@ class Phidphi_class:
         **kws,
     ) -> NoroFrenkelPair:
         return NoroFrenkelPair.from_phi(
-            phi=self,
+            phi=self.phi,
             segments=self.segments,
             bounds=bounds,
             x_min=x_min,
@@ -114,15 +117,19 @@ class Phidphi_class:
         self,
         other: Phidphi_class,
         beta: float,
+        beta_other: Optional[float] = None,
         volume: Union[str, Callable] = "3d",
         err: bool = False,
         full_output: bool = False,
         **kws,
     ):
 
+        if beta_other is None:
+            beta_other = beta
+
         return diverg_js_cont(
             p=self.boltz_partial(beta=beta),
-            q=other.boltz_partial(beta=beta),
+            q=other.boltz_partial(beta=beta_other),
             segments=self.segments,
             segments_q=other.segments,
             volume=volume,
@@ -135,15 +142,19 @@ class Phidphi_class:
         self,
         other: Phidphi_class,
         beta: float,
+        beta_other: Optional[float] = None,
         volume: Union[str, Callable] = "3d",
         err: bool = False,
         full_output: bool = False,
         **kws,
     ):
 
+        if beta_other is None:
+            beta_other = beta
+
         return diverg_js_cont(
             p=self.mayer_partial(beta=beta),
-            q=other.mayer_partial(beta=beta),
+            q=other.mayer_partial(beta=beta_other),
             segments=self.segments,
             segments_q=other.segments,
             volume=volume,
@@ -186,7 +197,7 @@ class Phi_cut_base(Phidphi_class):
         phi_base = base(*args, **kws)
         return cls(phi_base=phi_base, rcut=rcut)
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.asarray(r)
         v = np.empty_like(r)
 
@@ -200,7 +211,7 @@ class Phi_cut_base(Phidphi_class):
 
         return v
 
-    def phidphi(self, r: ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
         r = np.array(r)
 
         v = np.empty_like(r)
@@ -265,10 +276,10 @@ class Phi_base(Phidphi_class):
     def lfs(self, rcut: float) -> Phi_lfs:
         return Phi_lfs(phi_base=self, rcut=rcut)
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         raise NotImplementedError("to be implemented in subclass")
 
-    def phidphi(self, r: ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError("to be implemented in subclass or not available")
 
     @property
@@ -286,14 +297,14 @@ class Phi_lj(Phi_base):
         self.sigsq = sig * sig
         self.four_eps = 4.0 * eps
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
 
         x2 = self.sigsq / (r * r)
         x6 = x2 ** 3
         return cast(np.ndarray, self.four_eps * x6 * (x6 - 1.0))
 
-    def phidphi(self, r: ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
         """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
         r = np.array(r)
         rinvsq = 1.0 / (r * r)
@@ -334,14 +345,14 @@ class Phi_nm(Phi_base):
     def phi_min(self) -> float:
         return -self.eps
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
 
         x = self.sig / r
         out = self.prefac * (x ** self.n - x ** self.m)
         return cast(np.ndarray, out)
 
-    def phidphi(self, r: ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
 
         r = np.array(r)
         x = self.sig / r
@@ -380,7 +391,7 @@ class Phi_yk(Phi_base):
     def phi_min(self) -> float:
         return -self.eps
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         sig, eps = self.sig, self.eps
 
         r = np.array(r)
@@ -398,7 +409,7 @@ class Phi_yk(Phi_base):
 class Phi_hs(Phi_base):
     sig: float = 1.0
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
 
         phi = np.empty_like(r)
@@ -427,7 +438,7 @@ class Phi_sw(Phi_base):
     def segments(self) -> list:
         return [0.0, self.sig, self.sig * self.lam]
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
 
         sig, eps, lam = self.sig, self.eps, self.lam
 
@@ -447,7 +458,7 @@ class Phi_sw(Phi_base):
 
 
 class CubicTable(Phi_base):
-    def __init__(self, bounds: Sequence[float], phi_array: ArrayLike):
+    def __init__(self, bounds: Sequence[float], phi_array: Float_or_ArrayLike):
 
         self.phi_array = np.asarray(phi_array)
         self.bounds = bounds
@@ -491,7 +502,7 @@ class CubicTable(Phi_base):
     def smax(self) -> float:
         return self.bounds[1]
 
-    def phidphi(self, r: ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
         r = np.asarray(r)
 
         v = np.empty_like(r)
@@ -521,7 +532,7 @@ class CubicTable(Phi_base):
 
         return v, dv
 
-    def phi(self, r: ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         return self.phidphi(r)[0]
 
 
