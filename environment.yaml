@@ -9,3 +9,4 @@ dependencies:
     # because using scm versioning
     - setuptools>=38.4
     # cli
+    - typing-extensions

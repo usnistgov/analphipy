@@ -4,9 +4,10 @@ import dataclasses
 from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
-from typing import Literal, Optional, Sequence, Union, cast
+from typing import Optional, Sequence, Tuple, Union, cast
 
 import numpy as np
+from typing_extensions import Literal
 
 from analphipy.norofrenkel import NoroFrenkelPair
 
@@ -369,7 +370,7 @@ class Phi_nm(Phi_base):
         # where x = sig / r
         dphi = self.prefac * (self.n * xn - self.m * xm) / (r ** 2)
 
-        return cast(tuple[np.ndarray, np.ndarray], (phi, dphi))
+        return cast(Tuple[np.ndarray, np.ndarray], (phi, dphi))
 
 
 @dataclass

@@ -7,20 +7,25 @@ from numpy.typing import NDArray
 from scipy.integrate import quad
 from scipy.optimize import minimize
 
+# from typing_extensions import Protocol
+
 ArrayLike = Union[Sequence[float], NDArray[np.float_]]
 Float_or_ArrayLike = Union[float, ArrayLike]
 Float_or_Array = Union[float, NDArray[np.float_]]
-
 
 Phi_Signature = Callable[..., Union[float, np.ndarray]]
 
 TWO_PI = 2.0 * np.pi
 
-Vector = list[float]
+# class Phi_Signature(Protocol):
+#     def __call__(self, Float_or_ArrayLike) -> Union[float, np.ndarray]: ...
 
 
-def scale(scalar: float, vector: Vector) -> Vector:
-    return [scalar * num for num in vector]
+# Vector = list[float]
+
+
+# def scale(scalar: float, vector: Vector) -> Vector:
+#     return [scalar * num for num in vector]
 
 
 def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
