@@ -36,13 +36,13 @@ def sig_nf(
 ):
     r"""Noro-Frenkel/Barker-Henderson effective hard sphere diameter.
 
-    This is calculated using the formula
+    This is calculated using the formula [1]_ [2]_
 
     .. math::
 
-        \sigma_{{\rm BH}}(\beta) = \int_0^{{\infty}} dr \left( 1 - \exp[-\beta \phi_{{\rm rep}}(r)])
+        \sigma_{{\rm BH}}(\beta) = \int_0^{{\infty}} dr \left( 1 - \exp[-\beta \phi_{{\rm rep}}(r)]\right)
 
-    where :math:`\phi_{{\rm rep}}(r)` is the repulsive part of the potential.
+    where :math:`\phi_{{\rm rep}}(r)` is the repulsive part of the potential [3]_.
 
     Parameters
     ----------
@@ -109,12 +109,18 @@ def sig_nf_dbeta(
     **kws,
 ):
     r"""
-    Derivative with respect to inverse temperature ``beta`` of ``sig_nf``
+    Derivative with respect to inverse temperature ``beta`` of ``sig_nf``.
+
+
+    See refs [1]_ [2]_ [3]_
 
     .. math::
 
         \frac{d \sigma_{\rm BH}}{d\beta} = \int_0^{\infty} dr \phi_{\rm rep}(r) \exp[-\beta \phi_{\rm rep}(r)]
 
+    See Also
+    --------
+    sig_nf
 
     """
 
@@ -142,13 +148,17 @@ def lam_nf(beta: float, sig: float, eps: float, B2: float):
     Noro-Frenkel effective lambda parameter
 
     This is the value of :math:`\lambda` in a square well potential which matches second virial
-    coefficients.  The square well fluid is defined as
+    coefficients.  The square well fluid is defined as [1]_
 
     .. math::
 
-        \phi_{{\rm sw}}(r) &= \infty \text{{ if }} r \leq \sigma \\
-        & = \epsilon \text{{ if }} \sigma < r \leq \lambda \sigma \\
-        & = 0 \text{{ if }} r > \lambda \sigma
+        \phi_{{\rm sw}}(r) =
+        \begin{{cases}}
+            \infty & r \leq \sigma \\
+            \epsilon &  \sigma < r \leq \lambda \sigma \\
+            0 &  r > \lambda \sigma
+        \end{{cases}}
+
 
     Parameters
     ----------
@@ -206,7 +216,6 @@ def lam_nf_dbeta(
     See Also
     --------
     lam_nf
-
     """
 
     B2_hs = TWO_PI / 3.0 * sig**3
@@ -227,6 +236,8 @@ def lam_nf_dbeta(
 class NoroFrenkelPair:
     """
     Class to calculate Noro-Frenkel parameters
+
+    See [1]_ [2]_ [3]_
 
 
     Parameters
@@ -404,7 +415,12 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def secondvirial(self, beta: float, **kws):
-        """Second virial coefficient."""
+        """Second virial coefficient.
+
+        See Also
+        --------
+        measures.secondvirial
+        """
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
     @gcached()
@@ -414,17 +430,31 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def sig(self, beta: float, **kws):
-        """Effective hard sphere diameter."""
+        """Effective hard sphere diameter.
+
+        See Also
+        --------
+        ~analphipy.norofrenkel.sig_nf
+
+        """
         return sig_nf(self.phi_rep, beta=beta, segments=self._segments_rep, **kws)
 
     def eps(self, beta: float, **kws) -> float:
-        """Effective square well epsilon."""
+        """Effective square well epsilon.
+
+        This is equal to the minimum in ``phi``.
+        """
         return cast(float, self.phi_min)
 
     @gcached(prop=False)
     @add_quad_kws
     def lam(self, beta: float, **kws):
-        """Effective square well lambda."""
+        """Effective square well lambda.
+
+        See Also
+        --------
+        analphipy.norofrenkel.lam_nf
+        """
         return lam_nf(
             beta=beta,
             sig=self.sig(beta, **kws),
@@ -444,7 +474,12 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def secondvirial_dbeta(self, beta: float, **kws):
-        """Derivative of ``secondvirial`` with respect to ``beta``"""
+        """Derivative of ``secondvirial`` with respect to ``beta``
+
+        See Also
+        --------
+        analphipy.measures.secondvirial_dbeta
+        """
         return secondvirial_dbeta(
             phi=self.phi, beta=beta, segments=self.segments, **kws
         )
@@ -452,12 +487,23 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def sig_dbeta(self, beta: float, **kws):
-        """Derivative of effective hard-sphere diameter with respect to ``beta``"""
+        """Derivative of effective hard-sphere diameter with respect to ``beta``
+
+        See Also
+        --------
+        analphipy.norofrenkel.sig_nf_dbeta
+
+        """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
 
     @gcached(prop=False)
     def lam_dbeta(self, beta: float, **kws):
-        """Derivative of effective lambda parameter with respect to ``beta``"""
+        """Derivative of effective lambda parameter with respect to ``beta``.
+
+        See Also
+        --------
+        analphipy.norofrenkel.lam_nf_dbeta
+        """
         return lam_nf_dbeta(
             beta=beta,
             sig=self.sig(beta, **kws),

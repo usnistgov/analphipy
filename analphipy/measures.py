@@ -1,11 +1,14 @@
 from typing import Callable, Optional, Union, cast
 
 import numpy as np
+from custom_inherit import doc_inherit
 
+from ._docstrings import docfiller_shared
 from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
 from .utils import TWO_PI, combine_segmets, quad_segments
 
 
+@docfiller_shared
 def secondvirial(
     phi: Phi_Signature,
     beta: float,
@@ -14,8 +17,31 @@ def secondvirial(
     full_output: bool = False,
     **kws
 ):
-    """
-    Calculate the second virial coefficient
+    r"""
+    Calculate the second virial coefficient.
+
+
+    .. math::
+
+        B_2(\beta) = -\int 2\pi r^2 dr \left(\exp(-\beta \phi(r)) - 1\right)
+
+    Parameters
+    ----------
+    {phi}
+    {beta}
+    {segments}
+    {err}
+    {full_output}
+    **kws
+        Extra arguments to :func:`analphipy.quad_segments`
+
+    Returns
+    -------
+    B2 : float
+        Value of second virial coefficient.
+    {error_summed}
+    {full_output_summed}
+
     """
 
     def integrand(r):
@@ -32,6 +58,7 @@ def secondvirial(
     )
 
 
+@docfiller_shared
 def secondvirial_dbeta(
     phi: Phi_Signature,
     beta: float,
@@ -40,8 +67,29 @@ def secondvirial_dbeta(
     full_output: bool = False,
     **kws
 ):
-    """
-    derivative w.r.t beta of second virial coefficient
+    r"""
+    ``beta`` derivative of second virial coefficient.
+
+    .. math::
+
+        \frac{{d B_2}}{{d \beta}} = \int 2\pi r^2 dr \phi(r) \exp(-\beta \phi(r))
+
+    Parameters
+    ----------
+    {phi}
+    {beta}
+    {segments}
+    {err}
+    {full_output}
+
+    Returns
+    -------
+    dB2dbeta : float
+        Value of derivative.
+    {error_summed}
+    {full_output_summed}
+
+
     """
 
     def integrand(r):
@@ -62,16 +110,37 @@ def secondvirial_dbeta(
     )
 
 
+@docfiller_shared
 def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
-    """
+    r"""
     Second virial coefficient for a square well (SW) fluid. Note that this assumes that
-    the SW fluid is defined by the potential phi:
+    the SW fluid is defined by the potential:
 
-    * infinity : r < sigma
-    * eps : sigma <= r < sigma * lambda
-    * 0 : r > sigma * lambda
+    .. math::
 
-    This differse by a factor (-eps) some other definitions
+        \phi(r) =
+        \begin{{cases}}
+            \infty & r \leq \sigma \\
+            \epsilon & \sigma < r \leq \lambda \sigma  \\
+            0 & \lambda \sigma < r
+        \end{{cases}}
+
+
+    Parameters
+    ----------
+    {beta}
+    sig : float
+        Length parameter :math:`\sigma`.
+    eps : float
+        Energy parameter :math:`\epsilon`.
+    lam : float
+        Well width parameter :math:`\lambda`.
+
+    Returns
+    -------
+    B2 : float
+        Value of second virial coefficient.
+
     """
     return (
         TWO_PI / 3.0 * sig**3 * (1.0 + (1 - np.exp(-beta * eps)) * (lam**3 - 1.0))
@@ -99,11 +168,12 @@ def diverg_kl_integrand(
     return out
 
 
+@docfiller_shared
 def diverg_kl_disc(
     P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: Optional[int] = None
 ) -> Union[float, np.ndarray]:
     """
-    calculate discrete Kullback–Leibler divergence
+    Calculate discrete Kullback–Leibler divergence
 
     Parameteres
     -----------
@@ -111,12 +181,12 @@ def diverg_kl_disc(
         Probabilities to consider
     Returns
     -------
-    result : float or array
+    result : float or ndarray
         value of KB divergence
 
     See Also
     --------
-    https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence
+    {kl_link}
     """
 
     P, Q = np.asarray(P), np.asarray(Q)
@@ -144,6 +214,7 @@ def _check_volume_func(volume: Optional[Union[str, Callable]] = None) -> Callabl
     return volume
 
 
+@docfiller_shared
 def diverg_kl_cont(
     p: Callable,
     q: Callable,
@@ -155,28 +226,29 @@ def diverg_kl_cont(
     **kws
 ):
     """
-    calculate discrete Kullback–Leibler divergence for contiuous pdf
+    Calculate continuous Kullback–Leibler divergence for contiuous pdf
 
-    Parameteres
-    -----------
+    Parameters
+    ----------
     p, q: callable
         Probabilities to consider
-    volume : callable, optional
-        volume element if not linear integration region
-        For examle, use volume = lambda x: 4 * np.pi * x ** 2 for spherically symmetric p/q
-
-    segments : list
-        segments to integrate over
+    {volume_int_func}
+    {segments}
     segments_q : list, optional
         if supplied, build total segments by combining segments and seqments_q
+    {err}
+    {full_output}
+
     Returns
     -------
-    result : float or array
+    result : float or ndarray
         value of KB divergence
+    {error_summed}
+    {full_output_summed}
 
     See Also
     --------
-    https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence
+    {kl_link}
     """
     volume = _check_volume_func(volume)
 
@@ -197,24 +269,21 @@ def diverg_kl_cont(
     )
 
 
+@doc_inherit(diverg_kl_disc, style="numpy_with_merge")
 def diverg_js_disc(
     P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: Optional[int] = None
 ) -> Union[float, np.ndarray]:
     """
-    Jensen–Shannon divergence
+    Discrete Jensen–Shannon divergence
 
-    Parameteres
-    -----------
-    P, Q : array-like
-        Probabilities to consider
     Returns
     -------
-    result : float or array
+    result : float or ndarray
         value of JS divergence
 
     See Also
     --------
-    https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence
+    {js_link}
     """
 
     P, Q = np.asarray(P), np.asarray(Q)
@@ -222,7 +291,7 @@ def diverg_js_disc(
     M = 0.5 * (P + Q)
 
     out = 0.5 * (diverg_kl_disc(P, M, axis=axis) + diverg_kl_disc(Q, M, axis=axis))
-    return out
+    return cast(Union[float, np.ndarray], out)
 
 
 def diverg_js_integrand(
@@ -243,26 +312,8 @@ def diverg_js_integrand(
     return cast(np.ndarray, out)
 
 
-# def _plogp(p):
-#     hero = p != 0.
-#     out = np.zeros_like(p)
-#     out[hero] = p[hero] * np.log(p[hero])
-#     return out
-
-# def diverg_js_integrandb(p, q, volume = None):
-
-#     p, q = np.asarray(p), np.asarray(q)
-
-#     m = 0.5 * (p + q)
-
-#     out = 0.5 * (_plogp(p) + _plogp(q)) - _plogp(m)
-
-#     if volume is not None:
-#         out *= np.asarray(volume)
-
-#     return out
-
-
+@doc_inherit(diverg_kl_cont, style="numpy_with_merge")
+@docfiller_shared
 def diverg_js_cont(
     p: Callable,
     q: Callable,
@@ -274,20 +325,17 @@ def diverg_js_cont(
     **kws
 ):
     """
-    Jensen–Shannon divergence
+    Continuous Jensen–Shannon divergence
 
-    Parameteres
-    -----------
-    P, Q : array-like
-        Probabilities to consider
+
     Returns
     -------
-    result : float or array
+    result : float or ndarray
         value of JS divergence
 
     See Also
     --------
-    https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence
+    {js_link}
     """
 
     volume = _check_volume_func(volume)
@@ -307,96 +355,3 @@ def diverg_js_cont(
         full_output=full_output,
         **kws
     )
-
-
-# class DivergPhi:
-
-#     def __init__(self, func0, func1, segments0, segments1, volume='3d'):
-#         """
-#         Parameters
-#         ----------
-#         phi0, phi1 : Phi objects
-#         volume : callable or str
-#         if str, then
-
-#         * '1d': volume = 1.
-#         * '2d': volume = 2 * np.pi * r
-#         * '3d': volume = 4 * np.pi * r**2
-#         """
-
-#         self.phi0 = phi0
-#         self.phi1 = phi1
-
-#         self.segments = combine_segmets(segments0, segments1)
-
-
-#         if type(volume) == 'str':
-#             if volume == '1d':
-#                 volume = lambda x: 1.
-#             elif volume == '2d':
-#                 volume = lambda x: 2. * np.pi * r
-#             elif volume == '3d':
-#                 volume = lambda x: 4 * np.pi * r ** 2
-#             else:
-#                 raise ValueError('unknown dimension')
-
-#         assert callable(volume)
-#         self.volume = volume
-
-
-# class NormalizedFunc(object):
-#     def __init__(self, func, segments, volume=None, norm_fac=None, **kws):
-
-#         self.func = lambda x: func(x) * volume(x)
-#         self.segments = segments
-#         self.kws = kws
-
-#         if volume is None:
-#             volume = lambda x: 1.0
-#         self.volume = volume
-
-#         if norm_fac is None:
-#             self.set_norm_fac()
-#         self.norm_fac = norm_fac
-
-#     def __call__(self, x):
-#         return self.norm_fac * self.func(x)
-
-#     def integrand(self, x):
-#         return self.volume(x) * self(x)
-
-#     def set_norm_fac(self, **kws):
-#         self.norm_fac = 1.0
-
-#         kws = dict(self.kws, **kws)
-
-#         value = quad_segments(
-#             self.integrand,
-#             segments=self.segments,
-#             sum_integrals=True,
-#             sum_errors=True,
-#             err=False,
-#             full_output=False,
-#             **kws
-#         )
-#         self.norm_fac = 1.0 / value
-
-#     def __add__(self, other):
-#         # combine stuff
-
-#         return type(self)(
-#             func=lambda x: self(x) + other(x),
-#             segments=combine_segmets(self.segments, other.segments),
-#             volume=self.volume,
-#             norm_fac=1.0,
-#             kws=dict(other.kws, **self.kws),
-#         )
-
-#     def __mul__(self, fac):
-#         return type(self)(
-#             func=self.func,
-#             segments=self.segments,
-#             volume=self.volume,
-#             norm_fac=self.norm_fac * fac,
-#             kws=dict(self.kws),
-#         )

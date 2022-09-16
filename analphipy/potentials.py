@@ -13,11 +13,43 @@ from typing_extensions import Literal
 from ._potentials import Phi_Abstractclass, Phi_Baseclass
 from ._typing import Float_or_ArrayLike
 
+# from ._docstrings import factory_docfiller_shared,
+
+
 # classes to handle pair potentials
+# from ._docstrings import docfiller_shared
+# _shared_docs_local = {
+#     "sig":
+#     """
+#     sig : float
+#         Length scale parameter
+#     """,
+#     "eps":
+#     """
+#     eps : float
+#         Energy scale parameter
+#     """,
+# }
+
+# docfiller_shared = factory_docfiller_shared(**_shared_docs_local)
 
 
 @dataclass
 class Phi_lj(Phi_Baseclass):
+    r"""Lennard-Jones potential.
+
+    .. math::
+
+        \phi(r) = 4 \epsilon \left[ \left(\frac{{\sigma}}{{r}}\right)^{{12}} - \left(\frac{{\sigma}}{{r}}\right)^6\right]
+
+    Parameters
+    ----------
+    sig : float
+        Length parameter :math:`\sigma`.
+    eps : float
+        Energy parameter :math:`\epsilon`.
+    """
+
     sig: float = 1.0
     eps: float = 1.0
 
@@ -59,6 +91,29 @@ class Phi_lj(Phi_Baseclass):
 
 @dataclass
 class Phi_nm(Phi_Baseclass):
+    r"""
+    Generalized Lennard-Jones potential
+
+    .. math::
+
+        \phi(r) = \epsilon \frac{n}{n-m} \left( \frac{n}{m} \right) ^{m / (n-m)}
+        \left[ \left(\frac{\sigma}{r}\right)^n - \left(\frac{\sigma}{r}\right)^m\right]
+
+
+    Parameters
+    ----------
+    n, m : int
+        ``n`` and ``m`` parameters to potential :math:`n, m`.
+    sig : float
+        Length parameter :math:`\sigma`.
+    eps : float
+        Energy parameter :math:`\epsilon`.
+
+
+    Notes
+    -----
+    with parameters ``n=12`` and ``m=6``, this is equivalent to :class:`Phi_lj`.
+    """
     n: int = 12
     m: int = 6
     sig: float = 1.0
@@ -110,6 +165,29 @@ class Phi_nm(Phi_Baseclass):
 
 @dataclass
 class Phi_yk(Phi_Baseclass):
+    r"""
+    Hard core Yukawa potential
+
+
+    .. math::
+
+        \phi(r) =
+        \begin{cases}
+            \infty &  r \leq \sigma \\
+            -\epsilon \frac{\sigma}{r} \exp\left[-z (r/\sigma - 1) \right] & r > \sigma
+        \end{cases}
+
+
+    Parameters
+    ----------
+    sig : float
+        Length parameters :math:`\sigma`.
+    eps : float
+        Energy parameter :math:`\epsilon`.
+    z : float
+        Interaction range parameter :math:`z`
+
+    """
 
     z: float = 1.0
     sig: float = 1.0
@@ -143,6 +221,22 @@ class Phi_yk(Phi_Baseclass):
 
 @dataclass
 class Phi_hs(Phi_Baseclass):
+    r"""
+    Hard-sphere pair potential
+
+    .. math::
+
+        \phi(r) =
+        \begin{cases}
+        \infty & r \leq \sigma \\
+        0 & r > \sigma
+
+    Parameters
+    ----------
+    sig: float
+        Length scale parameter :math:`\sigma`
+    """
+
     sig: float = 1.0
 
     @property
@@ -162,6 +256,28 @@ class Phi_hs(Phi_Baseclass):
 
 @dataclass
 class Phi_sw(Phi_Baseclass):
+    r"""
+    Square-well pair potential
+
+
+    .. math::
+
+        \phi(r) =
+        \begin{cases}
+        \infty & r \leq \sigma \\
+        \epsilon & \sigma < r \leq \lambda \sigma \\
+        0 & r > \lambda \sigma
+
+    Parameters
+    ----------
+    sig : float
+        Length scale parameter :math:`\sigma`.
+    eps : float
+        Energy parameter :math:`\epsilon`.  Note that here, ``eps`` is the value inside the well.  So, to specify an attractive square well potential, pass a negative value for ``eps``.
+    lam : float
+        Width of well parameter :math:`lambda`.
+    """
+
     sig: float = 1.0
     eps: float = 1.0
     lam: float = 1.5
@@ -198,6 +314,17 @@ class Phi_sw(Phi_Baseclass):
 
 
 class CubicTable(Phi_Baseclass):
+    """
+    Cubic interpolation table potential
+
+    Parameters
+    ----------
+    bounds : sequence of floats
+        the minimum and maximum values of squared pair separation `r**2` at which `phi_array` is evaluated.
+    phi_array : array-like
+        Values of potential evaluated on even grid of ``r**2`` values.
+    """
+
     def __init__(self, bounds: Sequence[float], phi_array: Float_or_ArrayLike):
 
         self.phi_array = np.asarray(phi_array)
@@ -212,6 +339,28 @@ class CubicTable(Phi_Baseclass):
 
     @classmethod
     def from_phi(cls, phi: Callable, rmin: float, rmax: float, ds: float):
+        """
+        Create object from callable pair potential funciton.
+
+        This will evaluate ``phi`` at even spacing in ``s = r**2`` space.
+
+
+        Parameters
+        ----------
+        phi : callable
+            pair potential function
+        rmin : float
+            minimum pair separation `r` to evaluate at.
+        rmax : float
+            Maximum pair separation `r` to evaluate at.
+        ds : float
+            spaceing in ``s = r ** 2``.
+
+        Returns
+        -------
+        table : CubicTable
+
+        """
         bounds = (rmin * rmin, rmax * rmax)
 
         delta = bounds[1] - bounds[0]
@@ -286,6 +435,24 @@ def factory_phi(
     cut: bool = False,
     **kws,
 ) -> Phi_Abstractclass:
+    """Factory function to construct Phi object by name
+
+    Parameters
+    ----------
+    potential_name : {lj, nm, sw, hs, yk}
+        Name of potential.
+    rcut : float, optional
+        if passed, Construct either and 'lfs' or 'cut' version of the potential.
+    lfs : bool, default=False
+        If True, construct a  linear force shifted potential :class:`analphipy.Phi_lfs`.
+    cut : bool, default=False
+        If True, construct a cut potential :class:`analphipy.Phi_cut`.
+
+    Returns
+    -------
+    phi :
+        output potential energy class.
+    """
 
     name = potential_name.lower()
 
