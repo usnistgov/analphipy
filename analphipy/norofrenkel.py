@@ -1,21 +1,19 @@
 from __future__ import annotations
 
 from functools import wraps
-from typing import Any, Callable, Mapping, Optional, Sequence, cast
+from typing import TYPE_CHECKING, Any, Callable, Mapping, Optional, Sequence, cast
 
 import numpy as np
+from custom_inherit import doc_inherit
 
+from ._docstrings import docfiller_shared
+from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
 from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
-from .utils import (
-    TWO_PI,
-    ArrayLike,
-    Float_or_Array,
-    Float_or_ArrayLike,
-    Phi_Signature,
-    minimize_phi,
-    quad_segments,
-)
+from .utils import TWO_PI, minimize_phi, quad_segments
+
+if TYPE_CHECKING:
+    from ._potentials import Phi_Abstractclass
 
 
 def add_quad_kws(func: Callable) -> Callable:
@@ -27,6 +25,7 @@ def add_quad_kws(func: Callable) -> Callable:
     return wrapped
 
 
+@docfiller_shared
 def sig_nf(
     phi_rep: Phi_Signature,
     beta: float,
@@ -35,7 +34,56 @@ def sig_nf(
     full_output: bool = False,
     **kws,
 ):
-    """Noro-Frenkel/Barker-Henderson effective hard sphere diameter"""
+    r"""Noro-Frenkel/Barker-Henderson effective hard sphere diameter.
+
+    This is calculated using the formula
+
+    .. math::
+
+        \sigma_{{\rm BH}}(\beta) = \int_0^{{\infty}} dr \left( 1 - \exp[-\beta \phi_{{\rm rep}}(r)])
+
+    where :math:`\phi_{{\rm rep}}(r)` is the repulsive part of the potential.
+
+    Parameters
+    ----------
+    {phi_rep}
+    {beta}
+    {segments}
+    phi_rep : callable
+        Repulsive part of pair potential.
+    beta : float
+        Inverse temperature.
+    segments : array-like
+        Integration segments.
+    err : bool, default=False
+        If True, return error value.
+    full_output : bool, default=True
+        If True, return full_output.
+
+    Returns
+    -------
+    sig_nf : float or list of floats
+        Value of integral.
+    errors, float or list of floats, optional
+        If `err` or `full_output` are True, then return sum of errors.
+    outputs :
+        Output from :func:`scipy.integrate.quad`. If multiple segments, return a list of output.
+
+
+
+    See Also
+    --------
+    utils.quad_segments
+
+    References
+    ----------
+    .. [1] {ref_Noro_Frenkel}
+
+    .. [2] {ref_Barker_Henderson}
+
+    .. [3] {ref_WCA}
+
+    """
 
     def integrand(r):
         return 1.0 - np.exp(-beta * phi_rep(r))
@@ -51,6 +99,7 @@ def sig_nf(
     )
 
 
+@doc_inherit(sig_nf, style="numpy_with_merge")
 def sig_nf_dbeta(
     phi_rep: Phi_Signature,
     beta: float,
@@ -59,7 +108,15 @@ def sig_nf_dbeta(
     full_output: bool = False,
     **kws,
 ):
-    """derivative w.r.t. beta of sig_nf"""
+    r"""
+    Derivative with respect to inverse temperature ``beta`` of ``sig_nf``
+
+    .. math::
+
+        \frac{d \sigma_{\rm BH}}{d\beta} = \int_0^{\infty} dr \phi_{\rm rep}(r) \exp[-\beta \phi_{\rm rep}(r)]
+
+
+    """
 
     def integrand(r):
         v = phi_rep(r)
@@ -79,8 +136,41 @@ def sig_nf_dbeta(
     )
 
 
+@docfiller_shared
 def lam_nf(beta: float, sig: float, eps: float, B2: float):
-    B2star = B2 / (TWO_PI / 3.0 * sig ** 3)
+    r"""
+    Noro-Frenkel effective lambda parameter
+
+    This is the value of :math:`\lambda` in a square well potential which matches second virial
+    coefficients.  The square well fluid is defined as
+
+    .. math::
+
+        \phi_{{\rm sw}}(r) &= \infty \text{{ if }} r \leq \sigma \\
+        & = \epsilon \text{{ if }} \sigma < r \leq \lambda \sigma \\
+        & = 0 \text{{ if }} r > \lambda \sigma
+
+    Parameters
+    ----------
+    {beta}
+    sig : float
+        Particle diameter.
+    eps : float
+        Energy parameter in square well potential. The convention is that ``eps`` is the same as the value of ``phi`` at the minimum.
+    B2 : float
+        Second virial coefficient to match.
+
+    Returns
+    -------
+    lam_nf : float
+        Value of `lambda` in an effective square well fluid which matches ``B2``.
+
+
+    References
+    ----------
+    .. [1] {ref_Noro_Frenkel}
+    """
+    B2star = B2 / (TWO_PI / 3.0 * sig**3)
 
     # B2s_SW = 1 + (1-exp(-beta epsilon)) * (lambda**3 - 1)
     #        = B2s
@@ -88,6 +178,7 @@ def lam_nf(beta: float, sig: float, eps: float, B2: float):
     return lam
 
 
+@doc_inherit(lam_nf, style="numpy_with_merge")
 def lam_nf_dbeta(
     beta: float,
     sig: float,
@@ -98,22 +189,27 @@ def lam_nf_dbeta(
     sig_dbeta: float,
 ):
     """
-    calculate d(lam_nf)/d(beta) from known parameters
+    Calculate derivative of ``lam_nf`` with respect to ``beta``
+
     Parameters
     ----------
-    beta : float
-        inverse temperature
-    sig, eps, lam : float
-        Noro-frenkel sigma/eps/lambda parameters
-    B2 : float
-        Actual second virial coef
     B2_dbeta : float
-        d(B2)/d(beta) at `beta`
+        d(B2)/d(beta) at ``beta``
     sig_dbeta : float
         derivative of noro-frenkel sigma w.r.t inverse temperature at `beta`
+
+    Returns
+    -------
+    lam_nf_dbeta : float
+        Value of ``d(lam_nf)/d(beta)``
+
+    See Also
+    --------
+    lam_nf
+
     """
 
-    B2_hs = TWO_PI / 3.0 * sig ** 3
+    B2_hs = TWO_PI / 3.0 * sig**3
 
     dB2stardbeta = 1.0 / B2_hs * (B2_dbeta - B2 * 3.0 * sig_dbeta / sig)
 
@@ -122,26 +218,48 @@ def lam_nf_dbeta(
 
     e = np.exp(beta * eps)
 
-    out = 1.0 / (3 * lam ** 2 * (e - 1)) * (dB2stardbeta * e - eps * (lam ** 3 - 1))
+    out = 1.0 / (3 * lam**2 * (e - 1)) * (dB2stardbeta * e - eps * (lam**3 - 1))
 
     return out
 
 
+@docfiller_shared
 class NoroFrenkelPair:
+    """
+    Class to calculate Noro-Frenkel parameters
+
+
+    Parameters
+    ----------
+    {phi}
+    {segments}
+    {r_min_exact}
+    {phi_min_exact}
+    {quad_kws}
+
+    References
+    ----------
+    .. [1] {ref_Noro_Frenkel}
+
+    .. [2] {ref_Barker_Henderson}
+
+    .. [3] {ref_WCA}
+    """
+
     def __init__(
         self,
         phi: Phi_Signature,
         segments: ArrayLike,
-        x_min: float,
+        r_min: float,
         phi_min: Float_or_Array,
         quad_kws: Optional[Mapping[str, Any]] = None,
     ):
 
         self.phi = phi
-        self.x_min = x_min
+        self.r_min = r_min
 
         if phi_min is None:
-            phi_min = phi(x_min)
+            phi_min = phi(r_min)
         self.phi_min = phi_min
         self.segments = segments
 
@@ -154,16 +272,32 @@ class NoroFrenkelPair:
         params = ",\n    ".join(
             [
                 f"{v}={getattr(self, v)}"
-                for v in ["phi", "segments", "x_min", "phi_min", "quad_kws"]
+                for v in ["phi", "segments", "r_min", "phi_min", "quad_kws"]
             ]
         )
 
         return f"{type(self).__name__}({params})"
 
+    @docfiller_shared
     def phi_rep(self, r: Float_or_ArrayLike) -> np.ndarray:
+        """
+        Repulsive part of potential
+
+        This is the Weeks-Chandler-Anderson decomposition.
+
+        Parameters
+        ----------
+        {r}
+
+        Returns
+        -------
+        output : float or ndarray
+            Value of ``phi_ref`` at separation(s) ``r``.
+
+        """
         r = np.array(r)
         phi = np.empty_like(r)
-        m = r <= self.x_min
+        m = r <= self.r_min
 
         phi[m] = self.phi(r[m]) - self.phi_min
         phi[~m] = 0.0
@@ -171,50 +305,126 @@ class NoroFrenkelPair:
         return phi
 
     @classmethod
+    @docfiller_shared
     def from_phi(
         cls,
         phi: Phi_Signature,
         segments: ArrayLike,
-        x_min: Optional[float] = None,
+        r_min: Optional[float] = None,
         bounds: Optional[ArrayLike] = None,
         quad_kws: Optional[Mapping[str, Any]] = None,
         **kws,
     ) -> NoroFrenkelPair:
+        """
+        Create object from pair potential function
+
+
+        Parameters
+        ----------
+        {phi}
+        {segments}
+        r_min : float, optional
+            Optional guess for numerically finding minimum in `phi`.
+        bounds : array-like, optional
+            Optional bounds for numerically locating ``r_min``.
+        quad_kws : mapping, optional
+            Optional arguments to :func:`analphipy.quad_segments`.
+        **kws :
+            Extra arguments to :func:`analphipy.utils.minimize_phi`.
+
+        Returns
+        -------
+        output : instance of calling class
+        """
 
         if bounds is None:
             bounds = (segments[0], segments[-1])
 
-        if bounds[-1] == np.inf and x_min is None:
+        if bounds[-1] == np.inf and r_min is None:
             raise ValueError("if specify infinite bounds, must supply guess")
 
-        if x_min is None:
-            x_min = np.mean(bounds)
+        if r_min is None:
+            r_min = cast(float, np.mean(bounds))
 
-        x_min, phi_min, _ = minimize_phi(phi, r0=x_min, bounds=bounds, **kws)
-        return cls(
-            phi=phi, x_min=x_min, phi_min=phi_min, segments=segments, quad_kws=quad_kws
+        r_min, phi_min, _ = minimize_phi(
+            phi, r0=cast(float, r_min), bounds=bounds, **kws
         )
+        return cls(
+            phi=phi, r_min=r_min, phi_min=phi_min, segments=segments, quad_kws=quad_kws
+        )
+
+    @classmethod
+    def from_phi_class(
+        cls,
+        phi: "Phi_Abstractclass",
+        r_min: Optional[float] = None,
+        bounds: Optional[tuple[float, float]] = None,
+        quad_kws: Optional[dict[str, Any]] = None,
+        **kws,
+    ):
+        """
+        Create object, trying to use pre computed values for ``r_min``, ``phi_min``.
+
+        Parameters
+        ----------
+        phi : Phi_Abstracclass instance
+        r_min : float, optional
+            Optional guess for numerically finding minimum in `phi`.
+        bounds : array-like, optional
+            Optional bounds for numerically locating ``r_min``.
+        quad_kws : mapping, optional
+            Optional arguments to :func:`analphipy.quad_segments`.
+        **kws :
+            Extra arguments to :func:`analphipy.utils.minimize_phi`.
+
+
+        Returns
+        -------
+        output : instance of calling class
+        """
+
+        try:
+            return cls(
+                phi=phi.phi,
+                segments=phi.segments,
+                r_min=phi.r_min,
+                phi_min=phi.phi_min,
+                quad_kws=quad_kws,
+            )
+        except NotImplementedError:
+            return cls.from_phi(
+                phi=phi.phi,
+                segments=phi.segments,
+                r_min=r_min,
+                bounds=bounds,
+                quad_kws=quad_kws,
+                **kws,
+            )
 
     @gcached(prop=False)
     @add_quad_kws
     def secondvirial(self, beta: float, **kws):
+        """Second virial coefficient."""
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
     @gcached()
     def _segments_rep(self) -> list:
-        return [x for x in self.segments if x < self.x_min] + [self.x_min]
+        return [x for x in self.segments if x < self.r_min] + [self.r_min]
 
     @gcached(prop=False)
     @add_quad_kws
     def sig(self, beta: float, **kws):
+        """Effective hard sphere diameter."""
         return sig_nf(self.phi_rep, beta=beta, segments=self._segments_rep, **kws)
 
     def eps(self, beta: float, **kws) -> float:
+        """Effective square well epsilon."""
         return cast(float, self.phi_min)
 
     @gcached(prop=False)
     @add_quad_kws
     def lam(self, beta: float, **kws):
+        """Effective square well lambda."""
         return lam_nf(
             beta=beta,
             sig=self.sig(beta, **kws),
@@ -225,6 +435,7 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def sw_dict(self, beta: float, **kws) -> dict[str, float]:
+        """Dictionary view of Noro-Frenkel parameters."""
         sig = self.sig(beta, **kws)
         eps = self.eps(beta, **kws)
         lam = lam_nf(beta=beta, sig=sig, eps=eps, B2=self.secondvirial(beta, **kws))
@@ -233,6 +444,7 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def secondvirial_dbeta(self, beta: float, **kws):
+        """Derivative of ``secondvirial`` with respect to ``beta``"""
         return secondvirial_dbeta(
             phi=self.phi, beta=beta, segments=self.segments, **kws
         )
@@ -240,10 +452,12 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def sig_dbeta(self, beta: float, **kws):
+        """Derivative of effective hard-sphere diameter with respect to ``beta``"""
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
 
     @gcached(prop=False)
     def lam_dbeta(self, beta: float, **kws):
+        """Derivative of effective lambda parameter with respect to ``beta``"""
         return lam_nf_dbeta(
             beta=beta,
             sig=self.sig(beta, **kws),
@@ -256,6 +470,10 @@ class NoroFrenkelPair:
 
     @gcached(prop=False)
     def secondvirial_sw(self, beta: float, **kws):
+        """Second virial coefficient of effective square well fluid.
+
+        For testing.  This should be the same of value from :meth:`secondvirial`
+        """
         return secondvirial_sw(
             beta=beta,
             sig=self.sig(beta, **kws),
@@ -264,12 +482,15 @@ class NoroFrenkelPair:
         )
 
     def B2(self, beta: float, **kws):
+        """Alias to :meth:`secondvirial`"""
         return self.secondvirial(beta, **kws)
 
     def B2_dbeta(self, beta: float, **kws):
+        """Alias to :meth:`secondvirial_dbeta`"""
         return self.secondvirial_dbeta(beta, **kws)
 
     def B2_sw(self, beta, **kws):
+        """Alias to :meth:`secondvirial_sw`"""
         return self.secondvirial_sw(beta, **kws)
 
     def table(
@@ -279,6 +500,23 @@ class NoroFrenkelPair:
         key_format: str = "{prop}",
         **kws,
     ) -> dict[str, Any]:
+        """
+        Create a dictionary of outputs for multiple values of inverse temperature ``beta``.
+
+        Parameters
+        ----------
+        betas : array-like
+            Array of values of inverse temperature ``beta``.
+        props : sequence of strings
+            Name of methods to access.
+        key_format : string, default="{prop}"
+            Each key in the output dictionary will have the value ``key_format.format(prop=prop)``
+
+        Returns
+        -------
+        output : dict
+            dictionary of arrays.
+        """
         if props is None:
             props = ["B2", "sig", "eps", "lam"]
 
@@ -288,5 +526,4 @@ class NoroFrenkelPair:
             f = getattr(self, prop)
             key = key_format.format(prop=prop)
             table[key] = [f(beta=beta, **kws) for beta in betas]
-
         return table

@@ -1,12 +1,6 @@
-from .potentials import (
-    Phi_hs,
-    Phi_lj,
-    Phi_nm,
-    Phi_sw,
-    Phi_yk,
-    Phidphi_class,
-    factory_phi,
-)
+from ._potentials import Phi_Baseclass, Phi_cut, Phi_lfs
+from .norofrenkel import NoroFrenkelPair
+from .potentials import Phi_hs, Phi_lj, Phi_nm, Phi_sw, Phi_yk, factory_phi
 
 try:
     import pkg_resources
@@ -19,7 +13,10 @@ except Exception:
 
 
 __all__ = [
-    "Phidphi_class",
+    "Phi_Baseclass",
+    "Phi_cut",
+    "Phi_lfs",
+    "NoroFrenkelPair",
     "Phi_lj",
     "Phi_nm",
     "Phi_sw",

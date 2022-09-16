@@ -2,14 +2,8 @@ from typing import Callable, Optional, Union, cast
 
 import numpy as np
 
-from .utils import (
-    TWO_PI,
-    ArrayLike,
-    Float_or_ArrayLike,
-    Phi_Signature,
-    combine_segmets,
-    quad_segments,
-)
+from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
+from .utils import TWO_PI, combine_segmets, quad_segments
 
 
 def secondvirial(
@@ -25,7 +19,7 @@ def secondvirial(
     """
 
     def integrand(r):
-        return TWO_PI * r ** 2 * (1 - np.exp(-beta * phi(r)))
+        return TWO_PI * r**2 * (1 - np.exp(-beta * phi(r)))
 
     return quad_segments(
         integrand,
@@ -55,7 +49,7 @@ def secondvirial_dbeta(
         if np.isinf(v):
             return 0.0
         else:
-            return TWO_PI * r ** 2 * v * np.exp(-beta * v)
+            return TWO_PI * r**2 * v * np.exp(-beta * v)
 
     return quad_segments(
         integrand,
@@ -80,7 +74,7 @@ def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
     This differse by a factor (-eps) some other definitions
     """
     return (
-        TWO_PI / 3.0 * sig ** 3 * (1.0 + (1 - np.exp(-beta * eps)) * (lam ** 3 - 1.0))
+        TWO_PI / 3.0 * sig**3 * (1.0 + (1 - np.exp(-beta * eps)) * (lam**3 - 1.0))
     )
 
 
@@ -141,7 +135,7 @@ def _check_volume_func(volume: Optional[Union[str, Callable]] = None) -> Callabl
         elif volume == "2d":
             volume = lambda x: 2.0 * np.pi * x
         elif volume == "3d":
-            volume = lambda x: 4 * np.pi * x ** 2
+            volume = lambda x: 4 * np.pi * x**2
         else:
             raise ValueError("unknown dimension")
     else:

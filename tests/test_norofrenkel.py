@@ -23,7 +23,7 @@ def test_nf_sw():
 
         p = pots.Phi_sw(sig=sig, eps=eps, lam=lam)
 
-        a = NoroFrenkelPair(phi=p, segments=p.segments, x_min=sig, phi_min=eps)
+        a = NoroFrenkelPair(phi=p, segments=p.segments, r_min=sig, phi_min=eps)
 
         out = a.table(g["beta"], cols)
 
@@ -58,7 +58,7 @@ def test_nf_lj():
             p = p_base
 
         a = NoroFrenkelPair.from_phi(
-            phi=p, segments=p.segments, x_min=sig, bounds=[0.5, 1.5]
+            phi=p, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
         out = a.table(g["beta"], cols)
@@ -85,7 +85,7 @@ def test_nf_nm():
         p = pots.Phi_nm(n=n_exp, m=m_exp, sig=sig, eps=eps)
 
         a = NoroFrenkelPair.from_phi(
-            phi=p, segments=p.segments, x_min=sig, bounds=[0.5, 1.5]
+            phi=p, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
         out = a.table(g["beta"], cols)
@@ -111,7 +111,7 @@ def test_nf_yk():
     for (z_yukawa), g in df.groupby(["z_yukawa"]):
         p = pots.Phi_yk(z=z_yukawa, sig=sig, eps=eps)
 
-        a = NoroFrenkelPair(phi=p, segments=p.segments, x_min=sig, phi_min=-1.0)
+        a = NoroFrenkelPair(phi=p, segments=p.segments, r_min=sig, phi_min=-1.0)
 
         out = a.table(g["beta"], cols)
 
