@@ -5,33 +5,61 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 # from functools import partial
-from typing import Optional, Sequence, Tuple, cast
+from typing import Optional, Sequence, cast
 
 import numpy as np
 from typing_extensions import Literal
 
-from ._potentials import Phi_Abstractclass, Phi_Baseclass
+from ._potentials import Phi_Abstractclass, Phi_Baseclass  # type: ignore
 from ._typing import Float_or_ArrayLike
 
-# from ._docstrings import factory_docfiller_shared,
-
-
-# classes to handle pair potentials
-# from ._docstrings import docfiller_shared
-# _shared_docs_local = {
-#     "sig":
+# class PhiGeneric(Phi_Baseclass):
 #     """
-#     sig : float
-#         Length scale parameter
-#     """,
-#     "eps":
-#     """
-#     eps : float
-#         Energy scale parameter
-#     """,
-# }
+#     Class to handle a generic potential energy function
 
-# docfiller_shared = factory_docfiller_shared(**_shared_docs_local)
+#     Parameters
+#     ----------
+#     phi : callable
+#         potential energy function.
+#     r_min : float, optional
+#         Position of minimum in ``phi``.
+#     phi_min : float, optional
+#         Value of ``phi`` at ``r_min``.
+#     phidphi : callable
+#         Potential energy and derivative funciton.
+#     params : mapping, optional
+#     """
+
+
+#     def __init__(self, phi: Callable, r_min: float | None=None, phi_min: float|None=None, phidphi: Callable| None = None, params: Mapping | None=None):
+
+#         self._r_min = r_min
+#         self._phi_min = phi_min
+
+#         self._phi = phi
+#         self._phidphi = phidphi
+
+#         if params is None:
+#             params = {}
+#         else:
+#             params = dict(params)
+
+#         self._params = params
+
+
+#     @property
+#     def r_min(self):
+#         return self._r_min
+
+#     @property
+#     def phi_min(self):
+#         return self._phi_min
+
+#     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+#         return self._phi(r)
+
+#     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+#         return self._dphidr(r)
 
 
 @dataclass
@@ -64,7 +92,18 @@ class Phi_lj(Phi_Baseclass):
         x6 = x2**3
         return cast(np.ndarray, self.four_eps * x6 * (x6 - 1.0))
 
-    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    # def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    #     """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
+    #     r = np.array(r)
+    #     rinvsq = 1.0 / (r * r)
+
+    #     x2 = self.sigsq * rinvsq
+    #     x6 = x2 * x2 * x2
+
+    #     phi = self.four_eps * x6 * (x6 - 1.0)
+    #     dphi = 12.0 * self.four_eps * x6 * (x6 - 0.5) * rinvsq
+    #     return phi, dphi
+    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
         r = np.array(r)
         rinvsq = 1.0 / (r * r)
@@ -72,9 +111,7 @@ class Phi_lj(Phi_Baseclass):
         x2 = self.sigsq * rinvsq
         x6 = x2 * x2 * x2
 
-        phi = self.four_eps * x6 * (x6 - 1.0)
-        dphi = 12.0 * self.four_eps * x6 * (x6 - 0.5) * rinvsq
-        return phi, dphi
+        return cast(np.ndarray, -12.0 * self.four_eps * x6 * (x6 - 0.5) / r)
 
     @property
     def r_min(self) -> float:
@@ -143,7 +180,25 @@ class Phi_nm(Phi_Baseclass):
         out = self.prefac * (x**self.n - x**self.m)
         return cast(np.ndarray, out)
 
-    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    # def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+
+    #     r = np.array(r)
+    #     x = self.sig / r
+
+    #     xn = x**self.n
+    #     xm = x**self.m
+
+    #     phi = np.empty_like(r)
+    #     dphi = np.empty_like(r)
+
+    #     phi = self.prefac * (xn - xm)
+
+    #     # dphi = -1/r dphi/dr = x dphi/dx * 1/r**2
+    #     # where x = sig / r
+    #     dphi = self.prefac * (self.n * xn - self.m * xm) / (r**2)
+
+    #     return cast(Tuple[np.ndarray, np.ndarray], (phi, dphi))
+    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
 
         r = np.array(r)
         x = self.sig / r
@@ -151,16 +206,7 @@ class Phi_nm(Phi_Baseclass):
         xn = x**self.n
         xm = x**self.m
 
-        phi = np.empty_like(r)
-        dphi = np.empty_like(r)
-
-        phi = self.prefac * (xn - xm)
-
-        # dphi = -1/r dphi/dr = x dphi/dx * 1/r**2
-        # where x = sig / r
-        dphi = self.prefac * (self.n * xn - self.m * xm) / (r**2)
-
-        return cast(Tuple[np.ndarray, np.ndarray], (phi, dphi))
+        return cast(np.ndarray, -self.prefac * (self.n * xn - self.m * xm) / (r))
 
 
 @dataclass
@@ -424,6 +470,10 @@ class CubicTable(Phi_Baseclass):
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         return self.phidphi(r)[0]
 
+    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+        r = np.asarray(r)
+        return cast(np.ndarray, -r * self.phidphi(r)[1])
+
 
 _PHI_NAMES = Literal["lj", "nm", "sw", "hs", "yk", "LJ", "NM", "SW", "HS", "YK"]
 
@@ -434,7 +484,7 @@ def factory_phi(
     lfs: bool = False,
     cut: bool = False,
     **kws,
-) -> Phi_Abstractclass:
+) -> "Phi_Abstractclass":
     """Factory function to construct Phi object by name
 
     Parameters
@@ -456,7 +506,7 @@ def factory_phi(
 
     name = potential_name.lower()
 
-    phi: Phi_Abstractclass
+    phi: "Phi_Abstractclass"
 
     if name == "lj":
         phi = Phi_lj(**kws)

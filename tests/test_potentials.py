@@ -24,7 +24,9 @@ def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
 
     if phidphi:
         phi0, dphi0 = params.get_phidphi()
-        phi1, dphi1 = p.phidphi(params.r)
+
+        phi1 = p.phi(params.r)
+        dphi1 = -p.dphidr(params.r) / params.r
 
         np.testing.assert_allclose(dphi0, dphi1)
 
@@ -58,7 +60,8 @@ def test_nm_cut(lj_cut_params):
 
     p = pots.Phi_nm(n=12, m=6, sig=params.sig, eps=params.eps).cut(rcut=params.rcut)
 
-    phi1, dphi1 = p.phidphi(params.r)
+    phi1 = p.phi(params.r)
+    dphi1 = -p.dphidr(params.r) / params.r
 
     np.testing.assert_allclose(phi0, phi1)
     np.testing.assert_allclose(dphi0, dphi1)
@@ -71,7 +74,8 @@ def test_nm_lfs(lj_lfs_params):
 
     p = pots.Phi_nm(n=12, m=6, sig=params.sig, eps=params.eps).lfs(rcut=params.rcut)
 
-    phi1, dphi1 = p.phidphi(params.r)
+    phi1 = p.phi(params.r)
+    dphi1 = -p.dphidr(params.r) / params.r
 
     np.testing.assert_allclose(phi0, phi1)
     np.testing.assert_allclose(dphi0, dphi1)

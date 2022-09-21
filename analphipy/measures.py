@@ -1,11 +1,15 @@
+from __future__ import annotations
+
 from typing import Callable, Optional, Union, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
 
+from analphipy.cached_decorators import gcached
+
 from ._docstrings import docfiller_shared
 from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
-from .utils import TWO_PI, combine_segmets, quad_segments
+from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 
 @docfiller_shared
@@ -15,7 +19,7 @@ def secondvirial(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     r"""
     Calculate the second virial coefficient.
@@ -54,7 +58,7 @@ def secondvirial(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
@@ -65,7 +69,7 @@ def secondvirial_dbeta(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     r"""
     ``beta`` derivative of second virial coefficient.
@@ -106,7 +110,7 @@ def secondvirial_dbeta(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
@@ -223,7 +227,7 @@ def diverg_kl_cont(
     volume: Optional[Union[str, Callable]] = None,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     """
     Calculate continuous Kullback–Leibler divergence for contiuous pdf
@@ -265,7 +269,7 @@ def diverg_kl_cont(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
@@ -322,7 +326,7 @@ def diverg_js_cont(
     volume: Optional[Union[str, Callable]] = None,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     """
     Continuous Jensen–Shannon divergence
@@ -353,5 +357,73 @@ def diverg_js_cont(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
+
+
+class Measures:
+    """
+    Convenience class for calculating measures
+
+
+    """
+
+    def __init__(self, parent) -> None:
+        self.parent = parent
+
+    @property
+    def quad_kws(self):
+        return self.parent.quad_kws
+
+    @gcached(prop=False)
+    @add_quad_kws
+    def secondvirial(self, beta, err=False, full_output=False, **kws):
+        return secondvirial(
+            phi=self.parent.phi,
+            beta=beta,
+            segments=self.parent.segments,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )
+
+    @gcached(prop=False)
+    @add_quad_kws
+    def secondvirial_dbeta(self, beta, err=False, full_output=False, **kws):
+        return secondvirial_dbeta(
+            phi=self.parent.phi,
+            beta=beta,
+            segments=self.parent.segments,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )
+
+    @add_quad_kws
+    def boltz_diverg_js(
+        self,
+        other,
+        beta: float,
+        beta_other: float | None = None,
+        volume: str | Callable = "3d",
+        err: bool = False,
+        full_output: bool = False,
+        **kws,
+    ):
+
+        if beta_other is None:
+            beta_other = beta
+
+        p = lambda x: np.exp(-beta * self.parent.phi(x))
+        q = lambda x: np.exp(-beta_other * other.phi(x))
+
+        return diverg_js_cont(
+            p=p,
+            q=q,
+            segents=self.parent.segments,
+            segments_other=other.segments,
+            volume=volume,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )

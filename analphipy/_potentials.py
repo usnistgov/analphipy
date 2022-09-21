@@ -66,15 +66,15 @@ class Phi_Abstractclass(
         """
         raise NotImplementedError("to be implemented in subclass if appropriate")
 
-    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         r"""
-        Pair potential, and derivative of pair potential
+        Derivative of pair potential.
 
-        This returns the value of ``phi(r)`` and ``dphi(r)``.  ``dphi`` is defined as:
+        This returns the value of ``dphi(r)/dr``:
 
         .. math::
 
-            d \phi(r) = -\frac{1}{r} \frac{d \phi(r)}{d r}A
+            \frac{d \phi(r)}{dr} = \frac{d \phi(r)}{d r}A
 
 
         Parameters
@@ -84,10 +84,8 @@ class Phi_Abstractclass(
 
         Returns
         -------
-        phi : ndarray
+        dphidr : ndarray
             Pair potential values.
-        dphi : ndarray
-            Deriviative values.
 
         """
         raise NotImplementedError("to be implemented in subclass if appropriate")
@@ -109,6 +107,34 @@ class Phi_Abstractclass(
         returns ``func(self, *args, **kwargs)``
         """
         return func(self, *args, **kwargs)
+
+    def minimize(self, r0: float, bounds: Optional[tuple[float, float]] = None, **kws):
+        """Determine position `r` where ``phi`` is minimized.
+
+        Parameters
+        ----------
+        r0 : float
+            Guess for position of minimum.
+        bounds : tuple floats, optional
+            If passed, should be of form ``bounds=(lower_bound, upper_bound)``.
+        **kws :
+            Extra arguments to :func:`analphipy.minimize_phi`
+
+        Returns
+        -------
+        rmin : float
+            ``phi(rmin)`` is found location of minimum.
+        phimin : float
+            Value of ``phi(rmin)``, i.e., the value of ``phi`` at the minimum
+        output :
+            Output class from :func:`scipy.optimize.minimize`.
+
+
+        See Also
+        --------
+        analphipy.minimize_phi
+        """
+        return minimize_phi(self.phi, r0=r0, bounds=bounds, **kws)
 
     def boltz(self, r: Float_or_ArrayLike, beta: float) -> np.ndarray:
         r"""Boltzmann factor of potential :math:`\exp[-\beta \phi(r)]`"""
@@ -138,34 +164,6 @@ class Phi_Abstractclass(
     ) -> Callable[[Float_or_ArrayLike], Union[float, np.ndarray]]:
         """Returns callable function mayer(x) = exp(-beta * phi(x)) - 1"""
         return partial(self.mayer, beta=beta)
-
-    def minimize(self, r0: float, bounds: Optional[tuple[float, float]] = None, **kws):
-        """Determine position `r` where ``phi`` is minimized.
-
-        Parameters
-        ----------
-        r0 : float
-            Guess for position of minimum.
-        bounds : tuple floats, optional
-            If passed, should be of form ``bounds=(lower_bound, upper_bound)``.
-        **kws :
-            Extra arguments to :func:`analphipy.minimize_phi`
-
-        Returns
-        -------
-        rmin : float
-            ``phi(rmin)`` is found location of minimum.
-        phimin : float
-            Value of ``phi(rmin)``, i.e., the value of ``phi`` at the minimum
-        output :
-            Output class from :func:`scipy.optimize.minimize`.
-
-
-        See Also
-        --------
-        analphipy.minimize_phi
-        """
-        return minimize_phi(self.phi, r0=r0, bounds=bounds, **kws)
 
     def to_nf_fixed(self, quad_kws: Optional[dict] = None) -> NoroFrenkelPair:
         """Create :class:`~analphipy.NoroFrenkelPair` instance from fixed minima parameters.
@@ -342,33 +340,44 @@ class Phi_cut_base(Phi_Abstractclass):
         v[right] = 0.0
 
         if np.any(left):
-            v[left] = self.phi_base(r[left]) + self._vcorrect(r[left])
-
+            v[left] = self.phi_base.phi(r[left]) + self._vcorrect(r[left])
         return v
 
-    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
-        r = np.array(r)
-
-        v = np.empty_like(r)
-        dv = np.empty_like(r)
+    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+        r = np.asarray(r)
+        dvdr = np.empty_like(r)
 
         left = r <= self.rcut
         right = ~left
 
-        v[right] = 0.0
-        dv[right] = 0.0
+        dvdr[right] = 0.0
+        dvdr[left] = self.phi_base.dphidr(r[left]) + self._dvdrcorrect(r[left])
 
-        if np.any(left):
-            v[left], dv[left] = self.phi_base.phidphi(r[left])
-            v[left] += self._vcorrect(r[left])
-            dv[left] += self._dvcorrect(r[left])
+        return dvdr
 
-        return v, dv
+    # def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    #     r = np.array(r)
+
+    #     v = np.empty_like(r)
+    #     dv = np.empty_like(r)
+
+    #     left = r <= self.rcut
+    #     right = ~left
+
+    #     v[right] = 0.0
+    #     dv[right] = 0.0
+
+    #     if np.any(left):
+    #         v[left], dv[left] = self.phi_base.phidphi(r[left])
+    #         v[left] += self._vcorrect(r[left])
+    #         dv[left] += self._dvcorrect(r[left])
+
+    #     return v, dv
 
     def _vcorrect(self, r):
         raise NotImplementedError
 
-    def _dvcorrect(self, r):
+    def _dvdrcorrect(self, r):
         raise NotImplementedError
 
 
@@ -399,7 +408,7 @@ class Phi_cut(Phi_cut_base):
     def _vcorrect(self, r: np.ndarray) -> np.ndarray:
         return -cast(np.ndarray, self.vcut)
 
-    def _dvcorrect(self, r: np.ndarray) -> np.ndarray:
+    def _dvdrcorrect(self, r: np.ndarray) -> np.ndarray:
         return np.array(0.0)
 
 
@@ -416,21 +425,26 @@ class Phi_lfs(Phi_cut_base):
                 0 & r_{\rm cut} < r
             \end{cases}
 
-
-
     """
 
     def __post_init__(self):
-        vcut, dvcut = self.phi_base.phidphi(self.rcut)
-        self.vcut = vcut
-        self.dvdrcut = -dvcut * self.rcut
+
+        self.vcut = self.phi_base.phi(self.rcut)
+        self.dvdrcut = self.phi_base.dphidr(self.rcut)
+
+        # vcut, dvcut = self.phi_base.phidphi(self.rcut)
+        # self.vcut = vcut
+        # self.dvdrcut = -dvcut * self.rcut
 
     def _vcorrect(self, r: np.ndarray) -> np.ndarray:
         out = -(self.vcut + self.dvdrcut * (r - self.rcut))
         return cast(np.ndarray, out)
 
-    def _dvcorrect(self, r: np.ndarray) -> np.ndarray:
-        out = self.dvdrcut / r
+    # def _dvcorrect(self, r: np.ndarray) -> np.ndarray:
+    #     out = self.dvdrcut / r
+    #     return cast(np.ndarray, out)
+    def _dvdrcorrect(self, r: np.ndarray) -> np.ndarray:
+        out = -self.dvdrcut
         return cast(np.ndarray, out)
 
 
