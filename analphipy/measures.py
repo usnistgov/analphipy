@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Callable, Optional, Union, cast
+from typing import Callable, Mapping, Optional, Sequence, Union, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
@@ -361,27 +361,39 @@ def diverg_js_cont(
     )
 
 
+@docfiller_shared
 class Measures:
     """
     Convenience class for calculating measures
 
+    Parameters
+    ----------
+    {phi}
+    {segments}
+    {quad_kws}
 
     """
 
-    def __init__(self, parent) -> None:
-        self.parent = parent
+    def __init__(
+        self,
+        phi: Phi_Signature,
+        segments: Sequence[float],
+        quad_kws: Mapping | None = None,
+    ) -> None:
 
-    @property
-    def quad_kws(self):
-        return self.parent.quad_kws
+        self.phi = phi
+        self.segments = segments
+        if quad_kws is None:
+            quad_kws = {}
+        self.quad_kws = quad_kws
 
     @gcached(prop=False)
     @add_quad_kws
     def secondvirial(self, beta, err=False, full_output=False, **kws):
         return secondvirial(
-            phi=self.parent.phi,
+            phi=self.phi,
             beta=beta,
-            segments=self.parent.segments,
+            segments=self.segments,
             err=err,
             full_output=full_output,
             **kws,
@@ -391,14 +403,15 @@ class Measures:
     @add_quad_kws
     def secondvirial_dbeta(self, beta, err=False, full_output=False, **kws):
         return secondvirial_dbeta(
-            phi=self.parent.phi,
+            phi=self.phi,
             beta=beta,
-            segments=self.parent.segments,
+            segments=self.segments,
             err=err,
             full_output=full_output,
             **kws,
         )
 
+    @docfiller_shared
     @add_quad_kws
     def boltz_diverg_js(
         self,
@@ -410,18 +423,94 @@ class Measures:
         full_output: bool = False,
         **kws,
     ):
+        r"""
+        Jenken-Shannon divergence of the Boltzman factors of two potentials.
+
+        The Boltzmann factors are defined as:
+
+        .. math::
+
+            B(r; \beta, \phi) = \exp(-beta \phi(r))
+
+
+        Parameters
+        ----------
+        other : Phi class
+            Class wrapping other potential to compare `self` to.
+        {beta}
+        beta_other : float, optional
+            beta value to evaluate other boltzman factor at.
+        {volume_int_func}
+
+
+        See Also
+        --------
+        `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
+        """
 
         if beta_other is None:
             beta_other = beta
 
-        p = lambda x: np.exp(-beta * self.parent.phi(x))
+        p = lambda x: np.exp(-beta * self.phi(x))
         q = lambda x: np.exp(-beta_other * other.phi(x))
 
         return diverg_js_cont(
             p=p,
             q=q,
-            segents=self.parent.segments,
-            segments_other=other.segments,
+            segments=self.segments,
+            segments_q=other.segments,
+            volume=volume,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )
+
+    def mayer_diverg_js(
+        self,
+        other,
+        beta: float,
+        beta_other: float | None = None,
+        volume: str | Callable = "3d",
+        err: bool = False,
+        full_output: bool = False,
+        **kws,
+    ):
+        r"""
+        Jenken-Shannon divergence of the Mayer f-functions of two potentials.
+
+        The Mayer f-function is defined as:
+
+        .. math::
+
+            f(r; \beta, \phi) = \exp(-beta \phi(r)) - 1
+
+
+        Parameters
+        ----------
+        other : Phi class
+            Class wrapping other potential to compare `self` to.
+        {beta}
+        beta_other : float, optional
+            beta value to evaluate other boltzman factor at.
+        {volume_int_func}
+
+
+        See Also
+        --------
+        `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
+        """
+
+        if beta_other is None:
+            beta_other = beta
+
+        p = lambda x: np.exp(-beta * self.phi(x)) - 1.0
+        q = lambda x: np.exp(-beta_other * other.phi(x)) - 1.0
+
+        return diverg_js_cont(
+            p=p,
+            q=q,
+            segments=self.segments,
+            segments_q=other.segments,
             volume=volume,
             err=err,
             full_output=full_output,

@@ -10,10 +10,10 @@ from typing import Optional, Sequence, cast
 import numpy as np
 from typing_extensions import Literal
 
-from ._potentials import Phi_Abstractclass, Phi_Baseclass  # type: ignore
+from ._potentials import PhiBase, PhiBaseCuttable  # type: ignore
 from ._typing import Float_or_ArrayLike
 
-# class PhiGeneric(Phi_Baseclass):
+# class PhiGeneric(PhiBaseCuttable):
 #     """
 #     Class to handle a generic potential energy function
 
@@ -63,7 +63,7 @@ from ._typing import Float_or_ArrayLike
 
 
 @dataclass
-class Phi_lj(Phi_Baseclass):
+class Phi_lj(PhiBaseCuttable):
     r"""Lennard-Jones potential.
 
     .. math::
@@ -86,23 +86,17 @@ class Phi_lj(Phi_Baseclass):
         self.sigsq = sig * sig
         self.four_eps = 4.0 * eps
 
+        # hard set value of mins
+        self.r_min = self.sig * 2.0 ** (1.0 / 6.0)
+        self.phi_min = -self.eps
+        self.segments = [0.0, np.inf]
+
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
         x2 = self.sigsq / (r * r)
         x6 = x2**3
         return cast(np.ndarray, self.four_eps * x6 * (x6 - 1.0))
 
-    # def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
-    #     """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
-    #     r = np.array(r)
-    #     rinvsq = 1.0 / (r * r)
-
-    #     x2 = self.sigsq * rinvsq
-    #     x6 = x2 * x2 * x2
-
-    #     phi = self.four_eps * x6 * (x6 - 1.0)
-    #     dphi = 12.0 * self.four_eps * x6 * (x6 - 0.5) * rinvsq
-    #     return phi, dphi
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
         r = np.array(r)
@@ -113,21 +107,9 @@ class Phi_lj(Phi_Baseclass):
 
         return cast(np.ndarray, -12.0 * self.four_eps * x6 * (x6 - 0.5) / r)
 
-    @property
-    def r_min(self) -> float:
-        return cast(float, self.sig * 2.0 ** (1.0 / 6.0))
-
-    @property
-    def phi_min(self) -> float:
-        return -self.eps
-
-    @property
-    def segments(self):
-        return [0.0, np.inf]
-
 
 @dataclass
-class Phi_nm(Phi_Baseclass):
+class Phi_nm(PhiBaseCuttable):
     r"""
     Generalized Lennard-Jones potential
 
@@ -160,18 +142,9 @@ class Phi_nm(Phi_Baseclass):
         n, m, eps = self.n, self.m, self.eps
         self.prefac = eps * (n / (n - m)) * (n / m) ** (m / (n - m))
 
-    @property
-    def r_min(self) -> float:
-        n, m = self.n, self.m
-        return cast(float, self.sig * (n / m) ** (1.0 / (n - m)))
-
-    @property
-    def phi_min(self) -> float:
-        return -self.eps
-
-    @property
-    def segments(self):
-        return [0.0, np.inf]
+        self.r_min = self.sig * (n / m) ** (1.0 / (n - m))
+        self.phi_min = -self.eps
+        self.segments = [0.0, np.inf]
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
@@ -180,24 +153,6 @@ class Phi_nm(Phi_Baseclass):
         out = self.prefac * (x**self.n - x**self.m)
         return cast(np.ndarray, out)
 
-    # def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
-
-    #     r = np.array(r)
-    #     x = self.sig / r
-
-    #     xn = x**self.n
-    #     xm = x**self.m
-
-    #     phi = np.empty_like(r)
-    #     dphi = np.empty_like(r)
-
-    #     phi = self.prefac * (xn - xm)
-
-    #     # dphi = -1/r dphi/dr = x dphi/dx * 1/r**2
-    #     # where x = sig / r
-    #     dphi = self.prefac * (self.n * xn - self.m * xm) / (r**2)
-
-    #     return cast(Tuple[np.ndarray, np.ndarray], (phi, dphi))
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
 
         r = np.array(r)
@@ -210,7 +165,7 @@ class Phi_nm(Phi_Baseclass):
 
 
 @dataclass
-class Phi_yk(Phi_Baseclass):
+class Phi_yk(PhiBaseCuttable):
     r"""
     Hard core Yukawa potential
 
@@ -239,17 +194,10 @@ class Phi_yk(Phi_Baseclass):
     sig: float = 1.0
     eps: float = 1.0
 
-    @property
-    def segments(self) -> list:
-        return [0.0, self.sig, np.inf]
-
-    @property
-    def r_min(self) -> float:
-        return self.sig
-
-    @property
-    def phi_min(self) -> float:
-        return -self.eps
+    def __post_init__(self):
+        self.segments = [0.0, self.sig, np.inf]
+        self.r_min = self.sig
+        self.phi_min = -self.eps
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         sig, eps = self.sig, self.eps
@@ -266,7 +214,7 @@ class Phi_yk(Phi_Baseclass):
 
 
 @dataclass
-class Phi_hs(Phi_Baseclass):
+class Phi_hs(PhiBaseCuttable):
     r"""
     Hard-sphere pair potential
 
@@ -285,9 +233,8 @@ class Phi_hs(Phi_Baseclass):
 
     sig: float = 1.0
 
-    @property
-    def segments(self):
-        return [0.0, self.sig]
+    def __post_init__(self):
+        self.segmnets = [0.0, self.sig]
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
@@ -301,7 +248,7 @@ class Phi_hs(Phi_Baseclass):
 
 
 @dataclass
-class Phi_sw(Phi_Baseclass):
+class Phi_sw(PhiBaseCuttable):
     r"""
     Square-well pair potential
 
@@ -328,17 +275,10 @@ class Phi_sw(Phi_Baseclass):
     eps: float = 1.0
     lam: float = 1.5
 
-    @property
-    def r_min(self) -> float:
-        return self.sig
-
-    @property
-    def phi_min(self) -> float:
-        return self.eps
-
-    @property
-    def segments(self) -> list:
-        return [0.0, self.sig, self.sig * self.lam]
+    def __post_init__(self):
+        self.r_min = self.sig
+        self.phi_min = self.eps
+        self.segments = [0.0, self.sig, self.sig * self.lam]
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
 
@@ -359,7 +299,7 @@ class Phi_sw(Phi_Baseclass):
         return phi
 
 
-class CubicTable(Phi_Baseclass):
+class CubicTable(PhiBaseCuttable):
     """
     Cubic interpolation table potential
 
@@ -379,9 +319,7 @@ class CubicTable(Phi_Baseclass):
         self.ds = (self.bounds[1] - self.bounds[0]) / self.size
         self.dsinv = 1.0 / self.ds
 
-    @property
-    def segments(self):
-        return [np.sqrt(x) for x in self.bounds]
+        self.segments = [np.sqrt(x) for x in self.bounds]
 
     @classmethod
     def from_phi(cls, phi: Callable, rmin: float, rmax: float, ds: float):
@@ -484,7 +422,7 @@ def factory_phi(
     lfs: bool = False,
     cut: bool = False,
     **kws,
-) -> "Phi_Abstractclass":
+) -> "PhiBase":
     """Factory function to construct Phi object by name
 
     Parameters
@@ -494,9 +432,9 @@ def factory_phi(
     rcut : float, optional
         if passed, Construct either and 'lfs' or 'cut' version of the potential.
     lfs : bool, default=False
-        If True, construct a  linear force shifted potential :class:`analphipy.Phi_lfs`.
+        If True, construct a  linear force shifted potential :class:`analphipy.PhiLFS`.
     cut : bool, default=False
-        If True, construct a cut potential :class:`analphipy.Phi_cut`.
+        If True, construct a cut potential :class:`analphipy.PhiCut`.
 
     Returns
     -------
@@ -506,7 +444,7 @@ def factory_phi(
 
     name = potential_name.lower()
 
-    phi: "Phi_Abstractclass"
+    phi: "PhiBase"
 
     if name == "lj":
         phi = Phi_lj(**kws)

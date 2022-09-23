@@ -3,7 +3,7 @@ from typing import Callable
 
 import numpy as np
 
-# from ._potentials import Phi_Baseclass
+# from ._potentials import PhiBaseCuttable
 from ._typing import ArrayLike
 
 

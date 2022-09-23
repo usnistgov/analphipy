@@ -1,4 +1,9 @@
-from ._potentials import Phi_Baseclass, Phi_cut, Phi_cut_base, Phi_lfs
+from ._potentials import (  # type: ignore
+    PhiBaseCuttable,
+    PhiBaseGenericCut,
+    PhiCut,
+    PhiLFS,
+)
 from .norofrenkel import NoroFrenkelPair
 from .potentials import Phi_hs, Phi_lj, Phi_nm, Phi_sw, Phi_yk, factory_phi
 
@@ -13,10 +18,10 @@ except Exception:
 
 
 __all__ = [
-    "Phi_Baseclass",
-    "Phi_cut_base",
-    "Phi_cut",
-    "Phi_lfs",
+    "PhiBaseCuttable",
+    "PhiBaseGenericCut",
+    "PhiCut",
+    "PhiLFS",
     "NoroFrenkelPair",
     "Phi_lj",
     "Phi_nm",

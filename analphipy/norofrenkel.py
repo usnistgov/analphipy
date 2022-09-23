@@ -12,7 +12,7 @@ from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
-    from ._potentials import Phi_Abstractclass  # type: ignore
+    from ._potentials import PhiBase  # type: ignore
 
 
 @docfiller_shared
@@ -357,7 +357,7 @@ class NoroFrenkelPair:
     @classmethod
     def from_phi_class(
         cls,
-        phi: "Phi_Abstractclass",
+        phi: "PhiBase",
         r_min: Optional[float] = None,
         bounds: Optional[tuple[float, float]] = None,
         quad_kws: Optional[dict[str, Any]] = None,

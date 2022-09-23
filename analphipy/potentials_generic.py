@@ -18,10 +18,8 @@ from custom_inherit import DocInheritMeta
 from typing_extensions import Literal
 
 from analphipy.norofrenkel import NoroFrenkelPair
-from analphipy.potentials import PhiGeneric
 from analphipy.utils import minimize_phi
 
-# from ._potentials import Phi_Abstractclass, Phi_Baseclass
 from ._typing import Float_or_ArrayLike
 from .cached_decorators import cached_clear, gcached
 from .utils import (

@@ -2,53 +2,61 @@
 
 from __future__ import annotations
 
-import dataclasses
-from dataclasses import dataclass
-from functools import partial
-from typing import Callable, Optional, Union, cast
+from typing import Mapping, Sequence, cast
 
 import numpy as np
 from custom_inherit import DocInheritMeta
+from typing_extensions import Literal
 
 from analphipy.norofrenkel import NoroFrenkelPair
 
-from ._docstrings import docfiller_shared
+# from ._docstrings import docfiller_shared
 from ._typing import Float_or_ArrayLike
-from .measures import diverg_js_cont
+from .cached_decorators import cached_clear, gcached
+
+# from .measures import diverg_js_cont
 from .utils import minimize_phi
 
 
-class Phi_Abstractclass(
+class PhiBase(
     metaclass=DocInheritMeta(style="numpy_with_merge", abstract_base_class=False)
 ):
-    def __call__(self, r: Float_or_ArrayLike) -> np.ndarray:
-        """
-        return pair potential at requested separation ``r``.
+    """
+    Base class to interact with pair potentials
+    """
 
-        Parameters
-        ----------
-        r : array-like
-            pair separation
+    def __init__(
+        self,
+        r_min: float | None = None,
+        phi_min: float | None = None,
+        segments: Sequence[float] | None = None,
+        quad_kws: Mapping | None = None,
+    ):
 
-        Returns
-        -------
-        phi : ndarray
-            Evaluated pair potential.
-        """
-        return self.phi(r)
+        self.r_min = r_min
+        self.phi_min = phi_min
+        self.segments = segments
+        self.quad_kws = quad_kws
 
     def asdict(self) -> dict:
         """Convert class to dictionary"""
-        return dataclasses.asdict(self)
+        private = {"phi": self._phi_func, "dphidr": self._dphidr_func}
+        public = {
+            k: getattr(self, k) for k in ["r_min", "phi_min", "segments", "quad_kws"]
+        }
+
+        return {**private, **public}
 
     def copy(self):
         """Copy class"""
-        return type(self)(**self.asdict())
+        return self.new_like()
 
-    @property
-    def segments(self) -> list:
-        """Segment phi.  Used in analsis"""
-        raise NotImplementedError("to be implemented in subclass")
+    def new_like(self, **kws):
+        kws = {**self.asdict(), **kws}
+        return type(self)(**kws)
+
+    def assign(self, **kws):
+        return self.new_like(**kws)
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         """
@@ -64,41 +72,79 @@ class Phi_Abstractclass(
         phi : ndarray
             Evaluated pair potential.
         """
-        raise NotImplementedError("to be implemented in subclass if appropriate")
+
+        raise NotImplementedError("Must implement in subclass")
 
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         r"""
-        Derivative of pair potential.
+                Derivative of pair potential.
 
-        This returns the value of ``dphi(r)/dr``:
+                This returns the value of ``dphi(r)/dr``:
 
-        .. math::
+                .. math::
 
-            \frac{d \phi(r)}{dr} = \frac{d \phi(r)}{d r}A
+                    \frac{d \phi(r)}{dr} = \frac{d \phi(r)}{d r}A
 
 
-        Parameters
-        ----------
-        r : array-like
-            pair separation
+                Parameters
+        n       ----------
+                r : array-like
+                    pair separation
 
-        Returns
-        -------
-        dphidr : ndarray
-            Pair potential values.
+                Returns
+                -------
+                dphidr : ndarray
+                    Pair potential values.
 
         """
-        raise NotImplementedError("to be implemented in subclass if appropriate")
+        raise NotImplementedError("Must implement in subclass")
 
     @property
-    def r_min(self) -> float:
+    def segments(self) -> list:
+        """Segment phi.  Used in analsis"""
+        return getattr(self, "_segments", None)
+
+    @segments.setter
+    def segments(self, val):
+        self._segments = val
+
+    @property
+    def quad_kws(self) -> dict:
+        val = getattr(self, "_quad_kws", None)
+        if val is None:
+            val = {}
+        return val
+
+    @quad_kws.setter
+    def quad_kws(self, val: Mapping | None):
+        if val is not None:
+            val = dict(val)
+        self._quad_kws = val
+
+    @property
+    def r_min(self) -> float | None:
         """Position of minimum in potential."""
-        raise NotImplementedError("to be implemented in subclass")
+        return getattr(self, "_r_min", None)
+
+    @r_min.setter
+    @cached_clear()
+    def r_min(self, val):
+        self._r_min = val
 
     @property
     def phi_min(self):
         """Value of ``phi`` at minimum"""
-        return self.phi(self.r_min) * 1.0
+        val = getattr(self, "_phi_min", None)
+
+        if val is None and self.r_min is not None:
+            return self.phi(self.r_min)
+        else:
+            return val
+
+    @phi_min.setter
+    @cached_clear()
+    def phi_min(self, val):
+        self._phi_min = val
 
     def pipe(self, func, *args, **kwargs):
         """
@@ -108,15 +154,25 @@ class Phi_Abstractclass(
         """
         return func(self, *args, **kwargs)
 
-    def minimize(self, r0: float, bounds: Optional[tuple[float, float]] = None, **kws):
+    def minimize(
+        self,
+        r0: float | Literal["mean"],
+        bounds: tuple[float, float] | Literal["segments"] | None = None,
+        **kws,
+    ):
         """Determine position `r` where ``phi`` is minimized.
 
         Parameters
         ----------
         r0 : float
             Guess for position of minimum.
-        bounds : tuple floats, optional
-            If passed, should be of form ``bounds=(lower_bound, upper_bound)``.
+            If value is `'mean'`, then use ``r0 = mean(bounds)``.
+
+        bounds : tuple floats, {'segments'}, optional
+            Bounds for minimization search.
+            If tuple, should be of form ``bounds=(lower_bound, upper_bound)``.
+            If `'segments`, then ``bounds=(segments[0], segments[-1])``.
+            If None, no bounds used.
         **kws :
             Extra arguments to :func:`analphipy.minimize_phi`
 
@@ -134,171 +190,60 @@ class Phi_Abstractclass(
         --------
         analphipy.minimize_phi
         """
+
+        if bounds == "segments":
+            bounds = (self.segments[0], self.segments[-1])
+
+        if r0 == "mean":
+            r0 = np.mean(bounds)
+
         return minimize_phi(self.phi, r0=r0, bounds=bounds, **kws)
 
-    def boltz(self, r: Float_or_ArrayLike, beta: float) -> np.ndarray:
-        r"""Boltzmann factor of potential :math:`\exp[-\beta \phi(r)]`"""
-        return np.exp(-beta * self.phi(r))
-
-    def mayer(self, r: Float_or_ArrayLike, beta: float) -> np.ndarray:
-        r"""Mayer f-function of potential :math:`\exp[-\beta \phi(r)] - 1`"""
-        return np.exp(-beta * self.phi(r)) - 1.0
-
-    def boltz_partial(
-        self,
-        beta: float,
-        # sig: Optional[float] = None,
-        # eps: Optional[float] = None,
-    ) -> Callable[[Float_or_ArrayLike], Union[float, np.ndarray]]:
+    def assign_min_numeric(
+        self, r0: float, bounds: tuple[float, float] | None = None, **kws
+    ):
         """
-        Returns callable function  ``boltz(x) = exp(-beta * phi(x))``.
+        Create new object with minima set by numerical minimization
+
+        call :meth:`minimize`
         """
 
-        # if sig is not None:
-        #     assert eps is not None
+        r_min, phi_min, output = self.minimize(r0=r0, bounds=bounds, **kws)
+        return self.new_like(r_min=r_min, phi_min=phi_min)
 
-        return partial(self.boltz, beta=beta)
-
-    def mayer_partial(
-        self, beta: float
-    ) -> Callable[[Float_or_ArrayLike], Union[float, np.ndarray]]:
-        """Returns callable function mayer(x) = exp(-beta * phi(x)) - 1"""
-        return partial(self.mayer, beta=beta)
-
-    def to_nf_fixed(self, quad_kws: Optional[dict] = None) -> NoroFrenkelPair:
-        """Create :class:`~analphipy.NoroFrenkelPair` instance from fixed minima parameters.
-
-        Parameters
-        ----------
-        quad_kws : mapping, optional
-            Extra arguments to :func:`scipy.integrate.quad`
-
-        See Also
-        --------
-        NoroFrenkelPair
-        """
-        r_min, phi_min = self.r_min, self.phi_min
+    @gcached()
+    def nf(self):
+        if self.r_min is None:
+            raise ValueError("must set `self.r_min` to use NoroFrenkel")
 
         return NoroFrenkelPair(
             phi=self.phi,
             segments=self.segments,
-            r_min=r_min,
-            phi_min=phi_min,
-            quad_kws=quad_kws,
+            r_min=self.r_min,
+            phi_min=self.phi_min,
+            quad_kws=self.quad_kws,
         )
 
-    def to_nf_numeric(
-        self,
-        r_min: Optional[float] = None,
-        bounds: Optional[tuple[float, float]] = None,
-        quad_kws: Optional[dict] = None,
-        **kws,
-    ) -> NoroFrenkelPair:
-        """Create :class:~analphipy.NoroFrenkelPair` by numerically finding minima parameters.
+    @gcached()
+    def measures(self):
+        from .measures import Measures
 
-        See Also
-        --------
-        minimize
-        """
-        return NoroFrenkelPair.from_phi(
-            phi=self.phi,
-            segments=self.segments,
-            bounds=bounds,
-            r_min=r_min,
-            quad_kws=quad_kws,
-            **kws,
-        )
+        return Measures(phi=self.phi, segments=self.segments, quad_kws=self.quad_kws)
 
-    def to_nf(
-        self,
-        r_min: Optional[float] = None,
-        bounds: Optional[tuple[float, float]] = None,
-        quad_kws: Optional[dict] = None,
-        **kws,
-    ) -> NoroFrenkelPair:
-        try:
-            return self.to_nf_fixed(quad_kws=quad_kws)
-        except NotImplementedError:
-            return self.to_nf_numeric(
-                r_min=r_min, bounds=bounds, quad_kws=quad_kws, **kws
-            )
+    def __repr__(self):
+        # from textwrap import dedent
 
-    @docfiller_shared
-    def boltz_diverg_js(
-        self,
-        other: Phi_Abstractclass,
-        beta: float,
-        beta_other: Optional[float] = None,
-        volume: Union[str, Callable] = "3d",
-        err: bool = False,
-        full_output: bool = False,
-        **kws,
-    ):
-        """
-        Jenken-Shannon divergence of the boltzman factors of two potentials.
+        v = [super().__repr__(self)] + [
+            f"{k}={getattr(self, k)}"
+            for k in ["r_min", "phi_min", "segments", "quad_kws"]
+        ]
 
-        This calculates the
+        s = ",\n   ".join(v)
+
+        return f"<{s}>"
 
 
-        Parameters
-        ----------
-        other : Phi class
-            Class wrapping other potential to compare `self` to.
-        {beta}
-        beta_other : float, optional
-            beta value to evaluate other boltzman factor at.
-        {volume_int_func}
-
-
-        See Also
-        --------
-        `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
-
-
-        """
-
-        if beta_other is None:
-            beta_other = beta
-
-        return diverg_js_cont(
-            p=self.boltz_partial(beta=beta),
-            q=other.boltz_partial(beta=beta_other),
-            segments=self.segments,
-            segments_q=other.segments,
-            volume=volume,
-            err=err,
-            full_output=full_output,
-            **kws,
-        )
-
-    def mayer_diverg_js(
-        self,
-        other: Phi_Abstractclass,
-        beta: float,
-        beta_other: Optional[float] = None,
-        volume: Union[str, Callable] = "3d",
-        err: bool = False,
-        full_output: bool = False,
-        **kws,
-    ):
-
-        if beta_other is None:
-            beta_other = beta
-
-        return diverg_js_cont(
-            p=self.mayer_partial(beta=beta),
-            q=other.mayer_partial(beta=beta_other),
-            segments=self.segments,
-            segments_q=other.segments,
-            volume=volume,
-            err=err,
-            full_output=full_output,
-            **kws,
-        )
-
-
-@dataclass
-class Phi_cut_base(Phi_Abstractclass):
+class PhiBaseGenericCut(PhiBase):
     """
     create cut potential from base potential
 
@@ -315,20 +260,25 @@ class Phi_cut_base(Phi_Abstractclass):
     `_dvcorrect(r) = ...`
     """
 
-    phi_base: Phi_Abstractclass
-    rcut: float
+    def __init__(
+        self,
+        phi_base: PhiBase,
+        rcut: float,
+        r_min: float | None = None,
+        phi_min: float | None = None,
+        quad_kws: float | None = None,
+    ):
 
-    @property
-    def segments(self) -> list:
-        return [x for x in self.phi_base.segments if x < self.rcut] + [self.rcut]
+        self.phi_base = phi_base
+        self.rcut = rcut
 
-    @classmethod
-    def from_base(cls, base, rcut, *args, **kws) -> Phi_cut_base:
-        """
-        Create cut potential from base phi class
-        """
-        phi_base = base(*args, **kws)
-        return cls(phi_base=phi_base, rcut=rcut)
+        segments = [x for x in self.phi_base.segments if x < self.rcut] + [self.rcut]
+        super().__init__(
+            r_min=r_min, phi_min=phi_min, quad_kws=quad_kws, segments=segments
+        )
+
+    def asdict(self):
+        return {"phi_base": self.phi_base, "rcut": self.rcut}
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.asarray(r)
@@ -355,34 +305,22 @@ class Phi_cut_base(Phi_Abstractclass):
 
         return dvdr
 
-    # def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
-    #     r = np.array(r)
-
-    #     v = np.empty_like(r)
-    #     dv = np.empty_like(r)
-
-    #     left = r <= self.rcut
-    #     right = ~left
-
-    #     v[right] = 0.0
-    #     dv[right] = 0.0
-
-    #     if np.any(left):
-    #         v[left], dv[left] = self.phi_base.phidphi(r[left])
-    #         v[left] += self._vcorrect(r[left])
-    #         dv[left] += self._dvcorrect(r[left])
-
-    #     return v, dv
-
     def _vcorrect(self, r):
         raise NotImplementedError
 
     def _dvdrcorrect(self, r):
         raise NotImplementedError
 
+    @classmethod
+    def from_phi(cls, phi_base, rcut):
 
-@dataclass
-class Phi_cut(Phi_cut_base):
+        return cls(
+            phi_base=phi_base,
+            rcut=rcut,
+        )
+
+
+class PhiCut(PhiBaseGenericCut):
     r"""
     Pair potential cut at position ``r_cut``.
 
@@ -396,24 +334,24 @@ class Phi_cut(Phi_cut_base):
 
     Parameters
     ----------
-    phi_base : Phi_Baseclass instance
+    phi_base : PhiBaseCuttable instance
         Potential class to perform cut on.
     rcut : float
         Where to 'cut' the potential.
     """
 
-    def __post_init__(self):
-        self.vcut = self.phi_base(self.rcut)
+    @gcached()
+    def _vcut(self):
+        return self.phi_base.phi(self.rcut)
 
     def _vcorrect(self, r: np.ndarray) -> np.ndarray:
-        return -cast(np.ndarray, self.vcut)
+        return -cast(np.ndarray, self._vcut)
 
     def _dvdrcorrect(self, r: np.ndarray) -> np.ndarray:
         return np.array(0.0)
 
 
-@dataclass
-class Phi_lfs(Phi_cut_base):
+class PhiLFS(PhiBaseGenericCut):
     r"""
     Pair potential cut and linear force shifted at ``r_cut``.
 
@@ -421,48 +359,44 @@ class Phi_lfs(Phi_cut_base):
 
         \phi_{rm lfs}(r) =
             \begin{cases}
-                \phi(r) - \left( \frac{d \phi}{d r} \right)_{\rm cut} (r - r_{\rm cut}) - \phi(r_{\rm cut}) & r < r_{\rm cut} \\
+                \phi(r)
+                - \left( \frac{d \phi}{d r} \right)_{\rm cut} (r - r_{\rm cut})
+                - \phi(r_{\rm cut}) & r < r_{\rm cut} \\
                 0 & r_{\rm cut} < r
             \end{cases}
-
     """
 
-    def __post_init__(self):
+    @gcached()
+    def _vcut(self):
+        return self.phi_base.phi(self.rcut)
 
-        self.vcut = self.phi_base.phi(self.rcut)
-        self.dvdrcut = self.phi_base.dphidr(self.rcut)
-
-        # vcut, dvcut = self.phi_base.phidphi(self.rcut)
-        # self.vcut = vcut
-        # self.dvdrcut = -dvcut * self.rcut
+    @gcached()
+    def _dvdrcut(self):
+        return self.phi_base.dphidr(self.rcut)
 
     def _vcorrect(self, r: np.ndarray) -> np.ndarray:
-        out = -(self.vcut + self.dvdrcut * (r - self.rcut))
+        out = -(self._vcut + self._dvdrcut * (r - self.rcut))
         return cast(np.ndarray, out)
 
-    # def _dvcorrect(self, r: np.ndarray) -> np.ndarray:
-    #     out = self.dvdrcut / r
-    #     return cast(np.ndarray, out)
     def _dvdrcorrect(self, r: np.ndarray) -> np.ndarray:
-        out = -self.dvdrcut
+        out = -self._dvdrcut
         return cast(np.ndarray, out)
 
 
-class Phi_Baseclass(Phi_Abstractclass):
+class PhiBaseCuttable(PhiBase):
     """
-    Baseclass for creating Phi object
+    Baseclass for creating Phi object which can be cut.
+
+    This adds methods :meth:`cut` and :meth:`lfs`
     """
 
-    def cut(self, rcut: float) -> Phi_cut:
-        return Phi_cut(phi_base=self, rcut=rcut)
+    def cut(self, rcut: float) -> PhiCut:
+        """Creates a :class:`PhiCut` object from `self`"""
+        return PhiCut(
+            phi_base=self,
+            rcut=rcut,
+        )
 
-    def lfs(self, rcut: float) -> Phi_lfs:
-        return Phi_lfs(phi_base=self, rcut=rcut)
-
-
-# This is kinda a dumb way to do things
-# Instead, should just have the Phi Wrapper class, which you then call with all the all the special sauce.
-# phi = Phi_hs -> instance of Phi_base just provides phi, phidphi, r_min, phi_min, segments
-# phi.nf -> provides noro frenkel like analysis
-# phi.
-# phi.cut -> another phi_base classmetho
+    def lfs(self, rcut: float) -> PhiLFS:
+        """Create as :class:`PhiLFS` object from `self`"""
+        return PhiLFS(phi_base=self, rcut=rcut)
