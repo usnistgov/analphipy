@@ -262,20 +262,50 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
         r_min, phi_min, output = self.minimize(r0=r0, bounds=bounds, **kws)
         return self.new_like(r_min=r_min, phi_min=phi_min)
 
-    def to_nf(self, **quad_kws):
+    def to_nf(self, **kws):
+        """
+        Create a :class:`analphipy.NoroFrenkelPair` object.
+
+        Parameters
+        ---------
+        **kws :
+            Extra arguments to :class:`analphipy.NoroFrenkelPair` constructor.
+            parameters `phi`, `semgnets`, `r_min', `phi_min` default to values from `self`.
+
+        Returns
+        -------
+        nf : :class:`analphipy.NoroFrenkelPair`
+
+        """
         if self.r_min is None:
             raise ValueError("must set `self.r_min` to use NoroFrenkel")
 
-        return NoroFrenkelPair(
-            phi=self.phi,
-            segments=self.segments,
-            r_min=self.r_min,
-            phi_min=self.phi_min,
-            quad_kws=quad_kws,
-        )
+        for k in ["phi", "segments", "r_min", "phi_min"]:
+            if k not in kws:
+                kws[k] = getattr(self, k)
 
-    def to_measures(self, **quad_kws):
-        return Measures(phi=self.phi, segments=self.segments, quad_kws=quad_kws)
+        return NoroFrenkelPair(**kws)
+
+    def to_measures(self, **kws):
+        """
+        Create a :class:`analphipy.Measures` object.
+
+        Parameters
+        ----------
+        **kws :
+            Extra arguments to :class:`analphipy.Measures` constructor.
+            parameters `phi`, `semgnets` default to values from `self`.
+
+        Returns
+        -------
+        nf : :class:`analphipy.Measures`
+        """
+
+        for k in ["phi", "segments"]:
+            if k not in kws:
+                kws[k] = getattr(self, k)
+
+        return Measures(**kws)
 
 
 @attrs.frozen
