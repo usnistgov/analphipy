@@ -1,14 +1,15 @@
 # type: ignore
 from __future__ import annotations
 
-from typing import Literal, Sequence, cast
+from typing import Sequence, cast
 
 import attrs
 import numpy as np
 from attrs import field
 from custom_inherit import DocInheritMeta
+from typing_extensions import Literal
 
-from ._attrs_utils import _formatter, _private_field, optional_converter
+from ._attrs_utils import field_formatter, optional_converter, private_field
 from ._docstrings import docfiller_shared
 from ._typing import Float_or_ArrayLike, Phi_Signature
 from .measures import Measures
@@ -19,7 +20,7 @@ from .utils import minimize_phi
 # * attrs utilities
 @optional_converter
 def segments_converter(segments):
-    return [float(x) for x in segments]
+    return tuple(float(x) for x in segments)
 
 
 def validate_segments(self, attribute, segments):
@@ -32,7 +33,7 @@ def _kw_only_field(kw_only=True, default=None, **kws):
 
 @attrs.frozen
 @docfiller_shared
-class PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ignore
+class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ignore
     """
     Base Class for working with potentials.
 
@@ -45,18 +46,28 @@ class PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: igno
     {segments}
     """
 
-    r_min: float | None = _kw_only_field(converter=optional_converter(float))
-    phi_min: float | None = _kw_only_field(converter=optional_converter(float))
+    r_min: float | None = _kw_only_field(
+        converter=optional_converter(float), repr=field_formatter()
+    )
+    phi_min: float | None = _kw_only_field(
+        converter=optional_converter(float), repr=field_formatter()
+    )
     segments: Sequence[float] | None = _kw_only_field(
         converter=segments_converter,
     )
 
-    def asdict(self):
+    def asdict(self) -> dict:
         """Convert object to dictionary"""
         return attrs.asdict(self, filter=self._get_smart_filter())
 
     def new_like(self, **kws):
-        """Create a new object with optional parameters"""
+        """Create a new object with optional parameters
+
+        Parameters
+        ----------
+        **kws
+            `attribute`, `value` pairs.
+        """
         return attrs.evolve(self, **kws)
 
     def assign(self, **kws):
@@ -268,9 +279,9 @@ class PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: igno
 
 
 @attrs.frozen
-class PhiBaseCut(PhiBase):
+class _PhiBaseCut(_PhiBase):
     """
-    create cut potential from base potential
+    Base Class for creating cut potential from base potential
 
 
     phi_cut(r) = phi(r) + _vcorrect(r) if r <= rcut
@@ -287,11 +298,12 @@ class PhiBaseCut(PhiBase):
 
     phi_base: PhiBase
     rcut: float = field(converter=float)
-    segments: float = _private_field()
+    segments: float = private_field()
 
     def __attrs_post_init__(self):
         self._immutable_setattrs(
-            segments=[x for x in self.phi_base.segments if x < self.rcut] + [self.rcut]
+            segments=tuple(x for x in self.phi_base.segments if x < self.rcut)
+            + (self.rcut,)
         )
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
@@ -327,7 +339,7 @@ class PhiBaseCut(PhiBase):
 
 
 @attrs.frozen
-class PhiCut(PhiBaseCut):
+class PhiCut(_PhiBaseCut):
     r"""
     Pair potential cut at position ``r_cut``.
 
@@ -347,7 +359,7 @@ class PhiCut(PhiBaseCut):
         Where to 'cut' the potential.
     """
 
-    _vcut: float = _private_field()
+    _vcut: float = private_field()
 
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
@@ -361,7 +373,7 @@ class PhiCut(PhiBaseCut):
 
 
 @attrs.frozen
-class PhiLFS(PhiBaseCut):
+class PhiLFS(_PhiBaseCut):
     r"""
     Pair potential cut and linear force shifted at ``r_cut``.
 
@@ -376,8 +388,8 @@ class PhiLFS(PhiBaseCut):
             \end{cases}
     """
 
-    _vcut: float = _private_field()
-    _dvdrcut: float = _private_field()
+    _vcut: float = private_field()
+    _dvdrcut: float = private_field()
 
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
@@ -395,9 +407,27 @@ class PhiLFS(PhiBaseCut):
 
 
 @attrs.frozen
+class PhiBase(_PhiBase):
+    def cut(self, rcut):
+        """Create a :class:`PhiCut` potential."""
+        return PhiCut(phi_base=self, rcut=rcut)
+
+    def lfs(self, rcut):
+        """Create a :class:`PhiLFS` potential."""
+        return PhiLFS(phi_base=self, rcut=rcut)
+
+
+@attrs.frozen
 class PhiGeneric(PhiBase):
     """
-    Function form of PhiBase
+    Class to define potential using callables.
+
+    Parameters
+    ----------
+    phi_func : Callable
+        Function ``phi(r)``
+    dphidr : Callable, optional
+        Optional function ``dphidr(r)``.
     """
 
     phi_func: Phi_Signature
@@ -413,18 +443,11 @@ class PhiGeneric(PhiBase):
         r = np.asarray(r)
         return self.dphidr_func(r)
 
-    def cut(self, rcut):
-        return PhiCut(phi_base=self, rcut=rcut)
-
-    def lfs(self, rcut):
-        return PhiLFS(phi_base=self, rcut=rcut)
-
 
 @attrs.frozen
-class PhiDefined(PhiBase):
+class PhiAnalytic(PhiBase):
     """
-    Base class for defining a pair potential
-
+    Base class for defining analytic potentials.
 
     Notes
     -----
@@ -434,447 +457,6 @@ class PhiDefined(PhiBase):
 
     """
 
-    r_min: float = field(init=False, repr=_formatter())
+    r_min: float = field(init=False, repr=field_formatter())
     phi_min: float = field(init=False, repr=False)
     segments: float = field(init=False)
-
-
-@attrs.frozen
-class PhiDefinedCuttable(PhiDefined):
-    def cut(self, rcut):
-        return PhiCut(phi_base=self, rcut=rcut)
-
-    def lfs(self, rcut):
-        return PhiLFS(phi_base=self, rcut=rcut)
-
-
-@attrs.frozen
-class Phi_lj(PhiDefinedCuttable):
-    r"""Lennard-Jones potential.
-
-    .. math::
-
-        \phi(r) = 4 \epsilon \left[ \left(\frac{{\sigma}}{{r}}\right)^{{12}} - \left(\frac{{\sigma}}{{r}}\right)^6\right]
-
-    Parameters
-    ----------
-    sig : float
-        Length parameter :math:`\sigma`.
-    eps : float
-        Energy parameter :math:`\epsilon`.
-    """
-
-    sig: float = 1.0
-    eps: float = 1.0
-
-    def __attrs_post_init__(self):
-        self._immutable_setattrs(
-            r_min=self.sig * 2.0 ** (2.0 / 6.0),
-            phi_min=-self.eps,
-            segments=[0.0, np.inf],
-        )
-
-    @property
-    def _sigsq(self):
-        return self.sig**2
-
-    @property
-    def _four_eps(self):
-        return 4.0 * self.eps
-
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-        r = np.array(r)
-        x2 = self._sigsq / (r * r)
-        x6 = x2**3
-        return cast(np.ndarray, self._four_eps * x6 * (x6 - 1.0))
-
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-        """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
-        r = np.array(r)
-        rinvsq = 1.0 / (r * r)
-
-        x2 = self._sigsq * rinvsq
-        x6 = x2 * x2 * x2
-        return cast(np.ndarray, -12.0 * self._four_eps * x6 * (x6 - 0.5) / r)
-
-
-@attrs.frozen
-class Phi_nm(PhiDefinedCuttable):
-    r"""
-    Generalized Lennard-Jones potential
-
-    .. math::
-
-        \phi(r) = \epsilon \frac{n}{n-m} \left( \frac{n}{m} \right) ^{m / (n-m)}
-        \left[ \left(\frac{\sigma}{r}\right)^n - \left(\frac{\sigma}{r}\right)^m\right]
-
-
-    Parameters
-    ----------
-    n, m : int
-        ``n`` and ``m`` parameters to potential :math:`n, m`.
-    sig : float
-        Length parameter :math:`\sigma`.
-    eps : float
-        Energy parameter :math:`\epsilon`.
-
-
-    Notes
-    -----
-    with parameters ``n=12`` and ``m=6``, this is equivalent to :class:`Phi_lj`.
-    """
-    n: int = 12
-    m: int = 6
-    sig: float = 1.0
-    eps: float = 1.0
-
-    def __attrs_post_init__(self):
-        n, m = self.n, self.m
-
-        self._immutable_setattrs(
-            r_min=self.sig * (n / m) ** (1.0 / (n - m)),
-            phi_min=-self.eps,
-            segments=[0.0, np.inf],
-        )
-
-    @property
-    def _prefac(self):
-        n, m, eps = self.n, self.m, self.eps
-        return eps * (n / (n - m)) * (n / m) ** (m / (n - m))
-
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-        r = np.array(r)
-
-        x = self.sig / r
-        out = self._prefac * (x**self.n - x**self.m)
-        return cast(np.ndarray, out)
-
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-
-        r = np.array(r)
-        x = self.sig / r
-
-        xn = x**self.n
-        xm = x**self.m
-
-        return cast(np.ndarray, -self._prefac * (self.n * xn - self.m * xm) / (r))
-
-
-@attrs.frozen
-class Phi_yk(PhiDefinedCuttable):
-    r"""
-    Hard core Yukawa potential
-
-
-    .. math::
-
-        \phi(r) =
-        \begin{cases}
-            \infty &  r \leq \sigma \\
-            -\epsilon \frac{\sigma}{r} \exp\left[-z (r/\sigma - 1) \right] & r > \sigma
-        \end{cases}
-
-
-    Parameters
-    ----------
-    sig : float
-        Length parameters :math:`\sigma`.
-    eps : float
-        Energy parameter :math:`\epsilon`.
-    z : float
-        Interaction range parameter :math:`z`
-
-    """
-
-    z: float = 1.0
-    sig: float = 1.0
-    eps: float = 1.0
-
-    def __attrs_post_init__(self):
-        self._immutable_setattrs(
-            r_min=self.sig,
-            phi_min=self.eps,
-            segments=[0.0, self.sig, np.inf],
-        )
-
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-        sig, eps = self.sig, self.eps
-
-        r = np.array(r)
-        phi = np.empty_like(r)
-        m = r >= sig
-
-        phi[~m] = np.inf
-        if np.any(m):
-            x = r[m] / sig
-            phi[m] = -eps * np.exp(-self.z * (x - 1.0)) / x
-        return phi
-
-
-@attrs.frozen
-class Phi_hs(PhiDefined):
-    r"""
-    Hard-sphere pair potential
-
-    .. math::
-
-        \phi(r) =
-        \begin{cases}
-        \infty & r \leq \sigma \\
-        0 & r > \sigma
-
-    Parameters
-    ----------
-    sig: float
-        Length scale parameter :math:`\sigma`
-    """
-
-    sig: float = 1.0
-
-    def __attrs_post_init__(self):
-        self._immutable_setattrs(segments=[0.0, self.sig])
-
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-        r = np.array(r)
-
-        phi = np.empty_like(r)
-
-        m0 = r < self.sig
-        phi[m0] = np.inf
-        phi[~m0] = 0.0
-        return phi
-
-
-@attrs.frozen
-class Phi_sw(PhiDefined):
-    r"""
-    Square-well pair potential
-
-
-    .. math::
-
-        \phi(r) =
-        \begin{cases}
-        \infty & r \leq \sigma \\
-        \epsilon & \sigma < r \leq \lambda \sigma \\
-        0 & r > \lambda \sigma
-
-    Parameters
-    ----------
-    sig : float
-        Length scale parameter :math:`\sigma`.
-    eps : float
-        Energy parameter :math:`\epsilon`.  Note that here, ``eps`` is the value inside the well.  So, to specify an attractive square well potential, pass a negative value for ``eps``.
-    lam : float
-        Width of well parameter :math:`lambda`.
-    """
-
-    sig: float = 1.0
-    eps: float = 1.0
-    lam: float = 1.5
-
-    def __attrs_post_init__(self):
-        self._immutable_setattrs(
-            r_min=self.sig,
-            phi_min=self.eps,
-            segments=[0.0, self.sig, self.sig * self.lam],
-        )
-
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-
-        sig, eps, lam = self.sig, self.eps, self.lam
-
-        r = np.array(r)
-
-        phi = np.empty_like(r)
-
-        m0 = r < sig
-        m2 = r >= lam * sig
-        m1 = (~m0) & (~m2)
-
-        phi[m0] = np.inf
-        phi[m1] = eps
-        phi[m2] = 0.0
-
-        return phi
-
-
-@attrs.frozen
-class CubicTable(PhiDefinedCuttable):
-    """
-    Cubic interpolation table potential
-
-    Parameters
-    ----------
-    bounds : sequence of floats
-        the minimum and maximum values of squared pair separation `r**2` at which `phi_array` is evaluated.
-    phi_array : array-like
-        Values of potential evaluated on even grid of ``r**2`` values.
-    """
-
-    bounds: Sequence[float]
-    phi_array: Float_or_ArrayLike = field(factory=np.array)
-
-    _ds: float = _private_field()
-    _dsinv: float = _private_field()
-
-    def __attrs_post_init__(self):
-        ds = (self.bounds[1] - self.bounds[0]) / self.size
-
-        self._immutable_setattrs(
-            _ds=ds,
-            _dsinv=1.0 / ds,
-            segments=[np.sqrt(x) for x in self.bounds],
-        )
-
-    @classmethod
-    def from_phi(cls, phi: Phi_Signature, rmin: float, rmax: float, ds: float):
-        """
-        Create object from callable pair potential funciton.
-
-        This will evaluate ``phi`` at even spacing in ``s = r**2`` space.
-
-
-        Parameters
-        ----------
-        phi : callable
-            pair potential function
-        rmin : float
-            minimum pair separation `r` to evaluate at.
-        rmax : float
-            Maximum pair separation `r` to evaluate at.
-        ds : float
-            spaceing in ``s = r ** 2``.
-
-        Returns
-        -------
-        table : CubicTable
-
-        """
-        bounds = (rmin * rmin, rmax * rmax)
-
-        delta = bounds[1] - bounds[0]
-
-        size = int(delta / ds)
-        ds = delta / size
-
-        phi_array = []
-
-        r = np.sqrt(np.arange(size + 1) * ds + bounds[0])
-
-        phi_array = phi(r)
-
-        return cls(bounds=bounds, phi_array=phi_array)
-
-    def __len__(self):
-        return len(self.phi_array)
-
-    @property
-    def size(self) -> int:
-        return len(self) - 1
-
-    @property
-    def smin(self) -> float:
-        return self.bounds[0]
-
-    @property
-    def smax(self) -> float:
-        return self.bounds[1]
-
-    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
-        r = np.asarray(r)
-
-        v = np.empty_like(r)
-        dv = np.empty_like(r)
-
-        s = r * r
-        left = s <= self.smax
-        right = ~left
-
-        v[right] = 0.0
-        dv[right] = 0.0
-
-        if np.any(left):
-
-            sds = (s[left] - self.smin) * self._dsinv
-            k = sds.astype(int)
-            k[k < 0] = 0
-
-            xi = sds - k
-
-            t = np.take(self.phi_array, [k, k + 1, k + 2], mode="clip")
-            dt = np.diff(t, axis=0)
-            ddt = np.diff(dt, axis=0)
-
-            v[left] = t[0, :] + xi * (dt[0, :] + 0.5 * (xi - 1.0) * ddt[0, :])
-            dv[left] = -2.0 * self._dsinv * (dt[0, :] + (xi - 0.5) * ddt[0, :])
-        return v, dv
-
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-        return self.phidphi(r)[0]
-
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-        r = np.asarray(r)
-        return cast(np.ndarray, -r * self.phidphi(r)[1])
-
-
-_PHI_NAMES = Literal["lj", "nm", "sw", "hs", "yk", "LJ", "NM", "SW", "HS", "YK"]
-
-
-def factory_phi(
-    potential_name: _PHI_NAMES,
-    rcut: float | None = None,
-    lfs: bool = False,
-    cut: bool = False,
-    **kws,
-) -> "PhiBase":
-    """Factory function to construct Phi object by name
-
-    Parameters
-    ----------
-    potential_name : {lj, nm, sw, hs, yk}
-        Name of potential.
-    rcut : float, optional
-        if passed, Construct either and 'lfs' or 'cut' version of the potential.
-    lfs : bool, default=False
-        If True, construct a  linear force shifted potential :class:`analphipy.PhiLFS`.
-    cut : bool, default=False
-        If True, construct a cut potential :class:`analphipy.PhiCut`.
-
-    Returns
-    -------
-    phi :
-        output potential energy class.
-    """
-
-    name = potential_name.lower()
-
-    phi: "PhiBase"
-
-    if name == "lj":
-        phi = Phi_lj(**kws)
-
-    elif name == "sw":
-        phi = Phi_sw(**kws)
-
-    elif name == "nm":
-        phi = Phi_nm(**kws)
-
-    elif name == "yk":
-        phi = Phi_yk(**kws)
-
-    elif name == "hs":
-        phi = Phi_hs(**kws)
-
-    else:
-        raise ValueError(f"{name} must be in {_PHI_NAMES}")
-
-    if lfs or cut:
-        assert rcut is not None
-        if cut:
-            phi = phi.cut(rcut=rcut)
-
-        elif lfs:
-            phi = phi.lfs(rcut=rcut)
-
-    return phi

@@ -15,7 +15,7 @@ def test_boltz_js_lj(beta, beta_other):
     p0 = analphipy.Phi_lj(sig=1.0, eps=1.0)
     p1 = analphipy.Phi_nm(n=14, m=7, sig=1.0, eps=1)
 
-    v0 = p0.measures.boltz_diverg_js(p1, beta=beta, beta_other=beta_other)
+    v0 = p0.to_measures().boltz_diverg_js(p1, beta=beta, beta_other=beta_other)
 
     f0 = lambda x: np.exp(-beta * p0.phi(x))
     f1 = lambda x: np.exp(-beta_other * p1.phi(x))

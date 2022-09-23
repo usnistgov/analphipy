@@ -1,69 +1,20 @@
+# type: ignore
 from __future__ import annotations
 
-# import dataclasses
-from collections.abc import Callable
-from dataclasses import dataclass
+from typing import Sequence, cast
 
-# from functools import partial
-from typing import Optional, Sequence, cast
-
+import attrs
 import numpy as np
+from attrs import field
 from typing_extensions import Literal
 
-from ._potentials import PhiBase, PhiBaseCuttable  # type: ignore
-from ._typing import Float_or_ArrayLike
-
-# class PhiGeneric(PhiBaseCuttable):
-#     """
-#     Class to handle a generic potential energy function
-
-#     Parameters
-#     ----------
-#     phi : callable
-#         potential energy function.
-#     r_min : float, optional
-#         Position of minimum in ``phi``.
-#     phi_min : float, optional
-#         Value of ``phi`` at ``r_min``.
-#     phidphi : callable
-#         Potential energy and derivative funciton.
-#     params : mapping, optional
-#     """
+from ._attrs_utils import field_array_formatter, private_field
+from ._typing import Float_or_ArrayLike, Phi_Signature
+from .potentials_base import PhiAnalytic, PhiBase
 
 
-#     def __init__(self, phi: Callable, r_min: float | None=None, phi_min: float|None=None, phidphi: Callable| None = None, params: Mapping | None=None):
-
-#         self._r_min = r_min
-#         self._phi_min = phi_min
-
-#         self._phi = phi
-#         self._phidphi = phidphi
-
-#         if params is None:
-#             params = {}
-#         else:
-#             params = dict(params)
-
-#         self._params = params
-
-
-#     @property
-#     def r_min(self):
-#         return self._r_min
-
-#     @property
-#     def phi_min(self):
-#         return self._phi_min
-
-#     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-#         return self._phi(r)
-
-#     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-#         return self._dphidr(r)
-
-
-@dataclass
-class Phi_lj(PhiBaseCuttable):
+@attrs.frozen
+class Phi_lj(PhiAnalytic):
     r"""Lennard-Jones potential.
 
     .. math::
@@ -81,35 +32,39 @@ class Phi_lj(PhiBaseCuttable):
     sig: float = 1.0
     eps: float = 1.0
 
-    def __post_init__(self):
-        sig, eps = self.sig, self.eps
-        self.sigsq = sig * sig
-        self.four_eps = 4.0 * eps
+    def __attrs_post_init__(self):
+        self._immutable_setattrs(
+            r_min=self.sig * 2.0 ** (2.0 / 6.0),
+            phi_min=-self.eps,
+            segments=(0.0, np.inf),
+        )
 
-        # hard set value of mins
-        self.r_min = self.sig * 2.0 ** (1.0 / 6.0)
-        self.phi_min = -self.eps
-        self.segments = [0.0, np.inf]
+    @property
+    def _sigsq(self):
+        return self.sig**2
+
+    @property
+    def _four_eps(self):
+        return 4.0 * self.eps
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
-        x2 = self.sigsq / (r * r)
+        x2 = self._sigsq / (r * r)
         x6 = x2**3
-        return cast(np.ndarray, self.four_eps * x6 * (x6 - 1.0))
+        return cast(np.ndarray, self._four_eps * x6 * (x6 - 1.0))
 
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
         r = np.array(r)
         rinvsq = 1.0 / (r * r)
 
-        x2 = self.sigsq * rinvsq
+        x2 = self._sigsq * rinvsq
         x6 = x2 * x2 * x2
+        return cast(np.ndarray, -12.0 * self._four_eps * x6 * (x6 - 0.5) / r)
 
-        return cast(np.ndarray, -12.0 * self.four_eps * x6 * (x6 - 0.5) / r)
 
-
-@dataclass
-class Phi_nm(PhiBaseCuttable):
+@attrs.frozen
+class Phi_nm(PhiAnalytic):
     r"""
     Generalized Lennard-Jones potential
 
@@ -138,19 +93,25 @@ class Phi_nm(PhiBaseCuttable):
     sig: float = 1.0
     eps: float = 1.0
 
-    def __post_init__(self):
-        n, m, eps = self.n, self.m, self.eps
-        self.prefac = eps * (n / (n - m)) * (n / m) ** (m / (n - m))
+    def __attrs_post_init__(self):
+        n, m = self.n, self.m
 
-        self.r_min = self.sig * (n / m) ** (1.0 / (n - m))
-        self.phi_min = -self.eps
-        self.segments = [0.0, np.inf]
+        self._immutable_setattrs(
+            r_min=self.sig * (n / m) ** (1.0 / (n - m)),
+            phi_min=-self.eps,
+            segments=(0.0, np.inf),
+        )
+
+    @property
+    def _prefac(self):
+        n, m, eps = self.n, self.m, self.eps
+        return eps * (n / (n - m)) * (n / m) ** (m / (n - m))
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
 
         x = self.sig / r
-        out = self.prefac * (x**self.n - x**self.m)
+        out = self._prefac * (x**self.n - x**self.m)
         return cast(np.ndarray, out)
 
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
@@ -161,11 +122,11 @@ class Phi_nm(PhiBaseCuttable):
         xn = x**self.n
         xm = x**self.m
 
-        return cast(np.ndarray, -self.prefac * (self.n * xn - self.m * xm) / (r))
+        return cast(np.ndarray, -self._prefac * (self.n * xn - self.m * xm) / (r))
 
 
-@dataclass
-class Phi_yk(PhiBaseCuttable):
+@attrs.frozen
+class Phi_yk(PhiAnalytic):
     r"""
     Hard core Yukawa potential
 
@@ -194,10 +155,12 @@ class Phi_yk(PhiBaseCuttable):
     sig: float = 1.0
     eps: float = 1.0
 
-    def __post_init__(self):
-        self.segments = [0.0, self.sig, np.inf]
-        self.r_min = self.sig
-        self.phi_min = -self.eps
+    def __attrs_post_init__(self):
+        self._immutable_setattrs(
+            r_min=self.sig,
+            phi_min=self.eps,
+            segments=(0.0, self.sig, np.inf),
+        )
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         sig, eps = self.sig, self.eps
@@ -213,8 +176,8 @@ class Phi_yk(PhiBaseCuttable):
         return phi
 
 
-@dataclass
-class Phi_hs(PhiBaseCuttable):
+@attrs.frozen
+class Phi_hs(PhiAnalytic):
     r"""
     Hard-sphere pair potential
 
@@ -233,8 +196,8 @@ class Phi_hs(PhiBaseCuttable):
 
     sig: float = 1.0
 
-    def __post_init__(self):
-        self.segmnets = [0.0, self.sig]
+    def __attrs_post_init__(self):
+        self._immutable_setattrs(segments=(0.0, self.sig))
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
@@ -247,8 +210,8 @@ class Phi_hs(PhiBaseCuttable):
         return phi
 
 
-@dataclass
-class Phi_sw(PhiBaseCuttable):
+@attrs.frozen
+class Phi_sw(PhiAnalytic):
     r"""
     Square-well pair potential
 
@@ -275,10 +238,12 @@ class Phi_sw(PhiBaseCuttable):
     eps: float = 1.0
     lam: float = 1.5
 
-    def __post_init__(self):
-        self.r_min = self.sig
-        self.phi_min = self.eps
-        self.segments = [0.0, self.sig, self.sig * self.lam]
+    def __attrs_post_init__(self):
+        self._immutable_setattrs(
+            r_min=self.sig,
+            phi_min=self.eps,
+            segments=(0.0, self.sig, self.sig * self.lam),
+        )
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
 
@@ -299,30 +264,57 @@ class Phi_sw(PhiBaseCuttable):
         return phi
 
 
-class CubicTable(PhiBaseCuttable):
+def _validate_bounds(self, attribute, bounds):
+    assert len(bounds) == 2, "length of bounds must be 2"
+
+
+@attrs.frozen
+class CubicTable(PhiBase):
     """
     Cubic interpolation table potential
 
     Parameters
     ----------
     bounds : sequence of floats
-        the minimum and maximum values of squared pair separation `r**2` at which `phi_array` is evaluated.
-    phi_array : array-like
+        the minimum and maximum values of squared pair separation `r**2` at which `phi_table` is evaluated.
+    phi_table : array-like
         Values of potential evaluated on even grid of ``r**2`` values.
+
+    segments : sequence of float, optional
+        Integration segments.  Defaults to ``sqrt(bounds)``.
+
+
+    phi_left, phi_right, dphi_left, dphi_right : float, optional
+        Values to set for ``phi``/``-1/r dphidr`` if  (left) ``r < bounds[0]`` or (right) ``r > bounds[1]``.
     """
 
-    def __init__(self, bounds: Sequence[float], phi_array: Float_or_ArrayLike):
+    bounds: Sequence[float] = field(validator=_validate_bounds, converter=tuple)
+    phi_table: Float_or_ArrayLike = field(
+        factory=np.array, converter=np.asarray, repr=field_array_formatter()
+    )
 
-        self.phi_array = np.asarray(phi_array)
-        self.bounds = bounds
+    phi_left: float = field(converter=float, default=np.inf)
+    phi_right: float = field(converter=float, default=0.0)
 
-        self.ds = (self.bounds[1] - self.bounds[0]) / self.size
-        self.dsinv = 1.0 / self.ds
+    dphi_left: float = field(converter=float, default=np.inf)
+    dphi_right: float = field(converter=float, default=0.0)
 
-        self.segments = [np.sqrt(x) for x in self.bounds]
+    _ds: float = private_field()
+    _dsinv: float = private_field()
+
+    def __attrs_post_init__(self):
+        ds = (self.bounds[1] - self.bounds[0]) / self.size
+
+        self._immutable_setattrs(
+            _ds=ds,
+            _dsinv=1.0 / ds,
+        )
+
+        if self.segments is None:
+            self._immutable_setattrs(segments=tuple(np.sqrt(x) for x in self.bounds))
 
     @classmethod
-    def from_phi(cls, phi: Callable, rmin: float, rmax: float, ds: float):
+    def from_phi(cls, phi: Phi_Signature, rmin: float, rmax: float, ds: float, **kws):
         """
         Create object from callable pair potential funciton.
 
@@ -339,6 +331,8 @@ class CubicTable(PhiBaseCuttable):
             Maximum pair separation `r` to evaluate at.
         ds : float
             spaceing in ``s = r ** 2``.
+        **kws :
+            Extra arguments to constructor.
 
         Returns
         -------
@@ -352,16 +346,16 @@ class CubicTable(PhiBaseCuttable):
         size = int(delta / ds)
         ds = delta / size
 
-        phi_array = []
+        phi_table = []
 
         r = np.sqrt(np.arange(size + 1) * ds + bounds[0])
 
-        phi_array = phi(r)
+        phi_table = phi(r)
 
-        return cls(bounds=bounds, phi_array=phi_array)
+        return cls(bounds=bounds, phi_table=phi_table, **kws)
 
     def __len__(self):
-        return len(self.phi_array)
+        return len(self.phi_table)
 
     @property
     def size(self) -> int:
@@ -382,27 +376,30 @@ class CubicTable(PhiBaseCuttable):
         dv = np.empty_like(r)
 
         s = r * r
-        left = s <= self.smax
-        right = ~left
+        left = s <= self.smin
+        right = s >= self.smax
+        mid = (~left) & (~right)
 
-        v[right] = 0.0
-        dv[right] = 0.0
+        v[left] = self.phi_left
+        dv[right] = self.dphi_left
 
-        if np.any(left):
+        v[right] = self.phi_right
+        dv[right] = self.dphi_right
 
-            sds = (s[left] - self.smin) * self.dsinv
+        if np.any(mid):
+
+            sds = (s[mid] - self.smin) * self._dsinv
             k = sds.astype(int)
             k[k < 0] = 0
 
             xi = sds - k
 
-            t = np.take(self.phi_array, [k, k + 1, k + 2], mode="clip")
+            t = np.take(self.phi_table, [k, k + 1, k + 2], mode="clip")
             dt = np.diff(t, axis=0)
             ddt = np.diff(dt, axis=0)
 
-            v[left] = t[0, :] + xi * (dt[0, :] + 0.5 * (xi - 1.0) * ddt[0, :])
-            dv[left] = -2.0 * self.dsinv * (dt[0, :] + (xi - 0.5) * ddt[0, :])
-
+            v[mid] = t[0, :] + xi * (dt[0, :] + 0.5 * (xi - 1.0) * ddt[0, :])
+            dv[mid] = -2.0 * self._dsinv * (dt[0, :] + (xi - 0.5) * ddt[0, :])
         return v, dv
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
@@ -412,13 +409,26 @@ class CubicTable(PhiBaseCuttable):
         r = np.asarray(r)
         return cast(np.ndarray, -r * self.phidphi(r)[1])
 
+    @property
+    def rsq_table(self):
+        """value of ``r**2`` where potential is defined."""
+
+        return self.smin + np.arange(self.size + 1) * self._ds
+
+    @property
+    def r_table(self):
+        """
+        Values of ``r`` where potential is defined
+        """
+        return np.sqrt(self.rsq_table)
+
 
 _PHI_NAMES = Literal["lj", "nm", "sw", "hs", "yk", "LJ", "NM", "SW", "HS", "YK"]
 
 
 def factory_phi(
     potential_name: _PHI_NAMES,
-    rcut: Optional[float] = None,
+    rcut: float | None = None,
     lfs: bool = False,
     cut: bool = False,
     **kws,

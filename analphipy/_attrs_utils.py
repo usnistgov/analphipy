@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import attrs
 import numpy as np
 
@@ -24,8 +26,8 @@ def optional_converter(converter):
     return wrapped
 
 
-def _formatter(fmt="{:.5g}"):
-    """float formatter"""
+def field_formatter(fmt: str = "{:.5g}"):
+    """Formatter for attrs field."""
 
     @optional_converter
     def wrapped(value):
@@ -34,8 +36,8 @@ def _formatter(fmt="{:.5g}"):
     return wrapped
 
 
-def _array_formatter(threshold=3, **kws):
-    """Formatter for arrays"""
+def field_array_formatter(threshold=3, **kws):
+    """Formatter for numpy array field"""
 
     @optional_converter
     def wrapped(value):
@@ -45,7 +47,7 @@ def _array_formatter(threshold=3, **kws):
     return wrapped
 
 
-def _private_field(init=False, repr=False, **kws):
+def private_field(init=False, repr=False, **kws):
     """
     Create a private attrs field.
     """
