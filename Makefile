@@ -129,8 +129,7 @@ coverage: ## check code coverage quickly with the default Python
 
 
 version: ## check version of package
-	python setup.py --version
-
+	python -m setuptools_scm
 
 ################################################################################
 # Docs
