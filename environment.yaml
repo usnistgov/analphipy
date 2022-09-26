@@ -11,3 +11,4 @@ dependencies:
     # cli
     - typing-extensions
     - custom-inherit
+    - attrs
