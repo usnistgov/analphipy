@@ -9,7 +9,7 @@ features of `analphipy` as follows:
     [Noro-Frenkel](https://en.wikipedia.org/wiki/Noro%E2%80%93Frenkel_law_of_corresponding_states)
     effective parameters.
 -   Routines to calculate
-    [Jenken-Shannon](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence)
+    [Jensen-Shannon](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence)
     divergence
 
 ## Overview

@@ -7,7 +7,7 @@ Utilities to perform metric analysis on fluid pair potentials.  The main feature
 * Pre-defined spherically symmetric potentials
 * Simple interface to extended to user defined pair potentials
 * Routines to calculate `Noro-Frenkel`_ effective parameters.
-* Routines to calculate `Jenken-Shannon`_ divergence
+* Routines to calculate `Jensen-Shannon`_ divergence
 
 Overview
 --------
@@ -51,4 +51,4 @@ This package was created with Cookiecutter_ and the `wpk-nist-gov/cookiecutter-p
 .. _`wpk-nist-gov/cookiecutter-pypackage`: https://github.com/wpk-nist-gov/cookiecutter-pypackage
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _`Noro-Frenkel`: https://en.wikipedia.org/wiki/Noro%E2%80%93Frenkel_law_of_corresponding_states
-.. _`Jenken-Shannon`: https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
+.. _`Jensen-Shannon`: https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
