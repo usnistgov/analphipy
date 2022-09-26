@@ -477,7 +477,7 @@ class Measures:
         **kws,
     ):
         r"""
-        Jenken-Shannon divergence of the Boltzmann factors of two potentials.
+        Jensen-Shannon divergence of the Boltzmann factors of two potentials.
 
         The Boltzmann factors are defined as:
 
@@ -532,7 +532,7 @@ class Measures:
         **kws,
     ):
         r"""
-        Jenken-Shannon divergence of the Mayer f-functions of two potentials.
+        Jensen-Shannon divergence of the Mayer f-functions of two potentials.
 
         The Mayer f-function is defined as:
 
