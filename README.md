@@ -27,7 +27,7 @@ included in the package.
 
 ## Examples
 
-See [basic usage](docs/notebooks/usage_notebook.ipynb)
+See [basic usage](docs/notebooks/usage.ipynb)
 
 Or see the [full documentation](https://pages.nist.gov/analphipy/)
 

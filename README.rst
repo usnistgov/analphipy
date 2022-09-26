@@ -24,7 +24,7 @@ Links
 Examples
 --------
 
-See `basic usage <docs/notebooks/usage_notebook.ipynb>`_
+See `basic usage <docs/notebooks/usage.ipynb>`_
 
 
 Or see the `full documentation <https://pages.nist.gov/analphipy/>`_
