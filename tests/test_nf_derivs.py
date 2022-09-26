@@ -43,7 +43,7 @@ def test_nf_deriv_lj():
     p = pots.Phi_lj(sig=sig, eps=eps)
 
     nf = NoroFrenkelPair.from_phi(
-        p, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
+        p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
     )
 
     for prop in ["sig", "B2", "lam"]:
@@ -59,7 +59,7 @@ def test_nf_deriv_lj_cut(rcut):
     p = pots.Phi_lj(sig=sig, eps=eps).cut(rcut)
 
     nf = NoroFrenkelPair.from_phi(
-        p, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
+        p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
     )
 
     for prop in ["sig", "B2", "lam"]:
@@ -74,7 +74,7 @@ def test_nf_deriv_yk(z):
 
     p = pots.Phi_yk(sig=sig, eps=eps, z=z)
 
-    nf = NoroFrenkelPair(p, p.segments, r_min=sig, phi_min=-1.0)
+    nf = NoroFrenkelPair(p.phi, p.segments, r_min=sig, phi_min=-1.0)
 
     for prop in ["sig", "B2", "lam"]:
         for beta in BETAS:

@@ -1,6 +1,15 @@
-from ._potentials import Phi_Baseclass, Phi_cut, Phi_cut_base, Phi_lfs
+# type: ignore
+# from ._potentials import (
+#     PhiBaseCuttable,
+#     PhiBaseGenericCut,
+#     PhiCut,
+#     PhiLFS,
+# )
+
+from . import measures, norofrenkel
 from .norofrenkel import NoroFrenkelPair
-from .potentials import Phi_hs, Phi_lj, Phi_nm, Phi_sw, Phi_yk, factory_phi
+from .potentials import CubicTable, Phi_hs, Phi_lj, Phi_nm, Phi_sw, Phi_yk, factory_phi
+from .potentials_base import PhiAnalytic, PhiBase, PhiCut, PhiGeneric, PhiLFS
 
 try:
     import pkg_resources
@@ -13,16 +22,22 @@ except Exception:
 
 
 __all__ = [
-    "Phi_Baseclass",
-    "Phi_cut_base",
-    "Phi_cut",
-    "Phi_lfs",
-    "NoroFrenkelPair",
+    # "PhiBaseCuttable",
+    # "PhiBaseGenericCut",
+    "PhiCut",
+    "PhiLFS",
+    "PhiBase",
+    "PhiAnalytic",
+    "PhiGeneric",
     "Phi_lj",
     "Phi_nm",
     "Phi_sw",
     "Phi_hs",
     "Phi_yk",
+    "CubicTable",
     "factory_phi",
+    "NoroFrenkelPair",
+    "measures",
+    "norofrenkel",
     "__version__",
 ]

@@ -1,8 +1,12 @@
 import numpy as np
 
 import analphipy.potentials as pots
+from analphipy import PhiGeneric  # type: ignore
 
-# import pytest
+
+def _get_generic(p):
+
+    return PhiGeneric(phi_func=p.phi, dphidr_func=p.dphidr, segments=p.segments)
 
 
 def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
@@ -16,6 +20,7 @@ def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
         rcut = None
 
     p = factory(**kws)
+    p = _get_generic(p)
 
     if cut:
         p = p.cut(rcut=rcut)
@@ -60,6 +65,8 @@ def test_nm_cut(lj_cut_params):
 
     p = pots.Phi_nm(n=12, m=6, sig=params.sig, eps=params.eps).cut(rcut=params.rcut)
 
+    p = _get_generic(p)
+
     phi1 = p.phi(params.r)
     dphi1 = -p.dphidr(params.r) / params.r
 
@@ -74,6 +81,8 @@ def test_nm_lfs(lj_lfs_params):
 
     p = pots.Phi_nm(n=12, m=6, sig=params.sig, eps=params.eps).lfs(rcut=params.rcut)
 
+    p = _get_generic(p)
+
     phi1 = p.phi(params.r)
     dphi1 = -p.dphidr(params.r) / params.r
 
@@ -87,7 +96,3 @@ def test_sw(sw_params):
 
 def test_yk(yk_params):
     _do_test(yk_params, pots.Phi_yk, kws=yk_params.asdict(), phidphi=False)
-
-
-def test_hs(hs_params):
-    _do_test(hs_params, pots.Phi_hs, phidphi=False)

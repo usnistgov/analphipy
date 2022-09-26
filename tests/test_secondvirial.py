@@ -26,7 +26,7 @@ def test_B2_sw():
 
         p = pots.Phi_sw(sig=sig, eps=eps, lam=lam)
 
-        a = NoroFrenkelPair(phi=p, segments=p.segments, r_min=sig, phi_min=eps)
+        a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
 
         out = a.table(g["beta"], ["B2", "B2_dbeta"])
 
@@ -58,7 +58,7 @@ def test_B2_lj():
             p = p_base
 
         a = NoroFrenkelPair.from_phi(
-            phi=p, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
+            phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
         out = a.table(g["beta"], ["B2", "B2_dbeta"])
@@ -83,7 +83,7 @@ def test_B2_nm():
         p = pots.Phi_nm(n=n_exp, m=m_exp, sig=sig, eps=eps)
 
         a = NoroFrenkelPair.from_phi(
-            phi=p, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
+            phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
         out = a.table(g["beta"], ["B2", "B2_dbeta"])
@@ -106,7 +106,7 @@ def test_B2_yk():
     for (z_yukawa), g in df.groupby(["z_yukawa"]):
         p = pots.Phi_yk(z=z_yukawa, sig=sig, eps=eps)
 
-        a = NoroFrenkelPair(phi=p, segments=p.segments, r_min=sig, phi_min=-1.0)
+        a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)
 
         out = a.table(g["beta"], ["B2", "B2_dbeta"])
 
@@ -122,10 +122,10 @@ def test_B2_hs():
 
     B2a = 2 * np.pi / 3.0 * sig**3
 
-    B2b = measures.secondvirial(p, beta=1.0, segments=[0.0, sig])
+    B2b = measures.secondvirial(p.phi, beta=1.0, segments=[0.0, sig])
 
     np.testing.assert_allclose(B2a, B2b)
 
-    B2_dbeta = measures.secondvirial_dbeta(p, beta=1.0, segments=[0.0, sig])
+    B2_dbeta = measures.secondvirial_dbeta(p.phi, beta=1.0, segments=[0.0, sig])
 
     np.testing.assert_allclose(0.0, B2_dbeta)

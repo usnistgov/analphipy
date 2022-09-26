@@ -44,7 +44,12 @@ extensions = [
     "nbsphinx",
     # "sphinx_autosummary_accessors",
     # "scanpydoc.rtd_github_links",
-    "sphinx.ext.viewcode",
+    # local source
+    # "sphinx.ext.viewcode",
+    # github source
+    "sphinx.ext.linkcode",
+    # spelling
+    "sphinxcontrib.spelling",
 ]
 
 # defined stuff, from xarray
@@ -53,7 +58,7 @@ nbsphinx_prolog = """
 {% set docname = env.doc2path(env.docname, base=None) %}
 
 
-You can view this notebook `on Github <https://github.com/wpk-nist-gov/analphipy/blob/master/doc/{{ docname }}>`_.
+You can view this notebook `on Github <https://github.com/usnistgov/analphipy/blob/main/doc/{{ docname }}>`_.
 """
 
 nbsphinx_kernel_name = "python3"
@@ -69,9 +74,10 @@ autodoc_default_flags = [
 # # for scanpydoc's jinja filter
 # project_dir = pathlib.Path(__file__).parent.parent
 html_context = {
-    "github_user": "wpk-nist-gov",
+    "github_user": "usnistgov",
     "github_repo": "analphipy",
-    "github_version": "master",
+    "github_version": "main",
+    "doc_path": "doc",
 }
 
 autodoc_typehints = "none"
@@ -172,6 +178,56 @@ pygments_style = "sphinx"
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
+
+# based on numpy doc/source/conf.py
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    import inspect
+
+    if domain != "py":
+        return None
+
+    modname = info["module"]
+    fullname = info["fullname"]
+
+    submod = sys.modules.get(modname)
+    if submod is None:
+        return None
+
+    obj = submod
+    for part in fullname.split("."):
+        try:
+            obj = getattr(obj, part)
+        except AttributeError:
+            return None
+
+    try:
+        fn = inspect.getsourcefile(inspect.unwrap(obj))
+    except TypeError:
+        fn = None
+    if not fn:
+        return None
+
+    try:
+        source, lineno = inspect.getsourcelines(obj)
+    except OSError:
+        lineno = None
+
+    if lineno:
+        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
+    else:
+        linespec = ""
+
+    fn = os.path.relpath(fn, start=os.path.dirname(analphipy.__file__))
+
+    return (
+        f"https://github.com/usnistgov/analphipy/blob/master/analphipy/{fn}{linespec}"
+    )
+
+
+spelling_word_list_filename = "spelling_wordlist.txt"
 
 # -- Options for HTML output -------------------------------------------
 

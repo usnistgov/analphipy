@@ -4,48 +4,42 @@
 Installation
 ============
 
-
 Stable release
 --------------
 
-To install analphipy, run this command in your terminal:
+To install ``analphipy``, run one of the following command:
 
 .. code-block:: console
 
-    $ pip install analphipy
+   # from pip
+   $ pip install analphipy
 
-This is the preferred method to install analphipy, as it will always install the most recent stable release.
-
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
-
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+   # from conda/mamba
+   $ conda install -c wpk-nist analphipy
 
 
 From sources
 ------------
 
-The sources for analphipy can be downloaded from the `Github repo`_.
+The sources for ``analphipy`` can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/wpk-nist-gov/analphipy
-
-Or download the `tarball`_:
-
-.. code-block:: console
-
-    $ curl -OJL https://github.com/wpk-nist-gov/analphipy/tarball/master
+    $ git clone {repo}
 
 Once you have a copy of the source, you can install it with:
 
 .. code-block:: console
 
-    $ python setup.py install
+   # You may want a seperate virtual environment.  You can create a conda env with
+   $ conda env create -n {env-name} -f environment-dev.yml
+   $ conda activate {env-name}
+
+   # install editable package
+   $ pip install -e . --no-deps
 
 
-.. _Github repo: https://github.com/wpk-nist-gov/analphipy
-.. _tarball: https://github.com/wpk-nist-gov/analphipy/tarball/master
+
+.. _Github repo: https://github.com/usnistgov/analphipy

@@ -3,27 +3,11 @@
 API Reference
 =============
 
-Generic potentials
+Defined potentials
 ------------------
 
-.. autosummary::
-   :toctree: generated/
-   :template: custom-class.rst
+These potentials have defined values for :math:`\phi(r)` as well as exact values for :math:`r_{\rm min}`, if appropriate.
 
-   Phi_Baseclass
-
-
-.. autosummary::
-   :toctree: generated/
-   :template: custom-class.rst
-
-   Phi_cut
-   Phi_lfs
-
-
-
-Specific potentials
--------------------
 
 .. autosummary::
    :toctree: generated/
@@ -38,17 +22,40 @@ Specific potentials
 .. autosummary::
    :toctree: generated/
 
-
    factory_phi
 
-Analysis
---------
+
+
+
+Base classes for potentials
+---------------------------
 
 .. autosummary::
    :toctree: generated/
    :template: custom-class.rst
 
+   PhiBase
+   PhiAnalytic
+   PhiGeneric
+   PhiCut
+   PhiLFS
+
+
+
+Analysis
+--------
+
+``norofrenkel`` module
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. autosummary::
+   :toctree: generated/
+   :template: custom-class.rst
+
+
    NoroFrenkelPair
+
 
 .. currentmodule:: analphipy.norofrenkel
 
@@ -61,25 +68,35 @@ Analysis
    lam_nf_dbeta
 
 
-
-
-
-
-
-
-
-
-Measures
---------
+``measures`` module
+^^^^^^^^^^^^^^^^^^^
 
 .. currentmodule:: analphipy.measures
+
+
+.. autosummary::
+   :toctree: generated/
+   :template: custom-class.rst
+
+   Measures
 
 .. autosummary::
    :toctree: generated/
 
-
    secondvirial
    secondvirial_dbeta
-
+   secondvirial_sw
    diverg_kl_cont
    diverg_js_cont
+
+
+``utils`` module
+^^^^^^^^^^^^^^^^
+
+.. currentmodule:: analphipy.utils
+
+.. autosummary::
+   :toctree: generated/
+
+   quad_segments
+   minimize_phi

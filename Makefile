@@ -147,6 +147,8 @@ docs: ## generate Sphinx HTML documentation, including API docs
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
+doc-spelling:
+	sphinx-build -b spelling docs docs/_build
 
 ################################################################################
 # distribution

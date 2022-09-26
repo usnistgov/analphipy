@@ -29,6 +29,8 @@ dependencies:
     - sphinx_rtd_theme
     - recommonmark # if want markdown
     - nbsphinx # if want notebooks
+    - sphinxcontrib-spelling
+    # - sphinx-toolbox
     # lsp stuff
     - autoflake
     - pyls-mypy
@@ -44,3 +46,6 @@ dependencies:
             - mypy-extensions
             - pytest-monkeytype
             - flake8-mypy
+            # - attr-utils
+            # spelling?
+            - pyenchant

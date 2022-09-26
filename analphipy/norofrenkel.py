@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from functools import wraps
-from typing import TYPE_CHECKING, Any, Callable, Mapping, Optional, Sequence, cast
+from typing import TYPE_CHECKING, Any, Mapping, Optional, Sequence, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
@@ -10,19 +9,10 @@ from ._docstrings import docfiller_shared
 from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
 from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
-from .utils import TWO_PI, minimize_phi, quad_segments
+from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
-    from ._potentials import Phi_Abstractclass
-
-
-def add_quad_kws(func: Callable) -> Callable:
-    @wraps(func)
-    def wrapped(self, *args, **kws):
-        kws = dict(self.quad_kws, **kws)
-        return func(self, *args, **kws)
-
-    return wrapped
+    from ._potentials import PhiBase  # type: ignore
 
 
 @docfiller_shared
@@ -73,7 +63,7 @@ def sig_nf(
 
     See Also
     --------
-    utils.quad_segments
+    ~analphipy.utils.quad_segments
 
     References
     ----------
@@ -188,7 +178,7 @@ def lam_nf(beta: float, sig: float, eps: float, B2: float):
     return lam
 
 
-@doc_inherit(lam_nf, style="numpy_with_merge")
+@docfiller_shared
 def lam_nf_dbeta(
     beta: float,
     sig: float,
@@ -199,14 +189,23 @@ def lam_nf_dbeta(
     sig_dbeta: float,
 ):
     """
-    Calculate derivative of ``lam_nf`` with respect to ``beta``
+    Calculate derivative of ``lam_nf``  with respect to ``beta``
 
     Parameters
     ----------
+    {beta}
+    sig : float
+        Particle diameter.
+    eps : float
+        Energy parameter in square well potential. The convention is that ``eps`` is the same as the value of ``phi`` at the minimum.
+    B2 : float
+        Second virial coefficient to match.
+    lam : float
+        Value from :func:`analphipy.norofrenekl.lam_nf`.
     B2_dbeta : float
         d(B2)/d(beta) at ``beta``
     sig_dbeta : float
-        derivative of noro-frenkel sigma w.r.t inverse temperature at `beta`
+        derivative of Noro-Frenkel sigma w.r.t inverse temperature at `beta`
 
     Returns
     -------
@@ -216,6 +215,7 @@ def lam_nf_dbeta(
     See Also
     --------
     lam_nf
+
     """
 
     B2_hs = TWO_PI / 3.0 * sig**3
@@ -339,7 +339,7 @@ class NoroFrenkelPair:
         bounds : array-like, optional
             Optional bounds for numerically locating ``r_min``.
         quad_kws : mapping, optional
-            Optional arguments to :func:`analphipy.quad_segments`.
+            Optional arguments to :func:`analphipy.utils.quad_segments`.
         **kws :
             Extra arguments to :func:`analphipy.utils.minimize_phi`.
 
@@ -367,7 +367,7 @@ class NoroFrenkelPair:
     @classmethod
     def from_phi_class(
         cls,
-        phi: "Phi_Abstractclass",
+        phi: "PhiBase",
         r_min: Optional[float] = None,
         bounds: Optional[tuple[float, float]] = None,
         quad_kws: Optional[dict[str, Any]] = None,
@@ -384,7 +384,7 @@ class NoroFrenkelPair:
         bounds : array-like, optional
             Optional bounds for numerically locating ``r_min``.
         quad_kws : mapping, optional
-            Optional arguments to :func:`analphipy.quad_segments`.
+            Optional arguments to :func:`analphipy.utils.quad_segments`.
         **kws :
             Extra arguments to :func:`analphipy.utils.minimize_phi`.
 
@@ -419,7 +419,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        measures.secondvirial
+        ~measures.secondvirial
         """
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
@@ -453,7 +453,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        analphipy.norofrenkel.lam_nf
+        ~norofrenkel.lam_nf
         """
         return lam_nf(
             beta=beta,
@@ -478,7 +478,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        analphipy.measures.secondvirial_dbeta
+        ~measures.secondvirial_dbeta
         """
         return secondvirial_dbeta(
             phi=self.phi, beta=beta, segments=self.segments, **kws
@@ -491,7 +491,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        analphipy.norofrenkel.sig_nf_dbeta
+        ~norofrenkel.sig_nf_dbeta
 
         """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
@@ -502,7 +502,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        analphipy.norofrenkel.lam_nf_dbeta
+        ~norofrenkel.lam_nf_dbeta
         """
         return lam_nf_dbeta(
             beta=beta,

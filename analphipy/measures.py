@@ -1,11 +1,20 @@
-from typing import Callable, Optional, Union, cast
+from __future__ import annotations
+
+from typing import Callable, Mapping, Optional, Sequence, Union, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
 
+from analphipy.cached_decorators import gcached
+
 from ._docstrings import docfiller_shared
 from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
-from .utils import TWO_PI, combine_segmets, quad_segments
+from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
+
+
+def other():
+    """A function"""
+    pass
 
 
 @docfiller_shared
@@ -15,11 +24,10 @@ def secondvirial(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     r"""
     Calculate the second virial coefficient.
-
 
     .. math::
 
@@ -42,6 +50,9 @@ def secondvirial(
     {error_summed}
     {full_output_summed}
 
+    See Also
+    --------
+    ~analphipy.utils.quad_segments
     """
 
     def integrand(r):
@@ -54,7 +65,7 @@ def secondvirial(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
@@ -65,7 +76,7 @@ def secondvirial_dbeta(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     r"""
     ``beta`` derivative of second virial coefficient.
@@ -106,7 +117,7 @@ def secondvirial_dbeta(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
@@ -184,8 +195,8 @@ def diverg_kl_disc(
     result : float or ndarray
         value of KB divergence
 
-    See Also
-    --------
+    References
+    ----------
     {kl_link}
     """
 
@@ -223,10 +234,10 @@ def diverg_kl_cont(
     volume: Optional[Union[str, Callable]] = None,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     """
-    Calculate continuous Kullback–Leibler divergence for contiuous pdf
+    Calculate continuous Kullback–Leibler divergence for continuous pdf
 
     Parameters
     ----------
@@ -235,7 +246,7 @@ def diverg_kl_cont(
     {volume_int_func}
     {segments}
     segments_q : list, optional
-        if supplied, build total segments by combining segments and seqments_q
+        if supplied, build total segments by combining segments and segments_q
     {err}
     {full_output}
 
@@ -246,8 +257,8 @@ def diverg_kl_cont(
     {error_summed}
     {full_output_summed}
 
-    See Also
-    --------
+    References
+    ----------
     {kl_link}
     """
     volume = _check_volume_func(volume)
@@ -265,7 +276,7 @@ def diverg_kl_cont(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
 
 
@@ -281,8 +292,8 @@ def diverg_js_disc(
     result : float or ndarray
         value of JS divergence
 
-    See Also
-    --------
+    References
+    ----------
     {js_link}
     """
 
@@ -322,7 +333,7 @@ def diverg_js_cont(
     volume: Optional[Union[str, Callable]] = None,
     err: bool = False,
     full_output: bool = False,
-    **kws
+    **kws,
 ):
     """
     Continuous Jensen–Shannon divergence
@@ -333,8 +344,8 @@ def diverg_js_cont(
     result : float or ndarray
         value of JS divergence
 
-    See Also
-    --------
+    References
+    ----------
     {js_link}
     """
 
@@ -353,5 +364,216 @@ def diverg_js_cont(
         sum_errors=True,
         err=err,
         full_output=full_output,
-        **kws
+        **kws,
     )
+
+
+@docfiller_shared
+class Measures:
+    """
+    Convenience class for calculating measures
+
+    Parameters
+    ----------
+    {phi}
+    {segments}
+    {quad_kws}
+
+    """
+
+    def __init__(
+        self,
+        phi: Phi_Signature,
+        segments: Sequence[float],
+        quad_kws: Mapping | None = None,
+    ) -> None:
+
+        self.phi = phi
+        self.segments = segments
+        if quad_kws is None:
+            quad_kws = {}
+        self.quad_kws = quad_kws
+
+    @gcached(prop=False)
+    @add_quad_kws
+    @docfiller_shared
+    def secondvirial(self, beta, err=False, full_output=False, **kws):
+        """
+        Calculate second virial coefficient.
+
+        Parameters
+        ----------
+        {beta}
+        {err}
+        {full_output}
+
+        **kws
+            Extra arguments to :func:`analphipy.quad_segments`
+
+        Returns
+        -------
+        B2 : float
+            Value of second virial coefficient.
+        {error_summed}
+        {full_output_summed}
+
+        See Also
+        --------
+        ~measures.secondvirial
+        """
+        return secondvirial(
+            phi=self.phi,
+            beta=beta,
+            segments=self.segments,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )
+
+    @gcached(prop=False)
+    @add_quad_kws
+    @docfiller_shared
+    def secondvirial_dbeta(self, beta, err=False, full_output=False, **kws):
+        """
+        Calculate ``beta`` derivative of second virial coefficient.
+
+        Parameters
+        ----------
+        {beta}
+        {err}
+        {full_output}
+
+        Returns
+        -------
+        dB2dbeta : float
+            Value of derivative.
+        {error_summed}
+        {full_output_summed}
+
+
+        See Also
+        --------
+        ~measures.secondvirial_dbeta
+        """
+        return secondvirial_dbeta(
+            phi=self.phi,
+            beta=beta,
+            segments=self.segments,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )
+
+    @docfiller_shared
+    @add_quad_kws
+    def boltz_diverg_js(
+        self,
+        other,
+        beta: float,
+        beta_other: float | None = None,
+        volume: str | Callable = "3d",
+        err: bool = False,
+        full_output: bool = False,
+        **kws,
+    ):
+        r"""
+        Jenken-Shannon divergence of the Boltzmann factors of two potentials.
+
+        The Boltzmann factors are defined as:
+
+        .. math::
+
+            B(r; \beta, \phi) = \exp(-\beta \phi(r))
+
+
+        Parameters
+        ----------
+        other : :class:`analphipy.PhiBase`
+            Class wrapping other potential to compare `self` to.
+        {beta}
+        beta_other : float, optional
+            beta value to evaluate other Boltzmann factor at.
+        {volume_int_func}
+
+        See Also
+        --------
+        ~measures.diverg_js_cont
+
+        References
+        --------
+        `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
+        """
+
+        if beta_other is None:
+            beta_other = beta
+
+        p = lambda x: np.exp(-beta * self.phi(x))
+        q = lambda x: np.exp(-beta_other * other.phi(x))
+
+        return diverg_js_cont(
+            p=p,
+            q=q,
+            segments=self.segments,
+            segments_q=other.segments,
+            volume=volume,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )
+
+    def mayer_diverg_js(
+        self,
+        other,
+        beta: float,
+        beta_other: float | None = None,
+        volume: str | Callable = "3d",
+        err: bool = False,
+        full_output: bool = False,
+        **kws,
+    ):
+        r"""
+        Jenken-Shannon divergence of the Mayer f-functions of two potentials.
+
+        The Mayer f-function is defined as:
+
+        .. math::
+
+            f(r; \beta, \phi) = \exp(-beta \phi(r)) - 1
+
+
+        Parameters
+        ----------
+        other : :class:`analphipy.PhiBase`
+            Class wrapping other potential to compare `self` to.
+        {beta}
+        beta_other : float, optional
+            beta value to evaluate other Boltzmann factor at.
+        {volume_int_func}
+
+
+        See Also
+        --------
+        ~measures.diverg_js_cont
+
+
+        References
+        ----------
+        `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
+        """
+
+        if beta_other is None:
+            beta_other = beta
+
+        p = lambda x: np.exp(-beta * self.phi(x)) - 1.0
+        q = lambda x: np.exp(-beta_other * other.phi(x)) - 1.0
+
+        return diverg_js_cont(
+            p=p,
+            q=q,
+            segments=self.segments,
+            segments_q=other.segments,
+            volume=volume,
+            err=err,
+            full_output=full_output,
+            **kws,
+        )

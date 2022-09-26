@@ -104,7 +104,7 @@ _shared_docs = {
     "segments":
     """
     segments : sequence of ints
-        Integration limits. For ``n = len(segmetns)`` integration will be perfomed over ranges
+        Integration limits. For ``n = len(segmetns)`` integration will be performed over ranges
         ``(segments[0], segments[1]), (segments[1], segments[2]), ..., (segments[n-2], segments[n-]])``
     """,
     "phi_rep":
@@ -166,8 +166,8 @@ _shared_docs = {
     """
     volume : str or callable, optional
         Volume element in integration.
-        For examle, use volume = lambda x: 4 * np.pi * x ** 2 for spherically symmetric 3d integration.
-        Can also pass string value of {'1d', '2d','3d'}.  If passed None, then assume '1d' integration.
+        For example, use ``volume = lambda x: 4 * np.pi * x ** 2`` for spherically symmetric 3d integration.
+        Can also pass string value of {'1d', '2d', '3d'}.  If passed None, then assume '1d' integration.
     """,
     # References
     "ref_Noro_Frenkel":
