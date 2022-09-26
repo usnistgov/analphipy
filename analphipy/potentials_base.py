@@ -46,12 +46,17 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
     {segments}
     """
 
+    #: Position of minimum in :math:`\phi(r)`
     r_min: float | None = _kw_only_field(
         converter=optional_converter(float), repr=field_formatter()
     )
+
+    #: Value of ``phi`` at minimum.
     phi_min: float | None = _kw_only_field(
         converter=optional_converter(float), repr=field_formatter()
     )
+
+    #: Integration limits
     segments: Sequence[float] | None = _kw_only_field(
         converter=segments_converter,
     )
@@ -177,24 +182,21 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
 
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         r"""
-                Derivative of pair potential.
+        Derivative of pair potential.
 
-                This returns the value of ``dphi(r)/dr``:
-
-                .. math::
-
-                    \frac{d \phi(r)}{dr} = \frac{d \phi(r)}{d r}A
+        This returns the value of :math:`d \phi(r) / dr`
 
 
-                Parameters
-        n       ----------
-                r : array-like
-                    pair separation
 
-                Returns
-                -------
-                dphidr : ndarray
-                    Pair potential values.
+        Parameters
+        ----------
+        r : array-like
+            pair separation
+
+        Returns
+        -------
+        dphidr : ndarray
+            Pair potential values.
 
         """
         raise NotImplementedError("Must implement in subclass")
@@ -233,7 +235,7 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
 
         See Also
         --------
-        analphipy.minimize_phi
+        ~analphipy.utils.minimize_phi
         """
 
         if bounds == "segments":
@@ -288,7 +290,7 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
 
     def to_measures(self, **kws):
         """
-        Create a :class:`analphipy.Measures` object.
+        Create a :class:`analphipy.measures.Measures` object.
 
         Parameters
         ----------
@@ -298,7 +300,7 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
 
         Returns
         -------
-        nf : :class:`analphipy.Measures`
+        nf : :class:`analphipy.measures.Measures`
         """
 
         for k in ["phi", "segments"]:
@@ -324,10 +326,23 @@ class _PhiBaseCut(_PhiBase):
     So, for example, for just cut, `_vcorrect(r) = -v(rcut)`, `dvrcut=0`,
     and for lfs, `_vcorrect(r) = -v(rcut) - dv(rcut)/dr (r - rcut)`
     `_dvcorrect(r) = ...`
+
+
+    Parameters
+    ----------
+    phi_base : PhiBase
+        Instance of (sub)class of :class:`analphipy.PhiBase`.
+    rcut : float
+        Position to cut the potential.
+
+
     """
 
+    #: Instance of (sub)class of :class:`analphipy.PhiBase`
     phi_base: PhiBase
+    #: Position to cut the potential
     rcut: float = field(converter=float)
+    #: Integration limits
     segments: float = private_field()
 
     def __attrs_post_init__(self):
@@ -409,7 +424,7 @@ class PhiLFS(_PhiBaseCut):
 
     .. math::
 
-        \phi_{rm lfs}(r) =
+        \phi_{\rm lfs}(r) =
             \begin{cases}
                 \phi(r)
                 - \left( \frac{d \phi}{d r} \right)_{\rm cut} (r - r_{\rm cut})
@@ -460,7 +475,10 @@ class PhiGeneric(PhiBase):
         Optional function ``dphidr(r)``.
     """
 
+    #: Function :math:`\phi(r)`
     phi_func: Phi_Signature
+
+    #: Function :math:`d\phi(r)/dr`
     dphidr_func: Phi_Signature | None = None
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
@@ -487,6 +505,9 @@ class PhiAnalytic(PhiBase):
 
     """
 
+    #: Position of minimum in :math:`\phi(r)`
     r_min: float = field(init=False, repr=field_formatter())
+    #: Value of ``phi`` at minimum.
     phi_min: float = field(init=False, repr=False)
+    #: Integration limits.
     segments: float = field(init=False)

@@ -12,6 +12,11 @@ from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
 from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 
+def other():
+    """A function"""
+    pass
+
+
 @docfiller_shared
 def secondvirial(
     phi: Phi_Signature,
@@ -23,7 +28,6 @@ def secondvirial(
 ):
     r"""
     Calculate the second virial coefficient.
-
 
     .. math::
 
@@ -46,6 +50,9 @@ def secondvirial(
     {error_summed}
     {full_output_summed}
 
+    See Also
+    --------
+    ~analphipy.utils.quad_segments
     """
 
     def integrand(r):
@@ -188,8 +195,8 @@ def diverg_kl_disc(
     result : float or ndarray
         value of KB divergence
 
-    See Also
-    --------
+    References
+    ----------
     {kl_link}
     """
 
@@ -230,7 +237,7 @@ def diverg_kl_cont(
     **kws,
 ):
     """
-    Calculate continuous Kullback–Leibler divergence for contiuous pdf
+    Calculate continuous Kullback–Leibler divergence for continuous pdf
 
     Parameters
     ----------
@@ -239,7 +246,7 @@ def diverg_kl_cont(
     {volume_int_func}
     {segments}
     segments_q : list, optional
-        if supplied, build total segments by combining segments and seqments_q
+        if supplied, build total segments by combining segments and segments_q
     {err}
     {full_output}
 
@@ -250,8 +257,8 @@ def diverg_kl_cont(
     {error_summed}
     {full_output_summed}
 
-    See Also
-    --------
+    References
+    ----------
     {kl_link}
     """
     volume = _check_volume_func(volume)
@@ -285,8 +292,8 @@ def diverg_js_disc(
     result : float or ndarray
         value of JS divergence
 
-    See Also
-    --------
+    References
+    ----------
     {js_link}
     """
 
@@ -337,8 +344,8 @@ def diverg_js_cont(
     result : float or ndarray
         value of JS divergence
 
-    See Also
-    --------
+    References
+    ----------
     {js_link}
     """
 
@@ -389,7 +396,31 @@ class Measures:
 
     @gcached(prop=False)
     @add_quad_kws
+    @docfiller_shared
     def secondvirial(self, beta, err=False, full_output=False, **kws):
+        """
+        Calculate second virial coefficient.
+
+        Parameters
+        ----------
+        {beta}
+        {err}
+        {full_output}
+
+        **kws
+            Extra arguments to :func:`analphipy.quad_segments`
+
+        Returns
+        -------
+        B2 : float
+            Value of second virial coefficient.
+        {error_summed}
+        {full_output_summed}
+
+        See Also
+        --------
+        ~measures.secondvirial
+        """
         return secondvirial(
             phi=self.phi,
             beta=beta,
@@ -401,7 +432,29 @@ class Measures:
 
     @gcached(prop=False)
     @add_quad_kws
+    @docfiller_shared
     def secondvirial_dbeta(self, beta, err=False, full_output=False, **kws):
+        """
+        Calculate ``beta`` derivative of second virial coefficient.
+
+        Parameters
+        ----------
+        {beta}
+        {err}
+        {full_output}
+
+        Returns
+        -------
+        dB2dbeta : float
+            Value of derivative.
+        {error_summed}
+        {full_output_summed}
+
+
+        See Also
+        --------
+        ~measures.secondvirial_dbeta
+        """
         return secondvirial_dbeta(
             phi=self.phi,
             beta=beta,
@@ -424,26 +477,29 @@ class Measures:
         **kws,
     ):
         r"""
-        Jenken-Shannon divergence of the Boltzman factors of two potentials.
+        Jenken-Shannon divergence of the Boltzmann factors of two potentials.
 
         The Boltzmann factors are defined as:
 
         .. math::
 
-            B(r; \beta, \phi) = \exp(-beta \phi(r))
+            B(r; \beta, \phi) = \exp(-\beta \phi(r))
 
 
         Parameters
         ----------
-        other : Phi class
+        other : :class:`analphipy.PhiBase`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
-            beta value to evaluate other boltzman factor at.
+            beta value to evaluate other Boltzmann factor at.
         {volume_int_func}
 
-
         See Also
+        --------
+        ~measures.diverg_js_cont
+
+        References
         --------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
         """
@@ -487,16 +543,21 @@ class Measures:
 
         Parameters
         ----------
-        other : Phi class
+        other : :class:`analphipy.PhiBase`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
-            beta value to evaluate other boltzman factor at.
+            beta value to evaluate other Boltzmann factor at.
         {volume_int_func}
 
 
         See Also
         --------
+        ~measures.diverg_js_cont
+
+
+        References
+        ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
         """
 

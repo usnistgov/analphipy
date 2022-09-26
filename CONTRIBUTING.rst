@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/wpk-nist-gov/analphipy/issues.
+Report bugs at https://github.com/usnistgov/analphipy/issues.
 
 If you are reporting a bug, please include:
 
@@ -45,7 +45,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/wpk-nist-gov/analphipy/issues.
+The best way to send feedback is to file an issue at https://github.com/usnistgov/analphipy/issues.
 
 If you are proposing a feature:
 
@@ -64,11 +64,10 @@ Ready to contribute? Here's how to set up `analphipy` for local development.
 
     $ git clone git@github.com:your_name_here/analphipy.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv.
 
-    $ mkvirtualenv analphipy
-    $ cd analphipy/
-    $ python setup.py develop
+    $ conda env create -f environment-def.yaml
+    $ pip install -e . --no-deps
 
 4. Create a branch for local development::
 
@@ -102,27 +101,11 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check
-   https://travis-ci.com/wpk-nist-gov/analphipy/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+3. The pull request should work for Python 3.8, 3.9, and 3.10 . Check
 
 Tips
 ----
 
 To run a subset of tests::
 
-$ pytest tests.test_analphipy
-
-
-Deploying
----------
-
-A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
-
-$ bump2version patch # possible: major / minor / patch
-$ git push
-$ git push --tags
-
-Travis will then deploy to PyPI if tests pass.
+$ pytest path/to/tests

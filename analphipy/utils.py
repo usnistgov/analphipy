@@ -153,7 +153,7 @@ def minimize_phi(
     phi : callable
         Function to be minimized.
     r0 : float
-        Guess for postion of minimum.
+        Guess for position of minimum.
     bounds : tuple of floats
         If passed, should be of form ``bounds=(lower_bound, upper_bound)``.
     **kws :

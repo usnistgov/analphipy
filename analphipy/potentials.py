@@ -29,12 +29,14 @@ class Phi_lj(PhiAnalytic):
         Energy parameter :math:`\epsilon`.
     """
 
+    #: Length parameter :math:`\sigma`
     sig: float = 1.0
+    #: Energy parameter :math:`\epsilon`
     eps: float = 1.0
 
     def __attrs_post_init__(self):
         self._immutable_setattrs(
-            r_min=self.sig * 2.0 ** (2.0 / 6.0),
+            r_min=self.sig * 2.0 ** (1.0 / 6.0),
             phi_min=-self.eps,
             segments=(0.0, np.inf),
         )
@@ -88,10 +90,11 @@ class Phi_nm(PhiAnalytic):
     -----
     with parameters ``n=12`` and ``m=6``, this is equivalent to :class:`Phi_lj`.
     """
-    n: int = 12
-    m: int = 6
-    sig: float = 1.0
-    eps: float = 1.0
+
+    n: int = 12  #: ``n`` parameter
+    m: int = 6  #: ``m`` parameter
+    sig: float = 1.0  #: Length parameter
+    eps: float = 1.0  #: Energy parameter
 
     def __attrs_post_init__(self):
         n, m = self.n, self.m
@@ -151,9 +154,9 @@ class Phi_yk(PhiAnalytic):
 
     """
 
-    z: float = 1.0
-    sig: float = 1.0
-    eps: float = 1.0
+    z: float = 1.0  #: Interaction parameter
+    sig: float = 1.0  #: Length parameter
+    eps: float = 1.0  #: Energy parameter
 
     def __attrs_post_init__(self):
         self._immutable_setattrs(
@@ -187,6 +190,7 @@ class Phi_hs(PhiAnalytic):
         \begin{cases}
         \infty & r \leq \sigma \\
         0 & r > \sigma
+        \end{cases}
 
     Parameters
     ----------
@@ -194,7 +198,7 @@ class Phi_hs(PhiAnalytic):
         Length scale parameter :math:`\sigma`
     """
 
-    sig: float = 1.0
+    sig: float = 1.0  #: Length parameter
 
     def __attrs_post_init__(self):
         self._immutable_setattrs(segments=(0.0, self.sig))
@@ -234,9 +238,9 @@ class Phi_sw(PhiAnalytic):
         Width of well parameter :math:`lambda`.
     """
 
-    sig: float = 1.0
-    eps: float = 1.0
-    lam: float = 1.5
+    sig: float = 1.0  #: Length parameter.
+    eps: float = 1.0  #: Energy parameter.
+    lam: float = 1.5  #: Well width parameter.
 
     def __attrs_post_init__(self):
         self._immutable_setattrs(
@@ -450,6 +454,15 @@ def factory_phi(
     -------
     phi :
         output potential energy class.
+
+
+    See Also
+    --------
+    Phi_lj
+    Phi_nm
+    Phi_sw
+    Phi_hs
+    Phi_yk
     """
 
     name = potential_name.lower()

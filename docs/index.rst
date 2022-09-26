@@ -7,7 +7,7 @@ Welcome to analphipy's documentation!
 
    readme
    installation
-   usage
+   notebooks/usage
    api_autosummary
    contributing
    authors

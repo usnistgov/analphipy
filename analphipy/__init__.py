@@ -6,7 +6,7 @@
 #     PhiLFS,
 # )
 
-from .measures import Measures
+from . import measures, norofrenkel
 from .norofrenkel import NoroFrenkelPair
 from .potentials import CubicTable, Phi_hs, Phi_lj, Phi_nm, Phi_sw, Phi_yk, factory_phi
 from .potentials_base import PhiAnalytic, PhiBase, PhiCut, PhiGeneric, PhiLFS
@@ -29,8 +29,6 @@ __all__ = [
     "PhiBase",
     "PhiAnalytic",
     "PhiGeneric",
-    "NoroFrenkelPair",
-    "Measures",
     "Phi_lj",
     "Phi_nm",
     "Phi_sw",
@@ -38,5 +36,8 @@ __all__ = [
     "Phi_yk",
     "CubicTable",
     "factory_phi",
+    "NoroFrenkelPair",
+    "measures",
+    "norofrenkel",
     "__version__",
 ]
