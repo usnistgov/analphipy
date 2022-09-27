@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Why analphipy &mdash; analphipy 0.0.3 documentation</title>
+  <title>Why analphipy &mdash; analphipy 0.0.4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,7 +14,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -73,7 +75,7 @@
             <a href="../index.html" class="icon icon-home"> analphipy
           </a>
               <div class="version">
-                0.0.3
+                0.0.4
               </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
@@ -446,7 +448,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <p>You can view this notebook <a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/doc/notebooks/usage.ipynb">on Github</a>.</p>
 <section id="Why-analphipy">
-<h1>Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code><a class="headerlink" href="#Why-analphipy" title="Permalink to this headline"></a></h1>
+<h1>Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code><a class="headerlink" href="#Why-analphipy" title="Permalink to this heading"></a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">analphipy</span></code> is a python package for common analysis on pair potentials. It’s features include</p>
 <ul class="simple">
 <li><p>Simple interface for defining a pair potential</p></li>
@@ -455,7 +457,7 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>This package is used actively by the author, so new metrics and potentials will be added over time. If you have a suggestion, please let the author know!</p>
 <section id="Useful-references">
-<h2>Useful references<a class="headerlink" href="#Useful-references" title="Permalink to this headline"></a></h2>
+<h2>Useful references<a class="headerlink" href="#Useful-references" title="Permalink to this heading"></a></h2>
 <p>Please take a look at the following for a primer on the type of analysis provided in <code class="docutils literal notranslate"><span class="pre">analphipy</span></code>.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://aip.scitation.org/doi/10.1063/1.1288684">M.G. Noro and D. Frenkel (2000), “Extended corresponding-states behavior for particles with variable range attractions”. Journal of Chemical Physics, 113, 2941.</a></p></li>
@@ -465,7 +467,7 @@ div.rendered_html tbody tr:hover {
 </section>
 </section>
 <section id="A-simple-example">
-<h1>A simple example<a class="headerlink" href="#A-simple-example" title="Permalink to this headline"></a></h1>
+<h1>A simple example<a class="headerlink" href="#A-simple-example" title="Permalink to this heading"></a></h1>
 <p>Let’s take a look at the properties of a <a class="reference external" href="https://en.wikipedia.org/wiki/Lennard-Jones_potential">Lennard-Jones</a> (LJ), which has a length scale <span class="math notranslate nohighlight">\(\sigma\)</span> and energy scale <span class="math notranslate nohighlight">\(\epsilon\)</span>. It is typical to consider units of length in terms of <span class="math notranslate nohighlight">\(\sigma\)</span> and energy in terms of <span class="math notranslate nohighlight">\(\epsilon\)</span>, which is the same as setting <span class="math notranslate nohighlight">\(\sigma=1\)</span> and <span class="math notranslate nohighlight">\(\epsilon=1\)</span>. We create a LJ potential object using the following:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -712,7 +714,7 @@ div.rendered_html tbody tr:hover {
 <p>There are several more metrics, and potential energy functions included with <code class="docutils literal notranslate"><span class="pre">analphipy</span></code>. Please look at the api reference for further information!</p>
 </section>
 <section id="Defining-your-own-potential">
-<h1>Defining your own potential<a class="headerlink" href="#Defining-your-own-potential" title="Permalink to this headline"></a></h1>
+<h1>Defining your own potential<a class="headerlink" href="#Defining-your-own-potential" title="Permalink to this heading"></a></h1>
 <p>If you’d like to define your own potential energy function, there are two routes. The easiest is the define a callable potential energy function, and use <code class="docutils literal notranslate"><span class="pre">PhiGeneric</span></code>. For example, you can create a LJ potential using:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -888,7 +890,7 @@ File <span class="ansi-green-fg">~/Documents/python/projects/analphipy/analphipy
 </div>
 </section>
 <section id="Cut-potential">
-<h1>Cut potential<a class="headerlink" href="#Cut-potential" title="Permalink to this headline"></a></h1>
+<h1>Cut potential<a class="headerlink" href="#Cut-potential" title="Permalink to this heading"></a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">analphipy</span></code> provides a simple means to ‘cut’ the potential. To perform a simple cut, use the following:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1051,7 +1053,7 @@ array(0.03899948)
 
   <div role="contentinfo">
     <p>&#169; Copyright 2021, William P. Krekelberg.
-      <span class="lastupdated">Last updated on 2022-09-26.
+      <span class="lastupdated">Last updated on 2022-09-27.
       </span></p>
   </div>
 

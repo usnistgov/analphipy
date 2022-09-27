@@ -1,2 +1,1 @@
-cp -af ../../docs/_build/html/* .
-
+cp -af ../../.tox/docs/tmp/html/* .
