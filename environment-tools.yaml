@@ -41,7 +41,7 @@ dependencies:
     # mypy
     - mypy
     - pytest-mypy
-    # Monkeytype?
+    # Monkeytype: autocreate type hints
     - MonkeyType
     - pip
     - pip:

@@ -31,6 +31,7 @@ clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and 
 clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
+	rm -rf docs/_build
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
@@ -46,8 +47,6 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
-
-
 
 
 ################################################################################
@@ -70,31 +69,33 @@ pre-commit-run-all: ## run pre-commit on all files
 .git: ## init git
 	git init
 
+
 init: .git pre-commit-init ## run git-init pre-commit
 
 
 ################################################################################
 # virtual env
 ################################################################################
-.PHONY: conda-env conda-dev conda-all mamba-env mamba-dev mamba-all activate
-conda-env: ## conda create base env
-	conda env create -f environment.yaml
+.PHONY: mamba-env mamba-dev mamba-env-update mamba-dev-update activate
 
-conda-dev: ## conda update development dependencies
-	conda env update -n analphipy-env -f environment-dev.yaml
+environment-dev.yaml: environment.yaml environment-tools.yaml
+	conda-merge environment.yaml environment-tools.yaml > environment-dev.yaml
 
-conda-all: conda-env conda-dev ## conda create development env
-
-mamba-env: ## mamba create base env
+mamba-env: environment.yaml
 	mamba env create -f environment.yaml
 
-mamba-dev: ## mamba update development dependencies
-	mamba env update -n analphipy-env -f environment-dev.yaml
+mamba-dev: environment-dev.yaml
+	mamba env create -f environment-dev.yaml
 
-mamba-all: mamba-env mamba-dev ## mamba create development env
+mamba-env-update: environment.yaml
+	mamba env update -f environment.yml
+
+mamba-dev-update: environment-dev.yaml
+	mamba env update -f environment-dev.yml
 
 activate: ## activate base env
-	conda activate analphipy-env
+	conda activate {{ cookiecutter.project_slug }}-env
+
 
 
 ################################################################################
@@ -128,8 +129,11 @@ coverage: ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 
-version: ## check version of package
+version-scm: ## check version of package
 	python -m setuptools_scm
+
+version-import: ## check version from python import
+	python -c 'import analphipy; print(analphipy.__version__)'
 
 ################################################################################
 # Docs
@@ -164,12 +168,19 @@ release: dist ## package and upload a release
 release-test: dist ## package and upload to test
 	twine upload --repository testpypi dist/*
 
-conda-dist: ## build conda dist (run dist and clean?)
-	mkdir conda_dist; \
-	cd cond_dist; \
-	grayskull pypi analphipy ; \
-	conda-build .; \
+
+conda-greyskull:
+	mkdir -p conda_dist && \
+	cd conda_dist && \
+	grayskull pypi analphipy && \
+	cat analphipy/meta.yaml
+
+conda-build:
+	cd conda_dist && \
+	conda-build . && \
 	echo 'upload now'
+
+conda-dist: conda-greyskull conda-build
 
 
 ################################################################################
