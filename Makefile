@@ -71,7 +71,7 @@ pre-commit-run-all: ## run pre-commit on all files
 	git init
 
 
-init: .git pre-commit-init ## run git-init pre-commit
+init: .git pre-commit-init  ## run git-init pre-commit
 
 
 ################################################################################
