@@ -31,6 +31,8 @@ clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and 
 clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
+	rm -rf docs/_build
+	rm -rf conda-build/
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
@@ -46,8 +48,6 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
-
-
 
 
 ################################################################################
@@ -70,31 +70,33 @@ pre-commit-run-all: ## run pre-commit on all files
 .git: ## init git
 	git init
 
+
 init: .git pre-commit-init ## run git-init pre-commit
 
 
 ################################################################################
 # virtual env
 ################################################################################
-.PHONY: conda-env conda-dev conda-all mamba-env mamba-dev mamba-all activate
-conda-env: ## conda create base env
-	conda env create -f environment.yaml
+.PHONY: mamba-env mamba-dev mamba-env-update mamba-dev-update activate
 
-conda-dev: ## conda update development dependencies
-	conda env update -n analphipy-env -f environment-dev.yaml
+environment-dev.yaml: environment.yaml environment-tools.yaml
+	conda-merge environment.yaml environment-tools.yaml > environment-dev.yaml
 
-conda-all: conda-env conda-dev ## conda create development env
-
-mamba-env: ## mamba create base env
+mamba-env: environment.yaml
 	mamba env create -f environment.yaml
 
-mamba-dev: ## mamba update development dependencies
-	mamba env update -n analphipy-env -f environment-dev.yaml
+mamba-dev: environment-dev.yaml
+	mamba env create -f environment-dev.yaml
 
-mamba-all: mamba-env mamba-dev ## mamba create development env
+mamba-env-update: environment.yaml
+	mamba env update -f environment.yml
+
+mamba-dev-update: environment-dev.yaml
+	mamba env update -f environment-dev.yml
 
 activate: ## activate base env
-	conda activate analphipy-env
+	conda activate {{ cookiecutter.project_slug }}-env
+
 
 
 ################################################################################
@@ -128,15 +130,24 @@ coverage: ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 
-version: ## check version of package
+################################################################################
+# versioning
+################################################################################
+.PHONY: version-scm version-import version
+version-scm: ## check version of package
 	python -m setuptools_scm
+
+version-import: ## check version from python import
+	python -c 'import analphipy; print(analphipy.__version__)'
+
+version: version-scm version-import
 
 ################################################################################
 # Docs
 ################################################################################
-.PHONY: docs serverdocs
+.PHONY: docs serverdocs doc-spelling docs-nist-pages
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/analphipy.rst
+	 -f docs/analphipy.rst
 	rm -f docs/modules.rst
 	rm -fr docs/generated
 	$(MAKE) -C docs clean
@@ -146,30 +157,49 @@ docs: ## generate Sphinx HTML documentation, including API docs
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-doc-spelling:
+docs-spelling:
 	sphinx-build -b spelling docs docs/_build
+
+docs-nist-pages:
+	tox -e docs-nist-pages
+
+
 
 ################################################################################
 # distribution
-################################################################################
-dist: ## builds source and wheel package (run clean?)
-	python setup.py sdist
-	python setup.py bdist_wheel
-	ls -l dist
+###############################################################################
+.PHONY: pypi-build pypi-release pypi-test-release pypi-dist
+pypi-build:
+	tox -e pypi-build
 
-.PHONY: release release-test conda-dist
-release: dist ## package and upload a release
-	twine upload dist/*
+pypi-release:
+	twine upload .tox/pypi-build/tmp/dist
 
-release-test: dist ## package and upload to test
-	twine upload --repository testpypi dist/*
+pypi-test-release:
+	twine upload --repository testpypi .tox/pypi-build/tmp/dist
 
-conda-dist: ## build conda dist (run dist and clean?)
-	mkdir conda_dist; \
-	cd cond_dist; \
-	grayskull pypi analphipy ; \
-	conda-build .; \
-	echo 'upload now'
+
+pypi-dist:
+	pypi-build
+	pypi-release
+
+
+.PHONY: conda-grayksull conda-build conda-release conda-dist
+
+conda-grayskull:
+	tox -e grayskull
+
+conda-build:
+	tox -e conda-build
+
+conda-release:
+	echo 'prefix upload with .tox/conda-dist/'
+
+conda-dist:
+	conda-grayskull
+	conda-build
+	conda-release
+
 
 
 ################################################################################
@@ -177,7 +207,7 @@ conda-dist: ## build conda dist (run dist and clean?)
 ################################################################################
 .PHONY: install install-dev
 install: ## install the package to the active Python's site-packages (run clean?)
-	python setup.py install
+	pip install .
 
 install-dev: ## install development version (run clean?)
 	pip install -e . --no-deps
