@@ -32,6 +32,7 @@ clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
 	rm -rf docs/_build
+	rm -rf conda-build/
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
@@ -129,11 +130,17 @@ coverage: ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 
+################################################################################
+# versioning
+################################################################################
+.PHONY: version-scm version-import version
 version-scm: ## check version of package
 	python -m setuptools_scm
 
 version-import: ## check version from python import
 	python -c 'import analphipy; print(analphipy.__version__)'
+
+version: version-scm version-import
 
 ################################################################################
 # Docs
@@ -153,13 +160,14 @@ servedocs: docs ## compile the docs watching for changes
 doc-spelling:
 	sphinx-build -b spelling docs docs/_build
 
+
 ################################################################################
 # distribution
-################################################################################
+###############################################################################
 dist: ## builds source and wheel package (run clean?)
-	python setup.py sdist
-	python setup.py bdist_wheel
+	python -m build
 	ls -l dist
+
 
 .PHONY: release release-test conda-dist
 release: dist ## package and upload a release
@@ -176,7 +184,7 @@ conda-greyskull:
 	cat analphipy/meta.yaml
 
 conda-build:
-	cd conda_dist && \
+	cd conda-dist && \
 	conda-build . && \
 	echo 'upload now'
 
