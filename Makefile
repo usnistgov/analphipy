@@ -145,9 +145,9 @@ version: version-scm version-import
 ################################################################################
 # Docs
 ################################################################################
-.PHONY: docs serverdocs
+.PHONY: docs serverdocs doc-spelling docs-nist-pages
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/analphipy.rst
+	 -f docs/analphipy.rst
 	rm -f docs/modules.rst
 	rm -fr docs/generated
 	$(MAKE) -C docs clean
@@ -157,38 +157,49 @@ docs: ## generate Sphinx HTML documentation, including API docs
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-doc-spelling:
+docs-spelling:
 	sphinx-build -b spelling docs docs/_build
+
+docs-nist-pages:
+	tox -e docs-nist-pages
+
 
 
 ################################################################################
 # distribution
 ###############################################################################
-dist: ## builds source and wheel package (run clean?)
-	python -m build
-	ls -l dist
+.PHONY: pypi-build pypi-release pypi-test-release pypi-dist
+pypi-build:
+	tox -e pypi-build
+
+pypi-release:
+	twine upload .tox/pypi-build/tmp/dist
+
+pypi-test-release:
+	twine upload --repository testpypi .tox/pypi-build/tmp/dist
 
 
-.PHONY: release release-test conda-dist
-release: dist ## package and upload a release
-	twine upload dist/*
-
-release-test: dist ## package and upload to test
-	twine upload --repository testpypi dist/*
+pypi-dist:
+	pypi-build
+	pypi-release
 
 
-conda-greyskull:
-	mkdir -p conda_dist && \
-	cd conda_dist && \
-	grayskull pypi analphipy && \
-	cat analphipy/meta.yaml
+.PHONY: conda-grayksull conda-build conda-release conda-dist
+
+conda-grayskull:
+	tox -e grayskull
 
 conda-build:
-	cd conda-dist && \
-	conda-build . && \
-	echo 'upload now'
+	tox -e conda-build
 
-conda-dist: conda-greyskull conda-build
+conda-release:
+	echo 'prefix upload with .tox/conda-dist/'
+
+conda-dist:
+	conda-grayskull
+	conda-build
+	conda-release
+
 
 
 ################################################################################
@@ -196,7 +207,7 @@ conda-dist: conda-greyskull conda-build
 ################################################################################
 .PHONY: install install-dev
 install: ## install the package to the active Python's site-packages (run clean?)
-	python setup.py install
+	pip install .
 
 install-dev: ## install development version (run clean?)
 	pip install -e . --no-deps

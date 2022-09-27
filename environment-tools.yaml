@@ -17,15 +17,15 @@ dependencies:
     - ipython
     - ipykernel
     # build
-    - setuptools
     - setuptools-scm
-    - twine
-    - setuptools_scm_git_archive
-    - build
+    # - setuptools
+    # - twine
+    # - setuptools_scm_git_archive
+    # - build
     # conda specific
-    - conda-build
-    - anaconda-client
-    - greyskull
+    # - conda-build
+    # - anaconda-client
+    # - greyskull
     # doc stuff
     - sphinx
     - sphinx_rtd_theme
