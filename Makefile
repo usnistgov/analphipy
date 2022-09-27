@@ -165,7 +165,7 @@ docs-nist-pages:
 
 
 
-################################################################################
+###############################################################################
 # distribution
 ###############################################################################
 .PHONY: pypi-build pypi-release pypi-test-release pypi-dist
@@ -173,11 +173,10 @@ pypi-build:
 	tox -e pypi-build
 
 pypi-release:
-	twine upload .tox/pypi-build/tmp/dist
+	tox -e pypi-release
 
 pypi-test-release:
-	twine upload --repository testpypi .tox/pypi-build/tmp/dist
-
+	tox -e pypi-test-release
 
 pypi-dist:
 	pypi-build
