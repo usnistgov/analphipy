@@ -164,6 +164,21 @@ docs-spelling:
 docs-nist-pages:
 	tox -e docs-nist-pages
 
+.PHONY: create-docs-nist-pages
+# create docs-nist-pages directory with empty branch
+create-docs-nist-pages:
+	mkdir -p docs-nist-pages ; \
+	cd docs-nist-pages ; \
+	echo git clone git@github.com:usnistgov/analphipy.git html ;\
+	echo "To push, use the following" ; \
+	echo "cd docs-nist-pages/html" ; \
+	echo "" ; \
+	echo git checkout --orphan nist-pages ; \
+	echo git reset --hard ; \
+	echo git commit --allow-empty -m "Initializing gh-pages branch" ; \
+	echo git push origin nist-pages ; \
+	echo git checkout master ; \
+
 
 
 ###############################################################################
