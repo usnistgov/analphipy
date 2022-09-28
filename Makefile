@@ -89,10 +89,10 @@ mamba-dev: environment-dev.yaml
 	mamba env create -f environment-dev.yaml
 
 mamba-env-update: environment.yaml
-	mamba env update -f environment.yml
+	mamba env update -f environment.yaml
 
 mamba-dev-update: environment-dev.yaml
-	mamba env update -f environment-dev.yml
+	mamba env update -f environment-dev.yaml
 
 activate: ## activate base env
 	conda activate {{ cookiecutter.project_slug }}-env
