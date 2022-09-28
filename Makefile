@@ -140,6 +140,7 @@ version-scm: ## check version of package
 version-import: ## check version from python import
 	python -c 'import analphipy; print(analphipy.__version__)'
 
+
 version: version-scm version-import
 
 ################################################################################
