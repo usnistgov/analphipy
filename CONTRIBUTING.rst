@@ -64,33 +64,58 @@ Ready to contribute? Here's how to set up `analphipy` for local development.
 
     $ git clone git@github.com:your_name_here/analphipy.git
 
-3. Install your local copy into a virtualenv.
+3. Install dependecies.  There are useful commands in the makefile, that depend on
+   `pre-commit` and `conda-merge`.  These can be installed with `pip`, `pipx`, or `conda/mamba`.
 
-    $ conda env create -f environment-def.yaml
-    $ pip install -e . --no-deps
+4. Initiate pre-commit with::
 
-4. Create a branch for local development::
+     $ pre-commit install
+
+   To update the recipe, use::
+
+     $ pre-commit autoupdate
+
+5. Create virtual env::
+
+     $ make mamba-dev
+     $ conda activate {{ cookiecutter.project_slug }}-env
+
+   Alternatively, to create a different named env, use::
+
+     $ make environment-dev.yaml
+     $ conda/mamba env create -n {env-name} -f environment-dev.yaml
+     $ conda activate {env-name}
+
+
+6. Install editable package::
+
+     $ pip install -e . --no-deps
+
+
+7. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
-   Now you can make your changes locally.
+   Now you can make your changes locally.  Alternatively, we recommend using git flow.
 
-5. When you're done making changes, check that your changes pass flake8 and the
+
+
+8. When you're done making changes, check that your changes pass flake8 and the
    tests, including testing other Python versions with tox::
 
-    $ flake8 analphipy tests
-    $ python setup.py test or pytest
-    $ tox
+     $ pre-commit run [--all-files]
+     $ pytest
 
    To get flake8 and tox, just pip install them into your virtualenv.
 
-6. Commit your changes and push your branch to GitHub::
+
+9. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Submit a pull request through the GitHub website.
+10. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
@@ -101,11 +126,38 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.8, 3.9, and 3.10 . Check
+3. The pull request should work for Python 3.8, 3.9, 3.10.
 
-Tips
-----
 
-To run a subset of tests::
+Using tox
+---------
 
-$ pytest path/to/tests
+The package is setup to use tox to test, build and release pip and conda distributions, and release the docs.  Most of these tasks have a command in the makefie.  To test against multiple versions, use::
+
+  $ make test-all
+
+To build the documentation in an isolated environment, use::
+
+  $ make docs-build
+
+To release the documentation use::
+
+  $ make docs-release posargs='-m "commit message" -r origin -p'
+
+Where posargs is are passed to ghp-import.  Note that the branch created is called `nist-pages`.  This can be changed in `tox.ini`.
+
+To build the distribution, use::
+
+  $ make dist-pypi-[build-testrelease-release]
+
+where `build` build to distro, `testrelease` tests putting on `testpypi` and release puts the distro on pypi.
+
+To build the conda distribution, use::
+
+  $ make dist-conda-[recipe, build]
+
+where `recipe` makes the conda recipy (using grayskull), and `build` makes the distro.  This can be manually added to a channel.
+
+To test the created distrobutions, you can use one of::
+
+  $ make test-dist-[pypi, conda]-[local,remote] py=[38, 39, 310]

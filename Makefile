@@ -114,23 +114,6 @@ user-all: user-venv user-autoenv-zsh ## runs user scripts
 
 
 ################################################################################
-# Testing
-################################################################################
-.PHONY: test test-all coverage
-test: ## run tests quickly with the default Python
-	pytest -x -v
-
-test-all: ## run tests on every Python version with tox
-	tox -- -x -v
-
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source analphipy -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
-
-
-################################################################################
 # versioning
 ################################################################################
 .PHONY: version-scm version-import version
@@ -143,13 +126,26 @@ version-import: ## check version from python import
 
 version: version-scm version-import
 
+
+################################################################################
+# Testing
+################################################################################
+.PHONY: test coverage
+test: ## run tests quickly with the default Python
+	pytest -x -v
+
+coverage: ## check code coverage quickly with the default Python
+	coverage run --source analphipy -m pytest
+	coverage report -m
+	coverage html
+	$(BROWSER) htmlcov/index.html
+
+
 ################################################################################
 # Docs
 ################################################################################
-.PHONY: docs serverdocs doc-spelling docs-nist-pages
+.PHONY: docs serverdocs doc-spelling
 docs: ## generate Sphinx HTML documentation, including API docs
-	 -f docs/analphipy.rst
-	rm -f docs/modules.rst
 	rm -fr docs/generated
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
@@ -161,59 +157,68 @@ servedocs: docs ## compile the docs watching for changes
 docs-spelling:
 	sphinx-build -b spelling docs docs/_build
 
-docs-nist-pages:
-	tox -e docs-nist-pages
-
-.PHONY: create-docs-nist-pages
-# create docs-nist-pages directory with empty branch
-create-docs-nist-pages:
-	mkdir -p docs-nist-pages ; \
-	cd docs-nist-pages ; \
-	echo git clone git@github.com:usnistgov/analphipy.git html ;\
-	echo "To push, use the following" ; \
-	echo "cd docs-nist-pages/html" ; \
-	echo "" ; \
-	echo git checkout --orphan nist-pages ; \
-	echo git reset --hard ; \
-	echo git commit --allow-empty -m "Initializing gh-pages branch" ; \
-	echo git push origin nist-pages ; \
-	echo git checkout master ; \
-
-
 
 ###############################################################################
 # distribution
 ###############################################################################
-.PHONY: pypi-build pypi-release pypi-testrelease pypi-dist
-pypi-build:
-	tox -e pypi-build
+tox_posargs?=-v
+TOX=CONDA_EXE=mamba tox $(tox_posargs)
 
-pypi-release:
-	tox -e pypi-release
-
-pypi-testrelease:
-	tox -e pypi-testrelease
-
-pypi-dist:
-	pypi-build
-	pypi-release
+## testing
+.PHONY: test-all
+test-all: ## run tests on every Python version with tox
+	$(TOX) -- $(posargs)
 
 
-.PHONY: conda-grayksull conda-build conda-release conda-dist
+## docs
+.PHONY: docs-build docs-release docs-nist-pages
+posargs=
+docs-build:
+	$(TOX) -e docs-build -- $(posargs)
+docs-release:
+	$(TOX) -e docs-release -- $(posargs)
 
-conda-grayskull:
-	tox -e grayskull
+docs-nist-pages:
+	$(TOX) -e docs-build,docs-release -- $(posargs)
 
-conda-build:
-	tox -e conda-build
 
-conda-release:
-	echo 'prefix upload with .tox/conda-dist/'
+## distribution
+.PHONY: dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-conda-recipe dist-conda-build test-dist-pypi test-dist-conda
 
-conda-dist:
-	conda-grayskull
-	conda-build
-	conda-release
+
+dist-pypi-build: ## build dist, can pass posargs=... and tox_posargs=...
+	$(TOX) -e $@ -- $(posargs)
+
+dist-pypi-testrelease: ## test release on testpypi. can pass posargs=... and tox_posargs=...
+	$(TOX) -e $@ -- $(posargs)
+
+dist-pypi-release: ## release to pypi, can pass posargs=...
+	$(TOX) -e $@ -- $(posargs)
+
+dist-conda-recipe: ## build conda recipe can pass posargs=...
+	$(TOX) -e $@ -- $(posargs)
+
+dist-conda-build: ## build conda recipe can pass posargs=...
+	$(TOX) -e $@ -- $(pasargs)
+
+
+## test distribution
+.PHONY: test-dist-pypi-remote test-dist-conda-remote test-dist-pypi-local test-dist-conda-local
+
+py?=39
+test-dist-pypi-remote: ## test pypi install, can run as `make test-dist-pypi-remote py=39` to run test-dist-pypi-local-py39
+	$(TOX) -e $@-py$(py) -- $(posargs)
+
+test-dist-conda-remote: ## test conda install, can run as `make test-dist-conda-remote py=39` to run test-dist-conda-local-py39
+	$(TOX) -e $@-py$(py) -- $(poasargs)
+
+test-dist-pypi-local: ## test pypi install, can run as `make test-dist-pypi-local py=39` to run test-dist-pypi-local-py39
+	$(TOX) -e $@-py$(py) -- $(posargs)
+
+test-dist-conda-local: ## test conda install, can run as `make test-dist-conda-local py=39` to run test-dist-conda-local-py39
+	$(TOX) -e $@-py$(py) -- $(poasargs)
+
+
 
 
 
