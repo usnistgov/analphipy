@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; analphipy 0.0.5.dev13+g4c3ef0a.d20220930 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+
+	<!-- frame blocking -->
+	<script type="text/javascript">
+		if (top !=self) {
+			top.location=self.location;
+		}
+	</script>
+
+
+
+	<!-- NIST header and footer -->
+  <link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+  <!-- <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script> -->
+
+
+  <script type="text/javascript" src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+  <script>
+   $(document).ready(function(){
+       // Mark external (non-nist.gov) A tags with class "external"
+       //If the adress start with https and ends with nist.gov
+       var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+       //Regex to find address that start with https
+       var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+       $("a").each(function(){
+           var url=$(this).attr('href');
+           if(re_nist.test(url) || !re_absolute_address.test(url)){
+               $(this).addClass('local');
+           }else{
+               //This a href appears to be external, so tag it
+               $(this).addClass('external');
+           }
+       });
+       // Add leaveNotice to external A elements
+       $('a.external').leaveNotice();
+   });
+  </script>
+  <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> analphipy
+          </a>
+              <div class="version">
+                0.0.5.dev13+g4c3ef0a.d20220930
+              </div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">analphipy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/usage.html">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/usage.html#A-simple-example">A simple example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/usage.html#Defining-your-own-potential">Defining your own potential</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/usage.html#Cut-potential">Cut potential</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_autosummary.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">analphipy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <header class="nist-header" id="nist-header" role="banner">
+
+  <a href="https://www.nist.gov/" title="National Institute of Standards and Technology" class="nist-header__logo-link" rel="home">
+    <svg aria-hidden="true" class="nist-header__logo-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32">
+      <path d="M20.911 5.375l-9.482 9.482 9.482 9.482c0.446 0.446 0.446 1.161 0 1.607l-2.964 2.964c-0.446 0.446-1.161 0.446-1.607 0l-13.25-13.25c-0.446-0.446-0.446-1.161 0-1.607l13.25-13.25c0.446-0.446 1.161-0.446 1.607 0l2.964 2.964c0.446 0.446 0.446 1.161 0 1.607z"></path>
+    </svg>
+    <svg class="nist-header__logo-image" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-237 385.7 109.7 29.3">
+      <title>National Institute of Standards and Technology</title>
+      <g>
+        <path class="st0" d="M-231,415h-6v-23.1c0,0,0-4.4,4.4-5.8c4-1.3,6.6,1.3,6.6,1.3l19.7,21.3c1,0.6,1.4,0,1.4-0.6v-22h6.1V409
+          c0,1.9-1.6,4.4-4,5.3c-2.4,0.9-4.9,0.9-7.9-1.7l-18.5-20c-0.5-0.5-1.8-0.6-1.8,0.4L-231,415L-231,415z"/>
+        <path class="st0" d="M-195,386.1h6.1v20.7c0,2.2,1.9,2.2,3.6,2.2h26.8c1.1,0,2.4-1.3,2.4-2.7c0-1.4-1.3-2.8-2.5-2.8H-176
+          c-3,0.1-9.2-2.7-9.2-8.5c0-7.1,5.9-8.8,8.6-9h49.4v6.1h-12.3V415h-6v-22.9h-30.2c-2.9-0.2-4.9,4.7-0.2,5.4h18.6
+          c2.8,0,7.4,2.4,7.5,8.4c0,6.1-3.6,9-7.5,9H-185c-4.5,0-6.2-1.1-7.8-2.5c-1.5-1.5-1.7-2.3-2.2-5.3L-195,386.1
+          C-194.9,386.1-195,386.1-195,386.1z"/>
+      </g>
+    </svg>
+  </a>
+
+</header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.measures.Measures.__init__.html#analphipy.measures.Measures.__init__">__init__() (analphipy.measures.Measures method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.NoroFrenkelPair.__init__.html#analphipy.NoroFrenkelPair.__init__">(analphipy.NoroFrenkelPair method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_hs.__init__.html#analphipy.Phi_hs.__init__">(analphipy.Phi_hs method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_lj.__init__.html#analphipy.Phi_lj.__init__">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.__init__.html#analphipy.Phi_nm.__init__">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.__init__.html#analphipy.Phi_sw.__init__">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.__init__.html#analphipy.Phi_yk.__init__">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.__init__.html#analphipy.PhiAnalytic.__init__">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.__init__.html#analphipy.PhiBase.__init__">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.__init__.html#analphipy.PhiCut.__init__">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.__init__.html#analphipy.PhiGeneric.__init__">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.__init__.html#analphipy.PhiLFS.__init__">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.measures.Measures.__repr__.html#analphipy.measures.Measures.__repr__">__repr__() (analphipy.measures.Measures method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.NoroFrenkelPair.__repr__.html#analphipy.NoroFrenkelPair.__repr__">(analphipy.NoroFrenkelPair method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_hs.__repr__.html#analphipy.Phi_hs.__repr__">(analphipy.Phi_hs method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_lj.__repr__.html#analphipy.Phi_lj.__repr__">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.__repr__.html#analphipy.Phi_nm.__repr__">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.__repr__.html#analphipy.Phi_sw.__repr__">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.__repr__.html#analphipy.Phi_yk.__repr__">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.__repr__.html#analphipy.PhiAnalytic.__repr__">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.__repr__.html#analphipy.PhiBase.__repr__">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.__repr__.html#analphipy.PhiCut.__repr__">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.__repr__.html#analphipy.PhiGeneric.__repr__">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.__repr__.html#analphipy.PhiLFS.__repr__">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_hs.asdict.html#analphipy.Phi_hs.asdict">asdict() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.asdict.html#analphipy.Phi_lj.asdict">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.asdict.html#analphipy.Phi_nm.asdict">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.asdict.html#analphipy.Phi_sw.asdict">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.asdict.html#analphipy.Phi_yk.asdict">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.asdict.html#analphipy.PhiAnalytic.asdict">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.asdict.html#analphipy.PhiBase.asdict">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.asdict.html#analphipy.PhiCut.asdict">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.asdict.html#analphipy.PhiGeneric.asdict">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.asdict.html#analphipy.PhiLFS.asdict">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/analphipy.Phi_hs.assign.html#analphipy.Phi_hs.assign">assign() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.assign.html#analphipy.Phi_lj.assign">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.assign.html#analphipy.Phi_nm.assign">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.assign.html#analphipy.Phi_sw.assign">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.assign.html#analphipy.Phi_yk.assign">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.assign.html#analphipy.PhiAnalytic.assign">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.assign.html#analphipy.PhiBase.assign">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.assign.html#analphipy.PhiCut.assign">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.assign.html#analphipy.PhiGeneric.assign">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.assign.html#analphipy.PhiLFS.assign">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_hs.assign_min_numeric.html#analphipy.Phi_hs.assign_min_numeric">assign_min_numeric() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.assign_min_numeric.html#analphipy.Phi_lj.assign_min_numeric">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.assign_min_numeric.html#analphipy.Phi_nm.assign_min_numeric">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.assign_min_numeric.html#analphipy.Phi_sw.assign_min_numeric">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.assign_min_numeric.html#analphipy.Phi_yk.assign_min_numeric">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.assign_min_numeric.html#analphipy.PhiAnalytic.assign_min_numeric">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.assign_min_numeric.html#analphipy.PhiBase.assign_min_numeric">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.assign_min_numeric.html#analphipy.PhiCut.assign_min_numeric">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.assign_min_numeric.html#analphipy.PhiGeneric.assign_min_numeric">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.assign_min_numeric.html#analphipy.PhiLFS.assign_min_numeric">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.NoroFrenkelPair.B2.html#analphipy.NoroFrenkelPair.B2">B2() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.B2_dbeta.html#analphipy.NoroFrenkelPair.B2_dbeta">B2_dbeta() (analphipy.NoroFrenkelPair method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.NoroFrenkelPair.B2_sw.html#analphipy.NoroFrenkelPair.B2_sw">B2_sw() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.measures.Measures.boltz_diverg_js.html#analphipy.measures.Measures.boltz_diverg_js">boltz_diverg_js() (analphipy.measures.Measures method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_hs.cut.html#analphipy.Phi_hs.cut">cut() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.cut.html#analphipy.Phi_lj.cut">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.cut.html#analphipy.Phi_nm.cut">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.cut.html#analphipy.Phi_sw.cut">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.cut.html#analphipy.Phi_yk.cut">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.cut.html#analphipy.PhiAnalytic.cut">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.cut.html#analphipy.PhiBase.cut">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.cut.html#analphipy.PhiGeneric.cut">(analphipy.PhiGeneric method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.measures.diverg_js_cont.html#analphipy.measures.diverg_js_cont">diverg_js_cont() (in module analphipy.measures)</a>
+</li>
+      <li><a href="generated/analphipy.measures.diverg_kl_cont.html#analphipy.measures.diverg_kl_cont">diverg_kl_cont() (in module analphipy.measures)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_hs.dphidr.html#analphipy.Phi_hs.dphidr">dphidr() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.dphidr.html#analphipy.Phi_lj.dphidr">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.dphidr.html#analphipy.Phi_nm.dphidr">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.dphidr.html#analphipy.Phi_sw.dphidr">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.dphidr.html#analphipy.Phi_yk.dphidr">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.dphidr.html#analphipy.PhiAnalytic.dphidr">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.dphidr.html#analphipy.PhiBase.dphidr">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.dphidr.html#analphipy.PhiCut.dphidr">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.dphidr.html#analphipy.PhiGeneric.dphidr">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.dphidr.html#analphipy.PhiLFS.dphidr">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.PhiGeneric.dphidr_func.html#analphipy.PhiGeneric.dphidr_func">dphidr_func (analphipy.PhiGeneric attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_lj.eps.html#analphipy.Phi_lj.eps">eps (analphipy.Phi_lj attribute)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_nm.eps.html#analphipy.Phi_nm.eps">(analphipy.Phi_nm attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.eps.html#analphipy.Phi_sw.eps">(analphipy.Phi_sw attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.eps.html#analphipy.Phi_yk.eps">(analphipy.Phi_yk attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.NoroFrenkelPair.eps.html#analphipy.NoroFrenkelPair.eps">eps() (analphipy.NoroFrenkelPair method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.factory_phi.html#analphipy.factory_phi">factory_phi() (in module analphipy)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.NoroFrenkelPair.from_phi.html#analphipy.NoroFrenkelPair.from_phi">from_phi() (analphipy.NoroFrenkelPair class method)</a>
+</li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.from_phi_class.html#analphipy.NoroFrenkelPair.from_phi_class">from_phi_class() (analphipy.NoroFrenkelPair class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_sw.lam.html#analphipy.Phi_sw.lam">lam (analphipy.Phi_sw attribute)</a>
+</li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.lam.html#analphipy.NoroFrenkelPair.lam">lam() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.lam_dbeta.html#analphipy.NoroFrenkelPair.lam_dbeta">lam_dbeta() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.norofrenkel.lam_nf.html#analphipy.norofrenkel.lam_nf">lam_nf() (in module analphipy.norofrenkel)</a>
+</li>
+      <li><a href="generated/analphipy.norofrenkel.lam_nf_dbeta.html#analphipy.norofrenkel.lam_nf_dbeta">lam_nf_dbeta() (in module analphipy.norofrenkel)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_hs.lfs.html#analphipy.Phi_hs.lfs">lfs() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.lfs.html#analphipy.Phi_lj.lfs">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.lfs.html#analphipy.Phi_nm.lfs">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.lfs.html#analphipy.Phi_sw.lfs">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.lfs.html#analphipy.Phi_yk.lfs">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.lfs.html#analphipy.PhiAnalytic.lfs">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.lfs.html#analphipy.PhiBase.lfs">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.lfs.html#analphipy.PhiGeneric.lfs">(analphipy.PhiGeneric method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_nm.m.html#analphipy.Phi_nm.m">m (analphipy.Phi_nm attribute)</a>
+</li>
+      <li><a href="generated/analphipy.measures.Measures.mayer_diverg_js.html#analphipy.measures.Measures.mayer_diverg_js">mayer_diverg_js() (analphipy.measures.Measures method)</a>
+</li>
+      <li><a href="generated/analphipy.measures.Measures.html#analphipy.measures.Measures">Measures (class in analphipy.measures)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_hs.minimize.html#analphipy.Phi_hs.minimize">minimize() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.minimize.html#analphipy.Phi_lj.minimize">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.minimize.html#analphipy.Phi_nm.minimize">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.minimize.html#analphipy.Phi_sw.minimize">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.minimize.html#analphipy.Phi_yk.minimize">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.minimize.html#analphipy.PhiAnalytic.minimize">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.minimize.html#analphipy.PhiBase.minimize">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.minimize.html#analphipy.PhiCut.minimize">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.minimize.html#analphipy.PhiGeneric.minimize">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.minimize.html#analphipy.PhiLFS.minimize">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.utils.minimize_phi.html#analphipy.utils.minimize_phi">minimize_phi() (in module analphipy.utils)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_nm.n.html#analphipy.Phi_nm.n">n (analphipy.Phi_nm attribute)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_hs.new_like.html#analphipy.Phi_hs.new_like">new_like() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.new_like.html#analphipy.Phi_lj.new_like">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.new_like.html#analphipy.Phi_nm.new_like">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.new_like.html#analphipy.Phi_sw.new_like">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.new_like.html#analphipy.Phi_yk.new_like">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.new_like.html#analphipy.PhiAnalytic.new_like">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.new_like.html#analphipy.PhiBase.new_like">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.new_like.html#analphipy.PhiCut.new_like">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.new_like.html#analphipy.PhiGeneric.new_like">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.new_like.html#analphipy.PhiLFS.new_like">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.NoroFrenkelPair.html#analphipy.NoroFrenkelPair">NoroFrenkelPair (class in analphipy)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_hs.phi.html#analphipy.Phi_hs.phi">phi() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.phi.html#analphipy.Phi_lj.phi">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.phi.html#analphipy.Phi_nm.phi">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.phi.html#analphipy.Phi_sw.phi">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.phi.html#analphipy.Phi_yk.phi">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.phi.html#analphipy.PhiAnalytic.phi">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.phi.html#analphipy.PhiBase.phi">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.phi.html#analphipy.PhiCut.phi">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.phi.html#analphipy.PhiGeneric.phi">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.phi.html#analphipy.PhiLFS.phi">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/analphipy.PhiCut.phi_base.html#analphipy.PhiCut.phi_base">phi_base (analphipy.PhiCut attribute)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.PhiLFS.phi_base.html#analphipy.PhiLFS.phi_base">(analphipy.PhiLFS attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/analphipy.PhiGeneric.phi_func.html#analphipy.PhiGeneric.phi_func">phi_func (analphipy.PhiGeneric attribute)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_hs.html#analphipy.Phi_hs">Phi_hs (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_lj.html#analphipy.Phi_lj">Phi_lj (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_hs.phi_min.html#analphipy.Phi_hs.phi_min">phi_min (analphipy.Phi_hs attribute)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.phi_min.html#analphipy.Phi_lj.phi_min">(analphipy.Phi_lj attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.phi_min.html#analphipy.Phi_nm.phi_min">(analphipy.Phi_nm attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.phi_min.html#analphipy.Phi_sw.phi_min">(analphipy.Phi_sw attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.phi_min.html#analphipy.Phi_yk.phi_min">(analphipy.Phi_yk attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.phi_min.html#analphipy.PhiAnalytic.phi_min">(analphipy.PhiAnalytic attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.phi_min.html#analphipy.PhiBase.phi_min">(analphipy.PhiBase attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.phi_min.html#analphipy.PhiCut.phi_min">(analphipy.PhiCut attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.phi_min.html#analphipy.PhiGeneric.phi_min">(analphipy.PhiGeneric attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.phi_min.html#analphipy.PhiLFS.phi_min">(analphipy.PhiLFS attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_nm.html#analphipy.Phi_nm">Phi_nm (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.phi_rep.html#analphipy.NoroFrenkelPair.phi_rep">phi_rep() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_sw.html#analphipy.Phi_sw">Phi_sw (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_yk.html#analphipy.Phi_yk">Phi_yk (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.PhiAnalytic.html#analphipy.PhiAnalytic">PhiAnalytic (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.PhiBase.html#analphipy.PhiBase">PhiBase (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.PhiCut.html#analphipy.PhiCut">PhiCut (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.PhiGeneric.html#analphipy.PhiGeneric">PhiGeneric (class in analphipy)</a>
+</li>
+      <li><a href="generated/analphipy.PhiLFS.html#analphipy.PhiLFS">PhiLFS (class in analphipy)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.utils.quad_segments.html#analphipy.utils.quad_segments">quad_segments() (in module analphipy.utils)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_hs.r_min.html#analphipy.Phi_hs.r_min">r_min (analphipy.Phi_hs attribute)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.r_min.html#analphipy.Phi_lj.r_min">(analphipy.Phi_lj attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.r_min.html#analphipy.Phi_nm.r_min">(analphipy.Phi_nm attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.r_min.html#analphipy.Phi_sw.r_min">(analphipy.Phi_sw attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.r_min.html#analphipy.Phi_yk.r_min">(analphipy.Phi_yk attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.r_min.html#analphipy.PhiAnalytic.r_min">(analphipy.PhiAnalytic attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.r_min.html#analphipy.PhiBase.r_min">(analphipy.PhiBase attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.r_min.html#analphipy.PhiCut.r_min">(analphipy.PhiCut attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.r_min.html#analphipy.PhiGeneric.r_min">(analphipy.PhiGeneric attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.r_min.html#analphipy.PhiLFS.r_min">(analphipy.PhiLFS attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.PhiCut.rcut.html#analphipy.PhiCut.rcut">rcut (analphipy.PhiCut attribute)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.PhiLFS.rcut.html#analphipy.PhiLFS.rcut">(analphipy.PhiLFS attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.measures.Measures.secondvirial.html#analphipy.measures.Measures.secondvirial">secondvirial() (analphipy.measures.Measures method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.NoroFrenkelPair.secondvirial.html#analphipy.NoroFrenkelPair.secondvirial">(analphipy.NoroFrenkelPair method)</a>
+</li>
+        <li><a href="generated/analphipy.measures.secondvirial.html#analphipy.measures.secondvirial">(in module analphipy.measures)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/analphipy.measures.Measures.secondvirial_dbeta.html#analphipy.measures.Measures.secondvirial_dbeta">secondvirial_dbeta() (analphipy.measures.Measures method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.NoroFrenkelPair.secondvirial_dbeta.html#analphipy.NoroFrenkelPair.secondvirial_dbeta">(analphipy.NoroFrenkelPair method)</a>
+</li>
+        <li><a href="generated/analphipy.measures.secondvirial_dbeta.html#analphipy.measures.secondvirial_dbeta">(in module analphipy.measures)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.secondvirial_sw.html#analphipy.NoroFrenkelPair.secondvirial_sw">secondvirial_sw() (analphipy.NoroFrenkelPair method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.measures.secondvirial_sw.html#analphipy.measures.secondvirial_sw">(in module analphipy.measures)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/analphipy.Phi_hs.segments.html#analphipy.Phi_hs.segments">segments (analphipy.Phi_hs attribute)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.segments.html#analphipy.Phi_lj.segments">(analphipy.Phi_lj attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.segments.html#analphipy.Phi_nm.segments">(analphipy.Phi_nm attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.segments.html#analphipy.Phi_sw.segments">(analphipy.Phi_sw attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.segments.html#analphipy.Phi_yk.segments">(analphipy.Phi_yk attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.segments.html#analphipy.PhiAnalytic.segments">(analphipy.PhiAnalytic attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.segments.html#analphipy.PhiBase.segments">(analphipy.PhiBase attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.segments.html#analphipy.PhiCut.segments">(analphipy.PhiCut attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.segments.html#analphipy.PhiGeneric.segments">(analphipy.PhiGeneric attribute)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.segments.html#analphipy.PhiLFS.segments">(analphipy.PhiLFS attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_hs.sig.html#analphipy.Phi_hs.sig">sig (analphipy.Phi_hs attribute)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.sig.html#analphipy.Phi_lj.sig">(analphipy.Phi_lj attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.sig.html#analphipy.Phi_nm.sig">(analphipy.Phi_nm attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.sig.html#analphipy.Phi_sw.sig">(analphipy.Phi_sw attribute)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.sig.html#analphipy.Phi_yk.sig">(analphipy.Phi_yk attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.sig.html#analphipy.NoroFrenkelPair.sig">sig() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.sig_dbeta.html#analphipy.NoroFrenkelPair.sig_dbeta">sig_dbeta() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.norofrenkel.sig_nf.html#analphipy.norofrenkel.sig_nf">sig_nf() (in module analphipy.norofrenkel)</a>
+</li>
+      <li><a href="generated/analphipy.norofrenkel.sig_nf_dbeta.html#analphipy.norofrenkel.sig_nf_dbeta">sig_nf_dbeta() (in module analphipy.norofrenkel)</a>
+</li>
+      <li><a href="generated/analphipy.NoroFrenkelPair.sw_dict.html#analphipy.NoroFrenkelPair.sw_dict">sw_dict() (analphipy.NoroFrenkelPair method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.NoroFrenkelPair.table.html#analphipy.NoroFrenkelPair.table">table() (analphipy.NoroFrenkelPair method)</a>
+</li>
+      <li><a href="generated/analphipy.Phi_hs.to_measures.html#analphipy.Phi_hs.to_measures">to_measures() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.to_measures.html#analphipy.Phi_lj.to_measures">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.to_measures.html#analphipy.Phi_nm.to_measures">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.to_measures.html#analphipy.Phi_sw.to_measures">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.to_measures.html#analphipy.Phi_yk.to_measures">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.to_measures.html#analphipy.PhiAnalytic.to_measures">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.to_measures.html#analphipy.PhiBase.to_measures">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.to_measures.html#analphipy.PhiCut.to_measures">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.to_measures.html#analphipy.PhiGeneric.to_measures">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.to_measures.html#analphipy.PhiLFS.to_measures">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_hs.to_nf.html#analphipy.Phi_hs.to_nf">to_nf() (analphipy.Phi_hs method)</a>
+
+      <ul>
+        <li><a href="generated/analphipy.Phi_lj.to_nf.html#analphipy.Phi_lj.to_nf">(analphipy.Phi_lj method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_nm.to_nf.html#analphipy.Phi_nm.to_nf">(analphipy.Phi_nm method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_sw.to_nf.html#analphipy.Phi_sw.to_nf">(analphipy.Phi_sw method)</a>
+</li>
+        <li><a href="generated/analphipy.Phi_yk.to_nf.html#analphipy.Phi_yk.to_nf">(analphipy.Phi_yk method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiAnalytic.to_nf.html#analphipy.PhiAnalytic.to_nf">(analphipy.PhiAnalytic method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiBase.to_nf.html#analphipy.PhiBase.to_nf">(analphipy.PhiBase method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiCut.to_nf.html#analphipy.PhiCut.to_nf">(analphipy.PhiCut method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiGeneric.to_nf.html#analphipy.PhiGeneric.to_nf">(analphipy.PhiGeneric method)</a>
+</li>
+        <li><a href="generated/analphipy.PhiLFS.to_nf.html#analphipy.PhiLFS.to_nf">(analphipy.PhiLFS method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/analphipy.Phi_yk.z.html#analphipy.Phi_yk.z">z (analphipy.Phi_yk attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, William P. Krekelberg.
+      <span class="lastupdated">Last updated on 2022-09-30.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+
+
+	<br></br>
+	<footer class="nist-footer">
+  <div class="nist-footer__inner">
+    <div class="nist-footer__menu" role="navigation">
+      <ul>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/privacy-policy">Privacy Statement</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/privacy-policy#privpolicy">Privacy Policy</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/privacy-policy#secnot">Security Notice</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/privacy-policy#accesstate">Accessibility Statement</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/privacy">NIST Privacy Program</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/no-fear-act-policy">No Fear Act Policy</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/disclaimer">Disclaimer</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/office-director/freedom-information-act">FOIA</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/environmental-policy-statement">Environmental Policy Statement</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.nist.gov/privacy-policy#cookie">Cookie Disclaimer</a>
+        </li>
+        <li class="nist-footer__menu-item ">
+          <a href="https://www.nist.gov/summary-report-scientific-integrity">Scientific Integrity Summary</a>
+        </li>
+        <li class="nist-footer__menu-item ">
+          <a href="https://www.nist.gov/nist-information-quality-standards">NIST Information Quality Standards</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://business.usa.gov/">Business USA</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.commerce.gov/">Commerce.gov</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="https://www.healthcare.gov/">Healthcare.gov</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="http://www.science.gov/">Science.gov</a>
+        </li>
+        <li class="nist-footer__menu-item">
+          <a href="http://www.usa.gov/">USA.gov</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="nist-footer__logo">
+    <a href="https://www.nist.gov/" title="National Institute of Standards and Technology" class="nist-footer__logo-link" rel="home">
+      <img src="https://pages.nist.gov/nist-header-footer/images/nist_logo_centered_rev.svg" alt="National Institute of Standards and Technology logo" />
+    </a>
+  </div>
+</footer>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115121490-6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-115121490-6');
+  </script>
+
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
