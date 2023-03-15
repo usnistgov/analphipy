@@ -1,62 +1,48 @@
+# API Reference
+
+## Defined potentials
+
+These potentials have defined values for $\phi(r)$ as well as exact values for $r_{\rm min}$, if appropriate.
+
+```{eval-rst}
 .. currentmodule:: analphipy
-
-API Reference
-=============
-
-Defined potentials
-------------------
-
-These potentials have defined values for :math:`\phi(r)` as well as exact values for :math:`r_{\rm min}`, if appropriate.
-
-
 .. autosummary::
    :toctree: generated/
-   :template: custom-class.rst
 
    Phi_lj
    Phi_nm
    Phi_yk
    Phi_sw
    Phi_hs
-
-.. autosummary::
-   :toctree: generated/
-
    factory_phi
+```
 
+## Base classes for potentials
 
-
-
-Base classes for potentials
----------------------------
-
+```{eval-rst}
 .. autosummary::
    :toctree: generated/
-   :template: custom-class.rst
 
    PhiBase
    PhiAnalytic
    PhiGeneric
    PhiCut
    PhiLFS
+```
 
+## Analysis
 
+### `norofrenkel` module
 
-Analysis
---------
-
-``norofrenkel`` module
-^^^^^^^^^^^^^^^^^^^^^^
-
-
+```{eval-rst}
 .. autosummary::
    :toctree: generated/
-   :template: custom-class.rst
-
 
    NoroFrenkelPair
 
+```
 
+```{eval-rst}
 .. currentmodule:: analphipy.norofrenkel
 
 .. autosummary::
@@ -67,32 +53,28 @@ Analysis
    lam_nf
    lam_nf_dbeta
 
+```
 
-``measures`` module
-^^^^^^^^^^^^^^^^^^^
+### `measures` module
 
+```{eval-rst}
 .. currentmodule:: analphipy.measures
 
-
 .. autosummary::
    :toctree: generated/
-   :template: custom-class.rst
 
    Measures
-
-.. autosummary::
-   :toctree: generated/
-
    secondvirial
    secondvirial_dbeta
    secondvirial_sw
    diverg_kl_cont
    diverg_js_cont
 
+```
 
-``utils`` module
-^^^^^^^^^^^^^^^^
+### `utils` module
 
+```{eval-rst}
 .. currentmodule:: analphipy.utils
 
 .. autosummary::
@@ -100,3 +82,4 @@ Analysis
 
    quad_segments
    minimize_phi
+```

@@ -1,11 +1,246 @@
 [build-system]
 requires = [
-    "setuptools>=42",
-    "wheel",
+    "setuptools>=61.2",
     "setuptools_scm[toml]>=3.4",
     "setuptools_scm_git_archive",
 ]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "analphipy"
+authors = [{name = "William P. Krekelberg", email = "wpk@nist.gov"}]
+license = {text = "NIST license"}
+description = "Utilities to perform stat mech analysis of pair potentials"
+# if using markdown
+# long_description_content_type = text/markdown
+keywords = ["analphipy"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: Public Domain",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering",
+]
+dynamic = ["readme", "version"]
+requires-python = ">=3.7"
+dependencies = [
+    # additional packages
+    "attrs",
+    "typing-extensions",
+    "numpy",
+    "scipy",
+    "custom-inherit",
+]
+
+[project.urls]
+Homepage = "https://github.com/wpk-nist-gov/analphipy"
+
+[project.optional-dependencies]
+test = [
+    "pandas",
+    "pytest",
+    "pytest-mypy",
+    "mypy",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+zip-safe = true # if using mypy, must be False
+include-package-data = true
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst", "HISTORY.rst", "LICENSE"]}
+
 [tool.setuptools_scm]
 fallback_version = "999"
+
+[tool.aliases]
+test = "pytest"
+
+[tool.pytest.ini_options]
+addopts = "--verbose"
+testpaths = ["tests"]
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+force_to_top = ["true"]
+default_section = "THIRDPARTY"
+known_first_party = ["analphipy"]
+
+[tool.flake8]
+ignore = """
+E203 # whitespace before ':' - doesn't work well with black
+E402 # module level import not at top of file
+E501 # line too long - let black worry about that
+E731 # do not assign a lambda expression, use a def
+W503 # line break before binary operator"""
+exclude = """
+.eggs
+doc
+docs"""
+
+[tool.mypy]
+exclude = "properties|asv_bench|doc"
+files = ["."]
+show_error_codes = true
+warn_return_any = true
+warn_unused_configs = true
+# Most of the numerical computing stack doesn't have type annotations yet.
+
+[[tool.mypy.overrides]]
+module = ["affine.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["bottleneck.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["cartopy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["cdms2.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["cf_units.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["cfgrib.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["cftime.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["cupy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["dask.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["distributed.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["fsspec.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["h5netcdf.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["h5py.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["importlib_metadata.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["iris.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["matplotlib.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["Nio.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["nc_time_axis.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["numbagg.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["numpy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["netCDF4.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["netcdftime.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pandas.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pint.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pooch.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["PseudoNetCDF.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pydap.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pytest.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["rasterio.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["scipy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["seaborn.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["setuptools"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["sparse.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["toolz.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["zarr.*"]
+ignore_missing_imports = true
+# version spanning code is hard to type annotate (and most of this module will
+# be going away soon anyways)
+
+[[tool.mypy.overrides]]
+module = ["xarray.core.pycompat"]
+ignore_errors = true
