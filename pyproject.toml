@@ -40,7 +40,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/wpk-nist-gov/analphipy"
+homepage = "https://github.com/usnistgov/analphipy"
+documentation = "https://pages.nist.gov/analphipy/"
 
 [project.optional-dependencies]
 test = [
@@ -49,8 +50,6 @@ test = [
     "pytest-mypy",
     "mypy",
 ]
-homepage = "https://github.com/usnistgov/analphipy"
-documentation = "https://pages.nist.gov/analphipy/"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
