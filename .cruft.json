@@ -1,0 +1,43 @@
+{
+  "template": "https://github.com/wpk-nist-gov/cookiecutter-pypackage.git",
+  "commit": "bec57241a367a53b78574a970e4d17bc73656980",
+  "checkout": "feature/markdown",
+    "skip": [
+        "src/analphipy/__init__.py",
+        "README.md",
+        "HISTORY.md",
+        "AUTHORS.md",
+        "environment.yaml",
+        "environment-tools.yaml",
+        "docs/api.md",
+        "docs/index.md",
+        "docs/spelling_wordlist.txt"
+    ],
+  "context": {
+    "cookiecutter": {
+      "full_name": "William P. Krekelberg",
+      "email": "wpk@nist.gov",
+      "github_username": "usnistgov",
+      "pypi_username": "wpk-nist",
+      "conda_channel": "wpk-nist",
+      "project_name": "analphipy",
+      "project_slug": "analphipy",
+      "_copy_without_render": [
+        "*.html",
+        "docs/_templates/*.rst",
+        "docs/_templates/autosummary/*.rst"
+      ],
+      "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
+      "version": "0.0.1",
+      "use_pytest": "y",
+      "use_pypi_deployment_with_travis": "n",
+      "command_line_interface": "No command-line interface",
+      "create_author_file": "y",
+      "open_source_license": "NIST license",
+      "sphinx_auto": "autosummary",
+      "sphinx_theme": "sphinx_book_theme",
+      "_template": "https://github.com/wpk-nist-gov/cookiecutter-pypackage.git"
+    }
+  },
+  "directory": null
+}
