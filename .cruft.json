@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/wpk-nist-gov/cookiecutter-pypackage.git",
-  "commit": "bec57241a367a53b78574a970e4d17bc73656980",
+    "commit": "",
   "checkout": "feature/markdown",
     "skip": [
         "src/analphipy/__init__.py",
@@ -27,7 +27,7 @@
         "docs/_templates/*.rst",
         "docs/_templates/autosummary/*.rst"
       ],
-      "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
+      "project_short_description": "Utilities to perform stat mech analysis of pair potentials",
       "version": "0.0.1",
       "use_pytest": "y",
       "use_pypi_deployment_with_travis": "n",
