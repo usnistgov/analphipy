@@ -1,18 +1,18 @@
 {
   "template": "https://github.com/wpk-nist-gov/cookiecutter-pypackage.git",
-    "commit": "1b888f8c62021debaedc8adb7d07f30ca4fa97b6",
+  "commit": "bec57241a367a53b78574a970e4d17bc73656980",
   "checkout": "feature/markdown",
-    "skip": [
-        "src/analphipy/__init__.py",
-        "README.md",
-        "HISTORY.md",
-        "AUTHORS.md",
-        "environment.yaml",
-        "environment-tools.yaml",
-        "docs/api.md",
-        "docs/index.md",
-        "docs/spelling_wordlist.txt"
-    ],
+  "skip": [
+    "src/analphipy/__init__.py",
+    "README.md",
+    "HISTORY.md",
+    "AUTHORS.md",
+    "environment.yaml",
+    "environment-tools.yaml",
+    "docs/api.md",
+    "docs/index.md",
+    "docs/spelling_wordlist.txt"
+  ],
   "context": {
     "cookiecutter": {
       "full_name": "William P. Krekelberg",

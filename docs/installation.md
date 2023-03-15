@@ -5,35 +5,50 @@
 
 ## Stable release
 
-To install `analphipy`, run one of the following command:
+To install analphipy, run this command in your terminal:
 
 ```console
-# from pip
 $ pip install analphipy
+```
 
-# from conda/mamba
+or
+
+```console
 $ conda install -c wpk-nist analphipy
 ```
 
+This is the preferred method to install analphipy, as it will always install the most recent stable release.
+
+If you don't have [pip] installed, this [Python installation guide] can guide
+you through the process.
+
 ## From sources
 
-The sources for `analphipy` can be downloaded from the [Github repo].
+The sources for analphipy can be downloaded from the [Github repo].
 
 You can either clone the public repository:
 
 ```console
-$ git clone {repo}
+$ git clone git://github.com/usnistgov/analphipy
 ```
 
 Once you have a copy of the source, you can install it with:
 
 ```console
-# You may want a seperate virtual environment.  You can create a conda env with
-$ conda env create -n {env-name} -f environment-dev.yml
-$ conda activate {env-name}
-
-# install editable package
-$ pip install -e . --no-deps
+$ pip install .
 ```
 
+To install dependecies with conda/mamba, use:
+
+```
+.. code-block:: console
+```
+
+> \$ conda/mamba env create -n \{name} -f environment.yaml
+> \$ pip install . --no-deps
+
+To install an editable version, add the `-e` option to pip.
+
 [github repo]: https://github.com/usnistgov/analphipy
+[pip]: https://pip.pypa.io
+[python installation guide]: http://docs.python-guide.org/en/latest/starting/installation/

@@ -6,6 +6,7 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+
 [project]
 name = "analphipy"
 authors = [{name = "William P. Krekelberg", email = "wpk@nist.gov"}]
@@ -48,6 +49,8 @@ test = [
     "pytest-mypy",
     "mypy",
 ]
+homepage = "https://github.com/usnistgov/analphipy"
+documentation = "https://pages.nist.gov/analphipy/"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -60,7 +63,7 @@ where = ["src"]
 namespaces = false
 
 [tool.setuptools.dynamic]
-readme = {file = ["README.rst", "HISTORY.rst", "LICENSE"]}
+readme = {file = ["README.md", "HISTORY.md", "LICENSE"], content-type = "text/markdown"}
 
 [tool.setuptools_scm]
 fallback_version = "999"
@@ -79,17 +82,102 @@ force_to_top = ["true"]
 default_section = "THIRDPARTY"
 known_first_party = ["analphipy"]
 
-[tool.flake8]
-ignore = """
-E203 # whitespace before ':' - doesn't work well with black
-E402 # module level import not at top of file
-E501 # line too long - let black worry about that
-E731 # do not assign a lambda expression, use a def
-W503 # line break before binary operator"""
-exclude = """
-.eggs
-doc
-docs"""
+
+[tool.ruff]
+line-length = 88
+update-check = false
+target-version = "py38"
+
+select = [
+  # pyflakes
+  "F",
+  # pycodestyle
+  "E",
+  "W",
+  # isort
+  "I",
+  # pyupgrade
+  "UP",
+  # # flake8-2020
+  # "YTT",
+  # # flake8-bugbear
+  # "B",
+  # # flake8-quotes
+  # "Q",
+  # # pylint
+  # "PLE", "PLR", "PLW",
+  # # misc lints
+  # "PIE",
+  # # tidy imports
+  # "TID",
+  # # implicit string concatenation
+  # "ISC",
+  # # type-checking imports
+  # "TCH",
+]
+
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+# fixable = ["A", "B", "C", "D", "E", "F", "..."]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "src/cmomy/tests",
+]
+
+
+ignore = [
+    # # whitespace before ':' - doesn't work well with black
+    # "E203",
+    # module level import not at top of file
+    "E402",
+    # line too long - let black worry about that
+    "E501",
+    # do not assign a lambda expression, use a def
+    "E731",
+    # # line break before binary operator
+    # "W503",
+    # allow black line after docstring
+    "D202",
+    "D105",
+    "D205",
+    "D400",
+    "D401",
+]
+
+per-file-ignores = {}
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.cruft]
+
 
 [tool.mypy]
 exclude = "properties|asv_bench|doc"
@@ -97,150 +185,27 @@ files = ["."]
 show_error_codes = true
 warn_return_any = true
 warn_unused_configs = true
+# plugins = numpy.typing.mypy_plugin
 # Most of the numerical computing stack doesn't have type annotations yet.
 
 [[tool.mypy.overrides]]
-module = ["affine.*"]
+module = [
+       "numpy.*",
+       "bottleneck.*",
+       "dask.*",
+       "netCDF.*",
+       "pandas.*",
+       "pytest.*",
+       "scipy.*",
+       "setuptools",
+       "numba.*",
+       ]
 ignore_missing_imports = true
 
-[[tool.mypy.overrides]]
-module = ["bottleneck.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["cartopy.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["cdms2.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["cf_units.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["cfgrib.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["cftime.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["cupy.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["dask.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["distributed.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["fsspec.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["h5netcdf.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["h5py.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["importlib_metadata.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["iris.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["matplotlib.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["Nio.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["nc_time_axis.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["numbagg.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["numpy.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["netCDF4.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["netcdftime.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["pandas.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["pint.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["pooch.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["PseudoNetCDF.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["pydap.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["pytest.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["rasterio.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["scipy.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["seaborn.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["setuptools"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["sparse.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["toolz.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["zarr.*"]
-ignore_missing_imports = true
 # version spanning code is hard to type annotate (and most of this module will
 # be going away soon anyways)
-
-[[tool.mypy.overrides]]
-module = ["xarray.core.pycompat"]
-ignore_errors = true
+exclude = [
+    ".eggs",
+    "doc",
+    "docs",
+]

@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=analphipy
+set SPHINXPROJ=cmomy
 
 if "%1" == "" goto help
 
