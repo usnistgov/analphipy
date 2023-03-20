@@ -1,10 +1,12 @@
-# Welcome to analphipy's documentation!
+```{include} ../README.md
+:end-before: <!-- end-docs -->
+```
+
 
 ```{toctree}
 :caption: 'Contents:'
-:maxdepth: 1
+:maxdepth: 3
 
-readme
 installation
 notebooks/usage
 api

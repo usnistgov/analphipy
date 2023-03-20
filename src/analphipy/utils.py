@@ -1,7 +1,12 @@
+"""
+Utilities module (:mod:`analphipy.utils`)
+=========================================
+"""
+
 from __future__ import annotations
 
 from functools import wraps
-from typing import Any, Callable, Mapping, Optional
+from typing import Any, Callable, Mapping
 
 import numpy as np
 from scipy.integrate import quad
@@ -143,7 +148,7 @@ def quad_segments(
 
 
 def minimize_phi(
-    phi: Callable, r0: float, bounds: Optional[ArrayLike] = None, **kws
+    phi: Callable, r0: float, bounds: ArrayLike | None = None, **kws
 ) -> tuple[float, float, Any]:
     """
     Find value of ``r`` which minimized ``phi``.
@@ -183,7 +188,6 @@ def minimize_phi(
         ymin = phi(xmin)
         outputs = None
     else:
-
         outputs = minimize(phi, r0, bounds=[bounds], **kws)
 
         if not outputs.success:
@@ -258,7 +262,6 @@ def phi_to_phi_cut(
     if dphidr:
 
         def dphidr_cut(r):
-
             r = np.asarray(r)
             dvdbeta = np.empty_like(r)
 
@@ -324,7 +327,6 @@ def phi_to_phi_lfs(
         return v
 
     def dphidr_cut(r):
-
         r = np.asarray(r)
         dvdbeta = np.empty_like(r)
 
@@ -363,7 +365,6 @@ def wca_decomp_rep(phi, dphidr, r_min, phi_min, meta):
     if dphidr is not None:
 
         def dphidr_rep(r: Float_or_ArrayLike) -> np.ndarray:
-
             r = np.array(r)
             dvdr = np.empty_like(r)
 
@@ -403,7 +404,6 @@ def wca_decomp_att(phi, dphidr, r_min, phi_min, meta):
     if dphidr is not None:
 
         def dphidr_att(r: Float_or_ArrayLike) -> np.ndarray:
-
             r = np.array(r)
             dvdr = np.empty_like(r)
 

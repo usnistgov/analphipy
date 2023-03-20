@@ -3,16 +3,17 @@ dependencies:
     - matplotlib
     - pandas
     # development
-    - isort
-    - black
-    - blackdoc
-    - flake8
+    # - isort
+    # - black
+    # - blackdoc
+    # - flake8
     # testing
     - pytest
     - pytest-cov
-    - tox-conda
+    - pytest-xdist
+    # - tox-conda
     # specials
-    - pre-commit
+    # - pre-commit
     # repl
     - ipython
     - ipykernel
@@ -27,17 +28,17 @@ dependencies:
     # - anaconda-client
     # - greyskull
     # doc stuff
-    - sphinx
-    - sphinx_rtd_theme
-    - recommonmark # if want markdown
-    - nbsphinx # if want notebooks
-    - sphinxcontrib-spelling
+    # - sphinx
+    # - sphinx_rtd_theme
+    # - recommonmark # if want markdown
+    # - nbsphinx # if want notebooks
+    # - sphinxcontrib-spelling
     # - sphinx-toolbox
     # lsp stuff
-    - autoflake
-    - pyls-mypy
-    - pyls-black
-    - pyls-isort
+    # - autoflake
+    # - pyls-mypy
+    # - pyls-black
+    # - pyls-isort
     # mypy
     - mypy
     - pytest-mypy
@@ -47,7 +48,7 @@ dependencies:
     - pip:
             - mypy-extensions
             - pytest-monkeytype
-            - flake8-mypy
+            # - flake8-mypy
             # - attr-utils
             # spelling?
-            - pyenchant
+            # - pyenchant

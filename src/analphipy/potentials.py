@@ -1,16 +1,66 @@
 # type: ignore
 from __future__ import annotations
 
-from typing import Sequence, cast
+from typing import Literal, Sequence, cast
 
 import attrs
 import numpy as np
 from attrs import field
-from typing_extensions import Literal
 
-from ._attrs_utils import field_array_formatter, private_field
+from ._attrs_utils import field_array_formatter, field_formatter, private_field
 from ._typing import Float_or_ArrayLike, Phi_Signature
-from .potentials_base import PhiAnalytic, PhiBase
+from .potentials_base import PhiBase
+
+
+@attrs.frozen
+class PhiGeneric(PhiBase):
+    """
+    Class to define potential using callables.
+
+    Parameters
+    ----------
+    phi_func : Callable
+        Function ``phi(r)``
+    dphidr : Callable, optional
+        Optional function ``dphidr(r)``.
+    """
+
+    #: Function :math:`\phi(r)`
+    phi_func: Phi_Signature
+
+    #: Function :math:`d\phi(r)/dr`
+    dphidr_func: Phi_Signature | None = None
+
+    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+        r = np.asarray(r)
+        return self.phi_func(r)
+
+    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+        if self.dphidr_func is None:
+            raise ValueError("Must specify dphidr_func")
+        r = np.asarray(r)
+        return self.dphidr_func(r)
+
+
+@attrs.frozen
+class PhiAnalytic(PhiBase):
+    """
+    Base class for defining analytic potentials.
+
+    Notes
+    -----
+    Specific subclasses should set values for ``r_min``,
+    ``phi_min``, and ``segments``, as well as
+    forms for ``phi`` and ``dphidr``.
+
+    """
+
+    #: Position of minimum in :math:`\phi(r)`
+    r_min: float = field(init=False, repr=field_formatter())
+    #: Value of ``phi`` at minimum.
+    phi_min: float = field(init=False, repr=False)
+    #: Integration limits.
+    segments: float = field(init=False)
 
 
 @attrs.frozen
@@ -118,7 +168,6 @@ class Phi_nm(PhiAnalytic):
         return cast(np.ndarray, out)
 
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-
         r = np.array(r)
         x = self.sig / r
 
@@ -250,7 +299,6 @@ class Phi_sw(PhiAnalytic):
         )
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-
         sig, eps, lam = self.sig, self.eps, self.lam
 
         r = np.array(r)
@@ -292,15 +340,20 @@ class CubicTable(PhiBase):
         Values to set for ``phi``/``-1/r dphidr`` if  (left) ``r < bounds[0]`` or (right) ``r > bounds[1]``.
     """
 
+    #: Minimum and maximum values of squared pair separation :math:`r^2`
     bounds: Sequence[float] = field(validator=_validate_bounds, converter=tuple)
+    #: Values of potential evaluated on even grid of :math:`r^2` values.
     phi_table: Float_or_ArrayLike = field(
         factory=np.array, converter=np.asarray, repr=field_array_formatter()
     )
-
+    #: value of `phi` at left bound (`r < bounds[0]`)
     phi_left: float = field(converter=float, default=np.inf)
+    #: value of `phi` at right bound (`r > bounds[1]`)
     phi_right: float = field(converter=float, default=0.0)
 
+    #: value of `dphi` at left bound
     dphi_left: float = field(converter=float, default=np.inf)
+    #: value of `dphi` at right bound
     dphi_right: float = field(converter=float, default=0.0)
 
     _ds: float = private_field()
@@ -363,17 +416,23 @@ class CubicTable(PhiBase):
 
     @property
     def size(self) -> int:
+        """Size of the array (less 1)"""
         return len(self) - 1
 
     @property
     def smin(self) -> float:
+        """Minimum value of `s = r**2`"""
         return self.bounds[0]
 
     @property
     def smax(self) -> float:
+        """Maximum value of `s = r**2`"""
         return self.bounds[1]
 
     def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+        """
+        Values of `phi` and `dphi` at `r`
+        """
         r = np.asarray(r)
 
         v = np.empty_like(r)
@@ -391,7 +450,6 @@ class CubicTable(PhiBase):
         dv[right] = self.dphi_right
 
         if np.any(mid):
-
             sds = (s[mid] - self.smin) * self._dsinv
             k = sds.astype(int)
             k[k < 0] = 0
@@ -436,7 +494,7 @@ def factory_phi(
     lfs: bool = False,
     cut: bool = False,
     **kws,
-) -> "PhiBase":
+) -> PhiBase:
     """Factory function to construct Phi object by name
 
     Parameters
@@ -467,7 +525,7 @@ def factory_phi(
 
     name = potential_name.lower()
 
-    phi: "PhiBase"
+    phi: PhiBase
 
     if name == "lj":
         phi = Phi_lj(**kws)

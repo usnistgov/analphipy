@@ -1,17 +1,20 @@
 # type: ignore
+"""
+Base classes (:mod:`analphipy.potentials_base`)
+===============================================
+"""
 from __future__ import annotations
 
-from typing import Sequence, cast
+from typing import Literal, Sequence, cast
 
 import attrs
 import numpy as np
 from attrs import field
 from custom_inherit import DocInheritMeta
-from typing_extensions import Literal
 
 from ._attrs_utils import field_formatter, optional_converter, private_field
 from ._docstrings import docfiller_shared
-from ._typing import Float_or_ArrayLike, Phi_Signature
+from ._typing import Float_or_ArrayLike
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
 from .utils import minimize_phi
@@ -99,6 +102,7 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
         ...
         ...     def __attrs_post_init__(self):
         ...         self._immutable_setattrs(_derived=self.r_min + 10)
+        ...
 
         >>> x = Derived(r_min=5)
         >>> x._derived
@@ -146,7 +150,6 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
 
         includes = []
         for f in fields:
-
             if f.name in include:
                 includes.append(f)
 
@@ -460,54 +463,3 @@ class PhiBase(_PhiBase):
     def lfs(self, rcut):
         """Create a :class:`PhiLFS` potential."""
         return PhiLFS(phi_base=self, rcut=rcut)
-
-
-@attrs.frozen
-class PhiGeneric(PhiBase):
-    """
-    Class to define potential using callables.
-
-    Parameters
-    ----------
-    phi_func : Callable
-        Function ``phi(r)``
-    dphidr : Callable, optional
-        Optional function ``dphidr(r)``.
-    """
-
-    #: Function :math:`\phi(r)`
-    phi_func: Phi_Signature
-
-    #: Function :math:`d\phi(r)/dr`
-    dphidr_func: Phi_Signature | None = None
-
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
-        r = np.asarray(r)
-        return self.phi_func(r)
-
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-        if self.dphidr_func is None:
-            raise ValueError("Must specify dphidr_func")
-        r = np.asarray(r)
-        return self.dphidr_func(r)
-
-
-@attrs.frozen
-class PhiAnalytic(PhiBase):
-    """
-    Base class for defining analytic potentials.
-
-    Notes
-    -----
-    Specific subclasses should set values for ``r_min``,
-    ``phi_min``, and ``segments``, as well as
-    forms for ``phi`` and ``dphidr``.
-
-    """
-
-    #: Position of minimum in :math:`\phi(r)`
-    r_min: float = field(init=False, repr=field_formatter())
-    #: Value of ``phi`` at minimum.
-    phi_min: float = field(init=False, repr=False)
-    #: Integration limits.
-    segments: float = field(init=False)

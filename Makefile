@@ -180,6 +180,8 @@ docs-open: ## open the build
 	$(BROWSER) docs/_build/html/index.html
 docs-live: ## use autobuild for docs
 	$(TOX) -e docs-live -- $(posargs)
+docs-clean-build: docs-clean docs-build ## clean
+
 
 ## distribution
 .PHONY: dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-conda-recipe dist-conda-build

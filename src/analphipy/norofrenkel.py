@@ -1,6 +1,14 @@
+"""
+Noro-Frenkel pair potential analysis (:mod:`analphipy.norofrenkel`)
+===================================================================
+
+A collection of routines to analyze pair potentials using Noro-Frenkel analysis.
+"""
+
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Mapping, Optional, Sequence, cast
+from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
@@ -13,6 +21,13 @@ from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
     from ._potentials import PhiBase  # type: ignore
+
+__all__ = [
+    "sig_nf",
+    "sig_nf_dbeta",
+    "lam_nf",
+    "lam_nf_dbeta",
+]
 
 
 @docfiller_shared
@@ -65,14 +80,6 @@ def sig_nf(
     --------
     ~analphipy.utils.quad_segments
 
-    References
-    ----------
-    .. [1] {ref_Noro_Frenkel}
-
-    .. [2] {ref_Barker_Henderson}
-
-    .. [3] {ref_WCA}
-
     """
 
     def integrand(r):
@@ -111,6 +118,14 @@ def sig_nf_dbeta(
     See Also
     --------
     sig_nf
+
+    References
+    ----------
+    .. [1] {ref_Noro_Frenkel}
+
+    .. [2] {ref_Barker_Henderson}
+
+    .. [3] {ref_WCA}
 
     """
 
@@ -166,9 +181,6 @@ def lam_nf(beta: float, sig: float, eps: float, B2: float):
         Value of `lambda` in an effective square well fluid which matches ``B2``.
 
 
-    References
-    ----------
-    .. [1] {ref_Noro_Frenkel}
     """
     B2star = B2 / (TWO_PI / 3.0 * sig**3)
 
@@ -263,9 +275,8 @@ class NoroFrenkelPair:
         segments: ArrayLike,
         r_min: float,
         phi_min: Float_or_Array,
-        quad_kws: Optional[Mapping[str, Any]] = None,
+        quad_kws: Mapping[str, Any] | None = None,
     ):
-
         self.phi = phi
         self.r_min = r_min
 
@@ -279,7 +290,6 @@ class NoroFrenkelPair:
         self.quad_kws = quad_kws
 
     def __repr__(self):
-
         params = ",\n    ".join(
             [
                 f"{v}={getattr(self, v)}"
@@ -321,9 +331,9 @@ class NoroFrenkelPair:
         cls,
         phi: Phi_Signature,
         segments: ArrayLike,
-        r_min: Optional[float] = None,
-        bounds: Optional[ArrayLike] = None,
-        quad_kws: Optional[Mapping[str, Any]] = None,
+        r_min: float | None = None,
+        bounds: ArrayLike | None = None,
+        quad_kws: Mapping[str, Any] | None = None,
         **kws,
     ) -> NoroFrenkelPair:
         """
@@ -367,10 +377,10 @@ class NoroFrenkelPair:
     @classmethod
     def from_phi_class(
         cls,
-        phi: "PhiBase",
-        r_min: Optional[float] = None,
-        bounds: Optional[tuple[float, float]] = None,
-        quad_kws: Optional[dict[str, Any]] = None,
+        phi: PhiBase,
+        r_min: float | None = None,
+        bounds: tuple[float, float] | None = None,
+        quad_kws: dict[str, Any] | None = None,
         **kws,
     ):
         """
