@@ -180,7 +180,7 @@ docs-open: ## open the build
 	$(BROWSER) docs/_build/html/index.html
 docs-live: ## use autobuild for docs
 	$(TOX) -e docs-live -- $(posargs)
-docs-clean-build: docs-clean docs-build ## clean
+docs-clean-build: docs-clean docs-build ## clean and build
 
 
 ## distribution

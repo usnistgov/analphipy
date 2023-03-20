@@ -124,10 +124,7 @@ html_context = {
 # -- python3 ---------------------------------------------------------------
 autosummary_generate = True
 # autosummary_generate = False
-# autosummary_imported_members = True
-# autosummary_ignore_module_all = False
 autodoc_member_order = "bysource"
-
 
 # autoclass_content = "both"  # include both class docstring and __init__
 autodoc_default_flags = [
