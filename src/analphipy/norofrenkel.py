@@ -3,9 +3,16 @@ Noro-Frenkel pair potential analysis (:mod:`analphipy.norofrenkel`)
 ===================================================================
 
 A collection of routines to analyze pair potentials using Noro-Frenkel analysis.
+
+References
+----------
+.. [1] {ref_Noro_Frenkel}
+
+.. [2] {ref_Barker_Henderson}
+
+.. [3] {ref_WCA}
+
 """
-
-
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
@@ -13,7 +20,7 @@ from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
 import numpy as np
 from custom_inherit import doc_inherit
 
-from ._docstrings import docfiller_shared
+from ._docstrings import DOCFILLER_SHARED, docfiller_shared
 from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
 from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
@@ -21,6 +28,9 @@ from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
     from ._potentials import PhiBase  # type: ignore
+
+# Hack to document module level docstring
+__doc__ = __doc__.format(**DOCFILLER_SHARED.data)
 
 __all__ = [
     "sig_nf",
@@ -118,14 +128,6 @@ def sig_nf_dbeta(
     See Also
     --------
     sig_nf
-
-    References
-    ----------
-    .. [1] {ref_Noro_Frenkel}
-
-    .. [2] {ref_Barker_Henderson}
-
-    .. [3] {ref_WCA}
 
     """
 
