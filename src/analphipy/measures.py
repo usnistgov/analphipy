@@ -55,7 +55,7 @@ def secondvirial(
     {err}
     {full_output}
     **kws
-        Extra arguments to :func:`analphipy.quad_segments`
+        Extra arguments to :func:`analphipy.utils.quad_segments`
 
     Returns
     -------
@@ -421,7 +421,7 @@ class Measures:
         {full_output}
 
         **kws
-            Extra arguments to :func:`analphipy.quad_segments`
+            Extra arguments to :func:`analphipy.utils.quad_segments`
 
         Returns
         -------
@@ -432,7 +432,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.secondvirial
+        ~analphipy.measures.secondvirial
         """
         return secondvirial(
             phi=self.phi,
@@ -466,7 +466,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.secondvirial_dbeta
+        ~analphipy.measures.secondvirial_dbeta
         """
         return secondvirial_dbeta(
             phi=self.phi,
@@ -501,7 +501,7 @@ class Measures:
 
         Parameters
         ----------
-        other : :class:`analphipy.PhiBase`
+        other : :class:`analphipy.base_potential.PhiBase`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
@@ -510,7 +510,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.diverg_js_cont
+        ~analphipy.measures.diverg_js_cont
 
         References
         --------
@@ -556,7 +556,7 @@ class Measures:
 
         Parameters
         ----------
-        other : :class:`analphipy.PhiBase`
+        other : :class:`analphipy.base_potential.PhiBase`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
@@ -566,7 +566,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.diverg_js_cont
+        ~analphipy.measures.diverg_js_cont
 
 
         References

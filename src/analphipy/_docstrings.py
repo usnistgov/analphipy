@@ -7,7 +7,7 @@ from ._docfiller import DocFiller
 _docstrings_shared = """
 Parameters
 ----------
-segments : sequence of ints
+segments : sequence of int
     Integration limits. For ``n = len(segmetns)`` integration will be performed over ranges
     ``(segments[0], segments[1]), (segments[1], segments[2]), ..., (segments[n-2], segments[n-]])``
 phi_rep : callable
@@ -30,7 +30,7 @@ err : bool, optional
     If True, return error.
 error_summed | error : float, optional
     Total integration error. Returned if ``err`` or ``full_output`` are `True`.
-full_output_summed | outputs :
+full_output_summed | outputs : object
     Output(s) from :func:`scipy.integrate.quad`.  Returned if ``full_output`` is True.
 volume_int_func | volume : str or callable, optional
     Volume element in integration.

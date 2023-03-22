@@ -1,0 +1,3 @@
+# extra conda deps
+matplotlib
+pandas

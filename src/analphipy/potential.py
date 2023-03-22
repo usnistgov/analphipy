@@ -1,4 +1,8 @@
 # type: ignore
+"""
+Classes/routines for pair potentials (:mod:`analphipy.potential`)
+=================================================================
+"""
 from __future__ import annotations
 
 from typing import Literal, Sequence, cast
@@ -9,11 +13,11 @@ from attrs import field
 
 from ._attrs_utils import field_array_formatter, field_formatter, private_field
 from ._typing import Float_or_ArrayLike, Phi_Signature
-from .potentials_base import PhiBase
+from .base_potential import PhiBase
 
 
 @attrs.frozen
-class PhiGeneric(PhiBase):
+class Generic(PhiBase):
     """
     Class to define potential using callables.
 
@@ -43,7 +47,7 @@ class PhiGeneric(PhiBase):
 
 
 @attrs.frozen
-class PhiAnalytic(PhiBase):
+class Analytic(PhiBase):
     """
     Base class for defining analytic potentials.
 
@@ -64,7 +68,7 @@ class PhiAnalytic(PhiBase):
 
 
 @attrs.frozen
-class Phi_lj(PhiAnalytic):
+class LennardJones(Analytic):
     r"""Lennard-Jones potential.
 
     .. math::
@@ -116,7 +120,7 @@ class Phi_lj(PhiAnalytic):
 
 
 @attrs.frozen
-class Phi_nm(PhiAnalytic):
+class LennardJonesNM(Analytic):
     r"""
     Generalized Lennard-Jones potential
 
@@ -138,7 +142,7 @@ class Phi_nm(PhiAnalytic):
 
     Notes
     -----
-    with parameters ``n=12`` and ``m=6``, this is equivalent to :class:`Phi_lj`.
+    with parameters ``n=12`` and ``m=6``, this is equivalent to :class:`LennardJones`.
     """
 
     n: int = 12  #: ``n`` parameter
@@ -178,7 +182,7 @@ class Phi_nm(PhiAnalytic):
 
 
 @attrs.frozen
-class Phi_yk(PhiAnalytic):
+class Yukawa(Analytic):
     r"""
     Hard core Yukawa potential
 
@@ -229,7 +233,7 @@ class Phi_yk(PhiAnalytic):
 
 
 @attrs.frozen
-class Phi_hs(PhiAnalytic):
+class HardSphere(Analytic):
     r"""
     Hard-sphere pair potential
 
@@ -264,7 +268,7 @@ class Phi_hs(PhiAnalytic):
 
 
 @attrs.frozen
-class Phi_sw(PhiAnalytic):
+class SquareWell(Analytic):
     r"""
     Square-well pair potential
 
@@ -327,7 +331,7 @@ class CubicTable(PhiBase):
 
     Parameters
     ----------
-    bounds : sequence of floats
+    bounds : sequence of float
         the minimum and maximum values of squared pair separation `r**2` at which `phi_table` is evaluated.
     phi_table : array-like
         Values of potential evaluated on even grid of ``r**2`` values.
@@ -488,7 +492,7 @@ class CubicTable(PhiBase):
 _PHI_NAMES = Literal["lj", "nm", "sw", "hs", "yk", "LJ", "NM", "SW", "HS", "YK"]
 
 
-def factory_phi(
+def factory(
     potential_name: _PHI_NAMES,
     rcut: float | None = None,
     lfs: bool = False,
@@ -504,23 +508,23 @@ def factory_phi(
     rcut : float, optional
         if passed, Construct either and 'lfs' or 'cut' version of the potential.
     lfs : bool, default=False
-        If True, construct a  linear force shifted potential :class:`analphipy.PhiLFS`.
+        If True, construct a  linear force shifted potential :class:`analphipy.base_potential.PhiLFS`.
     cut : bool, default=False
-        If True, construct a cut potential :class:`analphipy.PhiCut`.
+        If True, construct a cut potential :class:`analphipy.base_potential.PhiCut`.
 
     Returns
     -------
-    phi :
+    phi : :class:`analphipy.base_potential.PhiBase` subclass
         output potential energy class.
 
 
     See Also
     --------
-    Phi_lj
-    Phi_nm
-    Phi_sw
-    Phi_hs
-    Phi_yk
+    LennardJones
+    LennardJonesNM
+    SquareWell
+    HardSphere
+    Yukawa
     """
 
     name = potential_name.lower()
@@ -528,19 +532,19 @@ def factory_phi(
     phi: PhiBase
 
     if name == "lj":
-        phi = Phi_lj(**kws)
+        phi = LennardJones(**kws)
 
     elif name == "sw":
-        phi = Phi_sw(**kws)
+        phi = SquareWell(**kws)
 
     elif name == "nm":
-        phi = Phi_nm(**kws)
+        phi = LennardJonesNM(**kws)
 
     elif name == "yk":
-        phi = Phi_yk(**kws)
+        phi = Yukawa(**kws)
 
     elif name == "hs":
-        phi = Phi_hs(**kws)
+        phi = HardSphere(**kws)
 
     else:
         raise ValueError(f"{name} must be in {_PHI_NAMES}")

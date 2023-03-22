@@ -1,13 +1,11 @@
+import analphipy.potential as pots
 import numpy as np
 import pytest
-from scipy.misc import derivative
-
-import analphipy.potentials as pots
 from analphipy.norofrenkel import NoroFrenkelPair
+from scipy.misc import derivative
 
 
 def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3):
-
     a = getattr(nf, dprop)(beta)
 
     f = getattr(nf, prop)
@@ -18,13 +16,12 @@ def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3):
 
 
 def factory_lj(lfs=False, cut=False, **kws):
-
     if lfs or cut:
         rcut = kws.pop("rcut")
     else:
         rcut = None
 
-    p = pots.Phi_lj(**kws)
+    p = pots.LennardJones(**kws)
 
     if cut:
         p = p.cut(rcut=rcut)
@@ -37,10 +34,9 @@ BETAS = [0.1, 0.5, 1.0]
 
 
 def test_nf_deriv_lj():
-
     sig = eps = 1.0
 
-    p = pots.Phi_lj(sig=sig, eps=eps)
+    p = pots.LennardJones(sig=sig, eps=eps)
 
     nf = NoroFrenkelPair.from_phi(
         p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
@@ -53,10 +49,9 @@ def test_nf_deriv_lj():
 
 @pytest.mark.parametrize("rcut", [2.0, 3.0, 5.0])
 def test_nf_deriv_lj_cut(rcut):
-
     sig = eps = 1.0
 
-    p = pots.Phi_lj(sig=sig, eps=eps).cut(rcut)
+    p = pots.LennardJones(sig=sig, eps=eps).cut(rcut)
 
     nf = NoroFrenkelPair.from_phi(
         p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
@@ -69,10 +64,9 @@ def test_nf_deriv_lj_cut(rcut):
 
 @pytest.mark.parametrize("z", [1.0, 2.0, 4.0])
 def test_nf_deriv_yk(z):
-
     sig = eps = 1.0
 
-    p = pots.Phi_yk(sig=sig, eps=eps, z=z)
+    p = pots.Yukawa(sig=sig, eps=eps, z=z)
 
     nf = NoroFrenkelPair(p.phi, p.segments, r_min=sig, phi_min=-1.0)
 

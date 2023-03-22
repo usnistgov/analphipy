@@ -4,19 +4,7 @@ Top level API :mod:`analphipy`
 
 The top level API provides Pair potentials and analysis routines.
 """
-# from . import measures, norofrenkel
-from .norofrenkel import NoroFrenkelPair
-from .potentials import (
-    CubicTable,
-    Phi_hs,
-    Phi_lj,
-    Phi_nm,
-    Phi_sw,
-    Phi_yk,
-    PhiAnalytic,
-    PhiGeneric,
-    factory_phi,
-)
+from . import measures, norofrenkel, potential
 
 # from .potentials_base import PhiAnalytic, PhiBase, PhiCut, PhiGeneric, PhiLFS
 
@@ -38,16 +26,19 @@ except Exception:
 __all__ = [
     # "PhiBaseCuttable",
     # "PhiBaseGenericCut",
-    "PhiAnalytic",
-    "PhiGeneric",
-    "Phi_lj",
-    "Phi_nm",
-    "Phi_sw",
-    "Phi_hs",
-    "Phi_yk",
-    "CubicTable",
-    "factory_phi",
-    "NoroFrenkelPair",
+    "potential",
+    "norofrenkel",
+    "measures",
+    # "PhiAnalytic",
+    # "PhiGeneric",
+    # "LennardJones",
+    # "LennardJonesNM",
+    # "SquareWell",
+    # "HardSphere",
+    # "Yukawa",
+    # "CubicTable",
+    # "factory_phi",
+    # "NoroFrenkelPair",
     # "measures",
     # "norofrenkel",
     "__version__",

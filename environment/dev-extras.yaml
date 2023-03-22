@@ -1,3 +1,4 @@
+name: analphipy-dev-env
 dependencies:
     # numerics/tests
     - matplotlib

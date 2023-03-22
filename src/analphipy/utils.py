@@ -44,7 +44,7 @@ def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
 
     Returns
     -------
-    combined : list of floats
+    combined : list of float
         sorted unique values for ``a`` and ``b``.
     """
     aa, bb = set(a), set(b)
@@ -72,26 +72,26 @@ def quad_segments(
     {segments}
     args : tuple, optional
         Extra positional arguments to `func`.
-    full_output : bool, default=False.
+    full_output : bool, default=False
         If True, return extra information.
     sum_integrals : bool, default=True
         If True, sum the segments in the output.
     sum_errors : bool, default=True
         If True and returning `error` sum errors.
-    err : bool, default = True
+    err : bool, default=True
         If True, return error.
     **kws :
         Extra arguments to :func:`scipy.integrate.quad`
 
     Returns
     -------
-    integral : float or list of floats
+    integral : float or list of float
         If `sum_integrals`,  this is the sum of integrals over each segment.  Otherwise return list
         of values corresponding to integral in each segment.
-    errors, float or list of floats, optional
+    errors : float or list of float, optional
         If `err` or `full_output` are True, then return error.  If `sum_errors`, then sum of errors
         Across segments.
-    outputs :
+    outputs : object
         Output from :func:`scipy.integrate.quad`. If multiple segments, return a list of output.
 
     See Also
@@ -159,7 +159,7 @@ def minimize_phi(
         Function to be minimized.
     r0 : float
         Guess for position of minimum.
-    bounds : tuple of floats
+    bounds : tuple of float
         If passed, should be of form ``bounds=(lower_bound, upper_bound)``.
     **kws :
         Extra arguments to :func:`scipy.optimize.minimize`
@@ -170,7 +170,7 @@ def minimize_phi(
         ``phi(rmin)`` is found location of minimum.
     phimin : float
         Value of ``phi(rmin)``, i.e., the value of ``phi`` at the minimum
-    output :
+    output : object
         Output class from :func:`scipy.optimize.minimize`.
 
 

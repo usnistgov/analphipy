@@ -7,7 +7,7 @@
     :toctree: generated/
     :template: autodocsumm/module.rst
 
-    analphipy
+    analphipy.potential
     analphipy.norofrenkel
     analphipy.measures
     analphipy.utils
@@ -17,7 +17,7 @@
     :toctree: generated/
     :template: autodocsumm/module-inherit.rst
 
-    analphipy.potentials_base
+    analphipy.base_potential
 :::
 
 

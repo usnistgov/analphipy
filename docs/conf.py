@@ -58,6 +58,9 @@ extensions = [
     "myst_nb",
 ]
 
+nitpicky = True
+
+
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
     "dollarmath",
@@ -108,6 +111,8 @@ nb_execution_mode = "cache"
 
 # set the kernel name
 nb_kernel_rgx_aliases = {"cmomy.*": "python3", "conda.*": "python3"}
+
+nb_execution_allow_errors = True
 
 # - top level variables --------------------------------------------------------
 # set github_username variable to be subbed later.

@@ -1,0 +1,26 @@
+channels:
+- conda-forge
+- wpk-nist
+dependencies:
+- attrs
+- custom-inherit
+- matplotlib
+- numpy
+- pandas
+- pip
+- python>=3.8
+- scipy
+- typing-extensions
+- pip:
+  - autodocsumm
+  - ghp-import
+  - ipython
+  - myst-nb
+  - pyenchant
+  - setuptools-scm
+  - sphinx
+  - sphinx-autobuild
+  - sphinx-book-theme
+  - sphinx-copybutton
+  - sphinxcontrib-spelling
+name: analphipy-env

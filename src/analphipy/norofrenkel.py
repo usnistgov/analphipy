@@ -37,6 +37,7 @@ __all__ = [
     "sig_nf_dbeta",
     "lam_nf",
     "lam_nf_dbeta",
+    "NoroFrenkelPair",
 ]
 
 
@@ -77,11 +78,11 @@ def sig_nf(
 
     Returns
     -------
-    sig_nf : float or list of floats
+    sig_nf : float or list of float
         Value of integral.
-    errors, float or list of floats, optional
+    errors : float or list of float, optional
         If `err` or `full_output` are True, then return sum of errors.
-    outputs :
+    outputs : object
         Output from :func:`scipy.integrate.quad`. If multiple segments, return a list of output.
 
 
@@ -215,7 +216,7 @@ def lam_nf_dbeta(
     B2 : float
         Second virial coefficient to match.
     lam : float
-        Value from :func:`analphipy.norofrenekl.lam_nf`.
+        Value from :func:`analphipy.norofrenkel.lam_nf`.
     B2_dbeta : float
         d(B2)/d(beta) at ``beta``
     sig_dbeta : float
@@ -262,13 +263,6 @@ class NoroFrenkelPair:
     {phi_min_exact}
     {quad_kws}
 
-    References
-    ----------
-    .. [1] {ref_Noro_Frenkel}
-
-    .. [2] {ref_Barker_Henderson}
-
-    .. [3] {ref_WCA}
     """
 
     def __init__(
@@ -357,7 +351,8 @@ class NoroFrenkelPair:
 
         Returns
         -------
-        output : instance of calling class
+        output : object
+            instance of calling class
         """
 
         if bounds is None:
@@ -390,7 +385,7 @@ class NoroFrenkelPair:
 
         Parameters
         ----------
-        phi : Phi_Abstracclass instance
+        phi : :class:`analphipy.base_potential.PhiBase`
         r_min : float, optional
             Optional guess for numerically finding minimum in `phi`.
         bounds : array-like, optional
@@ -403,7 +398,8 @@ class NoroFrenkelPair:
 
         Returns
         -------
-        output : instance of calling class
+        output : object
+            instance of calling class
         """
 
         try:
@@ -431,7 +427,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~measures.secondvirial
+        ~analphipy.measures.secondvirial
         """
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
@@ -465,7 +461,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~norofrenkel.lam_nf
+        ~analphipy.norofrenkel.lam_nf
         """
         return lam_nf(
             beta=beta,
@@ -490,7 +486,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~measures.secondvirial_dbeta
+        ~analphipy.measures.secondvirial_dbeta
         """
         return secondvirial_dbeta(
             phi=self.phi, beta=beta, segments=self.segments, **kws
@@ -503,7 +499,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~norofrenkel.sig_nf_dbeta
+        ~analphipy.norofrenkel.sig_nf_dbeta
 
         """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
@@ -514,7 +510,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~norofrenkel.lam_nf_dbeta
+        ~analphipy.norofrenkel.lam_nf_dbeta
         """
         return lam_nf_dbeta(
             beta=beta,
@@ -565,7 +561,7 @@ class NoroFrenkelPair:
         ----------
         betas : array-like
             Array of values of inverse temperature ``beta``.
-        props : sequence of strings
+        props : sequence of string
             Name of methods to access.
         key_format : string, default="{prop}"
             Each key in the output dictionary will have the value ``key_format.format(prop=prop)``

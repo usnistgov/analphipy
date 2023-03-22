@@ -1,7 +1,7 @@
 # type: ignore
 """
-Base classes (:mod:`analphipy.potentials_base`)
-===============================================
+Base classes (:mod:`analphipy.base_potential`)
+==============================================
 """
 from __future__ import annotations
 
@@ -36,9 +36,9 @@ def _kw_only_field(kw_only=True, default=None, **kws):
 
 @attrs.frozen
 @docfiller_shared
-class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ignore
+class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ignore
     """
-    Base Class for working with potentials.
+    Abstract class from which base classes inherit
 
     Parameters
     ----------
@@ -97,7 +97,7 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
         Examples
         --------
         >>> @attrs.frozen
-        ... class Derived(PhiBase):
+        ... class Derived(PhiAbstract):
         ...     _derived = attrs.field(init=False)
         ...
         ...     def __attrs_post_init__(self):
@@ -218,13 +218,13 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
             Guess for position of minimum.
             If value is `'mean'`, then use ``r0 = mean(bounds)``.
 
-        bounds : tuple floats, {'segments'}, optional
+        bounds : tuple of float, {'segments'}, optional
             Bounds for minimization search.
             If tuple, should be of form ``bounds=(lower_bound, upper_bound)``.
             If `'segments`, then ``bounds=(segments[0], segments[-1])``.
             If None, no bounds used.
         **kws :
-            Extra arguments to :func:`analphipy.minimize_phi`
+            Extra arguments to :func:`analphipy.utils.minimize_phi`
 
         Returns
         -------
@@ -232,7 +232,7 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
             ``phi(rmin)`` is found location of minimum.
         phimin : float
             Value of ``phi(rmin)``, i.e., the value of ``phi`` at the minimum
-        output :
+        output : object
             Output class from :func:`scipy.optimize.minimize`.
 
 
@@ -269,17 +269,17 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
 
     def to_nf(self, **kws):
         """
-        Create a :class:`analphipy.NoroFrenkelPair` object.
+        Create a :class:`analphipy.norofrenkel.NoroFrenkelPair` object.
 
         Parameters
         ---------
         **kws :
-            Extra arguments to :class:`analphipy.NoroFrenkelPair` constructor.
+            Extra arguments to :class:`analphipy.norofrenkel.NoroFrenkelPair` constructor.
             parameters `phi`, `semgnets`, `r_min', `phi_min` default to values from `self`.
 
         Returns
         -------
-        nf : :class:`analphipy.NoroFrenkelPair`
+        nf : :class:`analphipy.norofrenkel.NoroFrenkelPair`
 
         """
         if self.r_min is None:
@@ -298,7 +298,7 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
         Parameters
         ----------
         **kws :
-            Extra arguments to :class:`analphipy.Measures` constructor.
+            Extra arguments to :class:`analphipy.measures.Measures` constructor.
             parameters `phi`, `semgnets` default to values from `self`.
 
         Returns
@@ -314,17 +314,24 @@ class _PhiBase(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ign
 
 
 @attrs.frozen
-class _PhiBaseCut(_PhiBase):
-    """
+class PhiCutBase(PhiAbstract):
+    r"""
     Base Class for creating cut potential from base potential
 
 
-    phi_cut(r) = phi(r) + _vcorrect(r) if r <= rcut
-               = 0 otherwise
+    .. math::
 
+        \phi_{\rm cut}(r) =
+            \begin{cases}
+                \phi(r) + {\text _vcorrect}(r) & r < r_{\rm cut} \\
+                0 & r_{\rm cut} \leq r
+            \end{cases}
 
-    dphi_cut(r) = dphi(r) + _dvcorrect(r) if r <= rcut
-                = 0 otherwise
+        \frac{d \phi_{\rm cut}(r)}{d r} =
+            \begin{cases}
+                \frac{d \phi(r)}{d r} + {\text _dvdrcorrect}(r) & r < r_{\rm cut} \\
+                0 & r_{\rm cut} \leq r
+            \end{cases}
 
     So, for example, for just cut, `_vcorrect(r) = -v(rcut)`, `dvrcut=0`,
     and for lfs, `_vcorrect(r) = -v(rcut) - dv(rcut)/dr (r - rcut)`
@@ -333,15 +340,14 @@ class _PhiBaseCut(_PhiBase):
 
     Parameters
     ----------
-    phi_base : PhiBase
-        Instance of (sub)class of :class:`analphipy.PhiBase`.
+    phi_base : :class:`analphipy.base_potential.PhiAbstract`
     rcut : float
         Position to cut the potential.
 
 
     """
 
-    #: Instance of (sub)class of :class:`analphipy.PhiBase`
+    #: Instance of (sub)class of :class:`analphipy.base_potential.PhiAbstract`
     phi_base: PhiBase
     #: Position to cut the potential
     rcut: float = field(converter=float)
@@ -387,7 +393,7 @@ class _PhiBaseCut(_PhiBase):
 
 
 @attrs.frozen
-class PhiCut(_PhiBaseCut):
+class PhiCut(PhiCutBase):
     r"""
     Pair potential cut at position ``r_cut``.
 
@@ -401,7 +407,7 @@ class PhiCut(_PhiBaseCut):
 
     Parameters
     ----------
-    phi_base : PhiBaseCuttable instance
+    phi_base : :class:`analphipy.base_potential.PhiBase` instance
         Potential class to perform cut on.
     rcut : float
         Where to 'cut' the potential.
@@ -421,7 +427,7 @@ class PhiCut(_PhiBaseCut):
 
 
 @attrs.frozen
-class PhiLFS(_PhiBaseCut):
+class PhiLFS(PhiCutBase):
     r"""
     Pair potential cut and linear force shifted at ``r_cut``.
 
@@ -455,7 +461,7 @@ class PhiLFS(_PhiBaseCut):
 
 
 @attrs.frozen
-class PhiBase(_PhiBase):
+class PhiBase(PhiAbstract):
     def cut(self, rcut):
         """Create a :class:`PhiCut` potential."""
         return PhiCut(phi_base=self, rcut=rcut)
