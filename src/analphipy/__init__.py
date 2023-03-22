@@ -1,15 +1,12 @@
-# type: ignore
-# from ._potentials import (
-#     PhiBaseCuttable,
-#     PhiBaseGenericCut,
-#     PhiCut,
-#     PhiLFS,
-# )
+"""
+Top level API :mod:`analphipy`
+==============================
 
-from . import measures, norofrenkel
-from .norofrenkel import NoroFrenkelPair
-from .potentials import CubicTable, Phi_hs, Phi_lj, Phi_nm, Phi_sw, Phi_yk, factory_phi
-from .potentials_base import PhiAnalytic, PhiBase, PhiCut, PhiGeneric, PhiLFS
+The top level API provides Pair potentials and analysis routines.
+"""
+from . import measures, norofrenkel, potential
+
+# from .potentials_base import PhiAnalytic, PhiBase, PhiCut, PhiGeneric, PhiLFS
 
 # updated versioning scheme
 try:
@@ -29,20 +26,20 @@ except Exception:
 __all__ = [
     # "PhiBaseCuttable",
     # "PhiBaseGenericCut",
-    "PhiCut",
-    "PhiLFS",
-    "PhiBase",
-    "PhiAnalytic",
-    "PhiGeneric",
-    "Phi_lj",
-    "Phi_nm",
-    "Phi_sw",
-    "Phi_hs",
-    "Phi_yk",
-    "CubicTable",
-    "factory_phi",
-    "NoroFrenkelPair",
-    "measures",
+    "potential",
     "norofrenkel",
+    "measures",
+    # "PhiAnalytic",
+    # "PhiGeneric",
+    # "LennardJones",
+    # "LennardJonesNM",
+    # "SquareWell",
+    # "HardSphere",
+    # "Yukawa",
+    # "CubicTable",
+    # "factory_phi",
+    # "NoroFrenkelPair",
+    # "measures",
+    # "norofrenkel",
     "__version__",
 ]

@@ -1,15 +1,29 @@
+"""
+Routines to calculate measures of pair potentials (:mod:`analphipy.measures`)
+=============================================================================
+"""
+
 from __future__ import annotations
 
-from typing import Callable, Mapping, Optional, Sequence, Union, cast
+from typing import Callable, Mapping, Sequence, Union, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
 
 from analphipy.cached_decorators import gcached
 
-from ._docstrings import docfiller_shared
+from ._docstrings import docfiller_shared  # type: ignore
 from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
 from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
+
+__all__ = [
+    "Measures",
+    "secondvirial",
+    "secondvirial_dbeta",
+    "secondvirial_sw",
+    "diverg_kl_cont",
+    "diverg_js_cont",
+]
 
 
 def other():
@@ -41,7 +55,7 @@ def secondvirial(
     {err}
     {full_output}
     **kws
-        Extra arguments to :func:`analphipy.quad_segments`
+        Extra arguments to :func:`analphipy.utils.quad_segments`
 
     Returns
     -------
@@ -161,7 +175,7 @@ def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
 def diverg_kl_integrand(
     p: Float_or_ArrayLike,
     q: Float_or_ArrayLike,
-    volume: Optional[Float_or_ArrayLike] = None,
+    volume: Float_or_ArrayLike | None = None,
 ) -> np.ndarray:
     p, q = np.asarray(p), np.asarray(q)
 
@@ -181,8 +195,8 @@ def diverg_kl_integrand(
 
 @docfiller_shared
 def diverg_kl_disc(
-    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: Optional[int] = None
-) -> Union[float, np.ndarray]:
+    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: int | None = None
+) -> float | np.ndarray:
     """
     Calculate discrete Kullback–Leibler divergence
 
@@ -206,7 +220,7 @@ def diverg_kl_disc(
     return cast(Union[float, np.ndarray], out)
 
 
-def _check_volume_func(volume: Optional[Union[str, Callable]] = None) -> Callable:
+def _check_volume_func(volume: str | Callable | None = None) -> Callable:
     if volume is None:
         volume = "1d"
 
@@ -230,8 +244,8 @@ def diverg_kl_cont(
     p: Callable,
     q: Callable,
     segments: ArrayLike,
-    segments_q: Optional[ArrayLike] = None,
-    volume: Optional[Union[str, Callable]] = None,
+    segments_q: ArrayLike | None = None,
+    volume: str | Callable | None = None,
     err: bool = False,
     full_output: bool = False,
     **kws,
@@ -282,8 +296,8 @@ def diverg_kl_cont(
 
 @doc_inherit(diverg_kl_disc, style="numpy_with_merge")
 def diverg_js_disc(
-    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: Optional[int] = None
-) -> Union[float, np.ndarray]:
+    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: int | None = None
+) -> float | np.ndarray:
     """
     Discrete Jensen–Shannon divergence
 
@@ -308,7 +322,7 @@ def diverg_js_disc(
 def diverg_js_integrand(
     p: Float_or_ArrayLike,
     q: Float_or_ArrayLike,
-    volume: Optional[Float_or_ArrayLike] = None,
+    volume: Float_or_ArrayLike | None = None,
 ) -> np.ndarray:
     p = np.asarray(p)
     q = np.asarray(q)
@@ -329,8 +343,8 @@ def diverg_js_cont(
     p: Callable,
     q: Callable,
     segments: ArrayLike,
-    segments_q: Optional[ArrayLike] = None,
-    volume: Optional[Union[str, Callable]] = None,
+    segments_q: ArrayLike | None = None,
+    volume: str | Callable | None = None,
     err: bool = False,
     full_output: bool = False,
     **kws,
@@ -387,7 +401,6 @@ class Measures:
         segments: Sequence[float],
         quad_kws: Mapping | None = None,
     ) -> None:
-
         self.phi = phi
         self.segments = segments
         if quad_kws is None:
@@ -408,7 +421,7 @@ class Measures:
         {full_output}
 
         **kws
-            Extra arguments to :func:`analphipy.quad_segments`
+            Extra arguments to :func:`analphipy.utils.quad_segments`
 
         Returns
         -------
@@ -419,7 +432,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.secondvirial
+        ~analphipy.measures.secondvirial
         """
         return secondvirial(
             phi=self.phi,
@@ -453,7 +466,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.secondvirial_dbeta
+        ~analphipy.measures.secondvirial_dbeta
         """
         return secondvirial_dbeta(
             phi=self.phi,
@@ -488,7 +501,7 @@ class Measures:
 
         Parameters
         ----------
-        other : :class:`analphipy.PhiBase`
+        other : :class:`analphipy.base_potential.PhiBase`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
@@ -497,7 +510,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.diverg_js_cont
+        ~analphipy.measures.diverg_js_cont
 
         References
         --------
@@ -543,7 +556,7 @@ class Measures:
 
         Parameters
         ----------
-        other : :class:`analphipy.PhiBase`
+        other : :class:`analphipy.base_potential.PhiBase`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
@@ -553,7 +566,7 @@ class Measures:
 
         See Also
         --------
-        ~measures.diverg_js_cont
+        ~analphipy.measures.diverg_js_cont
 
 
         References

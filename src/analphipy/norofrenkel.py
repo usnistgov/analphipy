@@ -1,18 +1,44 @@
+"""
+Noro-Frenkel pair potential analysis (:mod:`analphipy.norofrenkel`)
+===================================================================
+
+A collection of routines to analyze pair potentials using Noro-Frenkel analysis.
+
+References
+----------
+.. [1] {ref_Noro_Frenkel}
+
+.. [2] {ref_Barker_Henderson}
+
+.. [3] {ref_WCA}
+
+"""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Mapping, Optional, Sequence, cast
+from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
 
-from ._docstrings import docfiller_shared
+from ._docstrings import DOCFILLER_SHARED, docfiller_shared  # type: ignore
 from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
 from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
-    from ._potentials import PhiBase  # type: ignore
+    from .base_potential import PhiBase  # type: ignore
+
+# Hack to document module level docstring
+__doc__ = __doc__.format(**DOCFILLER_SHARED.data)
+
+__all__ = [
+    "sig_nf",
+    "sig_nf_dbeta",
+    "lam_nf",
+    "lam_nf_dbeta",
+    "NoroFrenkelPair",
+]
 
 
 @docfiller_shared
@@ -52,11 +78,11 @@ def sig_nf(
 
     Returns
     -------
-    sig_nf : float or list of floats
+    sig_nf : float or list of float
         Value of integral.
-    errors, float or list of floats, optional
+    errors : float or list of float, optional
         If `err` or `full_output` are True, then return sum of errors.
-    outputs :
+    outputs : object
         Output from :func:`scipy.integrate.quad`. If multiple segments, return a list of output.
 
 
@@ -64,14 +90,6 @@ def sig_nf(
     See Also
     --------
     ~analphipy.utils.quad_segments
-
-    References
-    ----------
-    .. [1] {ref_Noro_Frenkel}
-
-    .. [2] {ref_Barker_Henderson}
-
-    .. [3] {ref_WCA}
 
     """
 
@@ -166,9 +184,6 @@ def lam_nf(beta: float, sig: float, eps: float, B2: float):
         Value of `lambda` in an effective square well fluid which matches ``B2``.
 
 
-    References
-    ----------
-    .. [1] {ref_Noro_Frenkel}
     """
     B2star = B2 / (TWO_PI / 3.0 * sig**3)
 
@@ -201,7 +216,7 @@ def lam_nf_dbeta(
     B2 : float
         Second virial coefficient to match.
     lam : float
-        Value from :func:`analphipy.norofrenekl.lam_nf`.
+        Value from :func:`analphipy.norofrenkel.lam_nf`.
     B2_dbeta : float
         d(B2)/d(beta) at ``beta``
     sig_dbeta : float
@@ -248,13 +263,6 @@ class NoroFrenkelPair:
     {phi_min_exact}
     {quad_kws}
 
-    References
-    ----------
-    .. [1] {ref_Noro_Frenkel}
-
-    .. [2] {ref_Barker_Henderson}
-
-    .. [3] {ref_WCA}
     """
 
     def __init__(
@@ -263,9 +271,8 @@ class NoroFrenkelPair:
         segments: ArrayLike,
         r_min: float,
         phi_min: Float_or_Array,
-        quad_kws: Optional[Mapping[str, Any]] = None,
+        quad_kws: Mapping[str, Any] | None = None,
     ):
-
         self.phi = phi
         self.r_min = r_min
 
@@ -279,7 +286,6 @@ class NoroFrenkelPair:
         self.quad_kws = quad_kws
 
     def __repr__(self):
-
         params = ",\n    ".join(
             [
                 f"{v}={getattr(self, v)}"
@@ -321,9 +327,9 @@ class NoroFrenkelPair:
         cls,
         phi: Phi_Signature,
         segments: ArrayLike,
-        r_min: Optional[float] = None,
-        bounds: Optional[ArrayLike] = None,
-        quad_kws: Optional[Mapping[str, Any]] = None,
+        r_min: float | None = None,
+        bounds: ArrayLike | None = None,
+        quad_kws: Mapping[str, Any] | None = None,
         **kws,
     ) -> NoroFrenkelPair:
         """
@@ -345,7 +351,8 @@ class NoroFrenkelPair:
 
         Returns
         -------
-        output : instance of calling class
+        output : object
+            instance of calling class
         """
 
         if bounds is None:
@@ -367,10 +374,10 @@ class NoroFrenkelPair:
     @classmethod
     def from_phi_class(
         cls,
-        phi: "PhiBase",
-        r_min: Optional[float] = None,
-        bounds: Optional[tuple[float, float]] = None,
-        quad_kws: Optional[dict[str, Any]] = None,
+        phi: PhiBase,
+        r_min: float | None = None,
+        bounds: tuple[float, float] | None = None,
+        quad_kws: dict[str, Any] | None = None,
         **kws,
     ):
         """
@@ -378,7 +385,7 @@ class NoroFrenkelPair:
 
         Parameters
         ----------
-        phi : Phi_Abstracclass instance
+        phi : :class:`analphipy.base_potential.PhiBase`
         r_min : float, optional
             Optional guess for numerically finding minimum in `phi`.
         bounds : array-like, optional
@@ -391,7 +398,8 @@ class NoroFrenkelPair:
 
         Returns
         -------
-        output : instance of calling class
+        output : object
+            instance of calling class
         """
 
         try:
@@ -419,7 +427,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~measures.secondvirial
+        ~analphipy.measures.secondvirial
         """
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
@@ -453,7 +461,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~norofrenkel.lam_nf
+        ~analphipy.norofrenkel.lam_nf
         """
         return lam_nf(
             beta=beta,
@@ -478,7 +486,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~measures.secondvirial_dbeta
+        ~analphipy.measures.secondvirial_dbeta
         """
         return secondvirial_dbeta(
             phi=self.phi, beta=beta, segments=self.segments, **kws
@@ -491,7 +499,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~norofrenkel.sig_nf_dbeta
+        ~analphipy.norofrenkel.sig_nf_dbeta
 
         """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
@@ -502,7 +510,7 @@ class NoroFrenkelPair:
 
         See Also
         --------
-        ~norofrenkel.lam_nf_dbeta
+        ~analphipy.norofrenkel.lam_nf_dbeta
         """
         return lam_nf_dbeta(
             beta=beta,
@@ -542,7 +550,7 @@ class NoroFrenkelPair:
     def table(
         self,
         betas: ArrayLike,
-        props: Sequence[str] = None,
+        props: Sequence[str] | None = None,
         key_format: str = "{prop}",
         **kws,
     ) -> dict[str, Any]:
@@ -553,7 +561,7 @@ class NoroFrenkelPair:
         ----------
         betas : array-like
             Array of values of inverse temperature ``beta``.
-        props : sequence of strings
+        props : sequence of string
             Name of methods to access.
         key_format : string, default="{prop}"
             Each key in the output dictionary will have the value ``key_format.format(prop=prop)``

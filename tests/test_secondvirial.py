@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 import analphipy.measures as measures
-import analphipy.potentials as pots
+import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
 data = Path(__file__).parent / "data"
@@ -13,7 +13,6 @@ nsamp = 20
 
 
 def test_B2_sw():
-
     df = (
         pd.read_csv(data / "vir_sw_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
@@ -23,8 +22,7 @@ def test_B2_sw():
     if len(df) > nsamp:
         df = df.sample(nsamp)
     for (sig, eps, lam), g in df.groupby(["sig", "eps", "lam"]):
-
-        p = pots.Phi_sw(sig=sig, eps=eps, lam=lam)
+        p = pots.SquareWell(sig=sig, eps=eps, lam=lam)
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
 
@@ -35,7 +33,6 @@ def test_B2_sw():
 
 
 def test_B2_lj():
-
     df = (
         pd.read_csv(data / "vir_lj_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
@@ -46,10 +43,9 @@ def test_B2_lj():
     if len(df) > nsamp:
         df = df.sample(nsamp)
     sig = eps = 1.0
-    p_base = pots.Phi_lj(sig=sig, eps=eps)
+    p_base = pots.LennardJones(sig=sig, eps=eps)
 
     for (rcut, tail), g in df.groupby(["rcut", "tail"]):
-
         if tail == "LFS":
             p = p_base.lfs(rcut=rcut)
         elif tail == "CUT":
@@ -68,7 +64,6 @@ def test_B2_lj():
 
 
 def test_B2_nm():
-
     df = (
         pd.read_csv(data / "vir_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
@@ -80,7 +75,7 @@ def test_B2_nm():
     sig = eps = 1.0
 
     for (n_exp, m_exp), g in df.groupby(["n_exp", "m_exp"]):
-        p = pots.Phi_nm(n=n_exp, m=m_exp, sig=sig, eps=eps)
+        p = pots.LennardJonesNM(n=n_exp, m=m_exp, sig=sig, eps=eps)
 
         a = NoroFrenkelPair.from_phi(
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
@@ -104,7 +99,7 @@ def test_B2_yk():
     sig = eps = 1.0
 
     for (z_yukawa), g in df.groupby(["z_yukawa"]):
-        p = pots.Phi_yk(z=z_yukawa, sig=sig, eps=eps)
+        p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)
 
@@ -115,10 +110,9 @@ def test_B2_yk():
 
 
 def test_B2_hs():
-
     sig = np.random.rand()
 
-    p = pots.Phi_hs(sig=sig)
+    p = pots.HardSphere(sig=sig)
 
     B2a = 2 * np.pi / 3.0 * sig**3
 
