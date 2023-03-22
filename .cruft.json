@@ -12,7 +12,8 @@
     "docs/api.md",
     "docs/index.md",
     "docs/spelling_wordlist.txt",
-    "tests/test_analphipy.py"
+      "tests/test_analphipy.py",
+      "environment/*.yaml"
   ],
   "context": {
     "cookiecutter": {
