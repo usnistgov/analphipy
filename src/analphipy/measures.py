@@ -12,7 +12,7 @@ from custom_inherit import doc_inherit
 
 from analphipy.cached_decorators import gcached
 
-from ._docstrings import docfiller_shared
+from ._docstrings import docfiller_shared  # type: ignore
 from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
 from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 

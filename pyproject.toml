@@ -61,6 +61,11 @@ license-files = ["LICENSE"]
 where = ["src"]
 namespaces = false
 
+[tool.setuptools.package-data]
+analphipy = [
+    "py.typed"
+]
+
 [tool.setuptools.dynamic]
 readme = {file = ["README.md", "HISTORY.md", "LICENSE"], content-type = "text/markdown"}
 
@@ -179,32 +184,52 @@ max-complexity = 10
 
 
 [tool.mypy]
-exclude = "properties|asv_bench|doc"
 files = ["."]
 show_error_codes = true
 warn_return_any = true
 warn_unused_configs = true
-# plugins = numpy.typing.mypy_plugin
-# Most of the numerical computing stack doesn't have type annotations yet.
-
-[[tool.mypy.overrides]]
-module = [
-       "numpy.*",
-       "bottleneck.*",
-       "dask.*",
-       "netCDF.*",
-       "pandas.*",
-       "pytest.*",
-       "scipy.*",
-       "setuptools",
-       "numba.*",
-       ]
-ignore_missing_imports = true
-
-# version spanning code is hard to type annotate (and most of this module will
-# be going away soon anyways)
 exclude = [
     ".eggs",
     "doc",
     "docs",
 ]
+
+[[tool.mypy.overrides]]
+module = "numpy.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "bottleneck.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "dask.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "netCDF.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pandas.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pytest.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "scipy.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "setuptools"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "numba.*"
+ignore_missing_imports = true
+
+
+# version spanning code is hard to type annotate (and most of this module will
+# be going away soon anyways)

@@ -13,7 +13,7 @@ from attrs import field
 from custom_inherit import DocInheritMeta
 
 from ._attrs_utils import field_formatter, optional_converter, private_field
-from ._docstrings import docfiller_shared
+from ._docstrings import docfiller_shared  # type: ignore
 from ._typing import Float_or_ArrayLike
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair

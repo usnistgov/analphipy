@@ -12,7 +12,7 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import minimize
 
-from ._docstrings import docfiller_shared
+from ._docstrings import docfiller_shared  # type: ignore
 from ._typing import ArrayLike, Float_or_ArrayLike
 
 # from typing_extensions import Protocol

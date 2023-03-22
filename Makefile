@@ -76,6 +76,9 @@ pre-commit-lint-extra: ## run all linting
 	pre-commit run --all-files --hook-stage manual flake8
 	pre-commit run --all-files --hook-stage manual pyupgrade
 
+pre-commit-mypy: ## run mypy
+	pre-commit run --all-files --hook-stage manual mypy
+
 pre-commit-codespell: ## run codespell. Note that this imports allowed words from docs/spelling_wordlist.txt
 	pre-commit run --all-files --hook-stage manual codespell
 

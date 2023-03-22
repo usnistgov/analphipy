@@ -550,7 +550,7 @@ class NoroFrenkelPair:
     def table(
         self,
         betas: ArrayLike,
-        props: Sequence[str] = None,
+        props: Sequence[str] | None = None,
         key_format: str = "{prop}",
         **kws,
     ) -> dict[str, Any]:
