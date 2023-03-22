@@ -459,7 +459,7 @@ def linkcode_resolve(domain, info):
 
     fn = os.path.relpath(fn, start=os.path.dirname(analphipy.__file__))
 
-    return f"https://github.com/{github_username}/analphipy/blob/{html_context['github_version']}/analphipy/{fn}{linespec}"
+    return f"https://github.com/{github_username}/analphipy/blob/{html_context['github_version']}/src/analphipy/{fn}{linespec}"
 
 
 # only set spelling stuff if installed:
