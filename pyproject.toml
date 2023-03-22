@@ -38,6 +38,7 @@ dependencies = [
     "custom-inherit",
 ]
 
+
 [project.urls]
 homepage = "https://github.com/usnistgov/analphipy"
 documentation = "https://pages.nist.gov/analphipy/"
@@ -46,8 +47,8 @@ documentation = "https://pages.nist.gov/analphipy/"
 test = [
     "pandas",
     "pytest",
-    "pytest-mypy",
-    "mypy",
+    # "pytest-mypy",
+    # "mypy",
 ]
 
 [tool.setuptools]

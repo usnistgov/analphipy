@@ -1,6 +1,8 @@
 channels:
     - conda-forge
 dependencies:
+    - setuptools-scm
+    - ipython
     - matplotlib
     - pandas
     - pip
@@ -10,13 +12,7 @@ dependencies:
             - ghp-import
             - sphinx
             ## themes
-            # sphinx_rtd_theme
-            # sphinx-material
-            # sphinx-book-theme
-            ## notebook
-            # nbsphinx
-            - ipython
-            - setuptools-scm
+            - sphinx-book-theme
             ## optionals
             # sphinx-design
             - sphinx-copybutton
@@ -27,6 +23,5 @@ dependencies:
             ## myst
             # myst-parser
             - myst-nb
+            ## others
             - autodocsumm
-            # ensure most recent versions
-            - sphinx-book-theme
