@@ -143,7 +143,7 @@ environment/test.yaml: environment.yaml environment/test-extras.yaml ## build te
 
 .PHONY: environment-files
 
-environment-files: environment.yaml environment/dev-extras.yaml environemnt/docs-extras.yaml environment-test-extras.yaml ## rebuild all environment files
+environment-files: environment/dev.yaml environment/docs.yaml environment/test.yaml ## rebuild all environ
 
 
 ################################################################################
