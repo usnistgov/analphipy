@@ -32,7 +32,6 @@ def phidphi_lj(r, sig=1.0, eps=1.0):
 
 
 def phidphi_lj_cut(r, rcut, sig=1.0, eps=1.0):
-
     r = np.array(r)
     phi = np.empty_like(r)
     dphi = np.empty_like(r)
@@ -52,7 +51,6 @@ def phidphi_lj_cut(r, rcut, sig=1.0, eps=1.0):
 
 
 def phidphi_lj_lfs(r, rcut, sig=1.0, eps=1):
-
     r = np.array(r)
     phi = np.empty_like(r)
     dphi = np.empty_like(r)
@@ -75,25 +73,23 @@ def _prefac_nm(n, m, eps):
 
 
 def phidphi_nm(r, n, m, sig=1.0, eps=1.0):
-
     r = np.array(r)
     prefac = _prefac_nm(n=n, m=m, eps=eps)
 
     x = sig / r
 
-    xn = x ** n
-    xm = x ** m
+    xn = x**n
+    xm = x**m
     phi = prefac * (xn - xm)
 
     # dphi = -1/r dphi/dr = x dphi/dx * 1/r**2
     # where x = sig / r
-    dphi = prefac * (n * xn - m * xm) / r ** 2
+    dphi = prefac * (n * xn - m * xm) / r**2
 
     return phi, dphi
 
 
 def get_r(rmin, rmax, n=100):
-
     rmin = np.random.rand() * 0.1 + rmin
     rmax = np.random.rand() * 0.1 + rmax
 
@@ -188,7 +184,6 @@ def lj_lfs_params(request):
 
 @dataclass
 class NM_params(LJ_params):
-
     n: int
     m: int
 
@@ -296,7 +291,6 @@ def yk_params(request):
 
 
 def phi_hs(r, sig=1.0):
-
     r = np.array(r)
 
     phi = np.empty_like(r)

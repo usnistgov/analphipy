@@ -1,4 +1,5 @@
 import numpy as np
+
 from analphipy import potential as pots
 
 # import pytest

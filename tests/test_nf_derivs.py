@@ -1,8 +1,9 @@
-import analphipy.potential as pots
 import numpy as np
 import pytest
-from analphipy.norofrenkel import NoroFrenkelPair
 from scipy.misc import derivative
+
+import analphipy.potential as pots
+from analphipy.norofrenkel import NoroFrenkelPair
 
 
 def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3):

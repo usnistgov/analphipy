@@ -85,8 +85,6 @@ testpaths = ["tests"]
 [tool.isort]
 profile = "black"
 skip_gitignore = true
-force_to_top = ["true"]
-default_section = "THIRDPARTY"
 known_first_party = ["analphipy"]
 
 
@@ -178,6 +176,8 @@ per-file-ignores = {}
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
+[tool.ruff.isort]
+known-first-party = ["analphipy"]
 
 [tool.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
@@ -187,8 +187,9 @@ max-complexity = 10
 
 
 [tool.mypy]
-files = ["."]
+files = ["src/analphipy"]
 show_error_codes = true
+warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
 exclude = [
@@ -198,41 +199,18 @@ exclude = [
 ]
 
 [[tool.mypy.overrides]]
-module = "numpy.*"
 ignore_missing_imports = true
+module = [
+       "numpy.*",
+       "pandas.*",
+       "pytest.*",
+       "scipy.*",
+       "setuptools",
+]
 
 [[tool.mypy.overrides]]
-module = "bottleneck.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "dask.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "netCDF.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "pandas.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "pytest.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "scipy.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "setuptools"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "numba.*"
-ignore_missing_imports = true
-
+ignore_errors = true
+module = []
 
 # version spanning code is hard to type annotate (and most of this module will
 # be going away soon anyways)

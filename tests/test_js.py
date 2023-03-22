@@ -1,9 +1,10 @@
 """
 Simple tests for js divergence...
 """
-import analphipy
 import numpy as np
 import pytest
+
+import analphipy
 from analphipy.measures import diverg_js_cont
 
 
