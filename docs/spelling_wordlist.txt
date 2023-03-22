@@ -32,11 +32,11 @@ subclasses
 PhiBase
 PhiCut
 PhiLFS
-Phi_lj
-Phi_sw
-Phi_yk
+LennardJones
+SquareWell
+Yukawa
 Phi_nm
-Phi_hs
+HardSphere
 init
 PhiGeneric
 boltz

@@ -35,32 +35,101 @@ import analphipy
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "autodocsumm",
     "sphinx.ext.intersphinx",
-    # "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "IPython.sphinxext.ipython_directive",
     "IPython.sphinxext.ipython_console_highlighting",
-    "nbsphinx",
-    # "sphinx_autosummary_accessors",
-    # "scanpydoc.rtd_github_links",
-    # local source
+    # "nbsphinx",
+    ## easier external links
+    # "sphinx.ext.extlinks",
+    ## view source code on created page
     # "sphinx.ext.viewcode",
-    # github source
+    ## view source code on github
     "sphinx.ext.linkcode",
+    ## add copy button
+    "sphinx_copybutton",
+    ## redirect stuff?
+    # "sphinxext.rediraffe",
+    ## pretty things up?
+    # "sphinx_design"
+    ## myst stuff
+    "myst_nb",
 ]
 
-# defined stuff, from xarray
-nbsphinx_prolog = """
+nitpicky = True
 
-{% set docname = env.doc2path(env.docname, base=None) %}
+# -- myst stuff ---------------------------------------------------------
+myst_enable_extensions = [
+    "dollarmath",
+    "amsmath",
+    "deflist",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "colon_fence",
+    "smartquotes",
+    "replacements",
+    # "linkify",
+    "strikethrough",
+    "substitution",
+    "tasklist",
+    # "attrs_inline",
+    # "attrs_block",
+]
 
 
-You can view this notebook `on Github <https://github.com/usnistgov/analphipy/blob/main/doc/{{ docname }}>`_.
-"""
+myst_heading_anchors = 2
+myst_footnote_transition = True
+myst_dmath_double_inline = True
+myst_enable_checkboxes = True
+myst_substitutions = {
+    "role": "[role](#syntax/roles)",
+    "directive": "[directive](#syntax/directives)",
+}
+# myst_enable_extensions = [
+#     "dollarmath",
+#     "amsmath",
+#     "deflist",
+#     # "html_admonition",
+#     "html_image",
+#     "colon_fence",
+#     # "smartquotes",
+#     # "replacements",
+#     # "linkify",
+#     # "substitution",
+#     "attrs_inline",
+#     "attrs_block",
+# ]
 
-nbsphinx_kernel_name = "python3"
+myst_url_schemes = ("http", "https", "mailto")
+
+nb_execution_mode = "cache"
+# nb_execution_mode = "auto"
+
+# set the kernel name
+nb_kernel_rgx_aliases = {"analphipy.*": "python3", "conda.*": "python3"}
+
+nb_execution_allow_errors = True
+
+# - top level variables --------------------------------------------------------
+# set github_username variable to be subbed later.
+# this makes it easy to switch from wpk -> usnistgov later
+github_username = "usnistgov"
+
+html_context = {
+    "github_user": "usnistgov",
+    "github_repo": "analphipy",
+    "github_version": "master",
+    "doc_path": "docs",
+}
+
+# -- python3 ---------------------------------------------------------------
 autosummary_generate = True
+# autosummary_generate = False
+autodoc_member_order = "bysource"
+
 # autoclass_content = "both"  # include both class docstring and __init__
 autodoc_default_flags = [
     # Make sure that any autodoc declarations show the right members
@@ -69,17 +138,9 @@ autodoc_default_flags = [
     "private-members",
     "show-inheritance",
 ]
-# # for scanpydoc's jinja filter
-# project_dir = pathlib.Path(__file__).parent.parent
-html_context = {
-    "github_user": "usnistgov",
-    "github_repo": "analphipy",
-    "github_version": "main",
-    "doc_path": "doc",
-}
-
 autodoc_typehints = "none"
 
+# -- napolean ------------------------------------------------------------------
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
@@ -96,6 +157,7 @@ napoleon_type_aliases = {
     "path-like": ":term:`path-like <path-like object>`",
     "mapping": ":term:`mapping`",
     "hashable": ":term:`hashable`",
+    "file-like": ":term:`file-like <file-like object>`",
     # special terms
     # "same type as caller": "*same type as caller*",  # does not work, yet
     # "same type as values": "*same type as values*",  # does not work, yet
@@ -117,19 +179,30 @@ napoleon_type_aliases = {
     # objects without namespace: xarray
     "DataArray": "~xarray.DataArray",
     "Dataset": "~xarray.Dataset",
+    "Variable": "~xarray.Variable",
+    "DatasetGroupBy": "~xarray.core.groupby.DatasetGroupBy",
+    "DataArrayGroupBy": "~xarray.core.groupby.DataArrayGroupBy",
+    "CentralMoments": "~cmomy.CentralMoments",
+    "xCentralMoments": "~cmomy.xCentralMoments",
     # objects without namespace: numpy
     "ndarray": "~numpy.ndarray",
     "MaskedArray": "~numpy.ma.MaskedArray",
     "dtype": "~numpy.dtype",
     "ComplexWarning": "~numpy.ComplexWarning",
-    # objects with namespace analphipy
-    "lnPiMasked": "~lnpy.lnPiMasked",
-    "lnPiCollection": "~lnpy.lnPiCollection",
+    # objects without namespace: pandas
+    "Index": "~pandas.Index",
+    "MultiIndex": "~pandas.MultiIndex",
+    "CategoricalIndex": "~pandas.CategoricalIndex",
+    "TimedeltaIndex": "~pandas.TimedeltaIndex",
+    "DatetimeIndex": "~pandas.DatetimeIndex",
+    "Series": "~pandas.Series",
+    "DataFrame": "~pandas.DataFrame",
+    "Categorical": "~pandas.Categorical",
+    "Path": "~~pathlib.Path",
+    # objects with abbreviated namespace (from pandas)
+    "pd.Index": "~pandas.Index",
+    "pd.NaT": "~pandas.NaT",
 }
-
-
-numpydoc_class_members_toctree = True
-numpydoc_show_class_members = False
 
 
 # Add any paths that contain templates here, relative to this directory.
@@ -139,14 +212,18 @@ templates_path = ["_templates"]
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".ipynb": "myst-nb",
+    ".myst": "myst-nb",
+}
 
 # The master toctree document.
 master_doc = "index"
 
 # General information about the project.
 project = "analphipy"
-copyright = "2021, William P. Krekelberg"
+copyright = "2023, William P. Krekelberg"
 author = "William P. Krekelberg"
 
 # The version info for the project you're documenting, acts as replacement
@@ -154,7 +231,7 @@ author = "William P. Krekelberg"
 # the built documents.
 #
 # The short X.Y version.
-# scm in dev mode has some issues.
+# versioning with scm with editable install has issues.
 # instead, try to use scm if available.
 try:
     from setuptools_scm import get_version
@@ -165,6 +242,10 @@ except ImportError:
     version = analphipy.__version__
     # The full version, including alpha/beta/rc tags.
     release = analphipy.__version__
+
+# if always want to print "latest"
+# release = "latest"
+# version = "latest"
 
 # The language for content autogenerated by Sphinx. Refer to documentation
 # for a list of supported languages.
@@ -185,80 +266,46 @@ pygments_style = "sphinx"
 todo_include_todos = False
 
 
-# based on numpy doc/source/conf.py
-def linkcode_resolve(domain, info):
-    """
-    Determine the URL corresponding to Python object
-    """
-    import inspect
-
-    if domain != "py":
-        return None
-
-    modname = info["module"]
-    fullname = info["fullname"]
-
-    submod = sys.modules.get(modname)
-    if submod is None:
-        return None
-
-    obj = submod
-    for part in fullname.split("."):
-        try:
-            obj = getattr(obj, part)
-        except AttributeError:
-            return None
-
-    try:
-        fn = inspect.getsourcefile(inspect.unwrap(obj))
-    except TypeError:
-        fn = None
-    if not fn:
-        return None
-
-    try:
-        source, lineno = inspect.getsourcelines(obj)
-    except OSError:
-        lineno = None
-
-    if lineno:
-        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
-    else:
-        linespec = ""
-
-    fn = os.path.relpath(fn, start=os.path.dirname(analphipy.__file__))
-
-    return (
-        f"https://github.com/usnistgov/analphipy/blob/master/analphipy/{fn}{linespec}"
-    )
-
-
-# only set spelling stuff if installed:
-try:
-    import sphinxcontrib.spelling  # noqa: F401
-
-    extensions += ["sphinxcontrib.spelling"]
-    spelling_word_list_filename = "spelling_wordlist.txt"
-
-except ImportError:
-    pass
-
-
 # -- Options for HTML output -------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-# html_theme = 'alabaster'
-html_theme = "sphinx_rtd_theme"
 
+html_theme = "sphinx_book_theme"
 
-# Theme options are theme-specific and customize the look and feel of a
-# theme further.  For a list of options available for each theme, see the
-# documentation.
-#
-# html_theme_options = {"logo_only": True}
+html_theme_options = dict(
+    # analytics_id=''  this is configured in rtfd.io
+    # canonical_url="",
+    repository_url="https://github.com/usnistgov/cmomy",
+    repository_branch=html_context["github_version"],
+    path_to_docs=html_context["doc_path"],
+    # use_edit_page_button=True,
+    use_repository_button=True,
+    use_issues_button=True,
+    home_page_in_toc=True,
+    show_toc_level=6,
+    show_navbar_depth=2,
+)
+# handle nist css/js from here.
+html_css_files = [
+    # "css/nist-combined.css",
+    "https://pages.nist.gov/nist-header-footer/css/nist-combined.css",
+    "https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css",
+]
 
+html_js_files = [
+    "https://code.jquery.com/jquery-3.6.2.min.js",
+    "https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js",
+    # "js/nist-header-footer.js",
+    "https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js",
+    "js/leave_notice.js",
+    # google stuff:
+    (
+        "https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c",
+        {"async": "async", "id": "_fed_au_ua_tag", "type": "text/javascript"},
+    ),
+]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -323,7 +370,15 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "analphipy", "analphipy Documentation", [author], 1)]
+man_pages = [
+    (
+        master_doc,
+        "analphipy",
+        "analphipy Documentation",
+        [author],
+        1,
+    ),
+]
 
 
 # -- Options for Texinfo output ----------------------------------------
@@ -343,13 +398,13 @@ texinfo_documents = [
     ),
 ]
 
+# -- user defined stuff ------------------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
     "numpy": ("https://numpy.org/doc/stable", None),
-    # "scipy": ('https://docs.scipy.org/doc/scipy/reference/', None),
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "numba": ("https://numba.pydata.org/numba-doc/latest", None),
     # "matplotlib": ("https://matplotlib.org", None),
@@ -358,13 +413,61 @@ intersphinx_mapping = {
     "cftime": ("https://unidata.github.io/cftime", None),
     "sparse": ("https://sparse.pydata.org/en/latest/", None),
     "xarray": ("https://docs.xarray.dev/en/stable/", None),
-    "skimage": ("https://scikit-image.org/docs/stable", None),
 }
 
-# think jinja stuff
-# def escape_underscores(string):
-#     return string.replace("_", r"\_")
+
+# based on numpy doc/source/conf.py
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    import inspect
+
+    if domain != "py":
+        return None
+
+    modname = info["module"]
+    fullname = info["fullname"]
+
+    submod = sys.modules.get(modname)
+    if submod is None:
+        return None
+
+    obj = submod
+    for part in fullname.split("."):
+        try:
+            obj = getattr(obj, part)
+        except AttributeError:
+            return None
+
+    try:
+        fn = inspect.getsourcefile(inspect.unwrap(obj))
+    except TypeError:
+        fn = None
+    if not fn:
+        return None
+
+    try:
+        source, lineno = inspect.getsourcelines(obj)
+    except OSError:
+        lineno = None
+
+    if lineno:
+        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
+    else:
+        linespec = ""
+
+    fn = os.path.relpath(fn, start=os.path.dirname(analphipy.__file__))
+
+    return f"https://github.com/{github_username}/analphipy/blob/master/analphipy/{fn}{linespec}"
 
 
-# def setup(app):
-#     DEFAULT_FILTERS["escape_underscores"] = escape_underscores
+# only set spelling stuff if installed:
+try:
+    import sphinxcontrib.spelling  # noqa: F401
+
+    extensions += ["sphinxcontrib.spelling"]
+    spelling_word_list_filename = "spelling_wordlist.txt"
+
+except ImportError:
+    pass

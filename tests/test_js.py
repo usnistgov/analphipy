@@ -11,9 +11,8 @@ from analphipy.measures import diverg_js_cont
 @pytest.mark.parametrize("beta", [0.5, 1.0, 2.0])
 @pytest.mark.parametrize("beta_other", [0.5, 1.0])
 def test_boltz_js_lj(beta, beta_other):
-
-    p0 = analphipy.Phi_lj(sig=1.0, eps=1.0)
-    p1 = analphipy.Phi_nm(n=14, m=7, sig=1.0, eps=1)
+    p0 = analphipy.potential.LennardJones(sig=1.0, eps=1.0)
+    p1 = analphipy.potential.LennardJonesNM(n=14, m=7, sig=1.0, eps=1)
 
     v0 = p0.to_measures().boltz_diverg_js(p1, beta=beta, beta_other=beta_other)
 

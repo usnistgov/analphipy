@@ -1,7 +1,6 @@
 """
 routines to define a cached class without needing to subclass Cached class
 """
-from __future__ import absolute_import
 
 from functools import wraps
 from inspect import signature
@@ -148,7 +147,6 @@ def cached_func(key=None, check_use_cache=False):
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             if (not check_use_cache) or (getattr(self, "_use_cache", False)):
-
                 params = bind(self, *args, **kwargs)
                 params.apply_defaults()
                 key_func = (_key, params.args[1:], frozenset(params.kwargs.items()))

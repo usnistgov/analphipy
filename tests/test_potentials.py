@@ -1,12 +1,11 @@
 import numpy as np
 
-import analphipy.potentials as pots
+from analphipy import potential as pots
 
 # import pytest
 
 
 def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
-
     if kws is None:
         kws = params.asdict()
 
@@ -38,19 +37,19 @@ def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
 
 
 def test_lj(lj_params):
-    _do_test(lj_params, pots.Phi_lj)
+    _do_test(lj_params, pots.LennardJones)
 
 
 def test_lj_cut(lj_cut_params):
-    _do_test(lj_cut_params, pots.Phi_lj, cut=True)
+    _do_test(lj_cut_params, pots.LennardJones, cut=True)
 
 
 def test_lj_lfs(lj_lfs_params):
-    _do_test(lj_lfs_params, pots.Phi_lj, lfs=True)
+    _do_test(lj_lfs_params, pots.LennardJones, lfs=True)
 
 
 def test_nm(nm_params):
-    _do_test(nm_params, pots.Phi_nm)
+    _do_test(nm_params, pots.LennardJonesNM)
 
 
 def test_nm_cut(lj_cut_params):
@@ -58,7 +57,9 @@ def test_nm_cut(lj_cut_params):
 
     phi0, dphi0 = params.get_phidphi()
 
-    p = pots.Phi_nm(n=12, m=6, sig=params.sig, eps=params.eps).cut(rcut=params.rcut)
+    p = pots.LennardJonesNM(n=12, m=6, sig=params.sig, eps=params.eps).cut(
+        rcut=params.rcut
+    )
 
     phi1 = p.phi(params.r)
     dphi1 = -p.dphidr(params.r) / params.r
@@ -72,7 +73,9 @@ def test_nm_lfs(lj_lfs_params):
 
     phi0, dphi0 = params.get_phidphi()
 
-    p = pots.Phi_nm(n=12, m=6, sig=params.sig, eps=params.eps).lfs(rcut=params.rcut)
+    p = pots.LennardJonesNM(n=12, m=6, sig=params.sig, eps=params.eps).lfs(
+        rcut=params.rcut
+    )
 
     phi1 = p.phi(params.r)
     dphi1 = -p.dphidr(params.r) / params.r
@@ -82,12 +85,12 @@ def test_nm_lfs(lj_lfs_params):
 
 
 def test_sw(sw_params):
-    _do_test(sw_params, pots.Phi_sw, phidphi=False)
+    _do_test(sw_params, pots.SquareWell, phidphi=False)
 
 
 def test_yk(yk_params):
-    _do_test(yk_params, pots.Phi_yk, kws=yk_params.asdict(), phidphi=False)
+    _do_test(yk_params, pots.Yukawa, kws=yk_params.asdict(), phidphi=False)
 
 
 def test_hs(hs_params):
-    _do_test(hs_params, pots.Phi_hs, phidphi=False)
+    _do_test(hs_params, pots.HardSphere, phidphi=False)
