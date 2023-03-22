@@ -121,7 +121,7 @@ github_username = "usnistgov"
 html_context = {
     "github_user": "usnistgov",
     "github_repo": "analphipy",
-    "github_version": "master",
+    "github_version": "main",
     "doc_path": "docs",
 }
 
@@ -459,7 +459,7 @@ def linkcode_resolve(domain, info):
 
     fn = os.path.relpath(fn, start=os.path.dirname(analphipy.__file__))
 
-    return f"https://github.com/{github_username}/analphipy/blob/master/analphipy/{fn}{linespec}"
+    return f"https://github.com/{github_username}/analphipy/blob/{html_context['github_version']}/analphipy/{fn}{linespec}"
 
 
 # only set spelling stuff if installed:
