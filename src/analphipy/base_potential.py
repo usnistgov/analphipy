@@ -13,7 +13,7 @@ from attrs import field
 from custom_inherit import DocInheritMeta
 
 from ._attrs_utils import field_formatter, optional_converter, private_field
-from ._docstrings import docfiller_shared  # type: ignore
+from ._docstrings import docfiller_shared
 from ._typing import Float_or_ArrayLike
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
@@ -36,7 +36,7 @@ def _kw_only_field(kw_only=True, default=None, **kws):
 
 @attrs.frozen
 @docfiller_shared
-class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):  # type: ignore
+class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
     """
     Abstract class from which base classes inherit
 
