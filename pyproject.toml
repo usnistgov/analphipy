@@ -1,8 +1,7 @@
 [build-system]
 requires = [
     "setuptools>=61.2",
-    "setuptools_scm[toml]>=3.4",
-    "setuptools_scm_git_archive",
+    "setuptools_scm[toml]>=7.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -29,15 +28,7 @@ classifiers = [
 ]
 dynamic = ["readme", "version"]
 requires-python = ">=3.8"
-dependencies = [
-    # additional packages
-    "attrs",
-    "typing-extensions",
-    "numpy",
-    "scipy",
-    "custom-inherit",
-]
-
+dependencies = [] # additional packages
 
 [project.urls]
 homepage = "https://github.com/usnistgov/analphipy"
@@ -53,21 +44,19 @@ test = [
 # dev = []
 # docs = []
 
+## Defer this to setup.cfg
+## Will transition when everything works (grayskull in particular)
+## and will remove setup.py
+# [tool.setuptools]
+# zip-safe = true # if using mypy, must be False
+# include-package-data = true
+# license-files = ["LICENSE"]
 
-[tool.setuptools]
-package-dir = {"" = "src"}
-zip-safe = true # if using mypy, must be False
-include-package-data = true
-license-files = ["LICENSE"]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-namespaces = false
-
-[tool.setuptools.package-data]
-analphipy = [
-    "py.typed"
-]
+# [tool.setuptools.packages.find]
+# namespaces = true
+# where = ["src"]
+## include = []
+## exclude = []
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.md", "HISTORY.md", "LICENSE"], content-type = "text/markdown"}
@@ -103,6 +92,8 @@ select = [
   "I",
   # pyupgrade
   "UP",
+  # pydocstyle
+  "D",
   # # flake8-2020
   # "YTT",
   # # flake8-bugbear
@@ -149,6 +140,7 @@ exclude = [
     "node_modules",
     "venv",
     "src/analphipy/tests",
+    "tests/"
 ]
 
 
@@ -167,8 +159,19 @@ ignore = [
     "D202",
     "D105",
     "D205",
+    # this leads to errors with placing titles in module
+    # docstrings
     "D400",
     "D401",
+    "D415",
+    "D102",
+    "D103",
+    # these are useful, but too many errors
+    # due to use of docfiller
+    "D417",
+    "D107",
+    "D203",
+    "D212",
 ]
 
 per-file-ignores = {}
@@ -194,6 +197,7 @@ warn_return_any = true
 warn_unused_configs = true
 exclude = [
     ".eggs",
+    ".tox",
     "doc",
     "docs",
 ]
@@ -211,6 +215,3 @@ module = [
 [[tool.mypy.overrides]]
 ignore_errors = true
 module = []
-
-# version spanning code is hard to type annotate (and most of this module will
-# be going away soon anyways)

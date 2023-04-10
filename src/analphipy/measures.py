@@ -200,8 +200,8 @@ def diverg_kl_disc(
     """
     Calculate discrete Kullback–Leibler divergence
 
-    Parameteres
-    -----------
+    Parameters
+    ----------
     P, Q : array-like
         Probabilities to consider
     Returns
@@ -513,7 +513,7 @@ class Measures:
         ~analphipy.measures.diverg_js_cont
 
         References
-        --------
+        ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
         """
 

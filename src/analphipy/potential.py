@@ -69,7 +69,8 @@ class Analytic(PhiBase):
 
 @attrs.frozen
 class LennardJones(Analytic):
-    r"""Lennard-Jones potential.
+    r"""
+    Lennard-Jones potential.
 
     .. math::
 
@@ -110,7 +111,7 @@ class LennardJones(Analytic):
         return cast(np.ndarray, self._four_eps * x6 * (x6 - 1.0))
 
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-        """calculate phi and dphi (=-1/r dphi/dr) at particular r"""
+        """Calculate phi and dphi (=-1/r dphi/dr) at particular r"""
         r = np.array(r)
         rinvsq = 1.0 / (r * r)
 
@@ -377,7 +378,7 @@ class CubicTable(PhiBase):
     @classmethod
     def from_phi(cls, phi: Phi_Signature, rmin: float, rmax: float, ds: float, **kws):
         """
-        Create object from callable pair potential funciton.
+        Create object from callable pair potential function.
 
         This will evaluate ``phi`` at even spacing in ``s = r**2`` space.
 
@@ -434,9 +435,7 @@ class CubicTable(PhiBase):
         return self.bounds[1]
 
     def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
-        """
-        Values of `phi` and `dphi` at `r`
-        """
+        """Values of `phi` and `dphi` at `r`"""
         r = np.asarray(r)
 
         v = np.empty_like(r)
@@ -477,15 +476,13 @@ class CubicTable(PhiBase):
 
     @property
     def rsq_table(self):
-        """value of ``r**2`` where potential is defined."""
+        """Value of ``r**2`` where potential is defined."""
 
         return self.smin + np.arange(self.size + 1) * self._ds
 
     @property
     def r_table(self):
-        """
-        Values of ``r`` where potential is defined
-        """
+        """Values of ``r`` where potential is defined"""
         return np.sqrt(self.rsq_table)
 
 
@@ -499,7 +496,8 @@ def factory(
     cut: bool = False,
     **kws,
 ) -> PhiBase:
-    """Factory function to construct Phi object by name
+    """
+    Factory function to construct Phi object by name
 
     Parameters
     ----------
