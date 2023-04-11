@@ -8,7 +8,7 @@
 :maxdepth: 3
 
 installation
-notebooks/usage
+examples/index
 api
 license
 contributing
