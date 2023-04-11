@@ -4,20 +4,14 @@
 
 
 ```{toctree}
-:caption: 'Contents:'
 :maxdepth: 3
 
 installation
 examples/index
-api
+reference/index
 license
 contributing
 authors
 history
+navigation
 ```
-
-# Indices and tables
-
-- {ref}`genindex`
-- {ref}`modindex`
-- {ref}`search`
