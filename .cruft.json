@@ -1,18 +1,18 @@
 {
   "template": "https://github.com/wpk-nist-gov/cookiecutter-pypackage.git",
-  "commit": "508c1e10dc5c4a69ee92e585b51088d97ce21c43",
+  "commit": "d851302dd9ba71ad37c3dd734a8bf5968150d8db",
   "checkout": "feature/markdown",
   "skip": [
     "src/analphipy/__init__.py",
     "README.md",
-    "HISTORY.md",
     "AUTHORS.md",
     "environment.yaml",
     "environment/dev-extras.yaml",
     "environment/docs-extras.yaml",
     "environment/test-extras.yaml",
-    "docs/api.md",
     "docs/index.md",
+    "docs/examples/index.md",
+    "docs/reference/index.md",
     "docs/spelling_wordlist.txt",
     "tests/test_analphipy.py"
   ],
@@ -32,7 +32,8 @@
         "docs/_templates/autodocsumm/*.rst",
         "docs/_static/*",
         "docs/_static/css/*",
-        "docs/_static/js/*"
+        "docs/_static/js/*",
+        "changelog.d/auto-changelog/*"
       ],
       "project_short_description": "Utilities to perform stat mech analysis of pair potentials",
       "version": "0.0.1",

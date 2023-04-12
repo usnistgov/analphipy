@@ -1,5 +1,7 @@
-# History
+# Changelog
 
-## 0.0.1 (2021-12-09)
+History for `analphipy`
 
-- First release on PyPI.
+<!-- [another](#v022--2023-04-12) -->
+
+<!-- scriv-insert-here -->
