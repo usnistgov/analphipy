@@ -54,7 +54,7 @@ clean-test: ## remove test and coverage artifacts
 ################################################################################
 # utilities
 ################################################################################
-.PHONY: lint pre-commit-init pre-commit-run pre-commit-run-all pre-commit-lint-extra pre-commit-codespell init
+.PHONY: lint pre-commit-init pre-commit-run pre-commit-run-all pre-commit-lint-extra pre-commit-codespell pre-commit-run-all-ruff
 
 lint: ## check style with flake8
 	flake8 cmomy tests
@@ -67,6 +67,9 @@ pre-commit-run: ## run pre-commit
 
 pre-commit-run-all: ## run pre-commit on all files
 	pre-commit run --all-files
+
+pre-commit-run-all-ruff: ## run ruff on on all files
+	pre-commit run --all-files ruff
 
 pre-commit-manual: ## run pre-commit manual flags
 	pre-commit run --hook-stage manual
@@ -265,7 +268,7 @@ install-dev: ## install development version (run clean?)
 
 # Note that this requires `auto-changelog`, which can be installed with pip(x)
 auto-changelog: ## autogenerate changelog and print to stdout
-	auto-changelog -u -r usnistgov -v current --tag-prefix v --stdout --template changelog.d/auto-changelog/template.jinja2
+	auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/auto-changelog/template.jinja2
 
 commitizen-changelog:
-	cz changelog --unreleased-version v0.2.2 --dry-run --incremental
+	cz changelog --unreleased-version unreleased --dry-run --incremental

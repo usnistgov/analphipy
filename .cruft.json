@@ -1,20 +1,12 @@
 {
   "template": "https://github.com/wpk-nist-gov/cookiecutter-pypackage.git",
-  "commit": "d851302dd9ba71ad37c3dd734a8bf5968150d8db",
+  "commit": "02682b1d9f6eca50cb79d91225ef9cdeed09c140",
   "checkout": "feature/markdown",
   "skip": [
     "src/analphipy/__init__.py",
-    "README.md",
-    "AUTHORS.md",
-    "environment.yaml",
-    "environment/dev-extras.yaml",
-    "environment/docs-extras.yaml",
-    "environment/test-extras.yaml",
-    "docs/index.md",
-    "docs/examples/index.md",
-    "docs/reference/index.md",
-    "docs/spelling_wordlist.txt",
-    "tests/test_analphipy.py"
+    "docs/examples/usage/demo.ipynb",
+    "examples/usage/demo.ipynb",
+    "docs/examples/example-usage.md"
   ],
   "context": {
     "cookiecutter": {
