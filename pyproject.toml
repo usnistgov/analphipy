@@ -1,15 +1,11 @@
 [build-system]
-requires = [
-    "setuptools>=61.2",
-    "setuptools_scm[toml]>=7.0",
-]
+requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7.0"]
 build-backend = "setuptools.build_meta"
-
 
 [project]
 name = "analphipy"
-authors = [{name = "William P. Krekelberg", email = "wpk@nist.gov"}]
-license = {text = "NIST license"}
+authors = [{ name = "William P. Krekelberg", email = "wpk@nist.gov" }]
+license = { text = "NIST license" }
 description = "Utilities to perform stat mech analysis of pair potentials"
 # if using markdown
 # long_description_content_type = text/markdown
@@ -40,10 +36,11 @@ test = [
     "pytest",
     # "pytest-mypy",
     # "mypy",
+
 ]
+
 # dev = []
 # docs = []
-
 ## Defer this to setup.cfg
 ## Will transition when everything works (grayskull in particular)
 ## and will remove setup.py
@@ -51,15 +48,17 @@ test = [
 # zip-safe = true # if using mypy, must be False
 # include-package-data = true
 # license-files = ["LICENSE"]
-
 # [tool.setuptools.packages.find]
 # namespaces = true
 # where = ["src"]
 ## include = []
 ## exclude = []
-
 [tool.setuptools.dynamic]
-readme = {file = ["README.md", "CHANGELOG.md", "LICENSE"], content-type = "text/markdown"}
+readme = { file = [
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+], content-type = "text/markdown" }
 
 [tool.setuptools_scm]
 fallback_version = "999"
@@ -76,47 +75,43 @@ profile = "black"
 skip_gitignore = true
 known_first_party = ["analphipy"]
 
-
 [tool.ruff]
 line-length = 88
 update-check = false
 target-version = "py38"
-
 select = [
-  # pyflakes
-  "F",
-  # pycodestyle
-  "E",
-  "W",
-  # isort
-  "I",
-  # pyupgrade
-  "UP",
-  # pydocstyle
-  "D",
-  # # flake8-2020
-  # "YTT",
-  # # flake8-bugbear
-  # "B",
-  # # flake8-quotes
-  # "Q",
-  # # pylint
-  # "PLE", "PLR", "PLW",
-  # # misc lints
-  # "PIE",
-  # # tidy imports
-  # "TID",
-  # # implicit string concatenation
-  # "ISC",
-  # # type-checking imports
-  # "TCH",
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    "W",
+    # isort
+    "I",
+    # pyupgrade
+    "UP",
+    # pydocstyle
+    "D",
+    # # flake8-2020
+    # "YTT",
+    # # flake8-bugbear
+    # "B",
+    # # flake8-quotes
+    # "Q",
+    # # pylint
+    # "PLE", "PLR", "PLW",
+    # # misc lints
+    # "PIE",
+    # # tidy imports
+    # "TID",
+    # # implicit string concatenation
+    # "ISC",
+    # # type-checking imports
+    # "TCH",
+
 ]
-
-
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 # fixable = ["A", "B", "C", "D", "E", "F", "..."]
 unfixable = []
-
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
@@ -142,8 +137,6 @@ exclude = [
     "tests/",
     "src/analphipy/tests",
 ]
-
-
 ignore = [
     # # whitespace before ':' - doesn't work well with black
     # "E203",
@@ -173,9 +166,7 @@ ignore = [
     "D203",
     "D212",
 ]
-
-per-file-ignores = {}
-
+per-file-ignores = {  }
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
@@ -188,29 +179,17 @@ max-complexity = 10
 
 [tool.cruft]
 
-
 [tool.mypy]
 files = ["src/analphipy"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
-exclude = [
-    ".eggs",
-    ".tox",
-    "doc",
-    "docs",
-]
+exclude = [".eggs", ".tox", "doc", "docs"]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = [
-       "numpy.*",
-       "pandas.*",
-       "pytest.*",
-       "scipy.*",
-       "setuptools",
-]
+module = ["numpy.*", "pandas.*", "pytest.*", "scipy.*", "setuptools"]
 
 [[tool.mypy.overrides]]
 ignore_errors = true
@@ -219,7 +198,6 @@ module = []
 [tool.scriv]
 format = "md"
 md_header_level = "2"
-
 
 [tool.commitizen]
 use_shortcuts = true

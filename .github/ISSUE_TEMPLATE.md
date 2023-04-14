@@ -1,6 +1,6 @@
-* analphipy version:
-* Python version:
-* Operating System:
+-   analphipy version:
+-   Python version:
+-   Operating System:
 
 ### Description
 

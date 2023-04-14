@@ -1,12 +1,12 @@
 channels:
-- conda-forge
-- wpk-nist
+  - conda-forge
+  - wpk-nist
 dependencies:
-- attrs
-- custom-inherit
-- numpy
-- pytest
-- python>=3.8
-- scipy
-- typing-extensions
+  - attrs
+  - custom-inherit
+  - numpy
+  - pytest
+  - python>=3.8
+  - scipy
+  - typing-extensions
 name: analphipy-env

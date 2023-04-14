@@ -1,7 +1,6 @@
-# API Reference
+API Reference
+=============
 
-
-:::{eval-rst}
 
 .. autosummary::
     :toctree: generated/
@@ -18,4 +17,3 @@
     :template: autodocsumm/module-inherit.rst
 
     analphipy.base_potential
-:::

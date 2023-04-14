@@ -2,7 +2,6 @@
 :end-before: <!-- end-docs -->
 ```
 
-
 ```{toctree}
 :maxdepth: 3
 
