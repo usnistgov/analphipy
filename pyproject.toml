@@ -24,7 +24,14 @@ classifiers = [
 ]
 dynamic = ["readme", "version"]
 requires-python = ">=3.8"
-dependencies = [] # additional packages
+dependencies = [
+    # additional packages
+    "attrs",
+    "typing-extensions",
+    "numpy",
+    "scipy",
+    "custom-inherit",
+]
 
 [project.urls]
 homepage = "https://github.com/usnistgov/analphipy"
@@ -39,8 +46,6 @@ test = [
 
 ]
 
-# dev = []
-# docs = []
 ## Defer this to setup.cfg
 ## Will transition when everything works (grayskull in particular)
 ## and will remove setup.py
@@ -180,7 +185,7 @@ max-complexity = 10
 [tool.cruft]
 
 [tool.mypy]
-files = ["src/analphipy"]
+files = ["src/analphipy", "tests"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
@@ -189,7 +194,13 @@ exclude = [".eggs", ".tox", "doc", "docs"]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = ["numpy.*", "pandas.*", "pytest.*", "scipy.*", "setuptools"]
+# module = ["numpy.*", "pandas.*", "pytest.*", "scipy.*", "setuptools", "custom_inherit"]
+module = [
+    "custom_inherit",
+    "scipy.integrate.*",
+    "scipy.optimize.*",
+    "scipy.misc.*"
+]
 
 [[tool.mypy.overrides]]
 ignore_errors = true
@@ -201,3 +212,70 @@ md_header_level = "2"
 
 [tool.commitizen]
 use_shortcuts = true
+# [tool.flakeheaven]
+# format = "colored"
+# max_line_length = 100
+# max_complexity = 20
+# max_cognitive_complexity = 10
+# min_python_version = "3.7"  # CHANGE ME
+# pytest_fixture_no_parentheses = true
+# exclude = [
+#   "*venv*/",
+#   "*.tox/",
+#   "*.nox/",
+#   "_backupfiles/",
+#   "*.bak.*"
+# ]
+# extend_select = ["B950"]
+# [Tool.flakeheaven.plugins]
+# pyflakes = ["+*"]
+# mccabe = ["+*"]
+# pycodestyle = [
+# "+*",
+# # deactivate because of black
+# "-W503",  # line break before binary operator
+# "-E203",  # whitespace before ':'
+# "-E501",
+# # deactivate because double check
+# "-E501",  # line length B950[flake8-bugbear]
+# "-E722",  # bare-except B001[flake8-bugbear]
+# # deactivate because unwanted
+# "-E731",  # forbids lambda
+# ]
+# pep8-naming = ["+*"]
+# "flake8-*" = ["+*"]
+# flake8-aaa = ["-*"]
+# flake8-annotations = [
+# "+*",
+# # deactivate because unwanted
+# "-ANN101",  # Missing type annotation for self in method
+# "-ANN102",  # Missing type annotation for cls in classmethod
+# ]
+# flake8-bandit = [
+# "+*",
+# # deactivate because double check
+# "-S110",  # try-except-pass - SIM105[flake8-simplify]
+# ]
+# flake8-logging-format = [
+# "+*",
+# # deactivate because unwanted
+# "-G00?",  # Prohibit format strings in logging calls
+# ]
+# flake8-rst-docstrings = [
+# "+*",
+# # deactivate because unwanted
+# "-RST303",  # Unknown directive type
+# "-RST304",  # Unknown interpreted text role
+# ]
+# flake8-use-fstring = [
+# "+*",
+# # deactivate because unwanted
+# "-FS003",  # f-string missing prefix | can be % string
+# ]
+# [tool.flakeheaven.exceptions]
+# [tool.flakeheaven.exceptions."**/test_*.py"]
+# flake8-aaa = ["+*"]
+# flake8-bandit = [
+#     # deactivate because unwanted
+#     "-S101",  # assert used
+# ]
