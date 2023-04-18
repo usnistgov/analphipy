@@ -13,6 +13,7 @@ keywords = ["analphipy"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "License :: Public Domain",
+    "License :: Public Domain",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python",
@@ -81,6 +82,7 @@ skip_gitignore = true
 known_first_party = ["analphipy"]
 
 [tool.ruff]
+fix = true
 line-length = 88
 update-check = false
 target-version = "py38"
@@ -97,26 +99,25 @@ select = [
     # pydocstyle
     "D",
     # # flake8-2020
-    # "YTT",
-    # # flake8-bugbear
-    # "B",
-    # # flake8-quotes
-    # "Q",
+    "YTT",
+    # flake8-bugbear
+    "B",
+    # flake8-quotes
+    "Q",
     # # pylint
     # "PLE", "PLR", "PLW",
-    # # misc lints
-    # "PIE",
+    # misc lints
+    "PIE",
     # # tidy imports
-    # "TID",
+    "TID",
     # # implicit string concatenation
     # "ISC",
-    # # type-checking imports
-    # "TCH",
-
+    # type-checking imports
+    "TCH",
 ]
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 # fixable = ["A", "B", "C", "D", "E", "F", "..."]
-unfixable = []
+unfixable = ["TID"]
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
@@ -170,6 +171,8 @@ ignore = [
     "D107",
     "D203",
     "D212",
+    # Allow relative imports
+    "TID252",
 ]
 per-file-ignores = {  }
 # Allow unused variables when underscore-prefixed.
@@ -181,6 +184,48 @@ known-first-party = ["analphipy"]
 [tool.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
+
+[tool.nbqa.addopts]
+ruff = ["--fix", "--extend-ignore=D100,B018"]
+
+[tool.flake8]
+docstring-convention = "numpy"
+ignore = [
+    # # whitespace before ':' - doesn't work well with black
+    "E203",
+    # module level import not at top of file
+    "E402",
+    # line too long - let black worry about that
+    "E501",
+    # do not assign a lambda expression, use a def
+    "E731",
+    # # line break before binary operator
+    "W503",
+    # allow black line after docstring
+    "D202",
+    "D105",
+    "D205",
+    # this leads to errors with placing titles in module
+    # docstrings
+    "D400",
+    "D401",
+    "D415",
+    "D102",
+    "D103",
+    # these are useful, but too many errors
+    # due to use of docfiller
+    "D417",
+    "D107",
+    "D203",
+    "D212",
+]
+
+[tool.scriv]
+format = "md"
+md_header_level = "2"
+
+[tool.commitizen]
+use_shortcuts = true
 
 [tool.cruft]
 
@@ -194,7 +239,6 @@ exclude = [".eggs", ".tox", "doc", "docs"]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-# module = ["numpy.*", "pandas.*", "pytest.*", "scipy.*", "setuptools", "custom_inherit"]
 module = [
     "custom_inherit",
     "scipy.integrate.*",
@@ -205,77 +249,3 @@ module = [
 [[tool.mypy.overrides]]
 ignore_errors = true
 module = []
-
-[tool.scriv]
-format = "md"
-md_header_level = "2"
-
-[tool.commitizen]
-use_shortcuts = true
-# [tool.flakeheaven]
-# format = "colored"
-# max_line_length = 100
-# max_complexity = 20
-# max_cognitive_complexity = 10
-# min_python_version = "3.7"  # CHANGE ME
-# pytest_fixture_no_parentheses = true
-# exclude = [
-#   "*venv*/",
-#   "*.tox/",
-#   "*.nox/",
-#   "_backupfiles/",
-#   "*.bak.*"
-# ]
-# extend_select = ["B950"]
-# [Tool.flakeheaven.plugins]
-# pyflakes = ["+*"]
-# mccabe = ["+*"]
-# pycodestyle = [
-# "+*",
-# # deactivate because of black
-# "-W503",  # line break before binary operator
-# "-E203",  # whitespace before ':'
-# "-E501",
-# # deactivate because double check
-# "-E501",  # line length B950[flake8-bugbear]
-# "-E722",  # bare-except B001[flake8-bugbear]
-# # deactivate because unwanted
-# "-E731",  # forbids lambda
-# ]
-# pep8-naming = ["+*"]
-# "flake8-*" = ["+*"]
-# flake8-aaa = ["-*"]
-# flake8-annotations = [
-# "+*",
-# # deactivate because unwanted
-# "-ANN101",  # Missing type annotation for self in method
-# "-ANN102",  # Missing type annotation for cls in classmethod
-# ]
-# flake8-bandit = [
-# "+*",
-# # deactivate because double check
-# "-S110",  # try-except-pass - SIM105[flake8-simplify]
-# ]
-# flake8-logging-format = [
-# "+*",
-# # deactivate because unwanted
-# "-G00?",  # Prohibit format strings in logging calls
-# ]
-# flake8-rst-docstrings = [
-# "+*",
-# # deactivate because unwanted
-# "-RST303",  # Unknown directive type
-# "-RST304",  # Unknown interpreted text role
-# ]
-# flake8-use-fstring = [
-# "+*",
-# # deactivate because unwanted
-# "-FS003",  # f-string missing prefix | can be % string
-# ]
-# [tool.flakeheaven.exceptions]
-# [tool.flakeheaven.exceptions."**/test_*.py"]
-# flake8-aaa = ["+*"]
-# flake8-bandit = [
-#     # deactivate because unwanted
-#     "-S101",  # assert used
-# ]

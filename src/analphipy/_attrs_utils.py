@@ -6,7 +6,7 @@ import numpy as np
 
 def attrs_clear_cache(self, attribute, value):
     """Clear out _cache if setting value"""
-    setattr(self, "_cache", {})
+    self._cache = {}
     return value
 
 

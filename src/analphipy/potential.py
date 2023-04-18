@@ -5,14 +5,17 @@ Classes/routines for pair potentials (:mod:`analphipy.potential`)
 """
 from __future__ import annotations
 
-from typing import Literal, Sequence, cast
+from typing import TYPE_CHECKING, Literal, Sequence, cast
 
 import attrs
 import numpy as np
 from attrs import field
 
 from ._attrs_utils import field_array_formatter, field_formatter, private_field
-from ._typing import Float_or_ArrayLike, Phi_Signature
+
+if TYPE_CHECKING:
+    from ._typing import Float_or_ArrayLike, Phi_Signature
+
 from .base_potential import PhiBase
 
 

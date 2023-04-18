@@ -3,8 +3,6 @@ from dataclasses import asdict, dataclass
 import numpy as np
 import pytest
 
-# from analphipy.cached_decorators import gcached
-
 
 def phidphi_lj(r, sig=1.0, eps=1.0):
     """

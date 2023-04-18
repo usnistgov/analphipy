@@ -21,14 +21,13 @@ import numpy as np
 from custom_inherit import doc_inherit
 
 from ._docstrings import DOCFILLER_SHARED, docfiller_shared  # type: ignore
-from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
 from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
+    from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
     from .base_potential import PhiBase  # type: ignore
-
 # Hack to document module level docstring
 __doc__ = __doc__.format(**DOCFILLER_SHARED.data)
 

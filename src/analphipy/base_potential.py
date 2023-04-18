@@ -5,7 +5,7 @@ Base classes (:mod:`analphipy.base_potential`)
 """
 from __future__ import annotations
 
-from typing import Literal, Sequence, cast
+from typing import TYPE_CHECKING, Literal, Sequence, cast
 
 import attrs
 import numpy as np
@@ -14,7 +14,9 @@ from custom_inherit import DocInheritMeta
 
 from ._attrs_utils import field_formatter, optional_converter, private_field
 from ._docstrings import docfiller_shared
-from ._typing import Float_or_ArrayLike
+
+if TYPE_CHECKING:
+    from ._typing import Float_or_ArrayLike
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
 from .utils import minimize_phi

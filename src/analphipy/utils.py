@@ -6,14 +6,16 @@ Utilities module (:mod:`analphipy.utils`)
 from __future__ import annotations
 
 from functools import wraps
-from typing import Any, Callable, Mapping
+from typing import TYPE_CHECKING, Any, Callable, Mapping
 
 import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import minimize
 
 from ._docstrings import docfiller_shared  # type: ignore
-from ._typing import ArrayLike, Float_or_ArrayLike
+
+if TYPE_CHECKING:
+    from ._typing import ArrayLike, Float_or_ArrayLike
 
 # from typing_extensions import Protocol
 
