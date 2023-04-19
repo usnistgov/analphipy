@@ -18,7 +18,8 @@ or
 $ conda install -c wpk-nist analphipy
 ```
 
-This is the preferred method to install analphipy, as it will always install the most recent stable release.
+This is the preferred method to install analphipy, as it will always install the
+most recent stable release.
 
 If you don't have [pip] installed, this [Python installation guide] can guide
 you through the process.
@@ -45,11 +46,12 @@ To install dependencies with conda/mamba, use:
 .. code-block:: console
 ```
 
-> \$ conda/mamba env create -n \{name} -f environment.yaml
-> \$ pip install . --no-deps
+> \$ conda/mamba env create -n \{name} -f environment.yaml \$ pip install .
+> --no-deps
 
 To install an editable version, add the `-e` option to pip.
 
 [github repo]: https://github.com/usnistgov/analphipy
 [pip]: https://pip.pypa.io
-[python installation guide]: http://docs.python-guide.org/en/latest/starting/installation/
+[python installation guide]:
+  http://docs.python-guide.org/en/latest/starting/installation/
