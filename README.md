@@ -1,3 +1,8 @@
+# `analphipy`
+
+Utilities to perform metric analysis on fluid pair potentials. The main features
+of `analphipy` as follows:
+
 [![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
 [![PyPI license][license-badge]][license-link]
 [![PyPI version][pypi-badge]][pypi-link]
@@ -23,20 +28,15 @@
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/master/LICENSE
 
-<!-- For more badges, see https://shields.io/category/other and https://naereen.github.io/badges/ -->
+<!-- For more badges, see
+  https://shields.io/category/other
+  https://naereen.github.io/badges/
+-->
 
-[numpy]: https://numpy.org
-[Numba]: https://numba.pydata.org/
-[xarray]: https://docs.xarray.dev/en/stable/
 [jensen-shannon]:
   https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
 [noro-frenkel]:
   https://en.wikipedia.org/wiki/Noro%E2%80%93Frenkel_law_of_corresponding_states
-
-# `analphipy`
-
-Utilities to perform metric analysis on fluid pair potentials. The main features
-of `analphipy` as follows:
 
 ## Overview
 
