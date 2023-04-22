@@ -101,6 +101,8 @@ pre-commit-codespell: ## run codespell. Note that this imports allowed words fro
 # my convenience functions
 ################################################################################
 .PHONY: user-venv user-autoenv-zsh user-all
+# user-venv: ## create .venv file with name of conda env
+# 	echo $$(conda info --base)/envs/analphipy-env > .venv
 user-venv: ## create .venv file with name of conda env
 	# echo $$(conda info --base)/envs/analphipy-env > .venv
 	echo $${PWD}/.tox/analphipy-dev > .venv
