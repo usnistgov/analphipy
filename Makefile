@@ -104,7 +104,6 @@ pre-commit-codespell: ## run codespell. Note that this imports allowed words fro
 # user-venv: ## create .venv file with name of conda env
 # 	echo $$(conda info --base)/envs/analphipy-env > .venv
 user-venv: ## create .venv file with name of conda env
-	# echo $$(conda info --base)/envs/analphipy-env > .venv
 	echo $${PWD}/.tox/analphipy-dev > .venv
 
 user-autoenv-zsh: ## create .autoenv.zsh files
@@ -195,8 +194,12 @@ mamba-dev-update: environment/dev.yaml ## update development environment
 tox_posargs?=-v
 TOX=CONDA_EXE=mamba tox $(tox_posargs)
 
-## testing
+## dev env
+.PHONY: dev-env
+dev-env: environment/dev.yaml ## create development environment using tox
+	tox -e dev
 
+## testing
 .PHONY: test-all
 test-all: environment/test.yaml ## run tests on every Python version with tox
 	$(TOX) -- $(posargs)
