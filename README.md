@@ -26,7 +26,7 @@ of `analphipy` as follows:
 <!-- Use total link so works from anywhere -->
 
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
-[license-link]: https://github.com/usnistgov/analphipy/blob/master/LICENSE
+[license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
 
 <!-- For more badges, see
   https://shields.io/category/other
