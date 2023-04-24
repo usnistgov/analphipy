@@ -17,6 +17,7 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
+"""Build docs."""
 import os
 import sys
 
@@ -39,6 +40,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
+    "sphinx.ext.autosectionlabel",
     "IPython.sphinxext.ipython_directive",
     "IPython.sphinxext.ipython_console_highlighting",
     # "nbsphinx",
@@ -59,6 +61,7 @@ extensions = [
 ]
 
 nitpicky = True
+autosectionlabel_prefix_document = True
 
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
@@ -140,12 +143,12 @@ autodoc_default_flags = [
 ]
 autodoc_typehints = "none"
 
-# -- napolean ------------------------------------------------------------------
+# -- napoleon ------------------------------------------------------------------
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
 napoleon_use_param = False
-napoleon_use_rtype = True
+napoleon_use_rtype = False
 napoleon_preprocess_types = True
 napoleon_type_aliases = {
     # general terms
@@ -277,15 +280,15 @@ html_theme = "sphinx_book_theme"
 html_theme_options = dict(
     # analytics_id=''  this is configured in rtfd.io
     # canonical_url="",
-    repository_url="https://github.com/usnistgov/cmomy",
+    repository_url=f"https://github.com/{github_username}/analphipy",
     repository_branch=html_context["github_version"],
     path_to_docs=html_context["doc_path"],
     # use_edit_page_button=True,
     use_repository_button=True,
     use_issues_button=True,
     home_page_in_toc=True,
-    show_toc_level=6,
-    show_navbar_depth=2,
+    show_toc_level=2,
+    show_navbar_depth=0,
 )
 # handle nist css/js from here.
 html_css_files = [
@@ -416,29 +419,33 @@ intersphinx_mapping = {
 }
 
 
+linkcheck_ignore = ["https://doi.org/"]
+
+
 # based on numpy doc/source/conf.py
 def linkcode_resolve(domain, info):
-    """
-    Determine the URL corresponding to Python object
-    """
+    """Determine the URL corresponding to Python object"""
     import inspect
+    from operator import attrgetter
 
     if domain != "py":
         return None
 
-    modname = info["module"]
-    fullname = info["fullname"]
+    parent_name, *sub_parts = info["module"].split(".")
+    parent_mod = sys.modules.get(parent_name)
 
-    submod = sys.modules.get(modname)
-    if submod is None:
+    try:
+        if len(sub_parts) > 0:
+            sub_name = ".".join(sub_parts)
+            obj = attrgetter(sub_name)(parent_mod)
+        else:
+            obj = parent_mod
+
+        # get fullname
+        obj = attrgetter(info["fullname"])(obj)
+
+    except AttributeError:
         return None
-
-    obj = submod
-    for part in fullname.split("."):
-        try:
-            obj = getattr(obj, part)
-        except AttributeError:
-            return None
 
     try:
         fn = inspect.getsourcefile(inspect.unwrap(obj))

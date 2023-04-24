@@ -5,7 +5,7 @@ Routines to calculate measures of pair potentials (:mod:`analphipy.measures`)
 
 from __future__ import annotations
 
-from typing import Callable, Mapping, Sequence, Union, cast
+from typing import TYPE_CHECKING, Callable, Mapping, Sequence, Union, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
@@ -13,7 +13,9 @@ from custom_inherit import doc_inherit
 from analphipy.cached_decorators import gcached
 
 from ._docstrings import docfiller_shared  # type: ignore
-from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
+
+if TYPE_CHECKING:
+    from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
 from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 __all__ = [
@@ -24,11 +26,6 @@ __all__ = [
     "diverg_kl_cont",
     "diverg_js_cont",
 ]
-
-
-def other():
-    """A function"""
-    pass
 
 
 @docfiller_shared
@@ -200,8 +197,8 @@ def diverg_kl_disc(
     """
     Calculate discrete Kullback–Leibler divergence
 
-    Parameteres
-    -----------
+    Parameters
+    ----------
     P, Q : array-like
         Probabilities to consider
     Returns
@@ -513,7 +510,7 @@ class Measures:
         ~analphipy.measures.diverg_js_cont
 
         References
-        --------
+        ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
         """
 

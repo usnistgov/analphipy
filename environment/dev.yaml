@@ -1,26 +1,26 @@
 channels:
-- conda-forge
-- wpk-nist
+  - conda-forge
+  - wpk-nist
 dependencies:
-- MonkeyType
-- attrs
-- custom-inherit
-- ipykernel
-- ipython
-- matplotlib
-- mypy
-- numpy
-- pandas
-- pip
-- pytest
-- pytest-cov
-- pytest-mypy
-- pytest-xdist
-- python>=3.8
-- scipy
-- setuptools-scm
-- typing-extensions
-- pip:
-  - mypy-extensions
-  - pytest-monkeytype
+  - MonkeyType
+  - attrs
+  - custom-inherit
+  - ipykernel
+  - ipython
+  - matplotlib
+  - mypy
+  - numpy
+  - pandas
+  - pip
+  - pytest
+  - pytest-cov
+  - pytest-mypy
+  - pytest-xdist
+  - python>=3.8
+  - scipy
+  - setuptools-scm
+  - typing-extensions
+  - pip:
+      - mypy-extensions
+      - pytest-monkeytype
 name: analphipy-env

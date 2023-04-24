@@ -1,6 +1,4 @@
-"""
-Simple tests for js divergence...
-"""
+"""Simple tests for js divergence..."""
 import numpy as np
 import pytest
 

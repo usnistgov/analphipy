@@ -21,14 +21,13 @@ import numpy as np
 from custom_inherit import doc_inherit
 
 from ._docstrings import DOCFILLER_SHARED, docfiller_shared  # type: ignore
-from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
 from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
+    from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
     from .base_potential import PhiBase  # type: ignore
-
 # Hack to document module level docstring
 __doc__ = __doc__.format(**DOCFILLER_SHARED.data)
 
@@ -50,7 +49,8 @@ def sig_nf(
     full_output: bool = False,
     **kws,
 ):
-    r"""Noro-Frenkel/Barker-Henderson effective hard sphere diameter.
+    r"""
+    Noro-Frenkel/Barker-Henderson effective hard sphere diameter.
 
     This is calculated using the formula [1]_ [2]_
 
@@ -423,7 +423,8 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def secondvirial(self, beta: float, **kws):
-        """Second virial coefficient.
+        """
+        Second virial coefficient.
 
         See Also
         --------
@@ -438,7 +439,8 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def sig(self, beta: float, **kws):
-        """Effective hard sphere diameter.
+        """
+        Effective hard sphere diameter.
 
         See Also
         --------
@@ -448,7 +450,8 @@ class NoroFrenkelPair:
         return sig_nf(self.phi_rep, beta=beta, segments=self._segments_rep, **kws)
 
     def eps(self, beta: float, **kws) -> float:
-        """Effective square well epsilon.
+        """
+        Effective square well epsilon.
 
         This is equal to the minimum in ``phi``.
         """
@@ -457,7 +460,8 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def lam(self, beta: float, **kws):
-        """Effective square well lambda.
+        """
+        Effective square well lambda.
 
         See Also
         --------
@@ -482,7 +486,8 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def secondvirial_dbeta(self, beta: float, **kws):
-        """Derivative of ``secondvirial`` with respect to ``beta``
+        """
+        Derivative of ``secondvirial`` with respect to ``beta``
 
         See Also
         --------
@@ -495,7 +500,8 @@ class NoroFrenkelPair:
     @gcached(prop=False)
     @add_quad_kws
     def sig_dbeta(self, beta: float, **kws):
-        """Derivative of effective hard-sphere diameter with respect to ``beta``
+        """
+        Derivative of effective hard-sphere diameter with respect to ``beta``
 
         See Also
         --------
@@ -506,7 +512,8 @@ class NoroFrenkelPair:
 
     @gcached(prop=False)
     def lam_dbeta(self, beta: float, **kws):
-        """Derivative of effective lambda parameter with respect to ``beta``.
+        """
+        Derivative of effective lambda parameter with respect to ``beta``.
 
         See Also
         --------
@@ -524,7 +531,8 @@ class NoroFrenkelPair:
 
     @gcached(prop=False)
     def secondvirial_sw(self, beta: float, **kws):
-        """Second virial coefficient of effective square well fluid.
+        """
+        Second virial coefficient of effective square well fluid.
 
         For testing.  This should be the same of value from :meth:`secondvirial`
         """

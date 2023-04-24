@@ -98,7 +98,7 @@ def test_B2_yk():
         df = df.sample(nsamp)
     sig = eps = 1.0
 
-    for (z_yukawa), g in df.groupby(["z_yukawa"]):
+    for (z_yukawa), g in df.groupby("z_yukawa"):
         p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)

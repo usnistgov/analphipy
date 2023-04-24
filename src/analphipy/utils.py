@@ -6,14 +6,16 @@ Utilities module (:mod:`analphipy.utils`)
 from __future__ import annotations
 
 from functools import wraps
-from typing import Any, Callable, Mapping
+from typing import TYPE_CHECKING, Any, Callable, Mapping
 
 import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import minimize
 
 from ._docstrings import docfiller_shared  # type: ignore
-from ._typing import ArrayLike, Float_or_ArrayLike
+
+if TYPE_CHECKING:
+    from ._typing import ArrayLike, Float_or_ArrayLike
 
 # from typing_extensions import Protocol
 
@@ -35,7 +37,8 @@ TWO_PI = 2.0 * np.pi
 
 
 def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
-    """Combine two lists of segments.
+    """
+    Combine two lists of segments.
 
     Parameters
     ----------
@@ -213,9 +216,7 @@ def partial_phi(phi, **params):
 
 
 def segments_to_segments_cut(segments, rcut):
-    """
-    Update segments for 'cut' potential
-    """
+    """Update segments for 'cut' potential"""
     return [x for x in segments if x < rcut] + [rcut]
 
 
@@ -231,7 +232,7 @@ def phi_to_phi_cut(
     Parameters
     ----------
     rcut : float
-        Postition of cut.
+        Position of cut.
     phi : callable
         input callable function.
     dphidr : callable, optional
@@ -297,7 +298,7 @@ def phi_to_phi_lfs(
     Parameters
     ----------
     rcut : float
-        Postition of cut.
+        Position of cut.
     phi : callable
         input callable function.
     dphidr : callable, optional
@@ -349,9 +350,7 @@ def phi_to_phi_lfs(
 
 def wca_decomp_rep(phi, dphidr, r_min, phi_min, meta):
     def phi_rep(r: Float_or_ArrayLike) -> np.ndarray:
-        """
-        WCA repulsive potential
-        """
+        """WCA repulsive potential"""
         r = np.array(r)
         v = np.empty_like(r)
 
@@ -388,9 +387,7 @@ def wca_decomp_rep(phi, dphidr, r_min, phi_min, meta):
 
 def wca_decomp_att(phi, dphidr, r_min, phi_min, meta):
     def phi_att(r: Float_or_ArrayLike) -> np.ndarray:
-        """
-        WCA repulsive potential
-        """
+        """WCA repulsive potential"""
         r = np.array(r)
         v = np.empty_like(r)
 

@@ -125,7 +125,7 @@ def _get_nested_values(d, join_string="\n"):
 
 class AttributeDict(Mapping):
     """
-    Dictionary with recusive attribute like access.
+    Dictionary with recursive attribute like access.
 
     To be used in str.format calls, so can expand on fields like
     `{name.property}` in a nested manner.
@@ -292,6 +292,7 @@ def _build_param_docstring(name, ptype, desc):
     Create multiline documentation of single name, type, desc.
 
     Parameters
+    ----------
     ==========
     name : str
         Parameter Name
@@ -454,9 +455,7 @@ def parse_docstring(func_or_doc, key_char="|", expand=True):
 
 
 def dedent_recursive(data):
-    """
-    Dedent nested mapping of strings.
-    """
+    """Dedent nested mapping of strings."""
     out = type(data)()
     for k in data:
         v = data[k]
@@ -517,9 +516,7 @@ class DocFiller:
         return _recursive_keys(self.data)
 
     def assign_combined_key(self, new_key, keys):
-        """
-        combine multiple keys into single key
-        """
+        """Combine multiple keys into single key"""
 
         data = self.data.copy()
 
@@ -567,9 +564,7 @@ class DocFiller:
         return cls(data)
 
     def append(self, *args, **kwargs):
-        """
-        Calls ``concat`` method with ``self`` as first argument.
-        """
+        """Calls ``concat`` method with ``self`` as first argument."""
 
         return type(self).concat(self, *args, **kwargs)
 
@@ -700,7 +695,7 @@ class DocFiller:
         key_map=None,
     ):
         """
-        create a Docfiller instance from a function or docstring.
+        Create a Docfiller instance from a function or docstring.
 
         Parameters
         ----------

@@ -1,0 +1,15 @@
+channels:
+  - conda-forge
+  - wpk-nist
+dependencies:
+  - attrs
+  - custom-inherit
+  - mypy
+  - numpy
+  - pandas
+  - pandas-stubs
+  - pytest
+  - python>=3.8
+  - scipy
+  - typing-extensions
+name: analphipy-env
