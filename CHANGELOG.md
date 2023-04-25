@@ -8,6 +8,14 @@ See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy)
 
 <!-- scriv-insert-here -->
 
+## v0.1.0 — 2023-04-24
+
+### Changed
+
+- Update package layout
+- New linters via pre-commit
+- Development env now handled by tox
+
 ## v0.0.6 - 2023-03-22
 
 Full set of changes:
