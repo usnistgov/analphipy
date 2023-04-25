@@ -448,8 +448,11 @@ class NoroFrenkelPair:
 
         """
         return sig_nf(
-            self.phi_rep, beta=beta, segments=self._segments_rep, **kws
-        )  # pyright: ignore
+            self.phi_rep,
+            beta=beta,
+            segments=self._segments_rep,  # pyright: ignore
+            **kws,
+        )
 
     def eps(self, beta: float, **kws) -> float:  # pyright: ignore
         """
