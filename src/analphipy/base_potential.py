@@ -5,7 +5,7 @@ Base classes (:mod:`analphipy.base_potential`)
 """
 from __future__ import annotations
 
-from typing import Literal, Sequence, cast
+from typing import TYPE_CHECKING, Literal, Sequence, cast
 
 import attrs
 import numpy as np
@@ -14,7 +14,9 @@ from custom_inherit import DocInheritMeta
 
 from ._attrs_utils import field_formatter, optional_converter, private_field
 from ._docstrings import docfiller_shared
-from ._typing import Float_or_ArrayLike
+
+if TYPE_CHECKING:
+    from ._typing import Float_or_ArrayLike
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
 from .utils import minimize_phi
@@ -69,7 +71,8 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         return attrs.asdict(self, filter=self._get_smart_filter())
 
     def new_like(self, **kws):
-        """Create a new object with optional parameters
+        """
+        Create a new object with optional parameters
 
         Parameters
         ----------
@@ -116,7 +119,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         self, include=None, exclude=None, exclude_private=True, exclude_no_init=True
     ):
         """
-        create a filter to include exclude names
+        Create a filter to include exclude names
 
         Parameters
         ----------
@@ -131,7 +134,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
 
         Notes
         -----
-        Precidence is in order
+        Precedence is in order
         `include, exclude, exclude_private exclude_no_init`.
         That is, if a name is in include and exclude and is private/no_init,
         it will be included
@@ -210,7 +213,8 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         bounds: tuple[float, float] | Literal["segments"] | None = None,
         **kws,
     ):
-        """Determine position `r` where ``phi`` is minimized.
+        """
+        Determine position `r` where ``phi`` is minimized.
 
         Parameters
         ----------
@@ -272,7 +276,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         Create a :class:`analphipy.norofrenkel.NoroFrenkelPair` object.
 
         Parameters
-        ---------
+        ----------
         **kws :
             Extra arguments to :class:`analphipy.norofrenkel.NoroFrenkelPair` constructor.
             parameters `phi`, `semgnets`, `r_min', `phi_min` default to values from `self`.
@@ -462,6 +466,8 @@ class PhiLFS(PhiCutBase):
 
 @attrs.frozen
 class PhiBase(PhiAbstract):
+    """Base class for potentials."""
+
     def cut(self, rcut):
         """Create a :class:`PhiCut` potential."""
         return PhiCut(phi_base=self, rcut=rcut)

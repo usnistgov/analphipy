@@ -1,16 +1,11 @@
 [build-system]
-requires = [
-    "setuptools>=61.2",
-    "setuptools_scm[toml]>=3.4",
-    "setuptools_scm_git_archive",
-]
+requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7.0"]
 build-backend = "setuptools.build_meta"
-
 
 [project]
 name = "analphipy"
-authors = [{name = "William P. Krekelberg", email = "wpk@nist.gov"}]
-license = {text = "NIST license"}
+authors = [{ name = "William P. Krekelberg", email = "wpk@nist.gov" }]
+license = { text = "NIST license" }
 description = "Utilities to perform stat mech analysis of pair potentials"
 # if using markdown
 # long_description_content_type = text/markdown
@@ -25,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = ["readme", "version"]
@@ -38,7 +34,6 @@ dependencies = [
     "custom-inherit",
 ]
 
-
 [project.urls]
 homepage = "https://github.com/usnistgov/analphipy"
 documentation = "https://pages.nist.gov/analphipy/"
@@ -49,28 +44,27 @@ test = [
     "pytest",
     # "pytest-mypy",
     # "mypy",
-]
-# dev = []
-# docs = []
 
-
-[tool.setuptools]
-package-dir = {"" = "src"}
-zip-safe = true # if using mypy, must be False
-include-package-data = true
-license-files = ["LICENSE"]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-namespaces = false
-
-[tool.setuptools.package-data]
-analphipy = [
-    "py.typed"
 ]
 
+## Defer this to setup.cfg
+## Will transition when everything works (grayskull in particular)
+## and will remove setup.py
+# [tool.setuptools]
+# zip-safe = true # if using mypy, must be False
+# include-package-data = true
+# license-files = ["LICENSE"]
+# [tool.setuptools.packages.find]
+# namespaces = true
+# where = ["src"]
+## include = []
+## exclude = []
 [tool.setuptools.dynamic]
-readme = {file = ["README.md", "HISTORY.md", "LICENSE"], content-type = "text/markdown"}
+readme = { file = [
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+], content-type = "text/markdown" }
 
 [tool.setuptools_scm]
 fallback_version = "999"
@@ -87,45 +81,43 @@ profile = "black"
 skip_gitignore = true
 known_first_party = ["analphipy"]
 
-
 [tool.ruff]
+fix = true
 line-length = 88
 update-check = false
 target-version = "py38"
-
 select = [
-  # pyflakes
-  "F",
-  # pycodestyle
-  "E",
-  "W",
-  # isort
-  "I",
-  # pyupgrade
-  "UP",
-  # # flake8-2020
-  # "YTT",
-  # # flake8-bugbear
-  # "B",
-  # # flake8-quotes
-  # "Q",
-  # # pylint
-  # "PLE", "PLR", "PLW",
-  # # misc lints
-  # "PIE",
-  # # tidy imports
-  # "TID",
-  # # implicit string concatenation
-  # "ISC",
-  # # type-checking imports
-  # "TCH",
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    "W",
+    # isort
+    "I",
+    # pyupgrade
+    "UP",
+    # pydocstyle
+    "D",
+    # # flake8-2020
+    "YTT",
+    # flake8-bugbear
+    "B",
+    # flake8-quotes
+    "Q",
+    # # pylint
+    # "PLE", "PLR", "PLW",
+    # misc lints
+    "PIE",
+    # # tidy imports
+    "TID",
+    # # implicit string concatenation
+    # "ISC",
+    # type-checking imports
+    "TCH",
 ]
-
-
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 # fixable = ["A", "B", "C", "D", "E", "F", "..."]
-unfixable = []
-
+unfixable = ["TID"]
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
@@ -148,10 +140,9 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "tests/",
     "src/analphipy/tests",
 ]
-
-
 ignore = [
     # # whitespace before ':' - doesn't work well with black
     # "E203",
@@ -167,12 +158,23 @@ ignore = [
     "D202",
     "D105",
     "D205",
+    # this leads to errors with placing titles in module
+    # docstrings
     "D400",
     "D401",
+    "D415",
+    "D102",
+    "D103",
+    # these are useful, but too many errors
+    # due to use of docfiller
+    "D417",
+    "D107",
+    "D203",
+    "D212",
+    # Allow relative imports
+    "TID252",
 ]
-
-per-file-ignores = {}
-
+per-file-ignores = {  }
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
@@ -183,34 +185,68 @@ known-first-party = ["analphipy"]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
 
+[tool.nbqa.addopts]
+ruff = ["--fix", "--extend-ignore=D100,B018"]
+
+[tool.flake8]
+docstring-convention = "numpy"
+ignore = [
+    # # whitespace before ':' - doesn't work well with black
+    "E203",
+    # module level import not at top of file
+    "E402",
+    # line too long - let black worry about that
+    "E501",
+    # do not assign a lambda expression, use a def
+    "E731",
+    # # line break before binary operator
+    "W503",
+    # allow black line after docstring
+    "D202",
+    "D105",
+    "D205",
+    # this leads to errors with placing titles in module
+    # docstrings
+    "D400",
+    "D401",
+    "D415",
+    "D102",
+    "D103",
+    # these are useful, but too many errors
+    # due to use of docfiller
+    "D417",
+    "D107",
+    "D203",
+    "D212",
+]
+
+[tool.scriv]
+format = "md"
+md_header_level = "2"
+new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
+
+[tool.commitizen]
+use_shortcuts = true
+
 [tool.cruft]
 
-
 [tool.mypy]
-files = ["src/analphipy"]
+files = ["src/analphipy", "tests"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
-exclude = [
-    ".eggs",
-    "doc",
-    "docs",
-]
+exclude = [".eggs", ".tox", "doc", "docs"]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
 module = [
-       "numpy.*",
-       "pandas.*",
-       "pytest.*",
-       "scipy.*",
-       "setuptools",
+    "custom_inherit",
+    "scipy.integrate.*",
+    "scipy.optimize.*",
+    "scipy.misc.*"
 ]
 
 [[tool.mypy.overrides]]
 ignore_errors = true
 module = []
-
-# version spanning code is hard to type annotate (and most of this module will
-# be going away soon anyways)

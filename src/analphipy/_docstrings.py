@@ -9,7 +9,7 @@ _docstrings_shared = """
 Parameters
 ----------
 segments : sequence of int
-    Integration limits. For ``n = len(segmetns)`` integration will be performed over ranges
+    Integration limits. For ``n = len(segments)`` integration will be performed over ranges
     ``(segments[0], segments[1]), (segments[1], segments[2]), ..., (segments[n-2], segments[n-]])``
 phi_rep : callable
     Repulsive part of pair potential.

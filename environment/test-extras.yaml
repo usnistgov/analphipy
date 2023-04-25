@@ -1,9 +1,9 @@
 dependencies:
-    - pytest
-    # - pytest-cov
-    # - pytest-xdist
-    ## mypy?
-    # - mypy
-    # - pytest-mypy
-    ## extras
-    - pandas
+  - pytest
+  # - pytest-cov
+  # - pytest-xdist
+  ## mypy?
+  # - mypy
+  # - pytest-mypy
+  ## extras
+  - pandas
