@@ -1,7 +1,4 @@
-# `analphipy`
-
-Utilities to perform metric analysis on fluid pair potentials. The main features
-of `analphipy` as follows:
+<!-- markdownlint-disable MD041 -->
 
 [![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
 [![PyPI license][license-badge]][license-link]
@@ -9,12 +6,15 @@ of `analphipy` as follows:
 [![Conda (channel only)][conda-badge]][conda-link]
 [![Code style: black][black-badge]][black-link]
 
+<!-- For more badges, see
+  https://shields.io/category/other
+  https://naereen.github.io/badges/
+  [pypi-badge]: https://badge.fury.io/py/analphipy
+-->
+
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
-[black-link]: https://github.com/ambv/black
+[black-link]: https://github.com/psf/black
 [pypi-badge]: https://img.shields.io/pypi/v/analphipy
-
-<!-- [pypi-badge]: https://badge.fury.io/py/analphipy -->
-
 [pypi-link]: https://pypi.org/project/analphipy
 [docs-badge]: https://img.shields.io/badge/docs-sphinx-informational
 [docs-link]: https://pages.nist.gov/analphipy/
@@ -22,21 +22,20 @@ of `analphipy` as follows:
 [repo-link]: https://github.com/usnistgov/analphipy
 [conda-badge]: https://img.shields.io/conda/v/wpk-nist/analphipy
 [conda-link]: https://anaconda.org/wpk-nist/analphipy
-
-<!-- Use total link so works from anywhere -->
-
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
 
-<!-- For more badges, see
-  https://shields.io/category/other
-  https://naereen.github.io/badges/
--->
+<!-- other links -->
 
 [jensen-shannon]:
   https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
 [noro-frenkel]:
   https://en.wikipedia.org/wiki/Noro%E2%80%93Frenkel_law_of_corresponding_states
+
+# `analphipy`
+
+Utilities to perform metric analysis on fluid pair potentials. The main features
+of `analphipy` as follows:
 
 ## Overview
 

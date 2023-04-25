@@ -34,6 +34,12 @@ repos:
         stages: [commit]
         additional_dependencies:
           - prettier-plugin-toml
+  #** markdown
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.6.0
+    hooks:
+      - id: markdownlint-cli2
+        args: ["--style prettier"]
   #* Linting
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
@@ -124,29 +130,3 @@ repos:
         additional_dependencies: [tomli]
         args: [-I, docs/spelling_wordlist.txt]
         stages: [manual]
-  #** markdown
-  - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.6.0
-    hooks:
-      - id: markdownlint-cli2
-        stages: [manual]
-        args: ["--style prettier"]
-        # exclude: ^.github/ISSUE_TEMPLATE.md|^docs/authors.md|^docs/changelog.md|^docs/contributing.md|^docs/license.md
-        # exclude: |
-        #   (?x)^(
-        #     ^.github/ISSUE_TEMPLATE.md|
-        #     ^docs/(authors|changelog|contributing|license).md
-        #   )$
-  # - repo: https://github.com/rstcheck/rstcheck
-  #   rev: v6.1.2
-  #   hooks:
-  #     - id: rstcheck
-  #       additional_dependencies:
-  #         - tomli==2.0.1
-  #         - sphinx==5.3.0
-  # - repo: https://github.com/keewis/blackdoc
-  #   rev: v0.3.8
-  #   hooks:
-  #     - id: blackdoc
-  #       additional_dependencies: ["black==23.3.0"]
-  #     - id: blackdoc-autoupdate-black
