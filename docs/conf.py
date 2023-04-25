@@ -418,7 +418,6 @@ intersphinx_mapping = {
     "xarray": ("https://docs.xarray.dev/en/stable/", None),
 }
 
-
 linkcheck_ignore = ["https://doi.org/"]
 
 
