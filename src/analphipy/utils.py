@@ -6,7 +6,7 @@ Utilities module (:mod:`analphipy.utils`)
 from __future__ import annotations
 
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Callable, Mapping
+from typing import TYPE_CHECKING, Any, Callable
 
 import numpy as np
 from scipy.integrate import quad
@@ -15,7 +15,7 @@ from scipy.optimize import minimize
 from ._docstrings import docfiller_shared  # type: ignore
 
 if TYPE_CHECKING:
-    from ._typing import ArrayLike, Float_or_ArrayLike
+    from ._typing import ArrayLike
 
 # from typing_extensions import Protocol
 
@@ -220,206 +220,206 @@ def segments_to_segments_cut(segments, rcut):
     return [x for x in segments if x < rcut] + [rcut]
 
 
-def phi_to_phi_cut(
-    rcut: float,
-    phi: Callable,
-    dphidr: Callable | None = None,
-    meta: Mapping | None = None,
-):
-    r"""
-    Create callable ``phi`` and ``dphidr`` cut potentials.
+# def phi_to_phi_cut(
+#     rcut: float,
+#     phi: Callable,
+#     dphidr: Callable | None = None,
+#     meta: Mapping | None = None,
+# ):
+#     r"""
+#     Create callable ``phi`` and ``dphidr`` cut potentials.
 
-    Parameters
-    ----------
-    rcut : float
-        Position of cut.
-    phi : callable
-        input callable function.
-    dphidr : callable, optional
-    input callable for :math:`d\phi/dr`
+#     Parameters
+#     ----------
+#     rcut : float
+#         Position of cut.
+#     phi : callable
+#         input callable function.
+#     dphidr : callable, optional
+#     input callable for :math:`d\phi/dr`
 
-    Returns
-    -------
-    phi_cut : callable
-    dphidr_cut : callable or None
-        Note that ``dphidr_cut`` is always returned, even if it is None.
-    """
+#     Returns
+#     -------
+#     phi_cut : callable
+#     dphidr_cut : callable or None
+#         Note that ``dphidr_cut`` is always returned, even if it is None.
+#     """
 
-    vcut = phi(rcut)
+#     vcut = phi(rcut)
 
-    def phi_cut(r):
-        r = np.asarray(r)
-        v = np.empty_like(r)
+#     def phi_cut(r):
+#         r = np.asarray(r)
+#         v = np.empty_like(r)
 
-        left = r <= rcut
-        right = ~left
+#         left = r <= rcut
+#         right = ~left
 
-        v[right] = 0.0
+#         v[right] = 0.0
 
-        if np.any(left):
-            v[left] = phi(r[left]) - vcut
-        return v
+#         if np.any(left):
+#             v[left] = phi(r[left]) - vcut
+#         return v
 
-    if dphidr:
+#     if dphidr:
 
-        def dphidr_cut(r):
-            r = np.asarray(r)
-            dvdbeta = np.empty_like(r)
+#         def dphidr_cut(r):
+#             r = np.asarray(r)
+#             dvdbeta = np.empty_like(r)
 
-            left = r <= rcut
-            right = ~left
+#             left = r <= rcut
+#             right = ~left
 
-            dvdbeta[right] = 0
+#             dvdbeta[right] = 0
 
-            if np.any(left):
-                dvdbeta[left] = dphidr(r[left])
+#             if np.any(left):
+#                 dvdbeta[left] = dphidr(r[left])
 
-            return dvdbeta
+#             return dvdbeta
 
-    else:
-        dphidr_cut = None  # type: ignore
+#     else:
+#         dphidr_cut = None  # type: ignore
 
-    if meta is not None:
-        meta = dict(meta, rcut=rcut)
-        meta["style"] = meta.get("style", ()) + ("cut",)
+#     if meta is not None:
+#         meta = dict(meta, rcut=rcut)
+#         meta["style"] = meta.get("style", ()) + ("cut",)
 
-    return phi_cut, dphidr_cut, meta
-
-
-def phi_to_phi_lfs(
-    rcut: float,
-    phi: Callable,
-    dphidr: Callable,
-    meta: Mapping | None = None,
-):
-    r"""
-    Create callable ``phi`` and ``dphidr`` cut potentials.
-
-    Parameters
-    ----------
-    rcut : float
-        Position of cut.
-    phi : callable
-        input callable function.
-    dphidr : callable, optional
-    input callable for :math:`d\phi/dr`
-
-    Returns
-    -------
-    phi_cut : callable
-    dphidr_cut : callable or None
-        Note that ``dphidr_cut`` is always returned, even if it is None.
-    """
-
-    vcut = phi(rcut)
-    dvdrcut = dphidr(rcut)
-
-    def phi_cut(r):
-        r = np.asarray(r)
-        v = np.empty_like(r)
-
-        left = r <= rcut
-        right = ~left
-
-        v[right] = 0.0
-
-        if np.any(left):
-            v[left] = phi(r[left]) - vcut - dvdrcut * (r - rcut)
-        return v
-
-    def dphidr_cut(r):
-        r = np.asarray(r)
-        dvdbeta = np.empty_like(r)
-
-        left = r <= rcut
-        right = ~left
-
-        dvdbeta[right] = 0
-
-        if np.any(left):
-            dvdbeta[left] = dphidr(r[left]) - dvdrcut
-
-        return dvdbeta
-
-    if meta is not None:
-        meta = dict(meta, rcut=rcut)
-        meta["style"] = meta.get("style", ()) + ("lfs",)
-
-    return phi_cut, dphidr_cut, meta
+#     return phi_cut, dphidr_cut, meta
 
 
-def wca_decomp_rep(phi, dphidr, r_min, phi_min, meta):
-    def phi_rep(r: Float_or_ArrayLike) -> np.ndarray:
-        """WCA repulsive potential"""
-        r = np.array(r)
-        v = np.empty_like(r)
+# def phi_to_phi_lfs(
+#     rcut: float,
+#     phi: Callable,
+#     dphidr: Callable,
+#     meta: Mapping | None = None,
+# ):
+#     r"""
+#     Create callable ``phi`` and ``dphidr`` cut potentials.
 
-        left = r <= r_min
-        right = ~left
+#     Parameters
+#     ----------
+#     rcut : float
+#         Position of cut.
+#     phi : callable
+#         input callable function.
+#     dphidr : callable, optional
+#     input callable for :math:`d\phi/dr`
 
-        v[left] = phi(r[left]) - phi_min
-        v[right] = 0.0
-        return v
+#     Returns
+#     -------
+#     phi_cut : callable
+#     dphidr_cut : callable or None
+#         Note that ``dphidr_cut`` is always returned, even if it is None.
+#     """
 
-    if dphidr is not None:
+#     vcut = phi(rcut)
+#     dvdrcut = dphidr(rcut)
 
-        def dphidr_rep(r: Float_or_ArrayLike) -> np.ndarray:
-            r = np.array(r)
-            dvdr = np.empty_like(r)
+#     def phi_cut(r):
+#         r = np.asarray(r)
+#         v = np.empty_like(r)
 
-            left = r <= r_min
-            right = ~left
+#         left = r <= rcut
+#         right = ~left
 
-            dvdr[left] = dphidr(r[left])
-            dvdr[right] = 0.0
+#         v[right] = 0.0
 
-            return dvdr
+#         if np.any(left):
+#             v[left] = phi(r[left]) - vcut - dvdrcut * (r - rcut)
+#         return v
 
-    else:
-        dphidr_rep = None
+#     def dphidr_cut(r):
+#         r = np.asarray(r)
+#         dvdbeta = np.empty_like(r)
 
-    if meta is not None:
-        meta = dict(meta)
-        meta["style"] = meta.get("style", ()) + ("wca_rep",)
+#         left = r <= rcut
+#         right = ~left
 
-    return phi_rep, dphidr_rep, meta
+#         dvdbeta[right] = 0
+
+#         if np.any(left):
+#             dvdbeta[left] = dphidr(r[left]) - dvdrcut
+
+#         return dvdbeta
+
+#     if meta is not None:
+#         meta = dict(meta, rcut=rcut)
+#         meta["style"] = meta.get("style", ()) + ("lfs",)
+
+#     return phi_cut, dphidr_cut, meta
 
 
-def wca_decomp_att(phi, dphidr, r_min, phi_min, meta):
-    def phi_att(r: Float_or_ArrayLike) -> np.ndarray:
-        """WCA repulsive potential"""
-        r = np.array(r)
-        v = np.empty_like(r)
+# def wca_decomp_rep(phi, dphidr, r_min, phi_min, meta):
+#     def phi_rep(r: Float_or_ArrayLike) -> np.ndarray:
+#         """WCA repulsive potential"""
+#         r = np.array(r)
+#         v = np.empty_like(r)
 
-        left = r <= r_min
-        right = ~left
+#         left = r <= r_min
+#         right = ~left
 
-        v[left] = phi_min
-        v[right] = phi(r[right])
-        return v
+#         v[left] = phi(r[left]) - phi_min
+#         v[right] = 0.0
+#         return v
 
-    if dphidr is not None:
+#     if dphidr is not None:
 
-        def dphidr_att(r: Float_or_ArrayLike) -> np.ndarray:
-            r = np.array(r)
-            dvdr = np.empty_like(r)
+#         def dphidr_rep(r: Float_or_ArrayLike) -> np.ndarray:
+#             r = np.array(r)
+#             dvdr = np.empty_like(r)
 
-            left = r <= r_min
-            right = ~left
+#             left = r <= r_min
+#             right = ~left
 
-            dvdr[left] = 0.0
-            dvdr[right] = dphidr(r[right])
+#             dvdr[left] = dphidr(r[left])
+#             dvdr[right] = 0.0
 
-            return dvdr
+#             return dvdr
 
-    else:
-        dphidr_att = None
+#     else:
+#         dphidr_rep = None
 
-    if meta is not None:
-        meta = dict(meta)
-        meta["style"] = meta.get("style", ()) + ("wca_att",)
+#     if meta is not None:
+#         meta = dict(meta)
+#         meta["style"] = meta.get("style", ()) + ("wca_rep",)
 
-    return phi_att, dphidr_att, meta
+#     return phi_rep, dphidr_rep, meta
+
+
+# def wca_decomp_att(phi, dphidr, r_min, phi_min, meta):
+#     def phi_att(r: Float_or_ArrayLike) -> np.ndarray:
+#         """WCA repulsive potential"""
+#         r = np.array(r)
+#         v = np.empty_like(r)
+
+#         left = r <= r_min
+#         right = ~left
+
+#         v[left] = phi_min
+#         v[right] = phi(r[right])
+#         return v
+
+#     if dphidr is not None:
+
+#         def dphidr_att(r: Float_or_ArrayLike) -> np.ndarray:
+#             r = np.array(r)
+#             dvdr = np.empty_like(r)
+
+#             left = r <= r_min
+#             right = ~left
+
+#             dvdr[left] = 0.0
+#             dvdr[right] = dphidr(r[right])
+
+#             return dvdr
+
+#     else:
+#         dphidr_att = None
+
+#     if meta is not None:
+#         meta = dict(meta)
+#         meta["style"] = meta.get("style", ()) + ("wca_att",)
+
+#     return phi_att, dphidr_att, meta
 
 
 def add_quad_kws(func: Callable) -> Callable:

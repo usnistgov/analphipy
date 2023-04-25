@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
     from .base_potential import PhiBase  # type: ignore
 # Hack to document module level docstring
-__doc__ = __doc__.format(**DOCFILLER_SHARED.data)
+__doc__ = __doc__.format(**DOCFILLER_SHARED.data)  # pyright: ignore
 
 __all__ = [
     "sig_nf",
@@ -433,7 +433,7 @@ class NoroFrenkelPair:
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
     @gcached()
-    def _segments_rep(self) -> list:
+    def _segments_rep(self) -> list[float]:
         return [x for x in self.segments if x < self.r_min] + [self.r_min]
 
     @gcached(prop=False)
@@ -447,9 +447,11 @@ class NoroFrenkelPair:
         ~analphipy.norofrenkel.sig_nf
 
         """
-        return sig_nf(self.phi_rep, beta=beta, segments=self._segments_rep, **kws)
+        return sig_nf(
+            self.phi_rep, beta=beta, segments=self._segments_rep, **kws
+        )  # pyright: ignore
 
-    def eps(self, beta: float, **kws) -> float:
+    def eps(self, beta: float, **kws) -> float:  # pyright: ignore
         """
         Effective square well epsilon.
 

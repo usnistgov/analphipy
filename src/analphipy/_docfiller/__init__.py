@@ -251,7 +251,7 @@ class AttributeDict(Mapping):
         return out
 
     @classmethod
-    def from_dict(cls, params, max_level=1, recursive=True, level=0):
+    def from_dict(cls, params, max_level=1, recursive=True):
         """
         Create AttributeDict recursively for nested dictionaries.
 
@@ -573,7 +573,7 @@ class DocFiller:
         return AttributeDict.from_dict(self.data, max_level=1)
 
     @gcached()
-    def default_decorator(self):
+    def default_decorator(self) -> Callable[[F], F]:
         return docfiller(**self.params)
 
     def update(self, *args, **kwargs):
@@ -584,7 +584,7 @@ class DocFiller:
         # self.data.update(*args, **kwargs)
         # return self
 
-    def decorate(self, *templates, **params):
+    def decorate(self, *templates, **params) -> Callable[[F], F]:
         nparams, ntemplates = len(params), len(templates)
         if ntemplates == nparams == 0:
             return self.default_decorator
@@ -603,7 +603,7 @@ class DocFiller:
         else:
             return docfiller(*templates)
 
-    def __call__(self, *templates, **params):
+    def __call__(self, *templates, **params) -> Callable[[F], F]:
         if len(params) > 0:
             params = AttributeDict.from_dict({**self.data, **params}, max_level=1)
             return docfiller(*templates, **params)
