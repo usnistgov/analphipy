@@ -32,6 +32,7 @@ dependencies = [
     "numpy",
     "scipy",
     "custom-inherit",
+    "module-utilities",
 ]
 
 [project.urls]

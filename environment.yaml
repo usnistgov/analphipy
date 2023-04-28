@@ -10,3 +10,4 @@ dependencies:
   - typing-extensions
   - custom-inherit
   - attrs
+  - module-utilities

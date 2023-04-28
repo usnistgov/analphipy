@@ -4,6 +4,7 @@ channels:
 dependencies:
   - attrs
   - custom-inherit
+  - module-utilities
   - mypy
   - numpy
   - pandas

@@ -9,8 +9,7 @@ from typing import TYPE_CHECKING, Callable, Mapping, Sequence, Union, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
-
-from analphipy.cached_decorators import gcached
+from module_utilities import cached
 
 from ._docstrings import docfiller_shared  # type: ignore
 
@@ -404,7 +403,7 @@ class Measures:
             quad_kws = {}
         self.quad_kws = quad_kws
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     @docfiller_shared
     def secondvirial(self, beta, err=False, full_output=False, **kws):
@@ -440,7 +439,7 @@ class Measures:
             **kws,
         )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     @docfiller_shared
     def secondvirial_dbeta(self, beta, err=False, full_output=False, **kws):

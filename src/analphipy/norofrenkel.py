@@ -19,9 +19,9 @@ from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
 
 import numpy as np
 from custom_inherit import doc_inherit
+from module_utilities import cached
 
 from ._docstrings import DOCFILLER_SHARED, docfiller_shared  # type: ignore
-from .cached_decorators import gcached
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
@@ -420,7 +420,7 @@ class NoroFrenkelPair:
                 **kws,
             )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def secondvirial(self, beta: float, **kws):
         """
@@ -432,11 +432,11 @@ class NoroFrenkelPair:
         """
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
-    @gcached()
+    @cached.prop
     def _segments_rep(self) -> list[float]:
         return [x for x in self.segments if x < self.r_min] + [self.r_min]
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def sig(self, beta: float, **kws):
         """
@@ -462,7 +462,7 @@ class NoroFrenkelPair:
         """
         return cast(float, self.phi_min)
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def lam(self, beta: float, **kws):
         """
@@ -479,7 +479,7 @@ class NoroFrenkelPair:
             B2=self.secondvirial(beta, **kws),
         )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def sw_dict(self, beta: float, **kws) -> dict[str, float]:
         """Dictionary view of Noro-Frenkel parameters."""
@@ -488,7 +488,7 @@ class NoroFrenkelPair:
         lam = lam_nf(beta=beta, sig=sig, eps=eps, B2=self.secondvirial(beta, **kws))
         return {"sig": sig, "eps": eps, "lam": lam}
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def secondvirial_dbeta(self, beta: float, **kws):
         """
@@ -502,7 +502,7 @@ class NoroFrenkelPair:
             phi=self.phi, beta=beta, segments=self.segments, **kws
         )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def sig_dbeta(self, beta: float, **kws):
         """
@@ -515,7 +515,7 @@ class NoroFrenkelPair:
         """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
 
-    @gcached(prop=False)
+    @cached.meth
     def lam_dbeta(self, beta: float, **kws):
         """
         Derivative of effective lambda parameter with respect to ``beta``.
@@ -534,7 +534,7 @@ class NoroFrenkelPair:
             sig_dbeta=self.sig_dbeta(beta, **kws),
         )
 
-    @gcached(prop=False)
+    @cached.meth
     def secondvirial_sw(self, beta: float, **kws):
         """
         Second virial coefficient of effective square well fluid.
