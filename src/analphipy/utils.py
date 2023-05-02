@@ -12,7 +12,7 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.optimize import minimize
 
-from ._docstrings import docfiller_shared  # type: ignore
+from ._docstrings import docfiller_shared
 
 if TYPE_CHECKING:
     from ._typing import ArrayLike
@@ -277,7 +277,7 @@ def segments_to_segments_cut(segments, rcut):
 #             return dvdbeta
 
 #     else:
-#         dphidr_cut = None  # type: ignore
+#         dphidr_cut = None
 
 #     if meta is not None:
 #         meta = dict(meta, rcut=rcut)

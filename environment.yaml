@@ -10,4 +10,4 @@ dependencies:
   - typing-extensions
   - custom-inherit
   - attrs
-  - module-utilities
+  - module-utilities >= 0.1

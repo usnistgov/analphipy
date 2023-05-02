@@ -1,4 +1,3 @@
-# type: ignore
 """Common docstrings."""
 
 from __future__ import annotations

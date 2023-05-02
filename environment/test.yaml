@@ -4,7 +4,7 @@ channels:
 dependencies:
   - attrs
   - custom-inherit
-  - module-utilities
+  - module-utilities >= 0.1
   - numpy
   - pandas
   - pytest

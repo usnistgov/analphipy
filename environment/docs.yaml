@@ -6,7 +6,7 @@ dependencies:
   - custom-inherit
   - ipython
   - matplotlib
-  - module-utilities
+  - module-utilities >= 0.1
   - numpy
   - pandas
   - pip
