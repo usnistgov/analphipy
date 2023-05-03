@@ -181,8 +181,6 @@
 
 
 
-
-
 <li class="toctree-l2"><a class="reference internal" href="analphipy.base_potential.html">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
 
 
@@ -398,8 +396,6 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.quad_segments"><code class="docutils literal notranslate"><span class="pre">quad_segments()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.minimize_phi"><code class="docutils literal notranslate"><span class="pre">minimize_phi()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.segments_to_segments_cut"><code class="docutils literal notranslate"><span class="pre">segments_to_segments_cut()</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.phi_to_phi_cut"><code class="docutils literal notranslate"><span class="pre">phi_to_phi_cut()</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.phi_to_phi_lfs"><code class="docutils literal notranslate"><span class="pre">phi_to_phi_lfs()</span></code></a></li>
 </ul>
 
             </nav>
@@ -429,12 +425,6 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#analphipy.utils.segments_to_segments_cut" title="analphipy.utils.segments_to_segments_cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments_to_segments_cut</span></code></a>(segments, rcut)</p></td>
 <td><p>Update segments for 'cut' potential</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.utils.phi_to_phi_cut" title="analphipy.utils.phi_to_phi_cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_to_phi_cut</span></code></a>(rcut, phi[, dphidr, meta])</p></td>
-<td><p>Create callable <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code> cut potentials.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.utils.phi_to_phi_lfs" title="analphipy.utils.phi_to_phi_lfs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_to_phi_lfs</span></code></a>(rcut, phi, dphidr[, meta])</p></td>
-<td><p>Create callable <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code> cut potentials.</p></td>
 </tr>
 </tbody>
 </table>
@@ -521,52 +511,6 @@ Across segments.</p></li>
 <dd><p>Update segments for ‘cut’ potential</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="analphipy.utils.phi_to_phi_cut">
-<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">phi_to_phi_cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dphidr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L223-L286"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.phi_to_phi_cut" title="Permalink to this definition">#</a></dt>
-<dd><p>Create callable <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code> cut potentials.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rcut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Position of cut.</p></li>
-<li><p><strong>phi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – input callable function.</p></li>
-<li><p><strong>dphidr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>, <em>optional</em>)</p></li>
-<li><p><strong>input callable for :math:`dphi/dr`</strong></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>phi_cut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>)</p></li>
-<li><p><strong>dphidr_cut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – Note that <code class="docutils literal notranslate"><span class="pre">dphidr_cut</span></code> is always returned, even if it is None.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="analphipy.utils.phi_to_phi_lfs">
-<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">phi_to_phi_lfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dphidr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L289-L348"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.phi_to_phi_lfs" title="Permalink to this definition">#</a></dt>
-<dd><p>Create callable <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code> cut potentials.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rcut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Position of cut.</p></li>
-<li><p><strong>phi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – input callable function.</p></li>
-<li><p><strong>dphidr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>, <em>optional</em>)</p></li>
-<li><p><strong>input callable for :math:`dphi/dr`</strong></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>phi_cut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>)</p></li>
-<li><p><strong>dphidr_cut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – Note that <code class="docutils literal notranslate"><span class="pre">dphidr_cut</span></code> is always returned, even if it is None.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
 
 
                 </article>
@@ -621,8 +565,6 @@ Across segments.</p></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.quad_segments"><code class="docutils literal notranslate"><span class="pre">quad_segments()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.minimize_phi"><code class="docutils literal notranslate"><span class="pre">minimize_phi()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.segments_to_segments_cut"><code class="docutils literal notranslate"><span class="pre">segments_to_segments_cut()</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.phi_to_phi_cut"><code class="docutils literal notranslate"><span class="pre">phi_to_phi_cut()</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.phi_to_phi_lfs"><code class="docutils literal notranslate"><span class="pre">phi_to_phi_lfs()</span></code></a></li>
 </ul>
 
   </nav></div>
@@ -656,7 +598,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2023-04-24.
+  Last updated on 2023-05-02.
   <br/>
 </p>
   </div>

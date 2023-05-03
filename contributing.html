@@ -181,8 +181,6 @@
 
 
 
-
-
 <li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.base_potential.html">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
 
 
@@ -660,17 +658,17 @@ list in CHANGELOG.md. You should use <a class="reference external" href="https:/
 <p>We use <a class="reference external" href="https://tox.wiki/en/latest/">tox</a> to isolate the documentation build. Useful commands are as follows.</p>
 <ul>
 <li><p>Build the docs:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs-build
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs<span class="w"> </span>--<span class="w"> </span>build
 </pre></div>
 </div>
 </li>
 <li><p>Spellcheck the docs:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs-spelling
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs<span class="w"> </span>--<span class="w"> </span>spelling
 </pre></div>
 </div>
 </li>
 <li><p>Create a release of the docs:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs-release
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tox<span class="w"> </span>-e<span class="w"> </span>docs<span class="w"> </span>--<span class="w"> </span>release
 </pre></div>
 </div>
 <p>If you make any changes to <code class="docutils literal notranslate"><span class="pre">docs/examples</span></code>, you should run:</p>
@@ -680,7 +678,11 @@ list in CHANGELOG.md. You should use <a class="reference external" href="https:/
 <p>to update symlinks from <code class="docutils literal notranslate"><span class="pre">docs/examples</span></code> to <code class="docutils literal notranslate"><span class="pre">examples</span></code>.</p>
 <p>After this, the docs can be pushed to the correct branch for distribution.</p>
 </li>
-<li><p>Live documentation updates using</p></li>
+<li><p>Live documentation updates using</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>docs-livehtml
+</pre></div>
+</div>
+</li>
 </ul>
 </section>
 <section id="using-tox">
@@ -696,7 +698,7 @@ distributions, and release the docs. Most of these tasks have a command in the
 </pre></div>
 </div>
 <p>To release the documentation use:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>docs-release<span class="w"> </span><span class="nv">posargs</span><span class="o">=</span><span class="s1">&#39;-m &quot;commit message&quot; -r origin -p&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>docs-release<span class="w"> </span><span class="nv">release_args</span><span class="o">=</span><span class="s1">&#39;-m &quot;commit message&quot; -r origin -p&#39;</span>
 </pre></div>
 </div>
 <p>Where posargs is are passed to ghp-import. Note that the branch created is
@@ -725,7 +727,7 @@ distro. This can be manually added to a channel.</p>
 </section>
 <section id="package-version">
 <h2>Package version<a class="headerlink" href="#package-version" title="Permalink to this heading">#</a></h2>
-<p>Versioning is handled with <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a>. The pacakge version is set by the
+<p>Versioning is handled with <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a>.The pacakge version is set by the
 git tag. For convenience, you can override the version in the makefile (calling
 tox) by setting <code class="docutils literal notranslate"><span class="pre">version=v{major}.{minor}.{micro}</span></code>. This is useful for updating
 the docs, etc.</p>
@@ -830,7 +832,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2023-04-24.
+  Last updated on 2023-05-02.
   <br/>
 </p>
   </div>
