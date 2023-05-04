@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "analphipy"
 authors = [{ name = "William P. Krekelberg", email = "wpk@nist.gov" }]
-license = { text = "NIST license" }
+license = { text = "Public Domain" }
 description = "Utilities to perform stat mech analysis of pair potentials"
 # if using markdown
 # long_description_content_type = text/markdown
