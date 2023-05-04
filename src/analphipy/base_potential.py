@@ -62,7 +62,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
     )
 
     #: Integration limits
-    segments: Sequence[float] | None = _kw_only_field(
+    segments: Sequence[float] = _kw_only_field(
         converter=segments_converter,
     )
 

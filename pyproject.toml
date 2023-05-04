@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "analphipy"
 authors = [{ name = "William P. Krekelberg", email = "wpk@nist.gov" }]
-license = { text = "NIST license" }
+license = { text = "NIST-PD" }
 description = "Utilities to perform stat mech analysis of pair potentials"
 # if using markdown
 # long_description_content_type = text/markdown
@@ -32,6 +32,7 @@ dependencies = [
     "numpy",
     "scipy",
     "custom-inherit",
+    "module-utilities >= 0.1",
 ]
 
 [project.urls]
@@ -47,16 +48,15 @@ test = [
 
 ]
 
-## Defer this to setup.cfg
-## Will transition when everything works (grayskull in particular)
-## and will remove setup.py
-# [tool.setuptools]
-# zip-safe = true # if using mypy, must be False
-# include-package-data = true
-# license-files = ["LICENSE"]
-# [tool.setuptools.packages.find]
-# namespaces = true
-# where = ["src"]
+[tool.setuptools]
+zip-safe = true # if using mypy, must be False
+include-package-data = true
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
 ## include = []
 ## exclude = []
 [tool.setuptools.dynamic]
@@ -238,6 +238,7 @@ warn_return_any = true
 warn_unused_configs = true
 exclude = [".eggs", ".tox", "doc", "docs"]
 
+# check_untyped_defs = true
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
 module = [
@@ -250,3 +251,31 @@ module = [
 [[tool.mypy.overrides]]
 ignore_errors = true
 module = []
+
+[tool.pyright]
+include = ["src", "tests"]
+exclude = ["**/__pycache__", ".tox/**", "**/.mypy_cache"]
+pythonVersion = "3.10"
+typeCheckingMode = "basic"
+# enable subset of "strict"
+reportDuplicateImport = true
+reportInvalidStubStatement = true
+reportOverlappingOverload = true
+reportPropertyTypeMismatch = true
+reportUntypedClassDecorator = true
+reportUntypedFunctionDecorator = true
+reportUntypedNamedTuple = true
+reportUnusedImport = true
+# disable subset of "basic"
+reportGeneralTypeIssues = false
+reportMissingModuleSource = false
+reportOptionalCall = false
+reportOptionalIterable = false
+reportOptionalMemberAccess = false
+reportOptionalOperand = false
+reportOptionalSubscript = false
+reportPrivateImportUsage = false
+reportUnboundVariable = false
+
+[tool.pytype]
+inputs = ["src", "tests"]

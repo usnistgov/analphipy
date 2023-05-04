@@ -8,6 +8,7 @@ dependencies:
   - ipykernel
   - ipython
   - matplotlib
+  - module-utilities >= 0.1
   - mypy
   - numpy
   - pandas

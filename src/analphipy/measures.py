@@ -8,12 +8,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Callable, Mapping, Sequence, Union, cast
 
 import numpy as np
-from custom_inherit import doc_inherit
 
-from analphipy.cached_decorators import gcached
+# from custom_inherit import doc_inherit
+from module_utilities import cached
 
-from ._docstrings import docfiller_shared  # type: ignore
+from ._docstrings import DOCFILLER_SHARED
 
+# from module_utilities.docfiller import DocFiller
 if TYPE_CHECKING:
     from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
 from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
@@ -27,8 +28,10 @@ __all__ = [
     "diverg_js_cont",
 ]
 
+docfiller = DOCFILLER_SHARED
 
-@docfiller_shared
+
+@docfiller.decorate
 def secondvirial(
     phi: Phi_Signature,
     beta: float,
@@ -80,7 +83,7 @@ def secondvirial(
     )
 
 
-@docfiller_shared
+@docfiller.decorate
 def secondvirial_dbeta(
     phi: Phi_Signature,
     beta: float,
@@ -132,7 +135,7 @@ def secondvirial_dbeta(
     )
 
 
-@docfiller_shared
+@docfiller.decorate
 def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
     r"""
     Second virial coefficient for a square well (SW) fluid. Note that this assumes that
@@ -190,12 +193,12 @@ def diverg_kl_integrand(
     return out
 
 
-@docfiller_shared
+@docfiller(summary="Calculate discrete Kullback-Leibler divergence")
 def diverg_kl_disc(
     P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: int | None = None
 ) -> float | np.ndarray:
     """
-    Calculate discrete Kullback–Leibler divergence
+    {summary}
 
     Parameters
     ----------
@@ -203,8 +206,8 @@ def diverg_kl_disc(
         Probabilities to consider
     Returns
     -------
-    result : float or ndarray
-        value of KB divergence
+    results : float or ndarray
+        Value of divergence.
 
     References
     ----------
@@ -236,7 +239,9 @@ def _check_volume_func(volume: str | Callable | None = None) -> Callable:
     return volume
 
 
-@docfiller_shared
+@docfiller(
+    summary="Calculate continuous Kullback–Leibler divergence for continuous pdf"
+)
 def diverg_kl_cont(
     p: Callable,
     q: Callable,
@@ -248,7 +253,7 @@ def diverg_kl_cont(
     **kws,
 ):
     """
-    Calculate continuous Kullback–Leibler divergence for continuous pdf
+    {summary}
 
     Parameters
     ----------
@@ -264,7 +269,7 @@ def diverg_kl_cont(
     Returns
     -------
     result : float or ndarray
-        value of KB divergence
+        value of divergence
     {error_summed}
     {full_output_summed}
 
@@ -291,23 +296,11 @@ def diverg_kl_cont(
     )
 
 
-@doc_inherit(diverg_kl_disc, style="numpy_with_merge")
+# @doc_inherit(diverg_kl_disc, style="numpy_with_merge")
+@docfiller(diverg_kl_disc, summary="Discrete Jensen–Shannon divergence")
 def diverg_js_disc(
     P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: int | None = None
 ) -> float | np.ndarray:
-    """
-    Discrete Jensen–Shannon divergence
-
-    Returns
-    -------
-    result : float or ndarray
-        value of JS divergence
-
-    References
-    ----------
-    {js_link}
-    """
-
     P, Q = np.asarray(P), np.asarray(Q)
 
     M = 0.5 * (P + Q)
@@ -334,8 +327,7 @@ def diverg_js_integrand(
     return cast(np.ndarray, out)
 
 
-@doc_inherit(diverg_kl_cont, style="numpy_with_merge")
-@docfiller_shared
+@docfiller(diverg_kl_cont, summary="Continuous Jensen–Shannon divergence")
 def diverg_js_cont(
     p: Callable,
     q: Callable,
@@ -346,20 +338,6 @@ def diverg_js_cont(
     full_output: bool = False,
     **kws,
 ):
-    """
-    Continuous Jensen–Shannon divergence
-
-
-    Returns
-    -------
-    result : float or ndarray
-        value of JS divergence
-
-    References
-    ----------
-    {js_link}
-    """
-
     volume = _check_volume_func(volume)
 
     if segments_q is not None:
@@ -379,7 +357,7 @@ def diverg_js_cont(
     )
 
 
-@docfiller_shared
+@docfiller.decorate
 class Measures:
     """
     Convenience class for calculating measures
@@ -404,9 +382,9 @@ class Measures:
             quad_kws = {}
         self.quad_kws = quad_kws
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
-    @docfiller_shared
+    @docfiller.decorate
     def secondvirial(self, beta, err=False, full_output=False, **kws):
         """
         Calculate second virial coefficient.
@@ -440,9 +418,9 @@ class Measures:
             **kws,
         )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
-    @docfiller_shared
+    @docfiller.decorate
     def secondvirial_dbeta(self, beta, err=False, full_output=False, **kws):
         """
         Calculate ``beta`` derivative of second virial coefficient.
@@ -474,7 +452,7 @@ class Measures:
             **kws,
         )
 
-    @docfiller_shared
+    @docfiller.decorate
     @add_quad_kws
     def boltz_diverg_js(
         self,
