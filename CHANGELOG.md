@@ -8,7 +8,7 @@ See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy)
 
 <!-- scriv-insert-here -->
 
-## v0.1.1 — 2023-05-04
+## v0.2.0 — 2023-05-04
 
 ### Removed
 
