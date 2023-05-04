@@ -1,0 +1,21 @@
+test:
+  imports:
+    - analphipy
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/usnistgov/analphipy
+  summary: Utilities to perform stat mech analysis of pair potentials
+  description: |
+    `analphipy` is a python package to calculate metrics for classical models for
+    pair potentials. It provides a simple and extendable api for pair potentials
+    creation. Several routines to calculate metrics are included in the package.
+  license: NIST-PD
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - wpk-nist-gov

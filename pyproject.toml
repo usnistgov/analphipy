@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "analphipy"
 authors = [{ name = "William P. Krekelberg", email = "wpk@nist.gov" }]
-license = { text = "Public Domain" }
+license = { text = "NIST-PD" }
 description = "Utilities to perform stat mech analysis of pair potentials"
 # if using markdown
 # long_description_content_type = text/markdown
@@ -48,16 +48,15 @@ test = [
 
 ]
 
-## Defer this to setup.cfg
-## Will transition when everything works (grayskull in particular)
-## and will remove setup.py
-# [tool.setuptools]
-# zip-safe = true # if using mypy, must be False
-# include-package-data = true
-# license-files = ["LICENSE"]
-# [tool.setuptools.packages.find]
-# namespaces = true
-# where = ["src"]
+[tool.setuptools]
+zip-safe = true # if using mypy, must be False
+include-package-data = true
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
 ## include = []
 ## exclude = []
 [tool.setuptools.dynamic]
