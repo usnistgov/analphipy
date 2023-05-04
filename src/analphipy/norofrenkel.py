@@ -18,10 +18,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
 
 import numpy as np
-from custom_inherit import doc_inherit
+from module_utilities import cached
 
-from ._docstrings import DOCFILLER_SHARED, docfiller_shared  # type: ignore
-from .cached_decorators import gcached
+from ._docstrings import DOCFILLER_SHARED, docfiller_shared
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
@@ -39,8 +38,21 @@ __all__ = [
     "NoroFrenkelPair",
 ]
 
+d = DOCFILLER_SHARED.update(
+    summary="Noro-Frenkel/Barker-Henderson effective hard sphere diameter.",
+    extended_summary=r"""
+    This is calculated using the formula [1]_ [2]_
 
-@docfiller_shared
+    .. math::
+
+        \sigma_{{\rm BH}}(\beta) = \int_0^{{\infty}} dr \left( 1 - \exp[-\beta \phi_{{\rm rep}}(r)]\right)
+
+    where :math:`\phi_{{\rm rep}}(r)` is the repulsive part of the potential [3]_.
+    """,
+).dedent()
+
+
+@d.decorate
 def sig_nf(
     phi_rep: Phi_Signature,
     beta: float,
@@ -50,15 +62,9 @@ def sig_nf(
     **kws,
 ):
     r"""
-    Noro-Frenkel/Barker-Henderson effective hard sphere diameter.
+    {summary}
 
-    This is calculated using the formula [1]_ [2]_
-
-    .. math::
-
-        \sigma_{{\rm BH}}(\beta) = \int_0^{{\infty}} dr \left( 1 - \exp[-\beta \phi_{{\rm rep}}(r)]\right)
-
-    where :math:`\phi_{{\rm rep}}(r)` is the repulsive part of the potential [3]_.
+    {extended_summary}
 
     Parameters
     ----------
@@ -107,7 +113,20 @@ def sig_nf(
     )
 
 
-@doc_inherit(sig_nf, style="numpy_with_merge")
+d = DOCFILLER_SHARED.update(
+    summary="Derivative with respect to inverse temperature ``beta`` of ``sig_nf``.",
+    extended_summary=r"""
+    See refs [1]_ [2]_ [3]_
+
+    .. math::
+
+        \frac{d \sigma_{\rm BH}}{d\beta} = \int_0^{\infty} dr \phi_{\rm rep}(r) \exp[-\beta \phi_{\rm rep}(r)]
+    """,
+).dedent()
+
+
+# @doc_inherit(sig_nf, style="numpy_with_merge")
+@d(sig_nf)
 def sig_nf_dbeta(
     phi_rep: Phi_Signature,
     beta: float,
@@ -116,22 +135,6 @@ def sig_nf_dbeta(
     full_output: bool = False,
     **kws,
 ):
-    r"""
-    Derivative with respect to inverse temperature ``beta`` of ``sig_nf``.
-
-
-    See refs [1]_ [2]_ [3]_
-
-    .. math::
-
-        \frac{d \sigma_{\rm BH}}{d\beta} = \int_0^{\infty} dr \phi_{\rm rep}(r) \exp[-\beta \phi_{\rm rep}(r)]
-
-    See Also
-    --------
-    sig_nf
-
-    """
-
     def integrand(r):
         v = phi_rep(r)
         if np.isinf(v):
@@ -420,7 +423,7 @@ class NoroFrenkelPair:
                 **kws,
             )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def secondvirial(self, beta: float, **kws):
         """
@@ -432,11 +435,11 @@ class NoroFrenkelPair:
         """
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
-    @gcached()
+    @cached.prop
     def _segments_rep(self) -> list[float]:
         return [x for x in self.segments if x < self.r_min] + [self.r_min]
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def sig(self, beta: float, **kws):
         """
@@ -462,7 +465,7 @@ class NoroFrenkelPair:
         """
         return cast(float, self.phi_min)
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def lam(self, beta: float, **kws):
         """
@@ -479,7 +482,7 @@ class NoroFrenkelPair:
             B2=self.secondvirial(beta, **kws),
         )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def sw_dict(self, beta: float, **kws) -> dict[str, float]:
         """Dictionary view of Noro-Frenkel parameters."""
@@ -488,7 +491,7 @@ class NoroFrenkelPair:
         lam = lam_nf(beta=beta, sig=sig, eps=eps, B2=self.secondvirial(beta, **kws))
         return {"sig": sig, "eps": eps, "lam": lam}
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def secondvirial_dbeta(self, beta: float, **kws):
         """
@@ -502,7 +505,7 @@ class NoroFrenkelPair:
             phi=self.phi, beta=beta, segments=self.segments, **kws
         )
 
-    @gcached(prop=False)
+    @cached.meth
     @add_quad_kws
     def sig_dbeta(self, beta: float, **kws):
         """
@@ -515,7 +518,7 @@ class NoroFrenkelPair:
         """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
 
-    @gcached(prop=False)
+    @cached.meth
     def lam_dbeta(self, beta: float, **kws):
         """
         Derivative of effective lambda parameter with respect to ``beta``.
@@ -534,7 +537,7 @@ class NoroFrenkelPair:
             sig_dbeta=self.sig_dbeta(beta, **kws),
         )
 
-    @gcached(prop=False)
+    @cached.meth
     def secondvirial_sw(self, beta: float, **kws):
         """
         Second virial coefficient of effective square well fluid.
