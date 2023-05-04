@@ -8,6 +8,18 @@ See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy)
 
 <!-- scriv-insert-here -->
 
+## v0.1.1 — 2023-05-04
+
+### Removed
+
+- Removed `cached_decorator` module.
+- Removed `docfiller` module.
+
+### Added
+
+- Now use [module-utilities](https://pypi.org/project/module-utilities/) to
+  handle caching and docfilling.
+
 ## v0.1.0 — 2023-04-24
 
 ### Changed
