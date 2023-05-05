@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>analphipy &#8212; analphipy 0.2.0 documentation</title>
+    <title>analphipy &#8212; analphipy latest documentation</title>
   
   
   
@@ -129,7 +129,7 @@
   
   
   
-    <p class="title logo__title">analphipy 0.2.0 documentation</p>
+    <p class="title logo__title">analphipy latest documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
@@ -456,276 +456,35 @@ request for wanted features and suggestions!</p>
 </section>
 <section id="example-usage">
 <h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">analphipy</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Lennard-Jones potential</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">analphipy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">analphipy</span><span class="o">.</span><span class="n">potential</span><span class="o">.</span><span class="n">LennardJones</span><span class="p">(</span><span class="n">sig</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c1"># Get a Noro-Frenekl analysis object</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">to_nf</span><span class="p">()</span>
+
+<span class="c1"># Get effective parameters at inverse temperature beta</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span><span class="o">.</span><span class="n">sig</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="mf">1.01560</span><span class="o">...</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="o">-</span><span class="mf">1.0</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span><span class="o">.</span><span class="n">lam</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="mf">1.44097</span><span class="o">...</span>
 
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">User guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/usage/usage.html">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples/usage/usage.html#useful-references">Useful references</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="examples/usage/usage.html#a-simple-example">A simple example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/usage/usage.html#defining-your-own-potential">Defining your own potential</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/usage/usage.html#cut-potential">Cut potential</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reference/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Generic"><code class="docutils literal notranslate"><span class="pre">Generic</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Generic.phi_func"><code class="docutils literal notranslate"><span class="pre">Generic.phi_func</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Generic.dphidr_func"><code class="docutils literal notranslate"><span class="pre">Generic.dphidr_func</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Generic.phi"><code class="docutils literal notranslate"><span class="pre">Generic.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Generic.dphidr"><code class="docutils literal notranslate"><span class="pre">Generic.dphidr()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Analytic"><code class="docutils literal notranslate"><span class="pre">Analytic</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Analytic.r_min"><code class="docutils literal notranslate"><span class="pre">Analytic.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Analytic.phi_min"><code class="docutils literal notranslate"><span class="pre">Analytic.phi_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Analytic.segments"><code class="docutils literal notranslate"><span class="pre">Analytic.segments</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJones"><code class="docutils literal notranslate"><span class="pre">LennardJones</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJones.sig"><code class="docutils literal notranslate"><span class="pre">LennardJones.sig</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJones.eps"><code class="docutils literal notranslate"><span class="pre">LennardJones.eps</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJones.phi"><code class="docutils literal notranslate"><span class="pre">LennardJones.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJones.dphidr"><code class="docutils literal notranslate"><span class="pre">LennardJones.dphidr()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJonesNM"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJonesNM.n"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.n</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJonesNM.m"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.m</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJonesNM.sig"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.sig</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJonesNM.eps"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.eps</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJonesNM.phi"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.LennardJonesNM.dphidr"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.dphidr()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Yukawa"><code class="docutils literal notranslate"><span class="pre">Yukawa</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Yukawa.z"><code class="docutils literal notranslate"><span class="pre">Yukawa.z</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Yukawa.sig"><code class="docutils literal notranslate"><span class="pre">Yukawa.sig</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Yukawa.eps"><code class="docutils literal notranslate"><span class="pre">Yukawa.eps</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.Yukawa.phi"><code class="docutils literal notranslate"><span class="pre">Yukawa.phi()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.HardSphere"><code class="docutils literal notranslate"><span class="pre">HardSphere</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.HardSphere.sig"><code class="docutils literal notranslate"><span class="pre">HardSphere.sig</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.HardSphere.phi"><code class="docutils literal notranslate"><span class="pre">HardSphere.phi()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.SquareWell"><code class="docutils literal notranslate"><span class="pre">SquareWell</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.SquareWell.sig"><code class="docutils literal notranslate"><span class="pre">SquareWell.sig</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.SquareWell.eps"><code class="docutils literal notranslate"><span class="pre">SquareWell.eps</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.SquareWell.lam"><code class="docutils literal notranslate"><span class="pre">SquareWell.lam</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.SquareWell.phi"><code class="docutils literal notranslate"><span class="pre">SquareWell.phi()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable"><code class="docutils literal notranslate"><span class="pre">CubicTable</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.bounds"><code class="docutils literal notranslate"><span class="pre">CubicTable.bounds</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.phi_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_table</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.phi_left"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_left</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.phi_right"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_right</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.dphi_left"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphi_left</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.dphi_right"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphi_right</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.from_phi"><code class="docutils literal notranslate"><span class="pre">CubicTable.from_phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.size"><code class="docutils literal notranslate"><span class="pre">CubicTable.size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.smin"><code class="docutils literal notranslate"><span class="pre">CubicTable.smin</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.smax"><code class="docutils literal notranslate"><span class="pre">CubicTable.smax</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.phidphi"><code class="docutils literal notranslate"><span class="pre">CubicTable.phidphi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.phi"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.dphidr"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphidr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.rsq_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.rsq_table</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.CubicTable.r_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.r_table</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.potential.html#analphipy.potential.factory"><code class="docutils literal notranslate"><span class="pre">factory()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.sig_nf"><code class="docutils literal notranslate"><span class="pre">sig_nf()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.sig_nf_dbeta"><code class="docutils literal notranslate"><span class="pre">sig_nf_dbeta()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.lam_nf"><code class="docutils literal notranslate"><span class="pre">lam_nf()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.lam_nf_dbeta"><code class="docutils literal notranslate"><span class="pre">lam_nf_dbeta()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.phi_rep"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.phi_rep()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.from_phi"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.from_phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.from_phi_class"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.from_phi_class()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.secondvirial"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.sig"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sig()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.eps"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.eps()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.lam"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.lam()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.sw_dict"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sw_dict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial_dbeta()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.sig_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sig_dbeta()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.lam_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.lam_dbeta()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial_sw()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.B2"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.B2_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2_dbeta()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.B2_sw"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2_sw()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.table"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.table()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.measures.html">Routines to calculate measures of pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.measures</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.Measures"><code class="docutils literal notranslate"><span class="pre">Measures</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.Measures.secondvirial"><code class="docutils literal notranslate"><span class="pre">Measures.secondvirial()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.Measures.secondvirial_dbeta"><code class="docutils literal notranslate"><span class="pre">Measures.secondvirial_dbeta()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.Measures.boltz_diverg_js"><code class="docutils literal notranslate"><span class="pre">Measures.boltz_diverg_js()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.Measures.mayer_diverg_js"><code class="docutils literal notranslate"><span class="pre">Measures.mayer_diverg_js()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.secondvirial"><code class="docutils literal notranslate"><span class="pre">secondvirial()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.secondvirial_dbeta"><code class="docutils literal notranslate"><span class="pre">secondvirial_dbeta()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.secondvirial_sw"><code class="docutils literal notranslate"><span class="pre">secondvirial_sw()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.diverg_kl_cont"><code class="docutils literal notranslate"><span class="pre">diverg_kl_cont()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.measures.html#analphipy.measures.diverg_js_cont"><code class="docutils literal notranslate"><span class="pre">diverg_js_cont()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.utils.html">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.utils.html#analphipy.utils.combine_segmets"><code class="docutils literal notranslate"><span class="pre">combine_segmets()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.utils.html#analphipy.utils.quad_segments"><code class="docutils literal notranslate"><span class="pre">quad_segments()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.utils.html#analphipy.utils.minimize_phi"><code class="docutils literal notranslate"><span class="pre">minimize_phi()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.utils.html#analphipy.utils.segments_to_segments_cut"><code class="docutils literal notranslate"><span class="pre">segments_to_segments_cut()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.base_potential.html">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract"><code class="docutils literal notranslate"><span class="pre">PhiAbstract</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.r_min"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.phi_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.segments"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.segments</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.asdict"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.asdict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.new_like"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.new_like()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.assign"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.assign()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.phi"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.dphidr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.minimize"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.minimize()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.assign_min_numeric()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.to_nf()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiAbstract.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.to_measures()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase"><code class="docutils literal notranslate"><span class="pre">PhiCutBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi_base</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.rcut"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.rcut</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.segments"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.segments</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.phi"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.dphidr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.asdict"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.asdict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.assign"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.assign()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.assign_min_numeric()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.minimize"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.minimize()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.new_like"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.new_like()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.r_min"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.to_measures()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCutBase.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.to_nf()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut"><code class="docutils literal notranslate"><span class="pre">PhiCut</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.asdict"><code class="docutils literal notranslate"><span class="pre">PhiCut.asdict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.assign"><code class="docutils literal notranslate"><span class="pre">PhiCut.assign()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiCut.assign_min_numeric()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiCut.dphidr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.minimize"><code class="docutils literal notranslate"><span class="pre">PhiCut.minimize()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.new_like"><code class="docutils literal notranslate"><span class="pre">PhiCut.new_like()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.phi"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi_base</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.r_min"><code class="docutils literal notranslate"><span class="pre">PhiCut.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.rcut"><code class="docutils literal notranslate"><span class="pre">PhiCut.rcut</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.segments"><code class="docutils literal notranslate"><span class="pre">PhiCut.segments</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiCut.to_measures()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiCut.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiCut.to_nf()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS"><code class="docutils literal notranslate"><span class="pre">PhiLFS</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.asdict"><code class="docutils literal notranslate"><span class="pre">PhiLFS.asdict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.assign"><code class="docutils literal notranslate"><span class="pre">PhiLFS.assign()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiLFS.assign_min_numeric()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiLFS.dphidr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.minimize"><code class="docutils literal notranslate"><span class="pre">PhiLFS.minimize()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.new_like"><code class="docutils literal notranslate"><span class="pre">PhiLFS.new_like()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.phi"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi_base</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.r_min"><code class="docutils literal notranslate"><span class="pre">PhiLFS.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.rcut"><code class="docutils literal notranslate"><span class="pre">PhiLFS.rcut</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.segments"><code class="docutils literal notranslate"><span class="pre">PhiLFS.segments</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiLFS.to_measures()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiLFS.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiLFS.to_nf()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase"><code class="docutils literal notranslate"><span class="pre">PhiBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.cut"><code class="docutils literal notranslate"><span class="pre">PhiBase.cut()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.lfs"><code class="docutils literal notranslate"><span class="pre">PhiBase.lfs()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.asdict"><code class="docutils literal notranslate"><span class="pre">PhiBase.asdict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.assign"><code class="docutils literal notranslate"><span class="pre">PhiBase.assign()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiBase.assign_min_numeric()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiBase.dphidr()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.minimize"><code class="docutils literal notranslate"><span class="pre">PhiBase.minimize()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.new_like"><code class="docutils literal notranslate"><span class="pre">PhiBase.new_like()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.phi"><code class="docutils literal notranslate"><span class="pre">PhiBase.phi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiBase.phi_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.r_min"><code class="docutils literal notranslate"><span class="pre">PhiBase.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.segments"><code class="docutils literal notranslate"><span class="pre">PhiBase.segments</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiBase.to_measures()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiBase.to_nf()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#types-of-contributions">Types of Contributions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#report-bugs">Report Bugs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#fix-bugs">Fix Bugs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#implement-features">Implement Features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#write-documentation">Write Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#submit-feedback">Submit Feedback</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#environment-setup">Environment setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#getting-the-repo">Getting the repo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="contributing.html#dependency-management">Dependency management</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#building-the-docs">Building the docs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#using-tox">Using tox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#package-version">Package version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#creating-conda-recipe">Creating conda recipe</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="authors.html#development-lead">Development Lead</a></li>
-<li class="toctree-l2"><a class="reference internal" href="authors.html#contributors">Contributors</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#unreleased">Unreleased</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-2-0-2023-05-04">v0.2.0 — 2023-05-04</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="changelog.html#removed">Removed</a></li>
-<li class="toctree-l3"><a class="reference internal" href="changelog.html#added">Added</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-1-0-2023-04-24">v0.1.0 — 2023-04-24</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="changelog.html#changed">Changed</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-6-2023-03-22">v0.0.6 - 2023-03-22</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-5-2023-03-22">v0.0.5 - 2023-03-22</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-4-2022-09-27">v0.0.4 - 2022-09-27</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-3-2022-09-26">v0.0.3 - 2022-09-26</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-2-2022-09-26">v0.0.2 - 2022-09-26</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-1-2022-09-26">v0.0.1 - 2022-09-26</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="navigation.html">Indices and tables</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l2"><a class="reference internal" href="py-modindex.html">Module Index</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigation.html">Indices and tables</a></li>
 </ul>
 </div>
 </section>
@@ -807,7 +566,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2023-05-04.
+  Last updated on 2023-05-05.
   <br/>
 </p>
   </div>
