@@ -46,6 +46,7 @@ dependencies:
   - MonkeyType
   - pip
   - pip:
+      - pytest-accept
       - mypy-extensions
       - pytest-monkeytype
       # - flake8-mypy

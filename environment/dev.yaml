@@ -23,5 +23,6 @@ dependencies:
   - typing-extensions
   - pip:
       - mypy-extensions
+      - pytest-accept
       - pytest-monkeytype
 name: analphipy-env
