@@ -71,7 +71,7 @@ conda install -c wpk-nist analphipy
 
 ## Example usage
 
-```python
+```pycon
 # Create a Lennard-Jones potential
 >>> import analphipy
 >>> p = analphipy.potential.LennardJones(sig=1.0, eps=1.0)
