@@ -11,7 +11,7 @@ pip install analphipy
 or
 
 ```bash
-conda install -c wpk-nist analphipy
+conda install -c conda-forge analphipy
 ```
 
 This is the preferred method to install analphipy, as it will always install the

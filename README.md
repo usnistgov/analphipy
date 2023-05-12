@@ -20,8 +20,8 @@
 [docs-link]: https://pages.nist.gov/analphipy/
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff
 [repo-link]: https://github.com/usnistgov/analphipy
-[conda-badge]: https://img.shields.io/conda/v/wpk-nist/analphipy
-[conda-link]: https://anaconda.org/wpk-nist/analphipy
+[conda-badge]: https://img.shields.io/conda/v/conda-forge/analphipy
+[conda-link]: https://anaconda.org/conda-forge/analphipy
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
 
@@ -66,7 +66,7 @@ pip install analphipy
 or
 
 ```bash
-conda install -c wpk-nist analphipy
+conda install -c conda-forge analphipy
 ```
 
 ## Example usage
