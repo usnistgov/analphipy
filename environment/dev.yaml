@@ -1,6 +1,5 @@
 channels:
   - conda-forge
-  - wpk-nist
 dependencies:
   - MonkeyType
   - attrs
