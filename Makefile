@@ -172,7 +172,7 @@ mamba-dev-update: environment/dev.yaml environment-files-build ## update develop
 ## dev env
 NOX=nox
 .PHONY: dev-env
-dev-env: environment/dev.yaml ## create development environment using tox
+dev-env: environment/dev.yaml ## create development environment using nox
 	$(NOX) -e dev
 
 ## testing
