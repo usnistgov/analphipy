@@ -1,27 +1,27 @@
 channels:
   - conda-forge
 dependencies:
-  - MonkeyType
-  - attrs
-  - custom-inherit
-  - ipykernel
-  - ipython
-  - matplotlib
-  - module-utilities >= 0.1
-  - mypy
-  - numpy
-  - pandas
-  - pip
-  - pytest
-  - pytest-cov
-  - pytest-mypy
-  - pytest-xdist
   - python>=3.8
-  - scipy
-  - setuptools-scm
+  - attrs
   - typing-extensions
+  - numpy
+  - scipy
+  - custom-inherit
+  - module-utilities >= 0.1
+  - pytest
+  - python-xdist
+  - pytest-cov
+  - pytest-sugar
+  - pandas
+  - mypy
+  - pandas-stubs
+  - ipython
+  - ipykernel
+  - setuptools-scm
+  - matplotlib
+  - nox
+  - ruamel.yaml
+  - pip
   - pip:
-      - mypy-extensions
       - pytest-accept
-      - pytest-monkeytype
-name: analphipy-env
+      - noxopt

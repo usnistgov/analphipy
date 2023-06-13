@@ -1,15 +1,17 @@
 channels:
   - conda-forge
 dependencies:
+  - python>=3.8
   - attrs
+  - typing-extensions
+  - numpy
+  - scipy
   - custom-inherit
   - module-utilities >= 0.1
   - mypy
-  - numpy
-  - pandas
   - pandas-stubs
   - pytest
-  - python>=3.8
-  - scipy
-  - typing-extensions
-name: analphipy-env
+  - python-xdist
+  - pytest-cov
+  - pytest-sugar
+  - pandas

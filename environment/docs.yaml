@@ -1,26 +1,23 @@
 channels:
   - conda-forge
 dependencies:
-  - attrs
-  - custom-inherit
-  - ipython
-  - matplotlib
-  - module-utilities >= 0.1
-  - numpy
-  - pandas
-  - pip
   - python>=3.8
-  - scipy
-  - setuptools-scm
+  - attrs
   - typing-extensions
-  - pip:
-      - autodocsumm
-      - ghp-import
-      - myst-nb
-      - pyenchant
-      - sphinx
-      - sphinx-autobuild
-      - sphinx-book-theme
-      - sphinx-copybutton
-      - sphinxcontrib-spelling
-name: analphipy-env
+  - numpy
+  - scipy
+  - custom-inherit
+  - module-utilities >= 0.1
+  - setuptools-scm
+  - ipython
+  - pyenchant
+  - ghp-import
+  - sphinx
+  - sphinx-copybutton
+  - sphinxcontrib-spelling
+  - sphinx-autobuild
+  - myst-nb
+  - sphinx-book-theme
+  - autodocsumm
+  - matplotlib
+  - pandas

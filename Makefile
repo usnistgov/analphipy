@@ -26,7 +26,6 @@ BROWSER := python -c "$$BROWSER_PYSCRIPT"
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
@@ -103,10 +102,8 @@ pre-commit-codespell: ## run codespell. Note that this imports allowed words fro
 # my convenience functions
 ################################################################################
 .PHONY: user-venv user-autoenv-zsh user-all
-# user-venv: ## create .venv file with name of conda env
-# 	echo $$(conda info --base)/envs/analphipy-env > .venv
 user-venv: ## create .venv file with name of conda env
-	echo $${PWD}/.tox/dev > .venv
+	echo $${PWD}/.nox/dev > .venv
 
 user-autoenv-zsh: ## create .autoenv.zsh files
 	echo conda activate $$(cat .venv) > .autoenv.zsh
@@ -150,7 +147,6 @@ version: version-scm version-import
 ENVIRONMENTS = $(addsuffix .yaml,$(addprefix environment/, dev docs test))
 PRETTIER = bash scripts/run-prettier.sh
 
-
 environment/%.yaml: environment.yaml environment/%-extras.yaml ## create combined environment/{dev,docs,test}.yaml
 	conda-merge $^ > $@
 	$(PRETTIER) $@
@@ -161,12 +157,12 @@ enviornment/docs.yaml: ## docs environment yaml file
 
 
 # special for linters
-environment/lint.yaml: environment.yaml $(addsuffix .yaml, $(addprefix environment/, test-extras lint-extras)) ## mypy environment
+environment/typing.yaml: environment.yaml $(addsuffix .yaml, $(addprefix environment/, test-extras typing-extras)) ## mypy environment
 	echo $^
 	conda-merge $^ > $@
 	$(PRETTIER) $@
 
-ENVIRONMENTS += environment/lint.yaml
+ENVIRONMENTS += environment/typing.yaml
 
 .PHONY: environment-files-clean
 environment-files-clean: ## clean all created environment/{dev,docs,test}.yaml
@@ -245,19 +241,19 @@ docs-linkcheck: ## check links
 docs-build docs-release docs-command docs-clean docs-livehtml docs-linkcheck: environment/docs.yaml
 
 ## linting
-.PHONY: lint-mypy lint-pyright lint-pytype lint-all lint-command
-lint-mypy: ## run mypy mypy_args=...
-	$(TOX) -e lint -- mypy
-lint-pyright: ## run pyright pyright_args=...
-	$(TOX) -e lint -- pyright
-lint-pytype: ## run pytype pytype_args=...
-	$(TOX) -e lint -- pytype
-lint-all:
-	$(TOX) -e lint -- all
-lint-command:
-	$(TOX) -e lint -- command
+.PHONY: typing-mypy typing-pyright typing-pytype typing-all typing-command
+typing-mypy: ## run mypy mypy_args=...
+	$(TOX) -e typing -- mypy
+typing-pyright: ## run pyright pyright_args=...
+	$(TOX) -e typing -- pyright
+typing-pytype: ## run pytype pytype_args=...
+	$(TOX) -e typing -- pytype
+typing-all:
+	$(TOX) -e typing -- all
+typing-command:
+	$(TOX) -e typing -- command
 
-lint-mypy lint-pyright lint-pytype lint-all lint-command: environment/lint.yaml
+typing-mypy typing-pyright typing-pytype typing-all typing-command: environment/typing.yaml
 
 ## distribution
 .PHONY: dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-pypi-command

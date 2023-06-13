@@ -40,14 +40,61 @@ homepage = "https://github.com/usnistgov/analphipy"
 documentation = "https://pages.nist.gov/analphipy/"
 
 [project.optional-dependencies]
-test = [
+test = ["pytest", "python-xdist", "pytest-cov", "pytest-sugar", "pandas"]
+dev-extras = [
+    "ipython",
+    "ipykernel",
+    "setuptools-scm",
+    "pytest-accept", # p2c: -p
+    "matplotlib",
     "pandas",
-    "pytest",
-    # "pytest-mypy",
-    # "mypy",
+]
+typing-extras = [
+    "mypy",
+    "pandas-stubs",
+    # "pytype; python_version < '3.11'"
+    # "mypy-extensions", ## p2c: -p
+    # "pytest-monkeytype", ## p2c: -p
 
 ]
+typing = ["analphipy[typing-extras]", "analphipy[test]"]
+nox = [
+    "nox",
+    "noxopt", # p2c: -p
+    "ruamel.yaml",
+]
+dev = ["analphipy[test]", "analphipy[typing-extras]", "analphipy[dev-extras]"]
+tools = ["pre-commit", "cruft", "scriv"]
+dev-complete = ["analphipy[dev]", "analphipy[tools]", "analphipy[nox]"]
+docs = [
+    "setuptools-scm",
+    "ipython",
+    "pyenchant",
+    "ghp-import",
+    "sphinx",
+    "sphinx-copybutton",
+    "sphinxcontrib-spelling",
+    "sphinx-autobuild",
+    "myst-nb",
+    "sphinx-book-theme",
+    "autodocsumm",
+    "matplotlib",
+    "pandas",
+]
+dist-pypi = ["twine", "build"]
+dist-conda = [
+    "anaconda-client",
+    "grayskull",
+    "conda-build",
+    "conda-verify",
+    "boa",
+    "setuptools-scm",
+]
 
+[tool.pyproject2conda]
+channels = ["conda-forge"]
+
+## grayskull still messes some things up, but use scripts/recipe-append.sh for this
 [tool.setuptools]
 zip-safe = true # if using mypy, must be False
 include-package-data = true
@@ -59,6 +106,7 @@ where = ["src"]
 
 ## include = []
 ## exclude = []
+##
 [tool.setuptools.dynamic]
 readme = { file = [
     "README.md",
@@ -73,7 +121,7 @@ fallback_version = "999"
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--verbose --doctest-modules --doctest-glob='*.md'"
+addopts = "--doctest-modules --doctest-glob='*.md'"
 testpaths = ["README.md", "src", "tests"]
 
 [tool.isort]
