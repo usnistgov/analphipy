@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/wpk-nist-gov/cookiecutter-pypackage.git",
-  "commit": "e63ec35820d15f8bfae5a9d9a111c315f0614f44",
+  "commit": "12a9042eb5d733b22aafbfbb162579a6552019cf",
   "checkout": "feature/nox",
   "skip": [
     "src/analphipy/__init__.py",
