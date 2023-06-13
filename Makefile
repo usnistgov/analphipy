@@ -152,12 +152,8 @@ environment-files-clean: ## clean all created environment/{dev,docs,test}.yaml
 environment-files-build: pyproject.toml ## rebuild all environment files
 	nox -s pyproject2conda
 
-environment/base.yaml: environment-files-build
-environment/dev.yaml: environment-files-build
-environment/test.yaml: environment-files-build
-environment/dist-pypi.yaml: environment-files-build
-environment/dist-conda.yaml: environment-files-build
-environment/typing.yaml: environment-files-build
+environment/%.yaml: pyproject.toml
+	nox -s pyproject2conda
 
 ################################################################################
 # virtual env
