@@ -7,14 +7,6 @@ channels:
   - conda-forge
 dependencies:
   - python>=3.8
-  - attrs
-  - typing-extensions
-  - numpy
-  - scipy
-  - custom-inherit
-  - module-utilities >= 0.1
-  - mypy
-  - pandas-stubs
   - pytest
   - pytest-xdist
   - pytest-cov
