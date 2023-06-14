@@ -101,6 +101,7 @@ docs = [
     "matplotlib",
     "pandas",
 ]
+# to be parsed with pyproject2conda with --no-base option
 dist-pypi = ["twine", "build"]
 dist-conda = [
     "anaconda-client", #
@@ -126,7 +127,6 @@ where = ["src"]
 
 ## include = []
 ## exclude = []
-##
 [tool.setuptools.dynamic]
 readme = { file = [
     "README.md",
