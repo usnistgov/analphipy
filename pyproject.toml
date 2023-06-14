@@ -42,7 +42,7 @@ documentation = "https://pages.nist.gov/analphipy/"
 [project.optional-dependencies]
 test = [
     "pytest", #
-    "python-xdist",
+    "pytest-xdist",
     "pytest-cov",
     "pytest-sugar",
     "pandas",
