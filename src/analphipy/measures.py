@@ -277,13 +277,13 @@ def diverg_kl_cont(
     ----------
     {kl_link}
     """
-    volume = _check_volume_func(volume)
+    volume_callable = _check_volume_func(volume)
 
     if segments_q is not None:
         segments = combine_segmets(segments, segments_q)
 
     def func(x):
-        return diverg_kl_integrand(p=p(x), q=q(x), volume=volume(x))
+        return diverg_kl_integrand(p=p(x), q=q(x), volume=volume_callable(x))
 
     return quad_segments(
         func,
@@ -338,13 +338,13 @@ def diverg_js_cont(
     full_output: bool = False,
     **kws,
 ):
-    volume = _check_volume_func(volume)
+    volume_callable = _check_volume_func(volume)
 
     if segments_q is not None:
         segments = combine_segmets(segments, segments_q)
 
     def func(x):
-        return diverg_js_integrand(p(x), q(x), volume(x))
+        return diverg_js_integrand(p(x), q(x), volume_callable(x))
 
     return quad_segments(
         func,

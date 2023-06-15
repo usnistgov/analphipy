@@ -18,6 +18,18 @@ if TYPE_CHECKING:
 
 from .base_potential import PhiBase
 
+# __all__ = [
+#     "Generic",
+#     "Analytic",
+#     "LennardJones",
+#     "LennardJonesNM",
+#     "Yukawa",
+#     "HardSphere",
+#     "SquareWell",
+#     "CubicTable",
+#     "factory",
+# ]
+
 
 @attrs.frozen
 class Generic(PhiBase):

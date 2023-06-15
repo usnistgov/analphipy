@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+
 import analphipy.measures as measures
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
@@ -26,7 +27,7 @@ def test_B2_sw():
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
 
-        out = a.table(g["beta"], ["B2", "B2_dbeta"])
+        out = a.table(g["beta"].astype(float).values, ["B2", "B2_dbeta"])
 
         np.testing.assert_allclose(g["Bn_2"], out["B2"])
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"])

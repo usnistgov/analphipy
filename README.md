@@ -116,3 +116,9 @@ This package was created with [Cookiecutter] and the
 [cookiecutter]: https://github.com/audreyr/cookiecutter
 [wpk-nist-gov/cookiecutter-pypackage]:
   https://github.com/wpk-nist-gov/cookiecutter-pypackage
+
+## TODO
+
+- [ ] remove `# type: ignore` from potentials.py, base_potentials.py
+- [ ] add back `check_untyped_defs` to pyproject.toml mypy config
+- [ ] remove use of `custom_inherit`
