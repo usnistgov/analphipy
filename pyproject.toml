@@ -50,7 +50,6 @@ test = [
 dev-extras = [
     "ipython", #
     "ipykernel",
-    "setuptools-scm",
     "pytest-accept", # p2c: -p
     "matplotlib",
     "pandas",
@@ -109,7 +108,6 @@ dist-conda = [
     "conda-build",
     "conda-verify",
     "boa",
-    "setuptools-scm",
 ]
 
 [tool.pyproject2conda]
