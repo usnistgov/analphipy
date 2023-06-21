@@ -48,9 +48,10 @@ test = [
     "pandas",
 ]
 dev-extras = [
-    "ipython", #
-    "ipykernel",
     "pytest-accept", # p2c: -p
+    "setuptools-scm",
+    "ipython",
+    "ipykernel",
     "matplotlib",
     "pandas",
 ]

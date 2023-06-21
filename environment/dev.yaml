@@ -20,9 +20,9 @@ dependencies:
   - pandas
   - mypy
   - pandas-stubs
+  - setuptools-scm
   - ipython
   - ipykernel
-  - setuptools-scm
   - matplotlib
   - nox
   - ruamel.yaml
