@@ -106,15 +106,6 @@ FORCE_REINSTALL_CLI = Annotated[
     ),
 ]
 
-FORCE_REINSTALL_PACKAGE_CLI = Annotated[
-    bool,
-    Option(
-        type=bool,
-        help="If specified, force reinstall of the package even if environment unchanged",
-    ),
-]
-
-
 VERSION_CLI = Annotated[
     str, Option(type=str, help="Version to substitute or check against")
 ]
