@@ -20,6 +20,7 @@ dependencies:
   - pandas
   - mypy
   - pandas-stubs
+  - setuptools-scm
   - ipython
   - ipykernel
   - matplotlib
