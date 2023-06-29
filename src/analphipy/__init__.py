@@ -10,12 +10,8 @@ from . import measures, norofrenkel, potential
 
 # updated versioning scheme
 try:
-    from importlib.metadata import version as _version
-
-    __version__ = _version("analphipy")
+    from ._version import __version__
 except Exception:
-    # Local copy or not installed with setuptools.
-    # Disable minimum version checks on downstream libraries.
     __version__ = "999"
 
 

@@ -13,7 +13,6 @@ dependencies:
   - scipy
   - custom-inherit
   - module-utilities >= 0.1
-  - setuptools-scm
   - ipython
   - pyenchant
   - ghp-import
