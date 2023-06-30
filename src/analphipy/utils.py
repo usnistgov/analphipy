@@ -9,8 +9,6 @@ from functools import wraps
 from typing import TYPE_CHECKING, Any, Callable
 
 import numpy as np
-from scipy.integrate import quad
-from scipy.optimize import minimize
 
 from ._docstrings import docfiller_shared
 
@@ -102,6 +100,7 @@ def quad_segments(
     scipy.integrate.quad
 
     """
+    from scipy.integrate import quad
 
     out = [
         quad(func, a=a, b=b, args=args, full_output=full_output, **kws)
@@ -181,6 +180,7 @@ def minimize_phi(
     --------
     scipy.optimize.minimize
     """
+    from scipy.optimize import minimize
 
     if bounds is None:
         bounds = (0.0, np.inf)
