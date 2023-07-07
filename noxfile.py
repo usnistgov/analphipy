@@ -131,15 +131,19 @@ def pkg_install_condaenv(
     deps: Collection[str] | None = None,
     reqs: Collection[str] | None = None,
     channels: Collection[str] | None = None,
+    filename: str | None = None,
     **kwargs,
 ):
     """Install requirements.  If need fine control, do it in calling func"""
 
     if lock:
-        py = session.python.replace(".", "")  # type: ignore
+        if filename is None:
+            py = session.python.replace(".", "")  # type: ignore
+            filename = f"./environment/lock/py{py}-{name}-conda-lock.yml"
+
         session_install_envs_lock(
             session=session,
-            lockfile=f"./environment/lock/py{py}-{name}-conda-lock.yml",
+            lockfile=filename,
             display_name=display_name,
             force_reinstall=force_reinstall,
             install_package=install_package,
@@ -149,7 +153,7 @@ def pkg_install_condaenv(
     else:
         session_install_envs(
             session,
-            f"./environment/{name}.yaml",
+            filename or f"./environment/{name}.yaml",
             display_name=display_name,
             force_reinstall=force_reinstall,
             deps=deps,
@@ -878,14 +882,33 @@ def typing(
 ):
     """Run type checkers (mypy, pyright, pytype)"""
 
-    pkg_install_condaenv(
-        session=session,
-        name="typing",
-        lock=lock,
-        install_package=True,
-        force_reinstall=force_reinstall,
-        log_session=log_session,
-    )
+    # create temporary environment file:
+    from tempfile import TemporaryDirectory
+
+    with TemporaryDirectory() as d:
+        path = Path(d) / "tmp-yaml.yaml"
+
+        session.run(
+            "pyproject2conda",
+            "yaml",
+            "-e",
+            "typing",
+            "--python-version",
+            session.python,
+            "-o",
+            str(path),
+            external=True,
+        )
+
+        pkg_install_condaenv(
+            session=session,
+            filename=str(path),
+            name="typing",
+            lock=lock,
+            install_package=True,
+            force_reinstall=force_reinstall,
+            log_session=log_session,
+        )
 
     _typing(
         session=session,
