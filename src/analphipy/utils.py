@@ -64,7 +64,7 @@ def quad_segments(
     **kws,
 ):
     """
-    Perform quadrature with discontinuities
+    Perform quadrature with discontinuities.
 
     Parameters
     ----------
@@ -98,7 +98,6 @@ def quad_segments(
     See Also
     --------
     scipy.integrate.quad
-
     """
     from scipy.integrate import quad
 
@@ -175,7 +174,6 @@ def minimize_phi(
     output : object
         Output class from :func:`scipy.optimize.minimize`.
 
-
     See Also
     --------
     scipy.optimize.minimize
@@ -216,7 +214,7 @@ def partial_phi(phi, **params):
 
 
 def segments_to_segments_cut(segments, rcut):
-    """Update segments for 'cut' potential"""
+    """Update segments for 'cut' potential."""
     return [x for x in segments if x < rcut] + [rcut]
 
 

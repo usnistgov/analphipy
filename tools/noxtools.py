@@ -1,4 +1,4 @@
-"""Utilities to work with nox"""
+"""Utilities to work with nox."""
 
 from __future__ import annotations
 
@@ -58,7 +58,6 @@ def prepend_flag(flag: str, *args: str) -> list[str]:
 
     >>> prepent_flag("-k", "a", "b")
     ["-k", "a", "-k", "b"]
-
     """
 
     if len(args) == 1 and not isinstance(args[0], str):
@@ -97,7 +96,6 @@ def load_nox_config(path: str | Path = "./.noxconfig.toml") -> dict[str, Any]:
     # dev = ["dev", "nox", "tools"]
     [nox.extras]
     dev = ["dev", "nox"]
-
     """
     import os
     from glob import glob
@@ -152,7 +150,7 @@ def session_skip_install(session: nox.Session) -> bool:
 def session_run_commands(
     session: nox.Session, commands: list[list[str]], external: bool = True, **kws: Any
 ) -> None:
-    """Run commands command"""
+    """Run commands command."""
 
     if commands:
         kws.update(external=external)
@@ -207,7 +205,7 @@ def session_install_envs_lock(
     force_reinstall: bool = False,
     install_package: bool = False,
 ) -> bool:
-    """Install depedencies using conda-lock"""
+    """Install depedencies using conda-lock."""
 
     if session_skip_install(session):
         return True
@@ -460,7 +458,7 @@ def get_hashes(
     *paths: str | Path,
     other: dict[str, Any] | None = None,
 ) -> dict[str, str]:
-    """Get md5 hashes for paths"""
+    """Get md5 hashes for paths."""
 
     out = {"path": {str(path): _get_file_hash(path) for path in paths}}
 
@@ -484,7 +482,7 @@ def get_hashes(
 
 
 def hashfile_path(session: nox.Session, prefix: PREFIX_HASH_EXTS) -> Path:
-    """Path for hashfile for this session"""
+    """Path for hashfile for this session."""
     return Path(session.create_tmp()) / f"{prefix}.json"
 
 

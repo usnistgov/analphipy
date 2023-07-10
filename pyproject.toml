@@ -148,10 +148,13 @@ profile = "black"
 skip_gitignore = true
 known_first_party = ["analphipy"]
 
+[tool.pydocstringformatter]
+write = true
+style = "numpydoc"
+
 [tool.ruff]
 fix = true
 line-length = 88
-update-check = false
 target-version = "py38"
 select = [
     # pyflakes

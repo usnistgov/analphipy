@@ -6,7 +6,7 @@ import pytest
 
 def phidphi_lj(r, sig=1.0, eps=1.0):
     """
-    lennard jones potential and radial force
+    Lennard jones potential and radial force.
 
     Returns
     -------
@@ -206,7 +206,7 @@ def nm_params(request):
 
 def phi_sw(r, sig=1.0, eps=-1.0, lam=1.5):
     """
-    Square well potential with value
+    Square well potential with value.
 
     * inf : r < sig
     * eps : sig <= r < lam * sig

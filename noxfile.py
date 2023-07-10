@@ -1,4 +1,4 @@
-"""Config file for nox"""
+"""Config file for nox."""
 from __future__ import annotations
 
 import shutil
@@ -134,7 +134,7 @@ def pkg_install_condaenv(
     filename: str | None = None,
     **kwargs,
 ):
-    """Install requirements.  If need fine control, do it in calling func"""
+    """Install requirements.  If need fine control, do it in calling func."""
 
     if lock:
         if filename is None:
@@ -226,7 +226,7 @@ def dev(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
 ):
-    """Create dev env"""
+    """Create dev env."""
     # using conda
 
     pkg_install_condaenv(
@@ -249,7 +249,7 @@ def dev_venv(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
 ):
-    """Create dev env"""
+    """Create dev env."""
     # using conda
 
     pkg_install_venv(
@@ -341,7 +341,7 @@ def conda_lock(
     conda_lock_mamba: bool = False,
     conda_lock_force: bool = False,
 ):
-    """Create lock files using conda-lock"""
+    """Create lock files using conda-lock."""
 
     pkg_install_venv(
         session,
@@ -444,7 +444,7 @@ def test(
     log_session: bool = False,
     no_cov: bool = False,
 ):
-    """Test environments with conda installs"""
+    """Test environments with conda installs."""
 
     pkg_install_condaenv(
         session=session,
@@ -475,7 +475,7 @@ def test_venv(
     log_session: bool = False,
     no_cov: bool = False,
 ):
-    """Test environments virtualenv and pip installs"""
+    """Test environments virtualenv and pip installs."""
 
     pkg_install_venv(
         session=session,
@@ -686,7 +686,7 @@ def dist_pypi(
     version: VERSION_CLI = "",
     log_session: bool = False,
 ):
-    """Run 'nox -s dist-pypi -- {clean, build, testrelease, release}'"""
+    """Run 'nox -s dist-pypi -- {clean, build, testrelease, release}'."""
 
     pkg_install_venv(
         session=session,
@@ -717,7 +717,7 @@ def dist_pypi_condaenv(
     version: VERSION_CLI = "",
     log_session: bool = False,
 ):
-    """Run 'nox -s dist_pypi -- {clean, build, testrelease, release}'"""
+    """Run 'nox -s dist_pypi -- {clean, build, testrelease, release}'."""
     # conda
 
     pkg_install_condaenv(
@@ -758,7 +758,7 @@ def dist_conda(
     log_session: bool = False,
     version: VERSION_CLI = "",
 ):
-    """Runs make -C dist-conda posargs"""
+    """Runs make -C dist-conda posargs."""
     pkg_install_condaenv(
         session=session,
         name="dist-conda",
@@ -880,7 +880,7 @@ def typing(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
 ):
-    """Run type checkers (mypy, pyright, pytype)"""
+    """Run type checkers (mypy, pyright, pytype)."""
 
     # create temporary environment file:
     from tempfile import TemporaryDirectory
@@ -933,7 +933,7 @@ def typing_venv(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
 ):
-    """Run type checkers (mypy, pyright, pytype)"""
+    """Run type checkers (mypy, pyright, pytype)."""
 
     pkg_install_venv(
         session=session,
@@ -964,7 +964,7 @@ def testdist_conda(
     version: VERSION_CLI = "",
     log_session: bool = False,
 ):
-    """Test conda distribution"""
+    """Test conda distribution."""
 
     install_str = PACKAGE_NAME
     if version:
@@ -1001,7 +1001,7 @@ def testdist_pypi(
     version: VERSION_CLI = "",
     log_session: bool = False,
 ):
-    """Test pypi distribution"""
+    """Test pypi distribution."""
     extras = testdist_pypi_extras
     install_str = PACKAGE_NAME
 
@@ -1043,7 +1043,7 @@ def testdist_pypi_condaenv(
     version: VERSION_CLI = "",
     log_session: bool = False,
 ):
-    """Test pypi distribution"""
+    """Test pypi distribution."""
     extras = testdist_pypi_extras
     install_str = PACKAGE_NAME
 

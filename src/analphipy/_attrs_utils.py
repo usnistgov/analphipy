@@ -5,13 +5,13 @@ import numpy as np
 
 
 def attrs_clear_cache(self, attribute, value):
-    """Clear out _cache if setting value"""
+    """Clear out _cache if setting value."""
     self._cache = {}
     return value
 
 
 def optional_converter(converter):
-    """Create a converter which can pass through None"""
+    """Create a converter which can pass through None."""
 
     def wrapped(value):
         if value in [None, attrs.NOTHING]:
@@ -33,7 +33,7 @@ def field_formatter(fmt: str = "{:.5g}"):
 
 
 def field_array_formatter(threshold=3, **kws):
-    """Formatter for numpy array field"""
+    """Formatter for numpy array field."""
 
     @optional_converter
     def wrapped(value):
