@@ -43,6 +43,6 @@ def field_array_formatter(threshold=3, **kws):
     return wrapped
 
 
-def private_field(init=False, repr=False, **kws):
+def private_field(init: bool = False, repr=False, **kws):
     """Create a private attrs field."""
-    return attrs.field(init=init, repr=repr, **kws)
+    return attrs.field(init=init, repr=repr, **kws)  # pytype: disable=not-supported-yet
