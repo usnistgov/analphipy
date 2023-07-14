@@ -6,27 +6,22 @@
 channels:
   - conda-forge
 dependencies:
-  - python>=3.8
+  - python=3.10
   - attrs
   - typing-extensions
   - numpy
   - scipy
   - custom-inherit
   - module-utilities >= 0.1
-  - pytest
-  - pytest-xdist
-  - pytest-cov
-  - pytest-sugar
-  - pandas
-  - mypy
-  - pandas-stubs
-  - setuptools-scm
   - ipython
-  - ipykernel
+  - pyenchant
+  - ghp-import
+  - sphinx
+  - sphinx-copybutton
+  - sphinxcontrib-spelling
+  - sphinx-autobuild
+  - myst-nb
+  - sphinx-book-theme
+  - autodocsumm
   - matplotlib
-  - nox
-  - ruamel.yaml
-  - pip
-  - pip:
-      - pytest-accept
-      - noxopt
+  - pandas

@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import shlex
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Iterable, Literal, cast
+from typing import TYPE_CHECKING, Any, Iterable, Literal, Sequence, cast
 
 from ruamel.yaml import safe_load
 
 if TYPE_CHECKING:
-    from collections.abc import Collection, Sequence
+    from collections.abc import Collection
 
     import nox
 
@@ -52,7 +52,7 @@ def update_target(target: str | Path, *deps: str | Path) -> bool:
     return update
 
 
-def prepend_flag(flag: str, *args: str) -> list[str]:
+def prepend_flag(flag: str, *args: str | Sequence[str]) -> list[str]:
     """
     Add in a flag before each arg.
 
@@ -60,10 +60,14 @@ def prepend_flag(flag: str, *args: str) -> list[str]:
     ["-k", "a", "-k", "b"]
     """
 
-    if len(args) == 1 and not isinstance(args[0], str):
-        args = args[0]
+    args_ = []
+    for x in args:
+        if isinstance(x, str):
+            args_.append(x)
+        else:
+            args_.extend(x)
 
-    return sum([[flag, _] for _ in args], [])
+    return sum([[flag, _] for _ in args_], [])
 
 
 def open_webpage(path: str | Path | None = None, url: str | None = None):
@@ -102,7 +106,7 @@ def load_nox_config(path: str | Path = "./.noxconfig.toml") -> dict[str, Any]:
 
     import tomli
 
-    config = {}
+    config: dict[str, Any] = {}
 
     path = Path(path)
     if not path.exists():
@@ -369,13 +373,15 @@ def session_install_pip(
     if session_skip_install(session):
         return True
 
-    def _check_param(x):
+    def _check_param(x) -> list[str]:
         if x is None:
             return []
         elif isinstance(x, str):
             return [x]
-        else:
+        elif isinstance(x, list):
             return x
+        else:
+            return list(x)
 
     extras = _check_param(extras)
     if extras:
@@ -457,10 +463,10 @@ def env_unchanged(
 def get_hashes(
     *paths: str | Path,
     other: dict[str, Any] | None = None,
-) -> dict[str, str]:
+) -> dict[str, Any]:
     """Get md5 hashes for paths."""
 
-    out = {"path": {str(path): _get_file_hash(path) for path in paths}}
+    out: dict[str, Any] = {"path": {str(path): _get_file_hash(path) for path in paths}}
 
     if other:
         import hashlib
