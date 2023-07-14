@@ -56,7 +56,7 @@ dev-extras = [
     "pandas",
 ]
 typing-extras = [
-    "pytype; python_version < '3.11'",
+    "pytype; python_version < '3.11'", #
     # "mypy-extensions", ## p2c: -p
     # "pytest-monkeytype", ## p2c: -p
     "mypy",
