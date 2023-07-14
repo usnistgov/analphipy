@@ -241,7 +241,7 @@ dist-conda-build: ## build conda recipe can pass posargs=...
 	$(NOX) -s dist-conda -- -c build
 dist-conda-command: ## run command with command=...
 	$(NOX) -s dist-conda -- -dist-conda-run $(command)
-dist-conda-build dist-conda-recipe dist-conda-command: environment/pyt310-dist-conda.yaml
+dist-conda-build dist-conda-recipe dist-conda-command: environment/py310-dist-conda.yaml
 
 
 ## list all options
