@@ -40,7 +40,7 @@ def _kw_only_field(kw_only=True, default=None, **kws):
 @docfiller_shared
 class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
     """
-    Abstract class from which base classes inherit
+    Abstract class from which base classes inherit.
 
     Parameters
     ----------
@@ -67,12 +67,12 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
     )
 
     def asdict(self) -> dict:
-        """Convert object to dictionary"""
+        """Convert object to dictionary."""
         return attrs.asdict(self, filter=self._get_smart_filter())
 
     def new_like(self, **kws):
         """
-        Create a new object with optional parameters
+        Create a new object with optional parameters.
 
         Parameters
         ----------
@@ -82,7 +82,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         return attrs.evolve(self, **kws)
 
     def assign(self, **kws):
-        """Alias to :meth:`new_like`"""
+        """Alias to :meth:`new_like`."""
         return self.new_like(**kws)
 
     def _immutable_setattrs(self, **kws):
@@ -119,7 +119,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         self, include=None, exclude=None, exclude_private=True, exclude_no_init=True
     ):
         """
-        Create a filter to include exclude names
+        Create a filter to include exclude names.
 
         Parameters
         ----------
@@ -171,7 +171,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
 
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         """
-        Pair potential
+        Pair potential.
 
         Parameters
         ----------
@@ -239,7 +239,6 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         output : object
             Output class from :func:`scipy.optimize.minimize`.
 
-
         See Also
         --------
         ~analphipy.utils.minimize_phi
@@ -263,7 +262,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         self, r0: float, bounds: tuple[float, float] | None = None, **kws
     ):
         """
-        Create new object with minima set by numerical minimization
+        Create new object with minima set by numerical minimization.
 
         call :meth:`minimize`
         """
@@ -284,7 +283,6 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         Returns
         -------
         nf : :class:`analphipy.norofrenkel.NoroFrenkelPair`
-
         """
         if self.r_min is None:
             raise ValueError("must set `self.r_min` to use NoroFrenkel")

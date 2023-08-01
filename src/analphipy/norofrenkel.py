@@ -207,7 +207,7 @@ def lam_nf_dbeta(
     sig_dbeta: float,
 ):
     """
-    Calculate derivative of ``lam_nf``  with respect to ``beta``
+    Calculate derivative of ``lam_nf``  with respect to ``beta``.
 
     Parameters
     ----------
@@ -233,7 +233,6 @@ def lam_nf_dbeta(
     See Also
     --------
     lam_nf
-
     """
 
     B2_hs = TWO_PI / 3.0 * sig**3
@@ -253,10 +252,9 @@ def lam_nf_dbeta(
 @docfiller_shared
 class NoroFrenkelPair:
     """
-    Class to calculate Noro-Frenkel parameters
+    Class to calculate Noro-Frenkel parameters.
 
     See [1]_ [2]_ [3]_
-
 
     Parameters
     ----------
@@ -265,7 +263,6 @@ class NoroFrenkelPair:
     {r_min_exact}
     {phi_min_exact}
     {quad_kws}
-
     """
 
     def __init__(
@@ -301,7 +298,7 @@ class NoroFrenkelPair:
     @docfiller_shared
     def phi_rep(self, r: Float_or_ArrayLike) -> np.ndarray:
         """
-        Repulsive part of potential
+        Repulsive part of potential.
 
         This is the Weeks-Chandler-Anderson decomposition.
 
@@ -313,7 +310,6 @@ class NoroFrenkelPair:
         -------
         output : float or ndarray
             Value of ``phi_ref`` at separation(s) ``r``.
-
         """
         r = np.array(r)
         phi = np.empty_like(r)
@@ -336,8 +332,7 @@ class NoroFrenkelPair:
         **kws,
     ) -> NoroFrenkelPair:
         """
-        Create object from pair potential function
-
+        Create object from pair potential function.
 
         Parameters
         ----------
@@ -398,7 +393,6 @@ class NoroFrenkelPair:
         **kws :
             Extra arguments to :func:`analphipy.utils.minimize_phi`.
 
-
         Returns
         -------
         output : object
@@ -448,7 +442,6 @@ class NoroFrenkelPair:
         See Also
         --------
         ~analphipy.norofrenkel.sig_nf
-
         """
         return sig_nf(
             self.phi_rep,
@@ -495,7 +488,7 @@ class NoroFrenkelPair:
     @add_quad_kws
     def secondvirial_dbeta(self, beta: float, **kws):
         """
-        Derivative of ``secondvirial`` with respect to ``beta``
+        Derivative of ``secondvirial`` with respect to ``beta``.
 
         See Also
         --------
@@ -509,12 +502,11 @@ class NoroFrenkelPair:
     @add_quad_kws
     def sig_dbeta(self, beta: float, **kws):
         """
-        Derivative of effective hard-sphere diameter with respect to ``beta``
+        Derivative of effective hard-sphere diameter with respect to ``beta``.
 
         See Also
         --------
         ~analphipy.norofrenkel.sig_nf_dbeta
-
         """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
 
@@ -552,15 +544,15 @@ class NoroFrenkelPair:
         )
 
     def B2(self, beta: float, **kws):
-        """Alias to :meth:`secondvirial`"""
+        """Alias to :meth:`secondvirial`."""
         return self.secondvirial(beta, **kws)
 
     def B2_dbeta(self, beta: float, **kws):
-        """Alias to :meth:`secondvirial_dbeta`"""
+        """Alias to :meth:`secondvirial_dbeta`."""
         return self.secondvirial_dbeta(beta, **kws)
 
     def B2_sw(self, beta, **kws):
-        """Alias to :meth:`secondvirial_sw`"""
+        """Alias to :meth:`secondvirial_sw`."""
         return self.secondvirial_sw(beta, **kws)
 
     def table(

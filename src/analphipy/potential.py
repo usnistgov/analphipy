@@ -18,6 +18,18 @@ if TYPE_CHECKING:
 
 from .base_potential import PhiBase
 
+# __all__ = [
+#     "Generic",
+#     "Analytic",
+#     "LennardJones",
+#     "LennardJonesNM",
+#     "Yukawa",
+#     "HardSphere",
+#     "SquareWell",
+#     "CubicTable",
+#     "factory",
+# ]
+
 
 @attrs.frozen
 class Generic(PhiBase):
@@ -59,7 +71,6 @@ class Analytic(PhiBase):
     Specific subclasses should set values for ``r_min``,
     ``phi_min``, and ``segments``, as well as
     forms for ``phi`` and ``dphidr``.
-
     """
 
     #: Position of minimum in :math:`\phi(r)`
@@ -114,7 +125,7 @@ class LennardJones(Analytic):
         return cast(np.ndarray, self._four_eps * x6 * (x6 - 1.0))
 
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
-        """Calculate phi and dphi (=-1/r dphi/dr) at particular r"""
+        """Calculate phi and dphi (=-1/r dphi/dr) at particular r."""
         r = np.array(r)
         rinvsq = 1.0 / (r * r)
 
@@ -331,7 +342,7 @@ def _validate_bounds(self, attribute, bounds):
 @attrs.frozen
 class CubicTable(PhiBase):
     """
-    Cubic interpolation table potential
+    Cubic interpolation table potential.
 
     Parameters
     ----------
@@ -342,7 +353,6 @@ class CubicTable(PhiBase):
 
     segments : sequence of float, optional
         Integration segments.  Defaults to ``sqrt(bounds)``.
-
 
     phi_left, phi_right, dphi_left, dphi_right : float, optional
         Values to set for ``phi``/``-1/r dphidr`` if  (left) ``r < bounds[0]`` or (right) ``r > bounds[1]``.
@@ -385,7 +395,6 @@ class CubicTable(PhiBase):
 
         This will evaluate ``phi`` at even spacing in ``s = r**2`` space.
 
-
         Parameters
         ----------
         phi : callable
@@ -402,7 +411,6 @@ class CubicTable(PhiBase):
         Returns
         -------
         table : CubicTable
-
         """
         bounds = (rmin * rmin, rmax * rmax)
 
@@ -424,21 +432,21 @@ class CubicTable(PhiBase):
 
     @property
     def size(self) -> int:
-        """Size of the array (less 1)"""
+        """Size of the array (less 1)."""
         return len(self) - 1
 
     @property
     def smin(self) -> float:
-        """Minimum value of `s = r**2`"""
+        """Minimum value of `s = r**2`."""
         return self.bounds[0]
 
     @property
     def smax(self) -> float:
-        """Maximum value of `s = r**2`"""
+        """Maximum value of `s = r**2`."""
         return self.bounds[1]
 
     def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
-        """Values of `phi` and `dphi` at `r`"""
+        """Values of `phi` and `dphi` at `r`."""
         r = np.asarray(r)
 
         v = np.empty_like(r)
@@ -485,7 +493,7 @@ class CubicTable(PhiBase):
 
     @property
     def r_table(self):
-        """Values of ``r`` where potential is defined"""
+        """Values of ``r`` where potential is defined."""
         return np.sqrt(self.rsq_table)
 
 
@@ -500,7 +508,7 @@ def factory(
     **kws,
 ) -> PhiBase:
     """
-    Factory function to construct Phi object by name
+    Factory function to construct Phi object by name.
 
     Parameters
     ----------
@@ -517,7 +525,6 @@ def factory(
     -------
     phi : :class:`analphipy.base_potential.PhiBase` subclass
         output potential energy class.
-
 
     See Also
     --------

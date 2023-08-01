@@ -6,7 +6,7 @@ import pytest
 
 def phidphi_lj(r, sig=1.0, eps=1.0):
     """
-    lennard jones potential and radial force
+    Lennard jones potential and radial force.
 
     Returns
     -------
@@ -100,6 +100,12 @@ def kws_to_ld(**kws):
 
 @dataclass
 class Base_params:
+    def __post_init__(self):
+        self.r = None
+
+    def phidphi(self, r):
+        raise NotImplementedError
+
     def get_phidphi(self):
         if hasattr(self, "phidphi"):
             return self.phidphi(self.r)
@@ -111,6 +117,10 @@ class Base_params:
 
     def get_phi(self):
         return self.phi(self.r)
+
+    @classmethod
+    def get_params(cls, N):
+        raise NotImplementedError
 
     @classmethod
     def get_objects(cls, N=10):
@@ -206,7 +216,7 @@ def nm_params(request):
 
 def phi_sw(r, sig=1.0, eps=-1.0, lam=1.5):
     """
-    Square well potential with value
+    Square well potential with value.
 
     * inf : r < sig
     * eps : sig <= r < lam * sig
@@ -234,9 +244,6 @@ class SW_params(LJ_params):
 
     def phi(self, r):
         return phi_sw(r, sig=self.sig, eps=self.eps, lam=self.lam)
-
-    def get_phi(self):
-        return self.phi(self.r)
 
     @classmethod
     def get_params(cls, N=10):
@@ -269,10 +276,7 @@ class YK_params(LJ_params):
     z: float
 
     def phi(self, r):
-        return phi_yk(self.r)
-
-    def get_phi(self):
-        return phi_yk(self.r, sig=self.sig, eps=self.eps, z=self.z)
+        return phi_yk(r, z=self.z, sig=self.sig, eps=self.eps)
 
     @classmethod
     def get_params(cls, N=10):
@@ -307,7 +311,7 @@ class HS_params(Base_params):
     def __post_init__(self):
         self.r = get_r(rmin=0.1 * self.sig, rmax=2 * self.sig, n=100)
 
-    def get_phi(self):
+    def phi(self, r):
         return phi_hs(self.r, sig=self.sig)
 
     @classmethod

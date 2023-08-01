@@ -198,12 +198,13 @@ def diverg_kl_disc(
     P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: int | None = None
 ) -> float | np.ndarray:
     """
-    {summary}
+    {summary}.
 
     Parameters
     ----------
     P, Q : array-like
         Probabilities to consider
+
     Returns
     -------
     results : float or ndarray
@@ -253,11 +254,11 @@ def diverg_kl_cont(
     **kws,
 ):
     """
-    {summary}
+    {summary}.
 
     Parameters
     ----------
-    p, q: callable
+    p, q : callable
         Probabilities to consider
     {volume_int_func}
     {segments}
@@ -277,13 +278,13 @@ def diverg_kl_cont(
     ----------
     {kl_link}
     """
-    volume = _check_volume_func(volume)
+    volume_callable = _check_volume_func(volume)
 
     if segments_q is not None:
         segments = combine_segmets(segments, segments_q)
 
     def func(x):
-        return diverg_kl_integrand(p=p(x), q=q(x), volume=volume(x))
+        return diverg_kl_integrand(p=p(x), q=q(x), volume=volume_callable(x))
 
     return quad_segments(
         func,
@@ -338,13 +339,13 @@ def diverg_js_cont(
     full_output: bool = False,
     **kws,
 ):
-    volume = _check_volume_func(volume)
+    volume_callable = _check_volume_func(volume)
 
     if segments_q is not None:
         segments = combine_segmets(segments, segments_q)
 
     def func(x):
-        return diverg_js_integrand(p(x), q(x), volume(x))
+        return diverg_js_integrand(p(x), q(x), volume_callable(x))
 
     return quad_segments(
         func,
@@ -360,14 +361,13 @@ def diverg_js_cont(
 @docfiller.decorate
 class Measures:
     """
-    Convenience class for calculating measures
+    Convenience class for calculating measures.
 
     Parameters
     ----------
     {phi}
     {segments}
     {quad_kws}
-
     """
 
     def __init__(
@@ -437,7 +437,6 @@ class Measures:
             Value of derivative.
         {error_summed}
         {full_output_summed}
-
 
         See Also
         --------
