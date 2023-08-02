@@ -11,8 +11,7 @@ dependencies:
   - typing-extensions
   - numpy
   - scipy
-  - custom-inherit
-  - module-utilities >= 0.1
+  - docstring-inheritance
   - mypy
   - pandas-stubs
   - pytest
@@ -20,3 +19,6 @@ dependencies:
   - pytest-cov
   - pytest-sugar
   - pandas
+  - pip
+  - pip:
+      - module-utilities >= 0.6

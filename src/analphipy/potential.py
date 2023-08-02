@@ -1,4 +1,3 @@
-# type: ignore
 """
 Classes/routines for pair potentials (:mod:`analphipy.potential`)
 =================================================================
@@ -16,22 +15,15 @@ from ._attrs_utils import field_array_formatter, field_formatter, private_field
 if TYPE_CHECKING:
     from ._typing import Float_or_ArrayLike, Phi_Signature
 
+
+from ._docstrings import docfiller
 from .base_potential import PhiBase
 
-# __all__ = [
-#     "Generic",
-#     "Analytic",
-#     "LennardJones",
-#     "LennardJonesNM",
-#     "Yukawa",
-#     "HardSphere",
-#     "SquareWell",
-#     "CubicTable",
-#     "factory",
-# ]
+docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
 
 
 @attrs.frozen
+@docfiller_phibase(PhiBase)
 class Generic(PhiBase):
     """
     Class to define potential using callables.
@@ -50,10 +42,12 @@ class Generic(PhiBase):
     #: Function :math:`d\phi(r)/dr`
     dphidr_func: Phi_Signature | None = None
 
+    @docfiller_phibase()
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.asarray(r)
         return self.phi_func(r)
 
+    @docfiller_phibase()
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         if self.dphidr_func is None:
             raise ValueError("Must specify dphidr_func")
@@ -62,6 +56,7 @@ class Generic(PhiBase):
 
 
 @attrs.frozen
+@docfiller_phibase(PhiBase)
 class Analytic(PhiBase):
     """
     Base class for defining analytic potentials.
@@ -81,7 +76,11 @@ class Analytic(PhiBase):
     segments: float = field(init=False)
 
 
+docfiller_analytic = docfiller.factory_inherit_from_parent(Analytic)
+
+
 @attrs.frozen
+@docfiller_analytic(Analytic)
 class LennardJones(Analytic):
     r"""
     Lennard-Jones potential.
@@ -118,12 +117,14 @@ class LennardJones(Analytic):
     def _four_eps(self):
         return 4.0 * self.eps
 
+    @docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
         x2 = self._sigsq / (r * r)
         x6 = x2**3
         return cast(np.ndarray, self._four_eps * x6 * (x6 - 1.0))
 
+    @docfiller_analytic()
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         """Calculate phi and dphi (=-1/r dphi/dr) at particular r."""
         r = np.array(r)
@@ -135,14 +136,15 @@ class LennardJones(Analytic):
 
 
 @attrs.frozen
+@docfiller_analytic(Analytic)
 class LennardJonesNM(Analytic):
     r"""
     Generalized Lennard-Jones potential
 
     .. math::
 
-        \phi(r) = \epsilon \frac{n}{n-m} \left( \frac{n}{m} \right) ^{m / (n-m)}
-        \left[ \left(\frac{\sigma}{r}\right)^n - \left(\frac{\sigma}{r}\right)^m\right]
+        \phi(r) = \epsilon \frac{{n}}{{n-m}} \left( \frac{{n}}{{m}} \right) ^{{m / (n-m)}}
+        \left[ \left(\frac{{\sigma}}{{r}}\right)^n - \left(\frac{{\sigma}}{{r}}\right)^m\right]
 
 
     Parameters
@@ -179,6 +181,7 @@ class LennardJonesNM(Analytic):
         n, m, eps = self.n, self.m, self.eps
         return eps * (n / (n - m)) * (n / m) ** (m / (n - m))
 
+    @docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
 
@@ -186,6 +189,7 @@ class LennardJonesNM(Analytic):
         out = self._prefac * (x**self.n - x**self.m)
         return cast(np.ndarray, out)
 
+    @docfiller_analytic()
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
         x = self.sig / r
@@ -197,6 +201,7 @@ class LennardJonesNM(Analytic):
 
 
 @attrs.frozen
+@docfiller_analytic(Analytic)
 class Yukawa(Analytic):
     r"""
     Hard core Yukawa potential
@@ -205,10 +210,10 @@ class Yukawa(Analytic):
     .. math::
 
         \phi(r) =
-        \begin{cases}
+        \begin{{cases}}
             \infty &  r \leq \sigma \\
-            -\epsilon \frac{\sigma}{r} \exp\left[-z (r/\sigma - 1) \right] & r > \sigma
-        \end{cases}
+            -\epsilon \frac{{\sigma}}{{r}} \exp\left[-z (r/\sigma - 1) \right] & r > \sigma
+        \end{{cases}}
 
 
     Parameters
@@ -233,6 +238,7 @@ class Yukawa(Analytic):
             segments=(0.0, self.sig, np.inf),
         )
 
+    @docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         sig, eps = self.sig, self.eps
 
@@ -248,6 +254,7 @@ class Yukawa(Analytic):
 
 
 @attrs.frozen
+@docfiller_analytic(Analytic)
 class HardSphere(Analytic):
     r"""
     Hard-sphere pair potential
@@ -255,10 +262,10 @@ class HardSphere(Analytic):
     .. math::
 
         \phi(r) =
-        \begin{cases}
+        \begin{{cases}}
         \infty & r \leq \sigma \\
         0 & r > \sigma
-        \end{cases}
+        \end{{cases}}
 
     Parameters
     ----------
@@ -271,6 +278,7 @@ class HardSphere(Analytic):
     def __attrs_post_init__(self):
         self._immutable_setattrs(segments=(0.0, self.sig))
 
+    @docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.array(r)
 
@@ -283,6 +291,7 @@ class HardSphere(Analytic):
 
 
 @attrs.frozen
+@docfiller_analytic(Analytic)
 class SquareWell(Analytic):
     r"""
     Square-well pair potential
@@ -291,10 +300,11 @@ class SquareWell(Analytic):
     .. math::
 
         \phi(r) =
-        \begin{cases}
+        \begin{{cases}}
         \infty & r \leq \sigma \\
         \epsilon & \sigma < r \leq \lambda \sigma \\
         0 & r > \lambda \sigma
+        \end{{cases}}
 
     Parameters
     ----------
@@ -317,6 +327,7 @@ class SquareWell(Analytic):
             segments=(0.0, self.sig, self.sig * self.lam),
         )
 
+    @docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         sig, eps, lam = self.sig, self.eps, self.lam
 
@@ -340,6 +351,7 @@ def _validate_bounds(self, attribute, bounds):
 
 
 @attrs.frozen
+@docfiller_phibase(PhiBase)
 class CubicTable(PhiBase):
     """
     Cubic interpolation table potential.
@@ -478,9 +490,11 @@ class CubicTable(PhiBase):
             dv[mid] = -2.0 * self._dsinv * (dt[0, :] + (xi - 0.5) * ddt[0, :])
         return v, dv
 
+    @docfiller_phibase()
     def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
         return self.phidphi(r)[0]
 
+    @docfiller_phibase()
     def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
         r = np.asarray(r)
         return cast(np.ndarray, -r * self.phidphi(r)[1])

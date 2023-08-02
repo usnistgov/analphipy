@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
 import numpy as np
 from module_utilities import cached
 
-from ._docstrings import DOCFILLER_SHARED, docfiller_shared
+from ._docstrings import docfiller
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
 
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
     from .base_potential import PhiBase  # type: ignore
 # Hack to document module level docstring
-__doc__ = __doc__.format(**DOCFILLER_SHARED.data)  # pyright: ignore
+__doc__ = __doc__.format(**docfiller.data)  # pyright: ignore
 
 __all__ = [
     "sig_nf",
@@ -38,7 +38,7 @@ __all__ = [
     "NoroFrenkelPair",
 ]
 
-d = DOCFILLER_SHARED.update(
+d = docfiller.update(
     summary="Noro-Frenkel/Barker-Henderson effective hard sphere diameter.",
     extended_summary=r"""
     This is calculated using the formula [1]_ [2]_
@@ -113,7 +113,7 @@ def sig_nf(
     )
 
 
-d = DOCFILLER_SHARED.update(
+d = docfiller.update(
     summary="Derivative with respect to inverse temperature ``beta`` of ``sig_nf``.",
     extended_summary=r"""
     See refs [1]_ [2]_ [3]_
@@ -153,7 +153,7 @@ def sig_nf_dbeta(
     )
 
 
-@docfiller_shared
+@docfiller.decorate
 def lam_nf(beta: float, sig: float, eps: float, B2: float):
     r"""
     Noro-Frenkel effective lambda parameter
@@ -196,7 +196,7 @@ def lam_nf(beta: float, sig: float, eps: float, B2: float):
     return lam
 
 
-@docfiller_shared
+@docfiller.decorate
 def lam_nf_dbeta(
     beta: float,
     sig: float,
@@ -249,7 +249,7 @@ def lam_nf_dbeta(
     return out
 
 
-@docfiller_shared
+@docfiller.decorate
 class NoroFrenkelPair:
     """
     Class to calculate Noro-Frenkel parameters.
@@ -295,7 +295,7 @@ class NoroFrenkelPair:
 
         return f"{type(self).__name__}({params})"
 
-    @docfiller_shared
+    @docfiller.decorate
     def phi_rep(self, r: Float_or_ArrayLike) -> np.ndarray:
         """
         Repulsive part of potential.
@@ -321,7 +321,7 @@ class NoroFrenkelPair:
         return phi
 
     @classmethod
-    @docfiller_shared
+    @docfiller.decorate
     def from_phi(
         cls,
         phi: Phi_Signature,

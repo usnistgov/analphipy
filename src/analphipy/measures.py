@@ -12,7 +12,7 @@ import numpy as np
 # from custom_inherit import doc_inherit
 from module_utilities import cached
 
-from ._docstrings import DOCFILLER_SHARED
+from ._docstrings import docfiller
 
 # from module_utilities.docfiller import DocFiller
 if TYPE_CHECKING:
@@ -27,8 +27,6 @@ __all__ = [
     "diverg_kl_cont",
     "diverg_js_cont",
 ]
-
-docfiller = DOCFILLER_SHARED
 
 
 @docfiller.decorate

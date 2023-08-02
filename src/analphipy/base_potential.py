@@ -1,21 +1,22 @@
-# type: ignore
 """
 Base classes (:mod:`analphipy.base_potential`)
 ==============================================
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Sequence, cast
+from typing import TYPE_CHECKING, Any, Callable, Literal, Sequence, cast
 
 import attrs
 import numpy as np
 from attrs import field
-from custom_inherit import DocInheritMeta
+from numpy.typing import NDArray
 
 from ._attrs_utils import field_formatter, optional_converter, private_field
-from ._docstrings import docfiller_shared
+from ._docstrings import docfiller
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+
     from ._typing import Float_or_ArrayLike
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
@@ -24,21 +25,21 @@ from .utils import minimize_phi
 
 # * attrs utilities
 @optional_converter
-def segments_converter(segments):
+def segments_converter(segments: Sequence[Any]) -> tuple[float, ...]:
     return tuple(float(x) for x in segments)
 
 
-def validate_segments(self, attribute, segments):
+def validate_segments(self: Any, attribute: Any, segments: Sequence[Any]) -> None:
     assert len(segments) >= 2, "Segments must be at least of length 2"
 
 
-def _kw_only_field(kw_only=True, default=None, **kws):
+def _kw_only_field(kw_only: bool = True, default: Any = None, **kws: Any) -> Any:
     return attrs.field(kw_only=kw_only, default=default, **kws)
 
 
-@attrs.frozen
-@docfiller_shared
-class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
+@attrs.define(frozen=True)
+@docfiller.decorate
+class PhiAbstract:
     """
     Abstract class from which base classes inherit.
 
@@ -66,11 +67,11 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         converter=segments_converter,
     )
 
-    def asdict(self) -> dict:
+    def asdict(self) -> dict[str, Any]:
         """Convert object to dictionary."""
         return attrs.asdict(self, filter=self._get_smart_filter())
 
-    def new_like(self, **kws):
+    def new_like(self, **kws: Any) -> Self:
         """
         Create a new object with optional parameters.
 
@@ -81,11 +82,11 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         """
         return attrs.evolve(self, **kws)
 
-    def assign(self, **kws):
+    def assign(self, **kws: Any) -> Self:
         """Alias to :meth:`new_like`."""
         return self.new_like(**kws)
 
-    def _immutable_setattrs(self, **kws):
+    def _immutable_setattrs(self, **kws: Any) -> None:
         """
         Set attributes of frozen attrs class.
 
@@ -116,8 +117,12 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
             object.__setattr__(self, key, value)
 
     def _get_smart_filter(
-        self, include=None, exclude=None, exclude_private=True, exclude_no_init=True
-    ):
+        self,
+        include: Sequence[str] | None = None,
+        exclude: Sequence[str] | None = None,
+        exclude_private: bool = True,
+        exclude_no_init: bool = True,
+    ) -> Callable[..., Any]:
         """
         Create a filter to include exclude names.
 
@@ -169,7 +174,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
                 includes.append(f)
         return attrs.filters.include(*includes)
 
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> NDArray[Any]:
         """
         Pair potential.
 
@@ -186,13 +191,11 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
 
         raise NotImplementedError("Must implement in subclass")
 
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def dphidr(self, r: Float_or_ArrayLike) -> NDArray[Any]:
         r"""
         Derivative of pair potential.
 
         This returns the value of :math:`d \phi(r) / dr`
-
-
 
         Parameters
         ----------
@@ -211,8 +214,8 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         self,
         r0: float | Literal["mean"],
         bounds: tuple[float, float] | Literal["segments"] | None = None,
-        **kws,
-    ):
+        **kws: Any,
+    ) -> tuple[float, float, Any]:
         """
         Determine position `r` where ``phi`` is minimized.
 
@@ -252,15 +255,15 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
 
         if r0 == "mean":
             if bounds is not None:
-                r0 = np.mean(bounds)
+                r0 = cast(float, np.mean(bounds))
             else:
-                r0 = None
+                raise ValueError('must specify bounds with r0="mean"')
 
         return minimize_phi(self.phi, r0=r0, bounds=bounds, **kws)
 
     def assign_min_numeric(
-        self, r0: float, bounds: tuple[float, float] | None = None, **kws
-    ):
+        self, r0: float, bounds: tuple[float, float] | None = None, **kws: Any
+    ) -> Self:
         """
         Create new object with minima set by numerical minimization.
 
@@ -270,7 +273,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         r_min, phi_min, output = self.minimize(r0=r0, bounds=bounds, **kws)
         return self.new_like(r_min=r_min, phi_min=phi_min)
 
-    def to_nf(self, **kws):
+    def to_nf(self, **kws: Any) -> NoroFrenkelPair:
         """
         Create a :class:`analphipy.norofrenkel.NoroFrenkelPair` object.
 
@@ -293,7 +296,7 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
 
         return NoroFrenkelPair(**kws)
 
-    def to_measures(self, **kws):
+    def to_measures(self, **kws: Any) -> Measures:
         """
         Create a :class:`analphipy.measures.Measures` object.
 
@@ -315,7 +318,11 @@ class PhiAbstract(metaclass=DocInheritMeta(style="numpy_with_merge")):
         return Measures(**kws)
 
 
-@attrs.frozen
+docfiller_phiabstract = docfiller.factory_inherit_from_parent(PhiAbstract)
+
+
+@attrs.define(frozen=True)
+@docfiller.inherit(PhiAbstract)
 class PhiCutBase(PhiAbstract):
     r"""
     Base Class for creating cut potential from base potential
@@ -323,17 +330,17 @@ class PhiCutBase(PhiAbstract):
 
     .. math::
 
-        \phi_{\rm cut}(r) =
-            \begin{cases}
-                \phi(r) + {\text _vcorrect}(r) & r < r_{\rm cut} \\
-                0 & r_{\rm cut} \leq r
-            \end{cases}
+        \phi_{{\rm cut}}(r) =
+            \begin{{cases}}
+                \phi(r) + {{\text _vcorrect}}(r) & r < r_{{\rm cut}} \\
+                0 & r_{{\rm cut}} \leq r
+            \end{{cases}}
 
-        \frac{d \phi_{\rm cut}(r)}{d r} =
-            \begin{cases}
-                \frac{d \phi(r)}{d r} + {\text _dvdrcorrect}(r) & r < r_{\rm cut} \\
-                0 & r_{\rm cut} \leq r
-            \end{cases}
+        \frac{{d \phi_{{\rm cut}}(r)}}{{d r}} =
+            \begin{{cases}}
+                \frac{{d \phi(r)}}{{d r}} + {{\text _dvdrcorrect}}(r) & r < r_{{\rm cut}} \\
+                0 & r_{{\rm cut}} \leq r
+            \end{{cases}}
 
     So, for example, for just cut, `_vcorrect(r) = -v(rcut)`, `dvrcut=0`,
     and for lfs, `_vcorrect(r) = -v(rcut) - dv(rcut)/dr (r - rcut)`
@@ -350,19 +357,20 @@ class PhiCutBase(PhiAbstract):
     """
 
     #: Instance of (sub)class of :class:`analphipy.base_potential.PhiAbstract`
-    phi_base: PhiBase
+    phi_base: PhiBase  # type: ignore[misc]
     #: Position to cut the potential
-    rcut: float = field(converter=float)
+    rcut: float = field(converter=float)  # type: ignore[misc]
     #: Integration limits
-    segments: float = private_field()
+    segments: Sequence[float] = private_field()
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         self._immutable_setattrs(
             segments=tuple(x for x in self.phi_base.segments if x < self.rcut)
             + (self.rcut,)
         )
 
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    @docfiller_phiabstract()
+    def phi(self, r: Float_or_ArrayLike) -> NDArray[Any]:
         r = np.asarray(r)
         v = np.empty_like(r)
 
@@ -375,7 +383,8 @@ class PhiCutBase(PhiAbstract):
             v[left] = self.phi_base.phi(r[left]) + self._vcorrect(r[left])
         return v
 
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+    @docfiller_phiabstract()
+    def dphidr(self, r: Float_or_ArrayLike) -> NDArray[Any]:
         r = np.asarray(r)
         dvdr = np.empty_like(r)
 
@@ -387,25 +396,26 @@ class PhiCutBase(PhiAbstract):
 
         return dvdr
 
-    def _vcorrect(self, r):
+    def _vcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
         raise NotImplementedError
 
-    def _dvdrcorrect(self, r):
+    def _dvdrcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
         raise NotImplementedError
 
 
 @attrs.frozen
-class PhiCut(PhiCutBase):
+@docfiller.inherit(PhiCutBase)
+class PhiCut(PhiCutBase):  # type: ignore[misc]
     r"""
     Pair potential cut at position ``r_cut``.
 
     .. math::
 
-        \phi_{\rm cut}(r) =
-            \begin{cases}
-                \phi(r) - \phi(r_{\rm cut})  & r < r_{\rm cut} \\
-                0 & r_{\rm cut} \leq r
-            \end{cases}
+        \phi_{{\rm cut}}(r) =
+            \begin{{cases}}
+                \phi(r) - \phi(r_{{\rm cut}})  & r < r_{{\rm cut}} \\
+                0 & r_{{\rm cut}} \leq r
+            \end{{cases}}
 
     Parameters
     ----------
@@ -417,59 +427,61 @@ class PhiCut(PhiCutBase):
 
     _vcut: float = private_field()
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
         self._immutable_setattrs(_vcut=self.phi_base.phi(self.rcut))
 
-    def _vcorrect(self, r: np.ndarray) -> np.ndarray:
-        return -cast(np.ndarray, self._vcut)
+    def _vcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
+        return -cast(NDArray[np.float_], self._vcut)
 
-    def _dvdrcorrect(self, r: np.ndarray) -> np.ndarray:
+    def _dvdrcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
         return np.array(0.0)
 
 
 @attrs.frozen
-class PhiLFS(PhiCutBase):
+@docfiller.inherit(PhiCutBase)
+class PhiLFS(PhiCutBase):  # type: ignore[misc]
     r"""
     Pair potential cut and linear force shifted at ``r_cut``.
 
     .. math::
 
-        \phi_{\rm lfs}(r) =
-            \begin{cases}
+        \phi_{{\rm lfs}}(r) =
+            \begin{{cases}}
                 \phi(r)
-                - \left( \frac{d \phi}{d r} \right)_{\rm cut} (r - r_{\rm cut})
-                - \phi(r_{\rm cut}) & r < r_{\rm cut} \\
-                0 & r_{\rm cut} < r
-            \end{cases}
+                - \left( \frac{{d \phi}}{{d r}} \right)_{{\rm cut}} (r - r_{{\rm cut}})
+                - \phi(r_{{\rm cut}}) & r < r_{{\rm cut}} \\
+                0 & r_{{\rm cut}} < r
+            \end{{cases}}
     """
 
     _vcut: float = private_field()
     _dvdrcut: float = private_field()
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
         self._immutable_setattrs(
             _vcut=self.phi_base.phi(self.rcut), _dvdrcut=self.phi_base.dphidr(self.rcut)
         )
 
-    def _vcorrect(self, r: np.ndarray) -> np.ndarray:
+    def _vcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
         out = -(self._vcut + self._dvdrcut * (r - self.rcut))
-        return cast(np.ndarray, out)
+        return cast(NDArray[Any], out)
 
-    def _dvdrcorrect(self, r: np.ndarray) -> np.ndarray:
+    def _dvdrcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
         out = -self._dvdrcut
-        return cast(np.ndarray, out)
+        return cast(NDArray[Any], out)
 
 
 @attrs.frozen
+@docfiller.inherit(PhiAbstract)
 class PhiBase(PhiAbstract):
     """Base class for potentials."""
 
-    def cut(self, rcut):
+    def cut(self, rcut: float) -> PhiCut:
         """Create a :class:`PhiCut` potential."""
         return PhiCut(phi_base=self, rcut=rcut)
 
-    def lfs(self, rcut):
+    def lfs(self, rcut: float) -> PhiLFS:
         """Create a :class:`PhiLFS` potential."""
         return PhiLFS(phi_base=self, rcut=rcut)

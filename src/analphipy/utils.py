@@ -6,11 +6,11 @@ Utilities module (:mod:`analphipy.utils`)
 from __future__ import annotations
 
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any, Callable, Iterable, TypeVar
 
 import numpy as np
 
-from ._docstrings import docfiller_shared
+from ._docstrings import docfiller
 
 if TYPE_CHECKING:
     from ._typing import ArrayLike
@@ -52,17 +52,17 @@ def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
     return sorted(aa.union(bb))
 
 
-@docfiller_shared
+@docfiller.decorate
 def quad_segments(
-    func: Callable,
+    func: Callable[..., Any],
     segments: ArrayLike,
-    args: tuple = (),
+    args: tuple[Any, ...] = (),
     full_output: bool = False,
     sum_integrals: bool = True,
     sum_errors: bool = False,
     err: bool = True,
-    **kws,
-):
+    **kws: Any,
+) -> Any:
     """
     Perform quadrature with discontinuities.
 
@@ -149,7 +149,7 @@ def quad_segments(
 
 
 def minimize_phi(
-    phi: Callable, r0: float, bounds: ArrayLike | None = None, **kws
+    phi: Callable[..., Any], r0: float, bounds: ArrayLike | None = None, **kws: Any
 ) -> tuple[float, float, Any]:
     """
     Find value of ``r`` which minimized ``phi``.
@@ -206,14 +206,16 @@ def minimize_phi(
 
 # * Phi utilities
 
+T = TypeVar("T")
 
-def partial_phi(phi, **params):
+
+def partial_phi(phi: Callable[..., T], **params: Any) -> Callable[..., T]:
     from functools import partial
 
     return partial(phi, **params)
 
 
-def segments_to_segments_cut(segments, rcut):
+def segments_to_segments_cut(segments: Iterable[float], rcut: float) -> list[float]:
     """Update segments for 'cut' potential."""
     return [x for x in segments if x < rcut] + [rcut]
 
@@ -420,9 +422,9 @@ def segments_to_segments_cut(segments, rcut):
 #     return phi_att, dphidr_att, meta
 
 
-def add_quad_kws(func: Callable) -> Callable:
+def add_quad_kws(func: Callable[..., T]) -> Callable[..., T]:
     @wraps(func)
-    def wrapped(self, *args, **kws):
+    def wrapped(self: Any, *args: Any, **kws: Any) -> T:
         kws = dict(self.quad_kws, **kws)
         return func(self, *args, **kws)
 

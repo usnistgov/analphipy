@@ -15,4 +15,4 @@ from numpy.typing import NDArray  # , ArrayLike
 ArrayLike = Union[Sequence[float], NDArray[np.float_]]
 Float_or_ArrayLike = Union[float, ArrayLike]
 Float_or_Array = Union[float, NDArray[np.float_]]
-Phi_Signature = Callable[..., Union[float, np.ndarray]]
+Phi_Signature = Callable[..., Union[float, NDArray[np.float_]]]

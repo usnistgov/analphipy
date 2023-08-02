@@ -31,8 +31,9 @@ dependencies = [
     "typing-extensions",
     "numpy",
     "scipy",
-    "custom-inherit",
-    "module-utilities >= 0.1",
+    "docstring-inheritance",
+    "module-utilities >= 0.6", # p2c: -p
+
 ]
 
 [project.urls]
@@ -307,13 +308,15 @@ warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
 exclude = [".eggs", ".tox", "doc", "docs", ".nox"]
+# stricter
+check_untyped_defs = true
+strict = true
 
 # check_untyped_defs = true
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
 module = [
     "ruamel.yaml",
-    "custom_inherit",
     "scipy.integrate.*",
     "scipy.optimize.*",
     "scipy.misc.*"
@@ -327,6 +330,7 @@ module = []
 include = ["src", "tests"]
 exclude = ["**/__pycache__", ".tox/**", ".nox/**", "**/.mypy_cache"]
 pythonVersion = "3.10"
+strict = ["src"]
 typeCheckingMode = "basic"
 # enable subset of "strict"
 reportDuplicateImport = true
