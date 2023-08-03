@@ -5,7 +5,7 @@ Routines to calculate measures of pair potentials (:mod:`analphipy.measures`)
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable, Mapping, Sequence, Union, cast
+from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
@@ -16,7 +16,19 @@ from ._docstrings import docfiller
 
 # from module_utilities.docfiller import DocFiller
 if TYPE_CHECKING:
-    from ._typing import ArrayLike, Float_or_ArrayLike, Phi_Signature
+    from typing import Any, Callable, Mapping, Sequence
+
+    from ._typing import (
+        Array,
+        ArrayLike,
+        Float_or_Array,
+        Float_or_ArrayLike,
+        Phi_Signature,
+        QuadSegments,
+    )
+    from .base_potential import PhiAbstract
+
+
 from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 __all__ = [
@@ -36,8 +48,8 @@ def secondvirial(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws,
-):
+    **kws: Any,
+) -> QuadSegments:
     r"""
     Calculate the second virial coefficient.
 
@@ -67,8 +79,9 @@ def secondvirial(
     ~analphipy.utils.quad_segments
     """
 
-    def integrand(r):
-        return TWO_PI * r**2 * (1 - np.exp(-beta * phi(r)))
+    def integrand(r: Float_or_Array) -> Array:
+        out: Array = TWO_PI * r**2 * (1 - np.exp(-beta * phi(r)))
+        return out
 
     return quad_segments(
         integrand,
@@ -88,8 +101,8 @@ def secondvirial_dbeta(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws,
-):
+    **kws: Any,
+) -> QuadSegments:
     r"""
     ``beta`` derivative of second virial coefficient.
 
@@ -115,12 +128,14 @@ def secondvirial_dbeta(
 
     """
 
-    def integrand(r):
+    def integrand(r: Float_or_Array) -> Array:
         v = phi(r)
         if np.isinf(v):
-            return 0.0
+            out = np.array(0.0)
+
         else:
-            return TWO_PI * r**2 * v * np.exp(-beta * v)
+            out = TWO_PI * r**2 * v * np.exp(-beta * v)
+        return cast("Array", out)
 
     return quad_segments(
         integrand,
@@ -134,7 +149,7 @@ def secondvirial_dbeta(
 
 
 @docfiller.decorate
-def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
+def secondvirial_sw(beta: float, sig: float, eps: float, lam: float) -> float:
     r"""
     Second virial coefficient for a square well (SW) fluid. Note that this assumes that
     the SW fluid is defined by the potential:
@@ -165,16 +180,17 @@ def secondvirial_sw(beta: float, sig: float, eps: float, lam: float):
         Value of second virial coefficient.
 
     """
-    return (
+    out: float = (
         TWO_PI / 3.0 * sig**3 * (1.0 + (1 - np.exp(-beta * eps)) * (lam**3 - 1.0))
     )
+    return out
 
 
 def diverg_kl_integrand(
     p: Float_or_ArrayLike,
     q: Float_or_ArrayLike,
     volume: Float_or_ArrayLike | None = None,
-) -> np.ndarray:
+) -> Array:
     p, q = np.asarray(p), np.asarray(q)
 
     out = np.empty_like(p)
@@ -193,14 +209,14 @@ def diverg_kl_integrand(
 
 @docfiller(summary="Calculate discrete Kullback-Leibler divergence")
 def diverg_kl_disc(
-    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: int | None = None
-) -> float | np.ndarray:
+    p: Float_or_ArrayLike, q: Float_or_ArrayLike, axis: int | None = None
+) -> Float_or_Array:
     """
     {summary}.
 
     Parameters
     ----------
-    P, Q : array-like
+    p, q : array-like
         Probabilities to consider
 
     Returns
@@ -213,16 +229,19 @@ def diverg_kl_disc(
     {kl_link}
     """
 
-    P, Q = np.asarray(P), np.asarray(Q)
-    out = diverg_kl_integrand(P, Q).sum(axis=axis)
+    p, q = np.asarray(p), np.asarray(q)
+    diverg = diverg_kl_integrand(p, q)
+    out: Float_or_Array = diverg.sum(
+        axis=axis
+    )  # pyright: ignore[reportUnknownMemberType]
+    return out
 
-    return cast(Union[float, np.ndarray], out)
 
-
-def _check_volume_func(volume: str | Callable | None = None) -> Callable:
+def _check_volume_func(
+    volume: str | Callable[[Float_or_Array], Float_or_Array] | None = None
+) -> Callable[[Float_or_Array], Float_or_Array]:
     if volume is None:
         volume = "1d"
-
     if isinstance(volume, str):
         if volume == "1d":
             volume = lambda x: 1.0
@@ -242,15 +261,15 @@ def _check_volume_func(volume: str | Callable | None = None) -> Callable:
     summary="Calculate continuous Kullback–Leibler divergence for continuous pdf"
 )
 def diverg_kl_cont(
-    p: Callable,
-    q: Callable,
+    p: Callable[[Float_or_Array], Float_or_Array],
+    q: Callable[[Float_or_Array], Float_or_Array],
     segments: ArrayLike,
     segments_q: ArrayLike | None = None,
-    volume: str | Callable | None = None,
+    volume: str | Callable[[Float_or_Array], Float_or_Array] | None = None,
     err: bool = False,
     full_output: bool = False,
-    **kws,
-):
+    **kws: Any,
+) -> QuadSegments:
     """
     {summary}.
 
@@ -281,7 +300,7 @@ def diverg_kl_cont(
     if segments_q is not None:
         segments = combine_segmets(segments, segments_q)
 
-    def func(x):
+    def func(x: Float_or_Array) -> Array:
         return diverg_kl_integrand(p=p(x), q=q(x), volume=volume_callable(x))
 
     return quad_segments(
@@ -298,21 +317,21 @@ def diverg_kl_cont(
 # @doc_inherit(diverg_kl_disc, style="numpy_with_merge")
 @docfiller(diverg_kl_disc, summary="Discrete Jensen–Shannon divergence")
 def diverg_js_disc(
-    P: Float_or_ArrayLike, Q: Float_or_ArrayLike, axis: int | None = None
-) -> float | np.ndarray:
-    P, Q = np.asarray(P), np.asarray(Q)
+    p: Float_or_ArrayLike, q: Float_or_ArrayLike, axis: int | None = None
+) -> Float_or_Array:
+    p, q = np.asarray(p), np.asarray(q)
 
-    M = 0.5 * (P + Q)
+    m = 0.5 * (p + q)
 
-    out = 0.5 * (diverg_kl_disc(P, M, axis=axis) + diverg_kl_disc(Q, M, axis=axis))
-    return cast(Union[float, np.ndarray], out)
+    out = 0.5 * (diverg_kl_disc(p, m, axis=axis) + diverg_kl_disc(q, m, axis=axis))
+    return out
 
 
 def diverg_js_integrand(
     p: Float_or_ArrayLike,
     q: Float_or_ArrayLike,
     volume: Float_or_ArrayLike | None = None,
-) -> np.ndarray:
+) -> Array:
     p = np.asarray(p)
     q = np.asarray(q)
 
@@ -323,26 +342,26 @@ def diverg_js_integrand(
     if volume is not None:
         out *= np.asarray(volume)
 
-    return cast(np.ndarray, out)
+    return out
 
 
 @docfiller(diverg_kl_cont, summary="Continuous Jensen–Shannon divergence")
 def diverg_js_cont(
-    p: Callable,
-    q: Callable,
+    p: Callable[[Float_or_Array], Float_or_Array],
+    q: Callable[[Float_or_Array], Float_or_Array],
     segments: ArrayLike,
     segments_q: ArrayLike | None = None,
-    volume: str | Callable | None = None,
+    volume: str | Callable[[Float_or_Array], Float_or_Array] | None = None,
     err: bool = False,
     full_output: bool = False,
-    **kws,
-):
+    **kws: Any,
+) -> QuadSegments:
     volume_callable = _check_volume_func(volume)
 
     if segments_q is not None:
         segments = combine_segmets(segments, segments_q)
 
-    def func(x):
+    def func(x: Float_or_Array) -> Array:
         return diverg_js_integrand(p(x), q(x), volume_callable(x))
 
     return quad_segments(
@@ -372,18 +391,21 @@ class Measures:
         self,
         phi: Phi_Signature,
         segments: Sequence[float],
-        quad_kws: Mapping | None = None,
+        quad_kws: Mapping[str, Any] | None = None,
     ) -> None:
         self.phi = phi
         self.segments = segments
         if quad_kws is None:
             quad_kws = {}
         self.quad_kws = quad_kws
+        self._cache: dict[str, Any] = {}
 
     @cached.meth
     @add_quad_kws
     @docfiller.decorate
-    def secondvirial(self, beta, err=False, full_output=False, **kws):
+    def secondvirial(
+        self, /, beta: float, err: bool = False, full_output: bool = False, **kws: Any
+    ) -> QuadSegments:
         """
         Calculate second virial coefficient.
 
@@ -419,7 +441,9 @@ class Measures:
     @cached.meth
     @add_quad_kws
     @docfiller.decorate
-    def secondvirial_dbeta(self, beta, err=False, full_output=False, **kws):
+    def secondvirial_dbeta(
+        self, /, beta: float, err: bool = False, full_output: bool = False, **kws: Any
+    ) -> QuadSegments:
         """
         Calculate ``beta`` derivative of second virial coefficient.
 
@@ -453,14 +477,15 @@ class Measures:
     @add_quad_kws
     def boltz_diverg_js(
         self,
-        other,
+        /,
+        other: PhiAbstract,
         beta: float,
         beta_other: float | None = None,
-        volume: str | Callable = "3d",
+        volume: str | Callable[[Float_or_Array], Float_or_Array] = "3d",
         err: bool = False,
         full_output: bool = False,
-        **kws,
-    ):
+        **kws: Any,
+    ) -> QuadSegments:
         r"""
         Jensen-Shannon divergence of the Boltzmann factors of two potentials.
 
@@ -473,7 +498,7 @@ class Measures:
 
         Parameters
         ----------
-        other : :class:`analphipy.base_potential.PhiBase`
+        other : :class:`analphipy.base_potential.PhiAbstract`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
@@ -492,12 +517,15 @@ class Measures:
         if beta_other is None:
             beta_other = beta
 
-        p = lambda x: np.exp(-beta * self.phi(x))
-        q = lambda x: np.exp(-beta_other * other.phi(x))
+        def p_func(x: Float_or_Array) -> Array:
+            return cast("Array", np.exp(-beta * self.phi(x)))
+
+        def q_func(x: Float_or_Array) -> Array:
+            return cast("Array", np.exp(-beta_other * other.phi(x)))
 
         return diverg_js_cont(
-            p=p,
-            q=q,
+            p=p_func,
+            q=q_func,
             segments=self.segments,
             segments_q=other.segments,
             volume=volume,
@@ -508,14 +536,14 @@ class Measures:
 
     def mayer_diverg_js(
         self,
-        other,
+        other: PhiAbstract,
         beta: float,
         beta_other: float | None = None,
-        volume: str | Callable = "3d",
+        volume: str | Callable[[Float_or_Array], Float_or_Array] = "3d",
         err: bool = False,
         full_output: bool = False,
-        **kws,
-    ):
+        **kws: Any,
+    ) -> QuadSegments:
         r"""
         Jensen-Shannon divergence of the Mayer f-functions of two potentials.
 
@@ -528,7 +556,7 @@ class Measures:
 
         Parameters
         ----------
-        other : :class:`analphipy.base_potential.PhiBase`
+        other : :class:`analphipy.base_potential.PhiAbstract`
             Class wrapping other potential to compare `self` to.
         {beta}
         beta_other : float, optional
@@ -549,12 +577,17 @@ class Measures:
         if beta_other is None:
             beta_other = beta
 
-        p = lambda x: np.exp(-beta * self.phi(x)) - 1.0
-        q = lambda x: np.exp(-beta_other * other.phi(x)) - 1.0
+        def p_func(x: Float_or_Array) -> Array:
+            out: Array = np.exp(-beta * self.phi(x)) - 1.0
+            return out
+
+        def q_func(x: Float_or_Array) -> Array:
+            out: Array = np.exp(-beta_other * other.phi(x)) - 1.0
+            return out
 
         return diverg_js_cont(
-            p=p,
-            q=q,
+            p=p_func,
+            q=q_func,
             segments=self.segments,
             segments_q=other.segments,
             volume=volume,

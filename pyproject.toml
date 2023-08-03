@@ -32,8 +32,7 @@ dependencies = [
     "numpy",
     "scipy",
     "docstring-inheritance",
-    "module-utilities >= 0.6", # p2c: -p
-
+    "module-utilities >= 0.6",
 ]
 
 [project.urls]
@@ -60,7 +59,7 @@ typing-extras = [
     "pytype; python_version < '3.11'", #
     # "mypy-extensions", ## p2c: -p
     # "pytest-monkeytype", ## p2c: -p
-    "mypy",
+    "mypy >=1.4.1",
     "pandas-stubs",
 ]
 typing = [
@@ -143,6 +142,11 @@ test = "pytest"
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --doctest-glob='*.md'"
 testpaths = ["README.md", "src", "tests"]
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:", "@overload"]
+omit = ["*/vendored/*"]
+include = ["src/*"]
 
 [tool.isort]
 profile = "black"

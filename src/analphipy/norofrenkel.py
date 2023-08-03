@@ -15,20 +15,33 @@ References
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Mapping, Sequence, cast
+from typing import TYPE_CHECKING, cast
 
 import numpy as np
 from module_utilities import cached
 
 from ._docstrings import docfiller
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
-from .utils import TWO_PI, add_quad_kws, minimize_phi, quad_segments
+from .utils import TWO_PI, add_quad_kws, is_float, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
-    from ._typing import ArrayLike, Float_or_Array, Float_or_ArrayLike, Phi_Signature
-    from .base_potential import PhiBase  # type: ignore
+    from typing import Any, Mapping, Sequence
+
+    from typing_extensions import Self
+
+    from analphipy.base_potential import PhiAbstract
+
+    from ._typing import (
+        Array,
+        ArrayLike,
+        Float_or_Array,
+        Float_or_ArrayLike,
+        Phi_Signature,
+        QuadSegments,
+    )
+
 # Hack to document module level docstring
-__doc__ = __doc__.format(**docfiller.data)  # pyright: ignore
+__doc__ = __doc__.format(**docfiller.data)
 
 __all__ = [
     "sig_nf",
@@ -59,8 +72,8 @@ def sig_nf(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws,
-):
+    **kws: Any,
+) -> QuadSegments:
     r"""
     {summary}
 
@@ -99,8 +112,9 @@ def sig_nf(
 
     """
 
-    def integrand(r):
-        return 1.0 - np.exp(-beta * phi_rep(r))
+    def integrand(r: Float_or_Array) -> Array:
+        out: Array = 1.0 - np.exp(-beta * phi_rep(r))
+        return out
 
     return quad_segments(
         integrand,
@@ -133,14 +147,16 @@ def sig_nf_dbeta(
     segments: ArrayLike,
     err: bool = False,
     full_output: bool = False,
-    **kws,
-):
-    def integrand(r):
+    **kws: Any,
+) -> QuadSegments:
+    def integrand(r: Float_or_Array) -> Array:
         v = phi_rep(r)
         if np.isinf(v):
-            return 0.0
+            out = np.array(0.0)
         else:
-            return v * np.exp(-beta * v)
+            out = v * np.exp(-beta * v)
+
+        return cast("Array", out)
 
     return quad_segments(
         integrand,
@@ -154,7 +170,7 @@ def sig_nf_dbeta(
 
 
 @docfiller.decorate
-def lam_nf(beta: float, sig: float, eps: float, B2: float):
+def lam_nf(beta: float, sig: float, eps: float, B2: float) -> float:
     r"""
     Noro-Frenkel effective lambda parameter
 
@@ -192,7 +208,7 @@ def lam_nf(beta: float, sig: float, eps: float, B2: float):
 
     # B2s_SW = 1 + (1-exp(-beta epsilon)) * (lambda**3 - 1)
     #        = B2s
-    lam = ((B2star - 1.0) / (1.0 - np.exp(-beta * eps)) + 1.0) ** (1.0 / 3.0)
+    lam: float = ((B2star - 1.0) / (1.0 - np.exp(-beta * eps)) + 1.0) ** (1.0 / 3.0)
     return lam
 
 
@@ -205,7 +221,7 @@ def lam_nf_dbeta(
     B2: float,
     B2_dbeta: float,
     sig_dbeta: float,
-):
+) -> float:
     """
     Calculate derivative of ``lam_nf``  with respect to ``beta``.
 
@@ -244,7 +260,9 @@ def lam_nf_dbeta(
 
     e = np.exp(beta * eps)
 
-    out = 1.0 / (3 * lam**2 * (e - 1)) * (dB2stardbeta * e - eps * (lam**3 - 1))
+    out: float = (
+        1.0 / (3 * lam**2 * (e - 1)) * (dB2stardbeta * e - eps * (lam**3 - 1))
+    )
 
     return out
 
@@ -270,7 +288,7 @@ class NoroFrenkelPair:
         phi: Phi_Signature,
         segments: ArrayLike,
         r_min: float,
-        phi_min: Float_or_Array,
+        phi_min: Float_or_Array | None,
         quad_kws: Mapping[str, Any] | None = None,
     ):
         self.phi = phi
@@ -285,7 +303,9 @@ class NoroFrenkelPair:
             quad_kws = {}
         self.quad_kws = quad_kws
 
-    def __repr__(self):
+        self._cache: dict[str, Any] = {}
+
+    def __repr__(self) -> str:
         params = ",\n    ".join(
             [
                 f"{v}={getattr(self, v)}"
@@ -296,7 +316,7 @@ class NoroFrenkelPair:
         return f"{type(self).__name__}({params})"
 
     @docfiller.decorate
-    def phi_rep(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi_rep(self, r: Float_or_ArrayLike) -> Array:
         """
         Repulsive part of potential.
 
@@ -329,8 +349,8 @@ class NoroFrenkelPair:
         r_min: float | None = None,
         bounds: ArrayLike | None = None,
         quad_kws: Mapping[str, Any] | None = None,
-        **kws,
-    ) -> NoroFrenkelPair:
+        **kws: Any,
+    ) -> Self:
         """
         Create object from pair potential function.
 
@@ -362,9 +382,7 @@ class NoroFrenkelPair:
         if r_min is None:
             r_min = cast(float, np.mean(bounds))
 
-        r_min, phi_min, _ = minimize_phi(
-            phi, r0=cast(float, r_min), bounds=bounds, **kws
-        )
+        r_min, phi_min, _ = minimize_phi(phi, r0=r_min, bounds=bounds, **kws)
         return cls(
             phi=phi, r_min=r_min, phi_min=phi_min, segments=segments, quad_kws=quad_kws
         )
@@ -372,18 +390,18 @@ class NoroFrenkelPair:
     @classmethod
     def from_phi_class(
         cls,
-        phi: PhiBase,
+        phi: PhiAbstract,
         r_min: float | None = None,
         bounds: tuple[float, float] | None = None,
         quad_kws: dict[str, Any] | None = None,
-        **kws,
-    ):
+        **kws: Any,
+    ) -> Self:
         """
         Create object, trying to use pre computed values for ``r_min``, ``phi_min``.
 
         Parameters
         ----------
-        phi : :class:`analphipy.base_potential.PhiBase`
+        phi : :class:`analphipy.base_potential.PhiAbstract`
         r_min : float, optional
             Optional guess for numerically finding minimum in `phi`.
         bounds : array-like, optional
@@ -399,7 +417,11 @@ class NoroFrenkelPair:
             instance of calling class
         """
 
-        try:
+        if (
+            phi.segments is not None
+            and phi.r_min is not None  # pyright: ignore
+            and phi.phi_min is not None
+        ):
             return cls(
                 phi=phi.phi,
                 segments=phi.segments,
@@ -407,7 +429,10 @@ class NoroFrenkelPair:
                 phi_min=phi.phi_min,
                 quad_kws=quad_kws,
             )
-        except NotImplementedError:
+
+        else:
+            assert phi.segments is not None
+
             return cls.from_phi(
                 phi=phi.phi,
                 segments=phi.segments,
@@ -419,7 +444,7 @@ class NoroFrenkelPair:
 
     @cached.meth
     @add_quad_kws
-    def secondvirial(self, beta: float, **kws):
+    def secondvirial(self, /, beta: float, **kws: Any) -> QuadSegments:
         """
         Second virial coefficient.
 
@@ -435,7 +460,7 @@ class NoroFrenkelPair:
 
     @cached.meth
     @add_quad_kws
-    def sig(self, beta: float, **kws):
+    def sig(self, /, beta: float, **kws: Any) -> QuadSegments:
         """
         Effective hard sphere diameter.
 
@@ -446,11 +471,11 @@ class NoroFrenkelPair:
         return sig_nf(
             self.phi_rep,
             beta=beta,
-            segments=self._segments_rep,  # pyright: ignore
+            segments=self._segments_rep,
             **kws,
         )
 
-    def eps(self, beta: float, **kws) -> float:  # pyright: ignore
+    def eps(self, beta: float, **kws: Any) -> float:
         """
         Effective square well epsilon.
 
@@ -460,7 +485,7 @@ class NoroFrenkelPair:
 
     @cached.meth
     @add_quad_kws
-    def lam(self, beta: float, **kws):
+    def lam(self, /, beta: float, **kws: Any) -> float:
         """
         Effective square well lambda.
 
@@ -468,25 +493,36 @@ class NoroFrenkelPair:
         --------
         ~analphipy.norofrenkel.lam_nf
         """
-        return lam_nf(
-            beta=beta,
-            sig=self.sig(beta, **kws),
-            eps=self.eps(beta, **kws),
-            B2=self.secondvirial(beta, **kws),
-        )
+        sig = self.sig(beta, **kws)
+        B2 = self.secondvirial(beta, **kws)
+
+        if is_float(sig) and is_float(B2):
+            return lam_nf(
+                beta=beta,
+                sig=sig,
+                eps=self.eps(beta, **kws),
+                B2=B2,
+            )
+        else:
+            raise ValueError(f"Bad kws={kws}")
 
     @cached.meth
     @add_quad_kws
-    def sw_dict(self, beta: float, **kws) -> dict[str, float]:
+    def sw_dict(self, /, beta: float, **kws: Any) -> dict[str, float]:
         """Dictionary view of Noro-Frenkel parameters."""
         sig = self.sig(beta, **kws)
         eps = self.eps(beta, **kws)
-        lam = lam_nf(beta=beta, sig=sig, eps=eps, B2=self.secondvirial(beta, **kws))
-        return {"sig": sig, "eps": eps, "lam": lam}
+        B2 = self.secondvirial(beta, **kws)
+
+        if is_float(sig) and is_float(B2):
+            lam = lam_nf(beta=beta, sig=sig, eps=eps, B2=B2)
+            return {"sig": sig, "eps": eps, "lam": lam}
+        else:
+            raise ValueError(f"Bad kws={kws}")
 
     @cached.meth
     @add_quad_kws
-    def secondvirial_dbeta(self, beta: float, **kws):
+    def secondvirial_dbeta(self, /, beta: float, **kws: Any) -> QuadSegments:
         """
         Derivative of ``secondvirial`` with respect to ``beta``.
 
@@ -500,7 +536,7 @@ class NoroFrenkelPair:
 
     @cached.meth
     @add_quad_kws
-    def sig_dbeta(self, beta: float, **kws):
+    def sig_dbeta(self, /, beta: float, **kws: Any) -> QuadSegments:
         """
         Derivative of effective hard-sphere diameter with respect to ``beta``.
 
@@ -511,7 +547,7 @@ class NoroFrenkelPair:
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
 
     @cached.meth
-    def lam_dbeta(self, beta: float, **kws):
+    def lam_dbeta(self, /, beta: float, **kws: Any) -> float:
         """
         Derivative of effective lambda parameter with respect to ``beta``.
 
@@ -519,39 +555,64 @@ class NoroFrenkelPair:
         --------
         ~analphipy.norofrenkel.lam_nf_dbeta
         """
-        return lam_nf_dbeta(
-            beta=beta,
-            sig=self.sig(beta, **kws),
-            eps=self.eps(beta, **kws),
-            lam=self.lam(beta, **kws),
-            B2=self.secondvirial(beta, **kws),
-            B2_dbeta=self.secondvirial_dbeta(beta, **kws),
-            sig_dbeta=self.sig_dbeta(beta, **kws),
-        )
+
+        sig = self.sig(beta, **kws)
+        eps = self.eps(beta, **kws)
+        lam = self.lam(beta, **kws)
+        B2 = self.secondvirial(beta, **kws)
+        B2_dbeta = self.secondvirial_dbeta(beta, **kws)
+        sig_dbeta = self.sig_dbeta(beta, **kws)
+
+        if (
+            is_float(sig)
+            and is_float(lam)
+            and is_float(B2)
+            and is_float(B2_dbeta)
+            and is_float(sig_dbeta)
+        ):
+            return lam_nf_dbeta(
+                beta=beta,
+                sig=sig,
+                eps=eps,
+                lam=lam,
+                B2=B2,
+                B2_dbeta=B2_dbeta,
+                sig_dbeta=sig_dbeta,
+            )
+        else:
+            raise ValueError(f"Bad kws={kws}")  # pragma: no cover
 
     @cached.meth
-    def secondvirial_sw(self, beta: float, **kws):
+    def secondvirial_sw(self, /, beta: float, **kws: Any) -> float:
         """
         Second virial coefficient of effective square well fluid.
 
         For testing.  This should be the same of value from :meth:`secondvirial`
         """
-        return secondvirial_sw(
-            beta=beta,
-            sig=self.sig(beta, **kws),
-            eps=self.eps(beta, **kws),
-            lam=self.lam(beta, **kws),
-        )
 
-    def B2(self, beta: float, **kws):
+        sig = self.sig(beta, **kws)
+        eps = self.eps(beta, **kws)
+        lam = self.lam(beta, **kws)
+
+        if is_float(sig) and is_float(lam):
+            return secondvirial_sw(
+                beta=beta,
+                sig=sig,
+                eps=eps,
+                lam=lam,
+            )
+        else:
+            raise ValueError(f"Bad kws={kws}")  # pragma: no cover
+
+    def B2(self, beta: float, **kws: Any) -> QuadSegments:
         """Alias to :meth:`secondvirial`."""
         return self.secondvirial(beta, **kws)
 
-    def B2_dbeta(self, beta: float, **kws):
+    def B2_dbeta(self, beta: float, **kws: Any) -> QuadSegments:
         """Alias to :meth:`secondvirial_dbeta`."""
         return self.secondvirial_dbeta(beta, **kws)
 
-    def B2_sw(self, beta, **kws):
+    def B2_sw(self, beta: float, **kws: Any) -> QuadSegments:
         """Alias to :meth:`secondvirial_sw`."""
         return self.secondvirial_sw(beta, **kws)
 
@@ -560,7 +621,7 @@ class NoroFrenkelPair:
         betas: ArrayLike,
         props: Sequence[str] | None = None,
         key_format: str = "{prop}",
-        **kws,
+        **kws: Any,
     ) -> dict[str, Any]:
         """
         Create a dictionary of outputs for multiple values of inverse temperature ``beta``.

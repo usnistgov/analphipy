@@ -4,40 +4,42 @@ Base classes (:mod:`analphipy.base_potential`)
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Literal, Sequence, cast
+from typing import TYPE_CHECKING, cast
 
 import attrs
 import numpy as np
 from attrs import field
-from numpy.typing import NDArray
 
-from ._attrs_utils import field_formatter, optional_converter, private_field
+from ._attrs_utils import field_formatter, private_field
 from ._docstrings import docfiller
 
 if TYPE_CHECKING:
+    from typing import Any, Callable, Literal, Sequence
+
     from typing_extensions import Self
 
-    from ._typing import Float_or_ArrayLike
+    from ._typing import Array, Float_or_ArrayLike
+
+
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
 from .utils import minimize_phi
 
 
 # * attrs utilities
-@optional_converter
 def segments_converter(segments: Sequence[Any]) -> tuple[float, ...]:
     return tuple(float(x) for x in segments)
 
 
-def validate_segments(self: Any, attribute: Any, segments: Sequence[Any]) -> None:
-    assert len(segments) >= 2, "Segments must be at least of length 2"
+# def validate_segments(self: Any, attribute: Any, segments: Sequence[Any]) -> None:
+#     assert len(segments) >= 2, "Segments must be at least of length 2"
 
 
-def _kw_only_field(kw_only: bool = True, default: Any = None, **kws: Any) -> Any:
-    return attrs.field(kw_only=kw_only, default=default, **kws)
+# def _kw_only_field(kw_only: bool = True, default: Any = None, **kws: Any) -> Any:
+#     return attrs.field(kw_only=kw_only, default=default, **kws)
 
 
-@attrs.define(frozen=True)
+@attrs.define(frozen=True, kw_only=True)
 @docfiller.decorate
 class PhiAbstract:
     """
@@ -53,18 +55,21 @@ class PhiAbstract:
     """
 
     #: Position of minimum in :math:`\phi(r)`
-    r_min: float | None = _kw_only_field(
-        converter=optional_converter(float), repr=field_formatter()
+    r_min: float | None = attrs.field(
+        default=None,
+        converter=attrs.converters.optional(float),
+        repr=field_formatter(),
     )
 
     #: Value of ``phi`` at minimum.
-    phi_min: float | None = _kw_only_field(
-        converter=optional_converter(float), repr=field_formatter()
+    phi_min: float | None = attrs.field(
+        default=None, converter=attrs.converters.optional(float), repr=field_formatter()
     )
 
     #: Integration limits
-    segments: Sequence[float] = _kw_only_field(
-        converter=segments_converter,
+    segments: Sequence[float] = attrs.field(
+        default=None,
+        converter=attrs.converters.optional(segments_converter),
     )
 
     def asdict(self) -> dict[str, Any]:
@@ -122,7 +127,7 @@ class PhiAbstract:
         exclude: Sequence[str] | None = None,
         exclude_private: bool = True,
         exclude_no_init: bool = True,
-    ) -> Callable[..., Any]:
+    ) -> Callable[..., Any]:  # pragma: no cover
         """
         Create a filter to include exclude names.
 
@@ -156,7 +161,7 @@ class PhiAbstract:
         elif isinstance(exclude, str):
             exclude = [exclude]
 
-        includes = []
+        includes: list[Any] = []
         for f in fields:
             if f.name in include:
                 includes.append(f)
@@ -174,7 +179,7 @@ class PhiAbstract:
                 includes.append(f)
         return attrs.filters.include(*includes)
 
-    def phi(self, r: Float_or_ArrayLike) -> NDArray[Any]:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         """
         Pair potential.
 
@@ -191,7 +196,7 @@ class PhiAbstract:
 
         raise NotImplementedError("Must implement in subclass")
 
-    def dphidr(self, r: Float_or_ArrayLike) -> NDArray[Any]:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r"""
         Derivative of pair potential.
 
@@ -248,10 +253,10 @@ class PhiAbstract:
         """
 
         if bounds == "segments":
-            if self.segments is not None:
+            if self.segments is not None:  # pyright: ignore
                 bounds = (self.segments[0], self.segments[-1])
             else:
-                bounds = None
+                bounds = None  # pragma: no cover
 
         if r0 == "mean":
             if bounds is not None:
@@ -262,7 +267,10 @@ class PhiAbstract:
         return minimize_phi(self.phi, r0=r0, bounds=bounds, **kws)
 
     def assign_min_numeric(
-        self, r0: float, bounds: tuple[float, float] | None = None, **kws: Any
+        self,
+        r0: float | Literal["mean"],
+        bounds: tuple[float, float] | Literal["segments"] | None = None,
+        **kws: Any,
     ) -> Self:
         """
         Create new object with minima set by numerical minimization.
@@ -270,7 +278,7 @@ class PhiAbstract:
         call :meth:`minimize`
         """
 
-        r_min, phi_min, output = self.minimize(r0=r0, bounds=bounds, **kws)
+        r_min, phi_min, _ = self.minimize(r0=r0, bounds=bounds, **kws)
         return self.new_like(r_min=r_min, phi_min=phi_min)
 
     def to_nf(self, **kws: Any) -> NoroFrenkelPair:
@@ -357,20 +365,24 @@ class PhiCutBase(PhiAbstract):
     """
 
     #: Instance of (sub)class of :class:`analphipy.base_potential.PhiAbstract`
-    phi_base: PhiBase  # type: ignore[misc]
+    phi_base: PhiBase
     #: Position to cut the potential
-    rcut: float = field(converter=float)  # type: ignore[misc]
+    rcut: float = field(converter=float)
     #: Integration limits
-    segments: Sequence[float] = private_field()
+    segments: Sequence[
+        float
+    ] = private_field()  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __attrs_post_init__(self) -> None:
+        if self.phi_base.segments is None:  # pyright: ignore
+            raise ValueError("must specify segments")  # pragma: no cover
         self._immutable_setattrs(
             segments=tuple(x for x in self.phi_base.segments if x < self.rcut)
             + (self.rcut,)
         )
 
     @docfiller_phiabstract()
-    def phi(self, r: Float_or_ArrayLike) -> NDArray[Any]:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
         v = np.empty_like(r)
 
@@ -384,7 +396,7 @@ class PhiCutBase(PhiAbstract):
         return v
 
     @docfiller_phiabstract()
-    def dphidr(self, r: Float_or_ArrayLike) -> NDArray[Any]:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
         dvdr = np.empty_like(r)
 
@@ -396,16 +408,16 @@ class PhiCutBase(PhiAbstract):
 
         return dvdr
 
-    def _vcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
+    def _vcorrect(self, r: Array) -> Array:
         raise NotImplementedError
 
-    def _dvdrcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
+    def _dvdrcorrect(self, r: Array) -> Array:
         raise NotImplementedError
 
 
 @attrs.frozen
 @docfiller.inherit(PhiCutBase)
-class PhiCut(PhiCutBase):  # type: ignore[misc]
+class PhiCut(PhiCutBase):
     r"""
     Pair potential cut at position ``r_cut``.
 
@@ -431,16 +443,16 @@ class PhiCut(PhiCutBase):  # type: ignore[misc]
         super().__attrs_post_init__()
         self._immutable_setattrs(_vcut=self.phi_base.phi(self.rcut))
 
-    def _vcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
-        return -cast(NDArray[np.float_], self._vcut)
+    def _vcorrect(self, r: Array) -> Array:
+        return -cast("Array", self._vcut)
 
-    def _dvdrcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
+    def _dvdrcorrect(self, r: Array) -> Array:
         return np.array(0.0)
 
 
 @attrs.frozen
 @docfiller.inherit(PhiCutBase)
-class PhiLFS(PhiCutBase):  # type: ignore[misc]
+class PhiLFS(PhiCutBase):
     r"""
     Pair potential cut and linear force shifted at ``r_cut``.
 
@@ -464,13 +476,13 @@ class PhiLFS(PhiCutBase):  # type: ignore[misc]
             _vcut=self.phi_base.phi(self.rcut), _dvdrcut=self.phi_base.dphidr(self.rcut)
         )
 
-    def _vcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
+    def _vcorrect(self, r: Array) -> Array:
         out = -(self._vcut + self._dvdrcut * (r - self.rcut))
-        return cast(NDArray[Any], out)
+        return out
 
-    def _dvdrcorrect(self, r: NDArray[Any]) -> NDArray[Any]:
+    def _dvdrcorrect(self, r: Array) -> Array:
         out = -self._dvdrcut
-        return cast(NDArray[Any], out)
+        return cast("Array", out)
 
 
 @attrs.frozen

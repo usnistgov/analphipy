@@ -1,27 +1,29 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, TypeVar
+from typing import TYPE_CHECKING
 
 import attrs
 import numpy as np
 
 if TYPE_CHECKING:
-    from module_utilities._typing import S
+    from typing import Any, Callable, TypeVar
 
-T = TypeVar("T")
-R = TypeVar("R")
+    # from module_utilities._typing import S
+
+    T = TypeVar("T", bound=Any)
+    R = TypeVar("R")
 
 
-def attrs_clear_cache(self: S, attribute: Any, value: T) -> T:
-    """Clear out _cache if setting value."""
-    self._cache = {}
-    return value
+# def attrs_clear_cache(self: S, attribute: Any, value: T) -> T: # pyright: ignore
+#     """Clear out _cache if setting value."""
+#     self._cache = {} # pyright: ignore[reportPrivateUsage]
+#     return value
 
 
 def optional_converter(converter: Callable[[T], R]) -> Callable[[T], T | R]:
     """Create a converter which can pass through None."""
 
-    def wrapped(value: T) -> T | R:
+    def wrapped(value: T) -> T | R:  # pragma: no cover
         if value in [None, attrs.NOTHING]:
             return value
         else:

@@ -1,9 +1,12 @@
+# mypy: disable-error-code="no-untyped-def, no-untyped-call"
 import numpy as np
 import pytest
 from scipy.misc import derivative
 
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
+
+from analphipy.base_potential import PhiAbstract
 
 
 def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3):
@@ -22,13 +25,16 @@ def factory_lj(lfs=False, cut=False, **kws):
     else:
         rcut = None
 
+    p: PhiAbstract
+
     p = pots.LennardJones(**kws)
 
     if cut:
-        p = p.cut(rcut=rcut)
-    if lfs:
-        p = p.lfs(rcut=rcut)
-    return p
+        return p.cut(rcut=rcut)
+    elif lfs:
+        return p.lfs(rcut=rcut)
+    else:
+        return p
 
 
 BETAS = [0.1, 0.5, 1.0]

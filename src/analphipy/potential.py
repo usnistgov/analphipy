@@ -4,7 +4,7 @@ Classes/routines for pair potentials (:mod:`analphipy.potential`)
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Sequence, cast
+from typing import TYPE_CHECKING
 
 import attrs
 import numpy as np
@@ -13,16 +13,18 @@ from attrs import field
 from ._attrs_utils import field_array_formatter, field_formatter, private_field
 
 if TYPE_CHECKING:
-    from ._typing import Float_or_ArrayLike, Phi_Signature
+    from typing import Any, Literal, Sequence, TypeVar
+
+    from ._typing import Array, ArrayLike, Float_or_ArrayLike, Phi_Signature
 
 
 from ._docstrings import docfiller
-from .base_potential import PhiBase
+from .base_potential import PhiAbstract, PhiBase
 
 docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
 
 
-@attrs.frozen
+@attrs.define(frozen=True)
 @docfiller_phibase(PhiBase)
 class Generic(PhiBase):
     """
@@ -43,19 +45,19 @@ class Generic(PhiBase):
     dphidr_func: Phi_Signature | None = None
 
     @docfiller_phibase()
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
         return self.phi_func(r)
 
     @docfiller_phibase()
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:
         if self.dphidr_func is None:
             raise ValueError("Must specify dphidr_func")
         r = np.asarray(r)
         return self.dphidr_func(r)
 
 
-@attrs.frozen
+@attrs.define(frozen=True)
 @docfiller_phibase(PhiBase)
 class Analytic(PhiBase):
     """
@@ -69,17 +71,23 @@ class Analytic(PhiBase):
     """
 
     #: Position of minimum in :math:`\phi(r)`
-    r_min: float = field(init=False, repr=field_formatter())
+    r_min: float = field(
+        init=False, repr=field_formatter()
+    )  # pyright: ignore[reportIncompatibleVariableOverride]
     #: Value of ``phi`` at minimum.
-    phi_min: float = field(init=False, repr=False)
+    phi_min: float = field(
+        init=False, repr=False
+    )  # pyright: ignore[reportIncompatibleVariableOverride]
     #: Integration limits.
-    segments: float = field(init=False)
+    segments: Sequence[float] = field(
+        init=False
+    )  # pyright: ignore[reportIncompatibleVariableOverride]
 
 
 docfiller_analytic = docfiller.factory_inherit_from_parent(Analytic)
 
 
-@attrs.frozen
+@attrs.define(frozen=True)
 @docfiller_analytic(Analytic)
 class LennardJones(Analytic):
     r"""
@@ -102,7 +110,7 @@ class LennardJones(Analytic):
     #: Energy parameter :math:`\epsilon`
     eps: float = 1.0
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         self._immutable_setattrs(
             r_min=self.sig * 2.0 ** (1.0 / 6.0),
             phi_min=-self.eps,
@@ -110,32 +118,33 @@ class LennardJones(Analytic):
         )
 
     @property
-    def _sigsq(self):
+    def _sigsq(self) -> float:
         return self.sig**2
 
     @property
-    def _four_eps(self):
+    def _four_eps(self) -> float:
         return 4.0 * self.eps
 
     @docfiller_analytic()
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
-        x2 = self._sigsq / (r * r)
-        x6 = x2**3
-        return cast(np.ndarray, self._four_eps * x6 * (x6 - 1.0))
+        x2: Array = self._sigsq / (r * r)
+        x6: Array = x2 * x2 * x2
+        return self._four_eps * x6 * (x6 - 1.0)
 
     @docfiller_analytic()
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:
         """Calculate phi and dphi (=-1/r dphi/dr) at particular r."""
         r = np.array(r)
         rinvsq = 1.0 / (r * r)
 
-        x2 = self._sigsq * rinvsq
-        x6 = x2 * x2 * x2
-        return cast(np.ndarray, -12.0 * self._four_eps * x6 * (x6 - 0.5) / r)
+        x2: Array = self._sigsq * rinvsq
+        x6: Array = x2 * x2 * x2
+
+        return -12.0 * self._four_eps * x6 * (x6 - 0.5) / r
 
 
-@attrs.frozen
+@attrs.define(frozen=True)
 @docfiller_analytic(Analytic)
 class LennardJonesNM(Analytic):
     r"""
@@ -167,7 +176,7 @@ class LennardJonesNM(Analytic):
     sig: float = 1.0  #: Length parameter
     eps: float = 1.0  #: Energy parameter
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         n, m = self.n, self.m
 
         self._immutable_setattrs(
@@ -177,30 +186,34 @@ class LennardJonesNM(Analytic):
         )
 
     @property
-    def _prefac(self):
+    def _prefac(self) -> float:
         n, m, eps = self.n, self.m, self.eps
-        return eps * (n / (n - m)) * (n / m) ** (m / (n - m))
+        out = eps * (n / (n - m)) * (n / m) ** (m / (n - m))
+        if isinstance(out, float):
+            return out
+        else:
+            raise ValueError(f"Bad parameters lead to unknown prefac {out}")
 
     @docfiller_analytic()
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
 
         x = self.sig / r
         out = self._prefac * (x**self.n - x**self.m)
-        return cast(np.ndarray, out)
+        return out
 
     @docfiller_analytic()
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
         x = self.sig / r
 
         xn = x**self.n
         xm = x**self.m
 
-        return cast(np.ndarray, -self._prefac * (self.n * xn - self.m * xm) / (r))
+        return -self._prefac * (self.n * xn - self.m * xm) / (r)
 
 
-@attrs.frozen
+@attrs.define(frozen=True)
 @docfiller_analytic(Analytic)
 class Yukawa(Analytic):
     r"""
@@ -231,7 +244,7 @@ class Yukawa(Analytic):
     sig: float = 1.0  #: Length parameter
     eps: float = 1.0  #: Energy parameter
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         self._immutable_setattrs(
             r_min=self.sig,
             phi_min=self.eps,
@@ -239,7 +252,7 @@ class Yukawa(Analytic):
         )
 
     @docfiller_analytic()
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         sig, eps = self.sig, self.eps
 
         r = np.array(r)
@@ -253,7 +266,7 @@ class Yukawa(Analytic):
         return phi
 
 
-@attrs.frozen
+@attrs.define(frozen=True)
 @docfiller_analytic(Analytic)
 class HardSphere(Analytic):
     r"""
@@ -275,11 +288,11 @@ class HardSphere(Analytic):
 
     sig: float = 1.0  #: Length parameter
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         self._immutable_setattrs(segments=(0.0, self.sig))
 
     @docfiller_analytic()
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
 
         phi = np.empty_like(r)
@@ -290,7 +303,7 @@ class HardSphere(Analytic):
         return phi
 
 
-@attrs.frozen
+@attrs.define(frozen=True)
 @docfiller_analytic(Analytic)
 class SquareWell(Analytic):
     r"""
@@ -320,7 +333,7 @@ class SquareWell(Analytic):
     eps: float = 1.0  #: Energy parameter.
     lam: float = 1.5  #: Well width parameter.
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         self._immutable_setattrs(
             r_min=self.sig,
             phi_min=self.eps,
@@ -328,7 +341,7 @@ class SquareWell(Analytic):
         )
 
     @docfiller_analytic()
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         sig, eps, lam = self.sig, self.eps, self.lam
 
         r = np.array(r)
@@ -346,11 +359,19 @@ class SquareWell(Analytic):
         return phi
 
 
-def _validate_bounds(self, attribute, bounds):
+def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None:
     assert len(bounds) == 2, "length of bounds must be 2"
 
 
-@attrs.frozen
+# def _convert_bounds(bounds: Sequence[float]) -> Sequence[float]:
+#     return tuple(bounds)
+
+
+if TYPE_CHECKING:
+    T_CubicTable = TypeVar("T_CubicTable", bound="CubicTable")
+
+
+@attrs.define(frozen=True)
 @docfiller_phibase(PhiBase)
 class CubicTable(PhiBase):
     """
@@ -371,11 +392,11 @@ class CubicTable(PhiBase):
     """
 
     #: Minimum and maximum values of squared pair separation :math:`r^2`
-    bounds: Sequence[float] = field(validator=_validate_bounds, converter=tuple)
+    bounds: Sequence[float] = field(
+        validator=_validate_bounds
+    )  # validator=_validate_bounds, converter=tuple)
     #: Values of potential evaluated on even grid of :math:`r^2` values.
-    phi_table: Float_or_ArrayLike = field(
-        factory=np.array, converter=np.asarray, repr=field_array_formatter()
-    )
+    phi_table: ArrayLike = field(converter=np.asarray, repr=field_array_formatter())
     #: value of `phi` at left bound (`r < bounds[0]`)
     phi_left: float = field(converter=float, default=np.inf)
     #: value of `phi` at right bound (`r > bounds[1]`)
@@ -389,7 +410,9 @@ class CubicTable(PhiBase):
     _ds: float = private_field()
     _dsinv: float = private_field()
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
+        assert isinstance(self.phi_table, np.ndarray)
+
         ds = (self.bounds[1] - self.bounds[0]) / self.size
 
         self._immutable_setattrs(
@@ -397,11 +420,18 @@ class CubicTable(PhiBase):
             _dsinv=1.0 / ds,
         )
 
-        if self.segments is None:
+        if self.segments is None:  # pyright: ignore
             self._immutable_setattrs(segments=tuple(np.sqrt(x) for x in self.bounds))
 
     @classmethod
-    def from_phi(cls, phi: Phi_Signature, rmin: float, rmax: float, ds: float, **kws):
+    def from_phi(
+        cls: type[T_CubicTable],
+        phi: Phi_Signature,
+        rmin: float,
+        rmax: float,
+        ds: float,
+        **kws: Any,
+    ) -> T_CubicTable:
         """
         Create object from callable pair potential function.
 
@@ -424,22 +454,22 @@ class CubicTable(PhiBase):
         -------
         table : CubicTable
         """
-        bounds = (rmin * rmin, rmax * rmax)
+        bounds: tuple[float, float] = (rmin * rmin, rmax * rmax)
 
         delta = bounds[1] - bounds[0]
 
         size = int(delta / ds)
         ds = delta / size
 
-        phi_table = []
-
-        r = np.sqrt(np.arange(size + 1) * ds + bounds[0])
+        r: Array = np.sqrt(
+            np.arange(size + 1) * ds + bounds[0]
+        )  # pyright: ignore[reportUnknownMemberType]
 
         phi_table = phi(r)
 
         return cls(bounds=bounds, phi_table=phi_table, **kws)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.phi_table)
 
     @property
@@ -457,7 +487,7 @@ class CubicTable(PhiBase):
         """Maximum value of `s = r**2`."""
         return self.bounds[1]
 
-    def phidphi(self, r: Float_or_ArrayLike) -> tuple[np.ndarray, np.ndarray]:
+    def phidphi(self, r: Float_or_ArrayLike) -> tuple[Array, Array]:
         """Values of `phi` and `dphi` at `r`."""
         r = np.asarray(r)
 
@@ -482,7 +512,9 @@ class CubicTable(PhiBase):
 
             xi = sds - k
 
-            t = np.take(self.phi_table, [k, k + 1, k + 2], mode="clip")
+            t: Array = np.take(
+                self.phi_table, [k, k + 1, k + 2], mode="clip"
+            )  # pyright: ignore[reportUnknownMemberType]
             dt = np.diff(t, axis=0)
             ddt = np.diff(dt, axis=0)
 
@@ -491,27 +523,30 @@ class CubicTable(PhiBase):
         return v, dv
 
     @docfiller_phibase()
-    def phi(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def phi(self, r: Float_or_ArrayLike) -> Array:
         return self.phidphi(r)[0]
 
     @docfiller_phibase()
-    def dphidr(self, r: Float_or_ArrayLike) -> np.ndarray:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
-        return cast(np.ndarray, -r * self.phidphi(r)[1])
+        return -r * self.phidphi(r)[1]
 
     @property
-    def rsq_table(self):
+    def rsq_table(self) -> Array:
         """Value of ``r**2`` where potential is defined."""
 
-        return self.smin + np.arange(self.size + 1) * self._ds
+        return (
+            self.smin + np.arange(self.size + 1) * self._ds
+        )  # pyright: ignore[reportUnknownMemberType]
 
     @property
-    def r_table(self):
+    def r_table(self) -> Array:
         """Values of ``r`` where potential is defined."""
         return np.sqrt(self.rsq_table)
 
 
-_PHI_NAMES = Literal["lj", "nm", "sw", "hs", "yk", "LJ", "NM", "SW", "HS", "YK"]
+if TYPE_CHECKING:
+    _PHI_NAMES = Literal["lj", "nm", "sw", "hs", "yk", "LJ", "NM", "SW", "HS", "YK"]
 
 
 def factory(
@@ -519,8 +554,8 @@ def factory(
     rcut: float | None = None,
     lfs: bool = False,
     cut: bool = False,
-    **kws,
-) -> PhiBase:
+    **kws: Any,
+) -> PhiAbstract:
     """
     Factory function to construct Phi object by name.
 
@@ -551,7 +586,7 @@ def factory(
 
     name = potential_name.lower()
 
-    phi: PhiBase
+    phi: PhiAbstract
 
     if name == "lj":
         phi = LennardJones(**kws)

@@ -12,6 +12,7 @@ dependencies:
   - numpy
   - scipy
   - docstring-inheritance
+  - module-utilities >= 0.6
   - ipython
   - pyenchant
   - ghp-import
@@ -24,6 +25,3 @@ dependencies:
   - autodocsumm
   - matplotlib
   - pandas
-  - pip
-  - pip:
-      - module-utilities >= 0.6
