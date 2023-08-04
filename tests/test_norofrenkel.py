@@ -1,3 +1,4 @@
+# mypy: disable-error-code="no-untyped-def, no-untyped-call"
 from pathlib import Path
 
 import numpy as np
@@ -7,9 +8,37 @@ import pandas as pd
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
+from analphipy.base_potential import PhiAbstract
+
+import pytest
+
 data = Path(__file__).parent / "data"
 
 nsamp = 20
+
+
+def test_simple():
+    p = pots.LennardJones()
+
+    n = p.to_nf()
+
+    np.testing.assert_allclose(n.secondvirial(1.0), n.secondvirial_sw(1.0))  # type: ignore
+
+    np.testing.assert_allclose(n.secondvirial(1.0), n.B2_sw(1.0))  # type: ignore
+
+    with pytest.raises(ValueError):
+        n.lam(beta=1.0, err=True)
+
+    with pytest.raises(ValueError):
+        n.sw_dict(beta=1.0, err=True)
+
+    with pytest.raises(ValueError):
+        n.lam_dbeta(beta=1.0, err=True)
+
+    with pytest.raises(ValueError):
+        n.secondvirial_sw(beta=1.0, err=True)
+
+    assert isinstance(n.sw_dict(1.0), dict)
 
 
 def test_nf_sw():
@@ -24,7 +53,7 @@ def test_nf_sw():
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
 
-        out = a.table(g["beta"], cols)
+        out = a.table(g["beta"], props=None)  # type: ignore
 
         for col in cols:
             left = col + "_eff"
@@ -46,6 +75,8 @@ def test_nf_lj():
     sig = eps = 1.0
     p_base = pots.LennardJones(sig=sig, eps=eps)
 
+    p: PhiAbstract
+
     for (rcut, tail), g in df.groupby(["rcut", "tail"]):
         if tail == "LFS":
             p = p_base.lfs(rcut=rcut)
@@ -58,7 +89,7 @@ def test_nf_lj():
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
-        out = a.table(g["beta"], cols)
+        out = a.table(g["beta"], cols)  # type: ignore
 
         for col in cols:
             left = col + "_eff"
@@ -84,7 +115,7 @@ def test_nf_nm():
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
-        out = a.table(g["beta"], cols)
+        out = a.table(g["beta"], cols)  # type: ignore
 
         for col in cols:
             left = col + "_eff"
@@ -105,11 +136,11 @@ def test_nf_yk():
     sig = eps = 1.0
 
     for (z_yukawa), g in df.groupby("z_yukawa"):
-        p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)
+        p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)  # type: ignore
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)
 
-        out = a.table(g["beta"], cols)
+        out = a.table(g["beta"], cols)  # type: ignore
 
         for col in cols:
             left = col + "_eff"

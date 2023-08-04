@@ -5,39 +5,41 @@ from __future__ import annotations
 # from ._docfiller import DocFiller
 from module_utilities.docfiller import DocFiller
 
-_docstrings_shared = """
-Parameters
-----------
-segments : sequence of int
-    Integration limits. For ``n = len(segments)`` integration will be performed over ranges
-    ``(segments[0], segments[1]), (segments[1], segments[2]), ..., (segments[n-2], segments[n-]])``
-phi_rep : callable
-    Repulsive part of pair potential.
-beta : float
-    Inverse temperature.
-phi : callable
-    Potential function.
-r : float or array-like
-    Pair separation distance(s).
-quad_kws : mapping, optional
-    Extra arguments to :func:`analphipy.utils.quad_segments`
-r_min_exact | r_min : float
-    Location of minimum in potential energy.
-phi_min_exact | phi_min : float, optional
-    Value of potential energy at minimum.
-full_output : bool, optional
-    If True, return extra information.
-err : bool, optional
-    If True, return error.
-error_summed | error : float, optional
-    Total integration error. Returned if ``err`` or ``full_output`` are `True`.
-full_output_summed | outputs : object
-    Output(s) from :func:`scipy.integrate.quad`.  Returned if ``full_output`` is True.
-volume_int_func | volume : str or callable, optional
-    Volume element in integration.
-    For example, use ``volume = lambda x: 4 * np.pi * x ** 2`` for spherically symmetric 3d integration.
-    Can also pass string value of {'1d', '2d', '3d'}.  If passed None, then assume '1d' integration.
-"""
+
+def _docstrings_shared() -> None:
+    """
+    Parameters
+    ----------
+    segments : sequence of int
+        Integration limits. For ``n = len(segments)`` integration will be performed over ranges
+        ``(segments[0], segments[1]), (segments[1], segments[2]), ..., (segments[n-2], segments[n-]])``
+    phi_rep : callable
+        Repulsive part of pair potential.
+    beta : float
+        Inverse temperature.
+    phi : callable
+        Potential function.
+    r : float or array-like
+        Pair separation distance(s).
+    quad_kws : mapping, optional
+        Extra arguments to :func:`analphipy.utils.quad_segments`
+    r_min_exact | r_min : float
+        Location of minimum in potential energy.
+    phi_min_exact | phi_min : float, optional
+        Value of potential energy at minimum.
+    full_output : bool, optional
+        If True, return extra information.
+    err : bool, optional
+        If True, return error.
+    error_summed | error : float, optional
+        Total integration error. Returned if ``err`` or ``full_output`` are `True`.
+    full_output_summed | outputs : object
+        Output(s) from :func:`scipy.integrate.quad`.  Returned if ``full_output`` is True.
+    volume_int_func | volume : str or callable, optional
+        Volume element in integration.
+        For example, use ``volume = lambda x: 4 * np.pi * x ** 2`` for spherically symmetric 3d integration.
+        Can also pass string value of {'1d', '2d', '3d'}.  If passed None, then assume '1d' integration.
+    """
 
 
 _references = {
@@ -49,9 +51,6 @@ _references = {
 }
 
 
-DOCFILLER_SHARED = DocFiller.from_docstring(
+docfiller = DocFiller.from_docstring(
     _docstrings_shared, combine_keys="parameters"
 ).update(**_references)
-
-
-docfiller_shared = DOCFILLER_SHARED()

@@ -11,7 +11,7 @@ pip install analphipy
 or
 
 ```bash
-conda install -c wpk-nist analphipy
+conda install -c conda-forge analphipy
 ```
 
 This is the preferred method to install analphipy, as it will always install the
@@ -36,8 +36,19 @@ pip install .
 To install dependencies with conda/mamba, use:
 
 ```bash
-conda env create [-n {name}] -f environment.yaml
+conda env create [-n {name}] -f environment/base.yaml
+conda activate {name}
 pip install [-e] --no-deps .
 ```
+
+If `environment/base.yaml` does not exist, it can be generated with:
+
+```bash
+pip/pipx install pyproject2conda
+pyproject2conda yaml -o environment/base.yaml
+```
+
+where options in brackets are options (for environment name, and editable
+install, repectively).
 
 [github repo]: https://github.com/usnistgov/analphipy

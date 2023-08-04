@@ -10,16 +10,8 @@ from . import measures, norofrenkel, potential
 
 # updated versioning scheme
 try:
-    from importlib.metadata import version as _version
-except ImportError:
-    # if the fallback library is missing, we are doomed.
-    from importlib_metadata import version as _version
-
-try:
-    __version__ = _version("analphipy")
-except Exception:
-    # Local copy or not installed with setuptools.
-    # Disable minimum version checks on downstream libraries.
+    from ._version import __version__
+except Exception:  # pragma: no cover
     __version__ = "999"
 
 

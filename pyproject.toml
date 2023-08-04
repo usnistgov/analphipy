@@ -31,8 +31,8 @@ dependencies = [
     "typing-extensions",
     "numpy",
     "scipy",
-    "custom-inherit",
-    "module-utilities >= 0.1",
+    "docstring-inheritance",
+    "module-utilities >= 0.6",
 ]
 
 [project.urls]
@@ -41,13 +41,79 @@ documentation = "https://pages.nist.gov/analphipy/"
 
 [project.optional-dependencies]
 test = [
+    "pytest", #
+    "pytest-xdist", #
+    "pytest-cov",
+    "pytest-sugar",
     "pandas",
-    "pytest",
-    # "pytest-mypy",
-    # "mypy",
-
+]
+dev-extras = [
+    "setuptools-scm", #
+    "pytest-accept", # p2c: -p
+    "ipython",
+    "ipykernel",
+    "matplotlib",
+    "pandas",
+]
+typing-extras = [
+    "pytype; python_version < '3.11'", #
+    # "mypy-extensions", ## p2c: -p
+    # "pytest-monkeytype", ## p2c: -p
+    "mypy >=1.4.1",
+    "pandas-stubs",
+]
+typing = [
+    "analphipy[typing-extras]", #
+    "analphipy[test]",
+]
+nox = [
+    "nox",
+    "noxopt", # p2c: -p
+    "ruamel.yaml",
+]
+dev = [
+    "analphipy[test]", #
+    "analphipy[typing-extras]",
+    "analphipy[dev-extras]",
+]
+tools = [
+    "pre-commit", #
+    "cruft",
+    "scriv",
+]
+dev-complete = [
+    "analphipy[dev]", #
+    "analphipy[tools]",
+    "analphipy[nox]",
+]
+docs = [
+    "ipython", #
+    "pyenchant",
+    "ghp-import",
+    "sphinx",
+    "sphinx-copybutton",
+    "sphinxcontrib-spelling",
+    "sphinx-autobuild",
+    "myst-nb",
+    "sphinx-book-theme",
+    "autodocsumm",
+    "matplotlib",
+    "pandas",
+]
+# to be parsed with pyproject2conda with --no-base option
+dist-pypi = ["twine", "build"]
+dist-conda = [
+    "anaconda-client", #
+    "grayskull",
+    "conda-build",
+    "conda-verify",
+    "boa",
 ]
 
+[tool.pyproject2conda]
+channels = ["conda-forge"]
+
+## grayskull still messes some things up, but use scripts/recipe-append.sh for this
 [tool.setuptools]
 zip-safe = true # if using mypy, must be False
 include-package-data = true
@@ -68,23 +134,32 @@ readme = { file = [
 
 [tool.setuptools_scm]
 fallback_version = "999"
+write_to = "src/analphipy/_version.py"
 
 [tool.aliases]
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--verbose"
-testpaths = ["tests"]
+addopts = "--doctest-modules --doctest-glob='*.md'"
+testpaths = ["README.md", "src", "tests"]
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:", "@overload"]
+omit = ["*/vendored/*"]
+include = ["src/*"]
 
 [tool.isort]
 profile = "black"
 skip_gitignore = true
 known_first_party = ["analphipy"]
 
+[tool.pydocstringformatter]
+write = true
+style = "numpydoc"
+
 [tool.ruff]
 fix = true
 line-length = 88
-update-check = false
 target-version = "py38"
 select = [
     # pyflakes
@@ -236,13 +311,16 @@ show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
-exclude = [".eggs", ".tox", "doc", "docs"]
+exclude = [".eggs", ".tox", "doc", "docs", ".nox"]
+# stricter
+check_untyped_defs = true
+strict = true
 
 # check_untyped_defs = true
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
 module = [
-    "custom_inherit",
+    "ruamel.yaml",
     "scipy.integrate.*",
     "scipy.optimize.*",
     "scipy.misc.*"
@@ -254,8 +332,9 @@ module = []
 
 [tool.pyright]
 include = ["src", "tests"]
-exclude = ["**/__pycache__", ".tox/**", "**/.mypy_cache"]
+exclude = ["**/__pycache__", ".tox/**", ".nox/**", "**/.mypy_cache"]
 pythonVersion = "3.10"
+strict = ["src", "tools/noxfile.py"] # noxfile.py
 typeCheckingMode = "basic"
 # enable subset of "strict"
 reportDuplicateImport = true

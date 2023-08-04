@@ -1,20 +1,30 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import attrs
 import numpy as np
 
+if TYPE_CHECKING:
+    from typing import Any, Callable, TypeVar
 
-def attrs_clear_cache(self, attribute, value):
-    """Clear out _cache if setting value"""
-    self._cache = {}
-    return value
+    # from module_utilities._typing import S
+
+    T = TypeVar("T", bound=Any)
+    R = TypeVar("R")
 
 
-def optional_converter(converter):
-    """Create a converter which can pass through None"""
+# def attrs_clear_cache(self: S, attribute: Any, value: T) -> T: # pyright: ignore
+#     """Clear out _cache if setting value."""
+#     self._cache = {} # pyright: ignore[reportPrivateUsage]
+#     return value
 
-    def wrapped(value):
-        if value is None or attrs.NOTHING:
+
+def optional_converter(converter: Callable[[T], R]) -> Callable[[T], T | R]:
+    """Create a converter which can pass through None."""
+
+    def wrapped(value: T) -> T | R:  # pragma: no cover
+        if value in [None, attrs.NOTHING]:
             return value
         else:
             return converter(value)
@@ -22,27 +32,27 @@ def optional_converter(converter):
     return wrapped
 
 
-def field_formatter(fmt: str = "{:.5g}"):
+def field_formatter(fmt: str = "{:.5g}") -> Callable[[Any], str]:
     """Formatter for attrs field."""
 
     @optional_converter
-    def wrapped(value):
+    def wrapped(value: Any) -> str:
         return fmt.format(value)
 
     return wrapped
 
 
-def field_array_formatter(threshold=3, **kws):
-    """Formatter for numpy array field"""
+def field_array_formatter(threshold: int = 3, **kws: Any) -> Callable[[Any], str]:
+    """Formatter for numpy array field."""
 
     @optional_converter
-    def wrapped(value):
+    def wrapped(value: Any) -> str:
         with np.printoptions(threshold=threshold, **kws):
             return str(value)
 
     return wrapped
 
 
-def private_field(init=False, repr=False, **kws):
+def private_field(init: bool = False, repr: bool = False, **kws: Any) -> Any:
     """Create a private attrs field."""
-    return attrs.field(init=init, repr=repr, **kws)
+    return attrs.field(init=init, repr=repr, **kws)  # pytype: disable=not-supported-yet

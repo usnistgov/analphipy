@@ -1,8 +1,60 @@
+# mypy: disable-error-code="no-untyped-def, no-untyped-call"
 import numpy as np
 
 from analphipy import potential as pots
 
-# import pytest
+from analphipy.base_potential import PhiAbstract
+
+import pytest
+
+
+def test_asdict():
+    p_lj = pots.LennardJones(sig=1.5, eps=1.5)
+
+    p = p_lj
+
+    assert p.asdict() == {"sig": 1.5, "eps": 1.5}
+
+    p_new = p.new_like(sig=1.0, eps=1.0)
+
+    assert p_new.asdict() == {"sig": 1.0, "eps": 1.0}
+
+    assert p.assign(sig=2.0).asdict() == {"sig": 2.0, "eps": 1.5}
+
+    pa = PhiAbstract()
+
+    with pytest.raises(NotImplementedError):
+        pa.phi(1.0)
+
+    with pytest.raises(NotImplementedError):
+        pa.dphidr(1.0)
+
+    from analphipy.base_potential import PhiCutBase
+
+    p = PhiCutBase(p_lj, rcut=2.5)  # type: ignore
+
+    with pytest.raises(NotImplementedError):
+        p.phi(1.0)
+
+    with pytest.raises(NotImplementedError):
+        p.dphidr(1.0)
+
+    p_lj = pots.LennardJones()
+
+    p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(1.1, bounds=(0.5, 1.5))
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore
+
+    p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(1.1, bounds="segments")
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore
+
+    p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(r0="mean", bounds=(0.5, 1.5))
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919, atol=1e-5)  # type: ignore
+
+    with pytest.raises(ValueError):
+        p_lj.lfs(rcut=2.5).assign_min_numeric(r0="mean", bounds=None)
+
+    with pytest.raises(ValueError):
+        p_lj.lfs(rcut=2.5).to_nf()
 
 
 def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):

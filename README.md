@@ -20,8 +20,8 @@
 [docs-link]: https://pages.nist.gov/analphipy/
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff
 [repo-link]: https://github.com/usnistgov/analphipy
-[conda-badge]: https://img.shields.io/conda/v/wpk-nist/analphipy
-[conda-link]: https://anaconda.org/wpk-nist/analphipy
+[conda-badge]: https://img.shields.io/conda/v/conda-forge/analphipy
+[conda-link]: https://anaconda.org/conda-forge/analphipy
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
 
@@ -66,13 +66,28 @@ pip install analphipy
 or
 
 ```bash
-conda install -c wpk-nist analphipy
+conda install -c conda-forge analphipy
 ```
 
 ## Example usage
 
-```python
-import analphipy
+```pycon
+# Create a Lennard-Jones potential
+>>> import analphipy
+>>> p = analphipy.potential.LennardJones(sig=1.0, eps=1.0)
+
+# Get a Noro-Frenekl analysis object
+>>> n = p.to_nf()
+
+# Get effective parameters at inverse temperature beta
+>>> n.sig(beta=1.0)
+1.01560...
+
+>>> n.eps(beta=1.0)
+-1.0
+
+>>> n.lam(beta=1.0)
+1.44097...
 
 ```
 
@@ -88,7 +103,7 @@ This is free software. See [LICENSE][license-link].
 
 ## Contact
 
-The author can be reached at wpk@nist.gov.
+The author can be reached at <wpk@nist.gov>.
 
 ## Credits
 
@@ -101,3 +116,9 @@ This package was created with [Cookiecutter] and the
 [cookiecutter]: https://github.com/audreyr/cookiecutter
 [wpk-nist-gov/cookiecutter-pypackage]:
   https://github.com/wpk-nist-gov/cookiecutter-pypackage
+
+## TODO
+
+- [ ] remove `# type: ignore` from potentials.py, base_potentials.py
+- [ ] add back `check_untyped_defs` to pyproject.toml mypy config
+- [ ] remove use of `custom_inherit`

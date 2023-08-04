@@ -1,14 +1,11 @@
 ---
-# pre-commt install
+# pre-commit install
 # pre-commit run --all-files
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 default_install_hook_types:
   - pre-commit
   - commit-msg
-
-# default_stages: [commit]
-
 repos:
   #* Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -22,28 +19,25 @@ repos:
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
-  - repo: https://github.com/pre-commit/pre-commit
-    rev: v3.2.2
-    hooks:
-      - id: validate_manifest
   #* Formatting
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v3.0.0-alpha.6" # Use the sha / tag you want to point at
+    rev: "v3.0.0"
     hooks:
       - id: prettier
         stages: [commit]
         additional_dependencies:
           - prettier-plugin-toml
+        exclude: ^environment/lock/.*[.]yml
   #** markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.6.0
+    rev: v0.8.1
     hooks:
       - id: markdownlint-cli2
         args: ["--style prettier"]
   #* Linting
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
-    rev: "v0.0.261"
+    rev: "v0.0.277"
     hooks:
       - id: ruff
   - repo: https://github.com/psf/black
@@ -52,14 +46,13 @@ repos:
       # - id: black-jupyter
       # Move to just black.  use nbqa for notebook formatting
       - id: black
-  # blacken-docs
   - repo: https://github.com/adamchainz/blacken-docs
-    rev: "1.13.0" # replace with latest tag on GitHub
+    rev: "1.15.0"
     hooks:
       - id: blacken-docs
         additional_dependencies:
           - black==23.3.0
-        exclude: ^README.md
+        # exclude: ^README.md
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.7.0
     hooks:
@@ -67,10 +60,14 @@ repos:
         additional_dependencies: [ruff]
       - id: nbqa-black
         additional_dependencies: [black]
+  # - repo: https://github.com/DanielNoord/pydocstringformatter
+  #   rev: "v0.7.3"
+  #   hooks:
+  #     - id: pydocstringformatter
 
   #* Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.0.1
+    rev: 3.5.2
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -105,7 +102,7 @@ repos:
       - id: isort
         stages: [manual]
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
+    rev: v3.9.0
     hooks:
       - id: pyupgrade
         stages: [manual]
@@ -133,7 +130,7 @@ repos:
         stages: [manual]
   #** spelling
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.4
+    rev: v2.2.5
     hooks:
       - id: codespell
         types_or: [python, rst, markdown, cython, c]

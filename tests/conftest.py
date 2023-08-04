@@ -1,4 +1,9 @@
+# mypy: disable-error-code="no-untyped-def, no-untyped-call"
+from __future__ import annotations
+
 from dataclasses import asdict, dataclass
+from typing import Iterable, Any
+from typing_extensions import Self
 
 import numpy as np
 import pytest
@@ -6,7 +11,7 @@ import pytest
 
 def phidphi_lj(r, sig=1.0, eps=1.0):
     """
-    lennard jones potential and radial force
+    Lennard jones potential and radial force.
 
     Returns
     -------
@@ -94,12 +99,18 @@ def get_r(rmin, rmax, n=100):
     return np.linspace(rmin, rmax, n)
 
 
-def kws_to_ld(**kws):
+def kws_to_ld(**kws: Iterable[Any]) -> list[dict[str, Any]]:
     return [dict(zip(kws, t)) for t in zip(*kws.values())]
 
 
 @dataclass
 class Base_params:
+    def __post_init__(self):
+        self.r = None
+
+    def phidphi(self, r):
+        raise NotImplementedError
+
     def get_phidphi(self):
         if hasattr(self, "phidphi"):
             return self.phidphi(self.r)
@@ -113,7 +124,11 @@ class Base_params:
         return self.phi(self.r)
 
     @classmethod
-    def get_objects(cls, N=10):
+    def get_params(cls, N):
+        raise NotImplementedError
+
+    @classmethod
+    def get_objects(cls, N=10) -> Iterable[Self]:
         for params in cls.get_params(N=N):
             yield cls(**params)
 
@@ -194,7 +209,7 @@ class NM_params(LJ_params):
         m = [6, 7, 6, 9]
 
         if N is None:
-            n = len(n)
+            N = len(n)
 
         return kws_to_ld(sig=np.random.rand(N), eps=np.random.rand(N), n=n, m=m)
 
@@ -206,7 +221,7 @@ def nm_params(request):
 
 def phi_sw(r, sig=1.0, eps=-1.0, lam=1.5):
     """
-    Square well potential with value
+    Square well potential with value.
 
     * inf : r < sig
     * eps : sig <= r < lam * sig
@@ -234,9 +249,6 @@ class SW_params(LJ_params):
 
     def phi(self, r):
         return phi_sw(r, sig=self.sig, eps=self.eps, lam=self.lam)
-
-    def get_phi(self):
-        return self.phi(self.r)
 
     @classmethod
     def get_params(cls, N=10):
@@ -269,10 +281,7 @@ class YK_params(LJ_params):
     z: float
 
     def phi(self, r):
-        return phi_yk(self.r)
-
-    def get_phi(self):
-        return phi_yk(self.r, sig=self.sig, eps=self.eps, z=self.z)
+        return phi_yk(r, z=self.z, sig=self.sig, eps=self.eps)
 
     @classmethod
     def get_params(cls, N=10):
@@ -307,7 +316,7 @@ class HS_params(Base_params):
     def __post_init__(self):
         self.r = get_r(rmin=0.1 * self.sig, rmax=2 * self.sig, n=100)
 
-    def get_phi(self):
+    def phi(self, r):
         return phi_hs(self.r, sig=self.sig)
 
     @classmethod
