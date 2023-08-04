@@ -91,9 +91,6 @@ RUN_OPT = Option(
 CMD_OPT = Option(nargs="*", type=str, help="cmd to be run")
 LOCK_OPT = Option(type=bool, help="If True, use conda-lock")
 
-SeqStr = Sequence[str]
-SeqSeqStr = Sequence[Sequence[str]]
-
 
 def opts_annotated(**kwargs: Any):  # type: ignore
     return Annotated[list[str], replace(OPTS_OPT, **kwargs)]
