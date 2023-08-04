@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Installation &#8212; analphipy v0.2.0 documentation</title>
+    <title>Installation &#8212; analphipy v0.3.0 documentation</title>
   
   
   
@@ -130,7 +130,7 @@
   
   
   
-    <p class="title logo__title">analphipy v0.2.0 documentation</p>
+    <p class="title logo__title">analphipy v0.3.0 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
@@ -177,6 +177,7 @@
 
 
 <li class="toctree-l2"><a class="reference internal" href="reference/generated/analphipy.utils.html">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
+
 
 
 
@@ -431,10 +432,18 @@ most recent stable release.</p>
 </pre></div>
 </div>
 <p>To install dependencies with conda/mamba, use:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span><span class="o">[</span>-n<span class="w"> </span><span class="o">{</span>name<span class="o">}]</span><span class="w"> </span>-f<span class="w"> </span>environment.yaml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span><span class="o">[</span>-n<span class="w"> </span><span class="o">{</span>name<span class="o">}]</span><span class="w"> </span>-f<span class="w"> </span>environment/base.yaml
+conda<span class="w"> </span>activate<span class="w"> </span><span class="o">{</span>name<span class="o">}</span>
 pip<span class="w"> </span>install<span class="w"> </span><span class="o">[</span>-e<span class="o">]</span><span class="w"> </span>--no-deps<span class="w"> </span>.
 </pre></div>
 </div>
+<p>If <code class="docutils literal notranslate"><span class="pre">environment/base.yaml</span></code> does not exist, it can be generated with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip/pipx<span class="w"> </span>install<span class="w"> </span>pyproject2conda
+pyproject2conda<span class="w"> </span>yaml<span class="w"> </span>-o<span class="w"> </span>environment/base.yaml
+</pre></div>
+</div>
+<p>where options in brackets are options (for environment name, and editable
+install, repectively).</p>
 </section>
 </section>
 
@@ -520,7 +529,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2023-05-12.
+  Last updated on 2023-08-04.
   <br/>
 </p>
   </div>

@@ -4,7 +4,6 @@
 
 genindex
 modindex
-
 ```
 
 <!-- # Indices and tables -->

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Utilities module (analphipy.utils) &#8212; analphipy v0.2.0 documentation</title>
+    <title>Utilities module (analphipy.utils) &#8212; analphipy v0.3.0 documentation</title>
   
   
   
@@ -130,7 +130,7 @@
   
   
   
-    <p class="title logo__title">analphipy v0.2.0 documentation</p>
+    <p class="title logo__title">analphipy v0.3.0 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
@@ -177,6 +177,7 @@
 
 
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
+
 
 
 
@@ -393,6 +394,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.combine_segmets"><code class="docutils literal notranslate"><span class="pre">combine_segmets()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.is_float"><code class="docutils literal notranslate"><span class="pre">is_float()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.quad_segments"><code class="docutils literal notranslate"><span class="pre">quad_segments()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.minimize_phi"><code class="docutils literal notranslate"><span class="pre">minimize_phi()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.segments_to_segments_cut"><code class="docutils literal notranslate"><span class="pre">segments_to_segments_cut()</span></code></a></li>
@@ -417,24 +419,27 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.utils.combine_segmets" title="analphipy.utils.combine_segmets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_segmets</span></code></a>(a, b)</p></td>
 <td><p>Combine two lists of segments.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.utils.quad_segments" title="analphipy.utils.quad_segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_segments</span></code></a>(func, segments[, args, ...])</p></td>
-<td><p>Perform quadrature with discontinuities</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.utils.is_float" title="analphipy.utils.is_float"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_float</span></code></a>(val)</p></td>
+<td><p>Type guard for float.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_phi</span></code></a>(phi, r0[, bounds])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.utils.quad_segments" title="analphipy.utils.quad_segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_segments</span></code></a>(func, segments[, args, ...])</p></td>
+<td><p>Perform quadrature with discontinuities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_phi</span></code></a>(phi, r0[, bounds])</p></td>
 <td><p>Find value of <code class="docutils literal notranslate"><span class="pre">r</span></code> which minimized <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.utils.segments_to_segments_cut" title="analphipy.utils.segments_to_segments_cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments_to_segments_cut</span></code></a>(segments, rcut)</p></td>
-<td><p>Update segments for 'cut' potential</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.utils.segments_to_segments_cut" title="analphipy.utils.segments_to_segments_cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments_to_segments_cut</span></code></a>(segments, rcut)</p></td>
+<td><p>Update segments for 'cut' potential.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="analphipy.utils.combine_segmets">
-<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">combine_segmets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L39-L54"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.combine_segmets" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">combine_segmets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L26-L41"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.combine_segmets" title="Permalink to this definition">#</a></dt>
 <dd><p>Combine two lists of segments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>a, b</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v1.24)"><span class="xref std std-term">array-like</span></a>) – list of segments.</p>
+<dd class="field-odd"><p><strong>a, b</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v1.25)"><span class="xref std std-term">array-like</span></a>) – list of segments.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>combined</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – sorted unique values for <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
@@ -443,9 +448,16 @@ document.write(`
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="analphipy.utils.is_float">
+<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">is_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L44-L50"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.is_float" title="Permalink to this definition">#</a></dt>
+<dd><p>Type guard for float.</p>
+<p>Use to type narrow output for quad_segments</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="analphipy.utils.quad_segments">
-<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">quad_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_integrals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L57-L150"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.quad_segments" title="Permalink to this definition">#</a></dt>
-<dd><p>Perform quadrature with discontinuities</p>
+<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">quad_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_integrals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L53-L147"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.quad_segments" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform quadrature with discontinuities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -457,7 +469,7 @@ document.write(`
 <li><p><strong>sum_integrals</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>) – If True, sum the segments in the output.</p></li>
 <li><p><strong>sum_errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>) – If True and returning <cite>error</cite> sum errors.</p></li>
 <li><p><strong>err</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>) – If True, return error.</p></li>
-<li><p><strong>**kws</strong> – Extra arguments to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a></p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -466,20 +478,20 @@ document.write(`
 of values corresponding to integral in each segment.</p></li>
 <li><p><strong>errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – If <cite>err</cite> or <cite>full_output</cite> are True, then return error.  If <cite>sum_errors</cite>, then sum of errors
 Across segments.</p></li>
-<li><p><strong>outputs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a>. If multiple segments, return a list of output.</p></li>
+<li><p><strong>outputs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a>. If multiple segments, return a list of output.</p></li>
 </ul>
 </p>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.10.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.integrate.quad</span></code></a></p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.11.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.integrate.quad</span></code></a></p>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="analphipy.utils.minimize_phi">
-<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">minimize_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L153-L206"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.minimize_phi" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">minimize_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L150-L207"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.minimize_phi" title="Permalink to this definition">#</a></dt>
 <dd><p>Find value of <code class="docutils literal notranslate"><span class="pre">r</span></code> which minimized <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -487,28 +499,28 @@ Across segments.</p></li>
 <li><p><strong>phi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – Function to be minimized.</p></li>
 <li><p><strong>r0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Guess for position of minimum.</p></li>
 <li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – If passed, should be of form <code class="docutils literal notranslate"><span class="pre">bounds=(lower_bound,</span> <span class="pre">upper_bound)</span></code>.</p></li>
-<li><p><strong>**kws</strong> – Extra arguments to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a></p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>rmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code> is found location of minimum.</p></li>
 <li><p><strong>phimin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code>, i.e., the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum</p></li>
-<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output class from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output class from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p></li>
 </ul>
 </p>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.10.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code></a></p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.11.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code></a></p>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="analphipy.utils.segments_to_segments_cut">
-<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">segments_to_segments_cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L218-L220"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.segments_to_segments_cut" title="Permalink to this definition">#</a></dt>
-<dd><p>Update segments for ‘cut’ potential</p>
+<span class="sig-prename descclassname"><span class="pre">analphipy.utils.</span></span><span class="sig-name descname"><span class="pre">segments_to_segments_cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/utils.py#L227-L229"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.utils.segments_to_segments_cut" title="Permalink to this definition">#</a></dt>
+<dd><p>Update segments for ‘cut’ potential.</p>
 </dd></dl>
 
 
@@ -562,6 +574,7 @@ Across segments.</p></li>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.combine_segmets"><code class="docutils literal notranslate"><span class="pre">combine_segmets()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.is_float"><code class="docutils literal notranslate"><span class="pre">is_float()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.quad_segments"><code class="docutils literal notranslate"><span class="pre">quad_segments()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.minimize_phi"><code class="docutils literal notranslate"><span class="pre">minimize_phi()</span></code></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.utils.segments_to_segments_cut"><code class="docutils literal notranslate"><span class="pre">segments_to_segments_cut()</span></code></a></li>
@@ -598,7 +611,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2023-05-12.
+  Last updated on 2023-08-04.
   <br/>
 </p>
   </div>
