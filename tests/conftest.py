@@ -1,4 +1,9 @@
+# mypy: disable-error-code="no-untyped-def, no-untyped-call"
+from __future__ import annotations
+
 from dataclasses import asdict, dataclass
+from typing import Iterable, Any
+from typing_extensions import Self
 
 import numpy as np
 import pytest
@@ -94,7 +99,7 @@ def get_r(rmin, rmax, n=100):
     return np.linspace(rmin, rmax, n)
 
 
-def kws_to_ld(**kws):
+def kws_to_ld(**kws: Iterable[Any]) -> list[dict[str, Any]]:
     return [dict(zip(kws, t)) for t in zip(*kws.values())]
 
 
@@ -123,7 +128,7 @@ class Base_params:
         raise NotImplementedError
 
     @classmethod
-    def get_objects(cls, N=10):
+    def get_objects(cls, N=10) -> Iterable[Self]:
         for params in cls.get_params(N=N):
             yield cls(**params)
 
@@ -204,7 +209,7 @@ class NM_params(LJ_params):
         m = [6, 7, 6, 9]
 
         if N is None:
-            n = len(n)
+            N = len(n)
 
         return kws_to_ld(sig=np.random.rand(N), eps=np.random.rand(N), n=n, m=m)
 

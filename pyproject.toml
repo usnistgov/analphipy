@@ -31,8 +31,8 @@ dependencies = [
     "typing-extensions",
     "numpy",
     "scipy",
-    "custom-inherit",
-    "module-utilities >= 0.1",
+    "docstring-inheritance",
+    "module-utilities >= 0.6",
 ]
 
 [project.urls]
@@ -59,7 +59,7 @@ typing-extras = [
     "pytype; python_version < '3.11'", #
     # "mypy-extensions", ## p2c: -p
     # "pytest-monkeytype", ## p2c: -p
-    "mypy",
+    "mypy >=1.4.1",
     "pandas-stubs",
 ]
 typing = [
@@ -142,6 +142,11 @@ test = "pytest"
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --doctest-glob='*.md'"
 testpaths = ["README.md", "src", "tests"]
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:", "@overload"]
+omit = ["*/vendored/*"]
+include = ["src/*"]
 
 [tool.isort]
 profile = "black"
@@ -307,13 +312,15 @@ warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
 exclude = [".eggs", ".tox", "doc", "docs", ".nox"]
+# stricter
+check_untyped_defs = true
+strict = true
 
 # check_untyped_defs = true
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
 module = [
     "ruamel.yaml",
-    "custom_inherit",
     "scipy.integrate.*",
     "scipy.optimize.*",
     "scipy.misc.*"
@@ -327,6 +334,7 @@ module = []
 include = ["src", "tests"]
 exclude = ["**/__pycache__", ".tox/**", ".nox/**", "**/.mypy_cache"]
 pythonVersion = "3.10"
+strict = ["src", "tools/noxfile.py"] # noxfile.py
 typeCheckingMode = "basic"
 # enable subset of "strict"
 reportDuplicateImport = true

@@ -6,7 +6,7 @@ from __future__ import annotations
 from module_utilities.docfiller import DocFiller
 
 
-def _docstrings_shared():
+def _docstrings_shared() -> None:
     """
     Parameters
     ----------
@@ -51,9 +51,6 @@ _references = {
 }
 
 
-DOCFILLER_SHARED = DocFiller.from_docstring(
+docfiller = DocFiller.from_docstring(
     _docstrings_shared, combine_keys="parameters"
 ).update(**_references)
-
-
-docfiller_shared = DOCFILLER_SHARED()

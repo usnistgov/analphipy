@@ -6,32 +6,21 @@ Utilities module (:mod:`analphipy.utils`)
 from __future__ import annotations
 
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, cast
 
 import numpy as np
 
-from ._docstrings import docfiller_shared
+from ._docstrings import docfiller
 
 if TYPE_CHECKING:
-    from ._typing import ArrayLike
+    from typing import Any, Callable, Iterable, Mapping, Protocol, TypeVar
 
-# from typing_extensions import Protocol
+    from typing_extensions import Concatenate, TypeGuard
 
-# ArrayLike = Union[Sequence[float], NDArray[np.float_]]
-# Float_or_ArrayLike = Union[float, ArrayLike]
-# Float_or_Array = Union[float, NDArray[np.float_]]
+    from ._typing import ArrayLike, OptimizeResultInterface, P, QuadSegments, R
 
-# Phi_Signature = Callable[..., Union[float, np.ndarray]]
 
-TWO_PI = 2.0 * np.pi
-
-# class Phi_Signature(Protocol):
-#     def __call__(self, Float_or_ArrayLike) -> Union[float, np.ndarray]: ...
-
-# Vector = list[float]
-
-# def scale(scalar: float, vector: Vector) -> Vector:
-#     return [scalar * num for num in vector]
+TWO_PI: float = 2.0 * np.pi
 
 
 def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
@@ -52,17 +41,26 @@ def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
     return sorted(aa.union(bb))
 
 
-@docfiller_shared
+def is_float(val: Any) -> TypeGuard[float]:
+    """
+    Type guard for float.
+
+    Use to type narrow output for quad_segments
+    """
+    return isinstance(val, float)
+
+
+@docfiller.decorate
 def quad_segments(
-    func: Callable,
+    func: Callable[..., Any],
     segments: ArrayLike,
-    args: tuple = (),
+    args: tuple[Any, ...] = (),
     full_output: bool = False,
     sum_integrals: bool = True,
     sum_errors: bool = False,
     err: bool = True,
-    **kws,
-):
+    **kws: Any,
+) -> QuadSegments:
     """
     Perform quadrature with discontinuities.
 
@@ -99,58 +97,59 @@ def quad_segments(
     --------
     scipy.integrate.quad
     """
-    from scipy.integrate import quad
+    from scipy.integrate import quad  # pyright: ignore
 
-    out = [
-        quad(func, a=a, b=b, args=args, full_output=full_output, **kws)
+    out: list[tuple[float, float, dict[str, Any]]] = [
+        quad(func, a=a, b=b, args=args, full_output=True, **kws)
         for a, b in zip(segments[:-1], segments[1:])
     ]
 
+    integrals: float | list[float]
+    errors: float | list[float]
+    outputs: dict[str, Any] | list[dict[str, Any]]
+
     if len(segments) == 2:
-        if full_output:
-            integrals, errors, outputs = out[0]
-        else:
-            integrals, errors = out[0]
-            outputs = None
-
+        integrals, errors, outputs = out[0]
     else:
-        integrals = []
-        errors = []
+        integrals_list: list[float] = []
+        errors_list: list[float] = []
+        outputs_list: list[dict[str, Any]] = []
 
-        if full_output:
-            outputs = []
-            for y, e, o in out:
-                integrals.append(y)
-                errors.append(e)
-                outputs.append(o)
-        else:
-            outputs = None
-            for y, e in out:
-                integrals.append(y)
-                errors.append(e)
+        for y, e, o in out:
+            integrals_list.append(y)
+            errors_list.append(e)
+            outputs_list.append(o)
 
         if sum_integrals:
-            integrals = np.sum(integrals)
+            # fmt: off
+            integrals = cast(float, np.sum(integrals_list))  # pyright: ignore[reportUnknownMemberType]
+            # fmt: on
+        else:
+            integrals = integrals_list
 
         if sum_errors:
-            errors = np.sum(errors)
+            # fmt: off
+            errors = np.sum(errors_list)  # pyright: ignore[reportUnknownMemberType]
+            # fmt: on
+        else:
+            errors = errors_list
+
+        outputs = outputs_list
 
     # Gather final results
-    result = [integrals]
-    if err:
-        result.append(errors)
-    if outputs is not None:
-        result.append(outputs)
-
-    if len(result) == 1:
-        return result[0]
+    if err and full_output:
+        return integrals, errors, outputs
+    elif err and not full_output:
+        return integrals, errors
+    elif not err and full_output:
+        return integrals, outputs
     else:
-        return result
+        return integrals
 
 
 def minimize_phi(
-    phi: Callable, r0: float, bounds: ArrayLike | None = None, **kws
-) -> tuple[float, float, Any]:
+    phi: Callable[..., Any], r0: float, bounds: ArrayLike | None = None, **kws: Any
+) -> tuple[float, float, OptimizeResultInterface | None]:
     """
     Find value of ``r`` which minimized ``phi``.
 
@@ -178,7 +177,7 @@ def minimize_phi(
     --------
     scipy.optimize.minimize
     """
-    from scipy.optimize import minimize
+    from scipy.optimize import minimize  # pyright: ignore
 
     if bounds is None:
         bounds = (0.0, np.inf)
@@ -187,35 +186,58 @@ def minimize_phi(
         # force minima to be exactly here
         xmin = bounds[0]
         ymin = phi(xmin)
-        outputs = None
+        return xmin, ymin, None
     else:
-        outputs = minimize(phi, r0, bounds=[bounds], **kws)
+        outputs = cast(
+            "OptimizeResultInterface", minimize(phi, r0, bounds=[bounds], **kws)
+        )
 
-        if not outputs.success:
+        if not outputs["success"]:
             raise ValueError("could not find min of phi")
 
-        xmin = outputs.x[0]
+        xmin = outputs["x"][0]
 
-        try:
-            ymin = outputs.fun[0]
-        except Exception:
-            ymin = outputs.fun
+        if isinstance(outputs["fun"], float):
+            ymin = outputs["fun"]
+        else:
+            ymin = outputs["fun"][0]
 
-    return xmin, ymin, outputs
+        return cast(
+            "tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs)
+        )
 
 
 # * Phi utilities
+if TYPE_CHECKING:
+
+    class HasQuadKws(Protocol):
+        """Class protocol for quad_kws"""
+
+        quad_kws: Mapping[str, Any]
+
+    S = TypeVar("S", bound=HasQuadKws)
 
 
-def partial_phi(phi, **params):
+def partial_phi(phi: Callable[..., R], **params: Any) -> Callable[..., R]:
     from functools import partial
 
     return partial(phi, **params)
 
 
-def segments_to_segments_cut(segments, rcut):
+def segments_to_segments_cut(segments: Iterable[float], rcut: float) -> list[float]:
     """Update segments for 'cut' potential."""
     return [x for x in segments if x < rcut] + [rcut]
+
+
+def add_quad_kws(
+    func: Callable[Concatenate[S, P], R]
+) -> Callable[Concatenate[S, P], R]:
+    @wraps(func)
+    def wrapped(self: S, /, *args: P.args, **kws: P.kwargs) -> R:
+        kws = dict(self.quad_kws, **kws)  # type: ignore
+        return func(self, *args, **kws)
+
+    return wrapped
 
 
 # def phi_to_phi_cut(
@@ -418,12 +440,3 @@ def segments_to_segments_cut(segments, rcut):
 #         meta["style"] = meta.get("style", ()) + ("wca_att",)
 
 #     return phi_att, dphidr_att, meta
-
-
-def add_quad_kws(func: Callable) -> Callable:
-    @wraps(func)
-    def wrapped(self, *args, **kws):
-        kws = dict(self.quad_kws, **kws)
-        return func(self, *args, **kws)
-
-    return wrapped

@@ -1,3 +1,4 @@
+# mypy: disable-error-code="no-untyped-def, no-untyped-call"
 """Simple tests for js divergence..."""
 import numpy as np
 import pytest
@@ -21,4 +22,4 @@ def test_boltz_js_lj(beta, beta_other):
         f0, f1, segments=p0.segments, segments_q=p1.segments, volume="3d"
     )
 
-    np.testing.assert_allclose(v0, v1)
+    np.testing.assert_allclose(v0, v1)  # type: ignore

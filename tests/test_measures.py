@@ -1,4 +1,9 @@
+# mypy: disable-error-code="no-untyped-def, no-untyped-call"
+
 from pathlib import Path
+
+# from typing import Sequence, Any
+# from typing_extensions import reveal_type
 
 import numpy as np
 import pandas as pd
@@ -8,9 +13,31 @@ import analphipy.measures as measures
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
+from analphipy.base_potential import PhiAbstract
+
 data = Path(__file__).parent / "data"
 
 nsamp = 20
+
+# def test_typing():
+#     df = (
+#         pd.read_csv(data / "vir_sw_.csv")
+#         .assign(beta=lambda x: 1.0 / x["temp"])
+#         .drop_duplicates()
+#     )
+
+#     def hello(x: Sequence[float]) -> Sequence[float]:
+#         return x * 2 # type: ignore
+
+
+#     reveal_type(df)
+#     # reveal_type(df["sig"].to_numpy(dtype=np.float_))
+#     reveal_type(np.asarray(df['sig'], dtype=np.float_))
+#     reveal_type(np.array(df['sig'], dtype=np.float_))
+#     reveal_type(np.array([1,2,3], dtype=np.float_))
+#     reveal_type(np.array([1,2,3], dtype=float))
+#     # reveal_type(hello)
+#     # reveal_type(hello(df['sig'].to_numpy(dtype=float)))
 
 
 def test_B2_sw():
@@ -27,7 +54,7 @@ def test_B2_sw():
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
 
-        out = a.table(g["beta"].astype(float).values, ["B2", "B2_dbeta"])
+        out = a.table(np.asarray(g["beta"], dtype=np.float_), ["B2", "B2_dbeta"])
 
         np.testing.assert_allclose(g["Bn_2"], out["B2"])
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"])
@@ -46,6 +73,8 @@ def test_B2_lj():
     sig = eps = 1.0
     p_base = pots.LennardJones(sig=sig, eps=eps)
 
+    p: PhiAbstract
+
     for (rcut, tail), g in df.groupby(["rcut", "tail"]):
         if tail == "LFS":
             p = p_base.lfs(rcut=rcut)
@@ -58,7 +87,7 @@ def test_B2_lj():
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
-        out = a.table(g["beta"], ["B2", "B2_dbeta"])
+        out = a.table(np.asarray(g["beta"], dtype=np.float_), ["B2", "B2_dbeta"])
 
         np.testing.assert_allclose(g["Bn_2"], out["B2"], rtol=1e-3)
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"], rtol=1e-3)
@@ -82,7 +111,7 @@ def test_B2_nm():
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
-        out = a.table(g["beta"], ["B2", "B2_dbeta"])
+        out = a.table(np.asarray(g["beta"], dtype=np.float_), ["B2", "B2_dbeta"])
 
         np.testing.assert_allclose(g["Bn_2"], out["B2"], rtol=1e-3)
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"], rtol=1e-3)
@@ -100,11 +129,12 @@ def test_B2_yk():
     sig = eps = 1.0
 
     for (z_yukawa), g in df.groupby("z_yukawa"):
+        assert isinstance(z_yukawa, float)
         p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)
 
-        out = a.table(g["beta"], ["B2", "B2_dbeta"])
+        out = a.table(np.asarray(g["beta"], dtype=np.float_), ["B2", "B2_dbeta"])
 
         np.testing.assert_allclose(g["Bn_2"], out["B2"], rtol=1e-6)
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"], rtol=1e-6)
@@ -119,8 +149,12 @@ def test_B2_hs():
 
     B2b = measures.secondvirial(p.phi, beta=1.0, segments=[0.0, sig])
 
+    assert isinstance(B2b, float)
+
     np.testing.assert_allclose(B2a, B2b)
 
     B2_dbeta = measures.secondvirial_dbeta(p.phi, beta=1.0, segments=[0.0, sig])
+
+    assert isinstance(B2_dbeta, float)
 
     np.testing.assert_allclose(0.0, B2_dbeta)

@@ -11,9 +11,9 @@ dependencies:
   - typing-extensions
   - numpy
   - scipy
-  - custom-inherit
-  - module-utilities >= 0.1
-  - mypy
+  - docstring-inheritance
+  - module-utilities >= 0.6
+  - mypy >=1.4.1
   - pandas-stubs
   - pytest
   - pytest-xdist

@@ -11,10 +11,10 @@ dependencies:
   - typing-extensions
   - numpy
   - scipy
-  - custom-inherit
-  - module-utilities >= 0.1
+  - docstring-inheritance
+  - module-utilities >= 0.6
   - pytype
-  - mypy
+  - mypy >=1.4.1
   - pandas-stubs
   - pytest
   - pytest-xdist
