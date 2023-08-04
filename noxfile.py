@@ -11,6 +11,7 @@ from typing import (
     Any,
     Callable,
     Collection,
+    Iterator,
     Literal,
     Sequence,
     TypeAlias,
@@ -54,7 +55,7 @@ PYTHON_DEFAULT_VERSION = "3.10"
 if shutil.which("mamba"):
     CONDA_BACKEND = "mamba"
 elif shutil.which("conda"):
-    CONDA_BACKEND = "conda"
+    CONDA_BACKEND = "conda"  # pyright: ignore
 else:
     raise ValueError("neither conda or mamba found")
 
@@ -90,16 +91,19 @@ RUN_OPT = Option(
 CMD_OPT = Option(nargs="*", type=str, help="cmd to be run")
 LOCK_OPT = Option(type=bool, help="If True, use conda-lock")
 
+SeqStr = Sequence[str]
+SeqSeqStr = Sequence[Sequence[str]]
 
-def opts_annotated(**kwargs):
+
+def opts_annotated(**kwargs: Any):  # type: ignore
     return Annotated[list[str], replace(OPTS_OPT, **kwargs)]
 
 
-def cmd_annotated(**kwargs):
+def cmd_annotated(**kwargs):  # type: ignore
     return Annotated[list[str], replace(CMD_OPT, **kwargs)]
 
 
-def run_annotated(**kwargs):
+def run_annotated(**kwargs):  # type: ignore
     return Annotated[list[list[str]], replace(RUN_OPT, **kwargs)]
 
 
@@ -139,9 +143,9 @@ def py_prefix(python_version: Any) -> str:
 
 
 def session_environment_filename(
-    name: str,
+    name: str | None,
     ext: str | None = None,
-    python_version=None,
+    python_version: str | None = None,
 ) -> str:
     if name is None:
         raise ValueError("must supply name")
@@ -166,11 +170,11 @@ def pkg_install_condaenv(
     reqs: Collection[str] | None = None,
     channels: Collection[str] | None = None,
     filename: str | None = None,
-    **kwargs,
-):
+    **kwargs: Any,
+) -> None:
     """Install requirements.  If need fine control, do it in calling func."""
 
-    def check_filename(filename):
+    def check_filename(filename: str | Path) -> str:
         if not Path(filename).exists():
             raise ValueError(f"file {filename} does not exist")
         session.log(f"Environment file: {filename}")
@@ -191,6 +195,8 @@ def pkg_install_condaenv(
         )
 
     else:
+        assert isinstance(session.python, str)
+
         filename = filename or session_environment_filename(
             name=name,
             ext=".yaml",
@@ -214,7 +220,7 @@ def pkg_install_condaenv(
 
 def pkg_install_venv(
     session: nox.Session,
-    name: str,
+    name: str,  # pyright: ignore
     lock: bool = False,
     requirement_paths: Collection[str] | None = None,
     constraint_paths: Collection[str] | None = None,
@@ -225,7 +231,7 @@ def pkg_install_venv(
     install_package: bool = False,
     no_deps: bool = False,
     log_session: bool = False,
-):
+) -> None:
     if lock:
         raise ValueError("lock not yet supported for install_pip")
 
@@ -246,7 +252,7 @@ def pkg_install_venv(
         session_log_session(session, install_package)
 
 
-def session_log_session(session, has_package=False):
+def session_log_session(session: nox.Session, has_package: bool = False) -> None:
     session.run("python", "--version")
     if has_package:
         session.run(
@@ -270,7 +276,7 @@ def dev(
     lock: LOCK_CLI = False,
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
-):
+) -> None:
     """Create dev env."""
     # using conda
 
@@ -293,7 +299,7 @@ def dev_venv(
     lock: LOCK_CLI = False,
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
-):
+) -> None:
     """Create dev env."""
     # using conda
 
@@ -316,7 +322,7 @@ def pyproject2conda(
     session: Session,
     force_reinstall: FORCE_REINSTALL_CLI = False,
     pyproject2conda_force: bool = False,
-):
+) -> None:
     """Create environment.yaml files from pyproject.toml using pyproject2conda."""
     pkg_install_venv(
         session=session,
@@ -333,7 +339,7 @@ def pyproject2conda(
         extras: str | Sequence[str] | None = None,
         python_include: str | bool = True,
         base: bool = True,
-    ):
+    ) -> None:
         def _to_args(flag: str, val: str | Sequence[str] | None) -> list[str]:
             if val is None:
                 return []
@@ -429,7 +435,7 @@ def conda_lock(
     conda_lock_run: RUN_CLI = [],  # noqa
     conda_lock_mamba: bool = False,
     conda_lock_force: bool = False,
-):
+) -> None:
     """Create lock files using conda-lock."""
 
     pkg_install_venv(
@@ -441,22 +447,22 @@ def conda_lock(
 
     session.run("conda-lock", "--version")
 
-    platform = conda_lock_platform
+    platform = cast(Sequence[str], conda_lock_platform)
     if not platform:
         platform = ["osx-64"]
     elif "all" in platform:
         platform = ["linux-64", "osx-64", "win-64"]
-    channel = conda_lock_channel
+    channel = cast(Sequence[str], conda_lock_channel)
     if not channel:
         channel = ["conda-forge"]
 
     lock_dir = ROOT / "environment" / "lock"
 
     def create_lock(
-        py,
-        name,
-        env_path=None,
-    ):
+        py: str,
+        name: str,
+        env_path: str | None = None,
+    ) -> None:
         py = "py" + py.replace(".", "")
 
         if env_path is None:
@@ -483,8 +489,9 @@ def conda_lock(
             )
 
     session_run_commands(session, conda_lock_run)
+
     if not conda_lock_run and not conda_lock_cmd:
-        conda_lock_cmd = ["all"]
+        conda_lock_cmd = ["all"]  # pyright: ignore
     if "all" in conda_lock_cmd:
         conda_lock_cmd = ["test", "typing", "dev", "dist-pypi", "dist-conda"]
     conda_lock_cmd = list(set(conda_lock_cmd))
@@ -511,7 +518,13 @@ def conda_lock(
 
 
 # ** testing
-def _test(session, run, test_no_pytest, test_opts, no_cov):
+def _test(
+    session: nox.Session,
+    run: list[list[str]],
+    test_no_pytest: bool,
+    test_opts: list[str],
+    no_cov: bool,
+) -> None:
     session_run_commands(session, run)
     if not test_no_pytest:
         opts = combine_list_str(test_opts)
@@ -532,7 +545,7 @@ def test(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
     no_cov: bool = False,
-):
+) -> None:
     """Test environments with conda installs."""
 
     pkg_install_condaenv(
@@ -559,11 +572,11 @@ def test_venv(
     test_no_pytest: bool = False,
     test_opts: TEST_OPTS_CLI = (),  # type: ignore
     test_run: RUN_CLI = [],  # noqa
-    lock: LOCK_CLI = False,
+    lock: LOCK_CLI = False,  # pyright: ignore
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
     no_cov: bool = False,
-):
+) -> None:
     """Test environments virtualenv and pip installs."""
 
     pkg_install_venv(
@@ -585,7 +598,12 @@ def test_venv(
 
 
 # ** coverage
-def _coverage(session, run, cmd, run_internal):
+def _coverage(
+    session: nox.Session,
+    run: list[list[str]],
+    cmd: list[str],
+    run_internal: list[list[str]],
+) -> None:
     session_run_commands(session, run)
 
     if not cmd and not run and not run_internal:
@@ -617,7 +635,7 @@ def coverage(
         help="Arbitrary commands to run within the session"
     ) = [],  # noqa
     force_reinstall: FORCE_REINSTALL_CLI = False,
-):
+) -> None:
     pkg_install_venv(
         session,
         name="coverage",
@@ -628,13 +646,15 @@ def coverage(
     _coverage(
         session=session,
         run=coverage_run,
-        cmd=coverage_cmd,
-        run_internal=coverage_run_internal,
+        cmd=cast(list[str], coverage_cmd),
+        run_internal=cast(list[list[str]], coverage_run_internal),
     )
 
 
 # ** Docs
-def _docs(session, run, cmd, version):
+def _docs(
+    session: nox.Session, run: list[list[str]], cmd: list[str], version: str
+) -> None:
     if version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
 
@@ -681,7 +701,7 @@ def docs(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
-):
+) -> None:
     """Runs make in docs directory. For example, 'nox -s docs -- --docs-cmd html' -> 'make -C docs html'. With 'release' option, you can set the message with 'message=...' in posargs."""
     pkg_install_condaenv(
         session=session,
@@ -693,7 +713,9 @@ def docs(
         log_session=log_session,
     )
 
-    _docs(session=session, cmd=docs_cmd, run=docs_run, version=version)
+    _docs(
+        session=session, cmd=docs_cmd, run=docs_run, version=version
+    )  # pyright: ignore
 
 
 @DEFAULT_SESSION_VENV
@@ -719,7 +741,7 @@ def docs_venv(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
-):
+) -> None:
     """Runs make in docs directory. For example, 'nox -s docs -- --docs-cmd html' -> 'make -C docs html'. With 'release' option, you can set the message with 'message=...' in posargs."""
     pkg_install_venv(
         session=session,
@@ -732,11 +754,15 @@ def docs_venv(
         extras="docs",
     )
 
-    _docs(session=session, cmd=docs_cmd, run=docs_run, version=version)
+    _docs(
+        session=session, cmd=docs_cmd, run=docs_run, version=version
+    )  # pyright: ignore
 
 
 # ** Dist pypi
-def _dist_pypi(session, run, cmd, version):
+def _dist_pypi(
+    session: nox.Session, run: list[list[str]], cmd: list[str], version: str
+) -> None:
     if version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
     session_run_commands(session, run)
@@ -770,11 +796,11 @@ def dist_pypi(
         choices=["clean", "build", "testrelease", "release"],
         flags=("--dist-pypi-cmd", "-p"),
     ) = (),
-    lock: LOCK_CLI = False,
+    lock: LOCK_CLI = False,  # pyright: ignore
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
-):
+) -> None:
     """Run 'nox -s dist-pypi -- {clean, build, testrelease, release}'."""
 
     pkg_install_venv(
@@ -783,12 +809,13 @@ def dist_pypi(
         requirement_paths=[session_environment_filename(name="dist-pypi.txt")],
         force_reinstall=force_reinstall,
         install_package=False,
+        log_session=log_session,
     )
 
     _dist_pypi(
         session=session,
         run=dist_pypi_run,
-        cmd=dist_pypi_cmd,
+        cmd=dist_pypi_cmd,  # pyright: ignore
         version=version,
     )
 
@@ -801,11 +828,11 @@ def dist_pypi_condaenv(
         choices=["clean", "build", "testrelease", "release"],
         flags=("--dist-pypi-cmd", "-p"),
     ) = (),
-    lock: LOCK_CLI = False,
+    lock: LOCK_CLI = False,  # pyright: ignore
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
-):
+) -> None:
     """Run 'nox -s dist_pypi -- {clean, build, testrelease, release}'."""
     # conda
 
@@ -820,7 +847,7 @@ def dist_pypi_condaenv(
     _dist_pypi(
         session=session,
         run=dist_pypi_run,
-        cmd=dist_pypi_cmd,
+        cmd=dist_pypi_cmd,  # pyright: ignore
         version=version,
     )
 
@@ -846,7 +873,7 @@ def dist_conda(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
     version: VERSION_CLI = "",
-):
+) -> None:
     """Runs make -C dist-conda posargs."""
     pkg_install_condaenv(
         session=session,
@@ -928,7 +955,7 @@ def dist_conda(
                 )
 
 
-def _append_recipe(recipe_path, append_path):
+def _append_recipe(recipe_path: str, append_path: str) -> None:
     with open(recipe_path) as f:
         recipe = f.readlines()
 
@@ -940,7 +967,12 @@ def _append_recipe(recipe_path, append_path):
 
 
 # type checking
-def _typing(session, run, cmd, run_internal):
+def _typing(
+    session: nox.Session,
+    run: list[list[str]],
+    cmd: list[str],
+    run_internal: list[list[str]],
+) -> None:
     session_run_commands(session, run)
     if not run and not run_internal and not cmd:
         cmd = ["mypy"]
@@ -975,7 +1007,7 @@ def typing(
     lock: LOCK_CLI = False,
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
-):
+) -> None:
     """Run type checkers (mypy, pyright, pytype)."""
 
     pkg_install_condaenv(
@@ -1009,7 +1041,7 @@ def typing_venv(
     lock: LOCK_CLI = False,
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
-):
+) -> None:
     """Run type checkers (mypy, pyright, pytype)."""
 
     pkg_install_venv(
@@ -1040,13 +1072,14 @@ def testdist_conda(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
-):
+) -> None:
     """Test conda distribution."""
 
     install_str = PACKAGE_NAME
     if version:
         install_str = f"{install_str}=={version}"
 
+    assert isinstance(session.python, str)
     session_install_envs(
         session,
         session_environment_filename(
@@ -1079,7 +1112,7 @@ def testdist_pypi(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
-):
+) -> None:
     """Test pypi distribution."""
     extras = testdist_pypi_extras
     install_str = PACKAGE_NAME
@@ -1121,7 +1154,7 @@ def testdist_pypi_condaenv(
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
-):
+) -> None:
     """Test pypi distribution."""
     extras = testdist_pypi_extras
     install_str = PACKAGE_NAME
@@ -1132,6 +1165,7 @@ def testdist_pypi_condaenv(
     if version:
         install_str = f"{install_str}=={version}"
 
+    assert isinstance(session.python, str)
     session_install_envs(
         session,
         session_environment_filename(
@@ -1155,19 +1189,25 @@ def testdist_pypi_condaenv(
 
 
 # * Utilities --------------------------------------------------------------------------
-def _create_doc_examples_symlinks(session, clean=True):
+def _create_doc_examples_symlinks(session: nox.Session, clean: bool = True) -> None:
     """Create symlinks from docs/examples/*.md files to /examples/usage/..."""
 
     import os
 
-    def usage_paths(path):
+    def usage_paths(path: Path) -> Iterator[Path]:
         with path.open("r") as f:
             for line in f:
                 if line.startswith("usage/"):
                     yield Path(line.strip())
 
-    def get_target_path(usage_path, prefix_dir="./examples", exts=(".md", ".ipynb")):
+    def get_target_path(
+        usage_path: str | Path,
+        prefix_dir: str | Path = "./examples",
+        exts: Sequence[str] = (".md", ".ipynb"),
+    ) -> Path:
         path = Path(prefix_dir) / Path(usage_path)
+
+        assert all(ext.startswith(".") for ext in exts)
 
         if path.exists():
             return path

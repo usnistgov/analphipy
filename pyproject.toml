@@ -334,7 +334,7 @@ module = []
 include = ["src", "tests"]
 exclude = ["**/__pycache__", ".tox/**", ".nox/**", "**/.mypy_cache"]
 pythonVersion = "3.10"
-strict = ["src"]
+strict = ["src", "tools/noxfile.py"] # noxfile.py
 typeCheckingMode = "basic"
 # enable subset of "strict"
 reportDuplicateImport = true
