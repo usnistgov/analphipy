@@ -975,7 +975,7 @@ def _typing(
 ) -> None:
     session_run_commands(session, run)
     if not run and not run_internal and not cmd:
-        cmd = ["mypy"]
+        cmd = ["mypy", "pyright"]
 
     if "all" in cmd:
         cmd = ["mypy", "pyright", "pytype"]
@@ -983,13 +983,20 @@ def _typing(
     # set the cache directory for mypy
     session.env["MYPY_CACHE_DIR"] = str(Path(session.create_tmp()) / ".mypy_cache")
 
+    def _run_info(cmd: str) -> None:
+        session.run("which", cmd, external=True)
+        session.run(cmd, "--version", external=True)
+
     for c in cmd:
+        _run_info(c)
         if c == "mypy":
             session.run("mypy", "--color-output")
         elif c == "pyright":
             session.run("pyright", external=True)
         elif c == "pytype":
             session.run("pytype", "-o", str(Path(session.create_tmp()) / ".pytype"))
+        else:
+            session.log(f"skipping unknown command {c}")
     session_run_commands(session, run_internal, external=False)
 
 
