@@ -10,6 +10,16 @@ See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy)
 
 <!-- scriv-insert-here -->
 
+## v0.3.0 — 2023-08-04
+
+### Added
+
+- Package now available on conda-forge
+
+### Changed
+
+- Added better support for mypy/pyright type checking.
+
 ## v0.2.0 — 2023-05-04
 
 ### Removed
