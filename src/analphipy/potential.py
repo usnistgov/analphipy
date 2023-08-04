@@ -70,18 +70,20 @@ class Analytic(PhiBase):
     forms for ``phi`` and ``dphidr``.
     """
 
+    # fmt: off
     #: Position of minimum in :math:`\phi(r)`
-    r_min: float = field(
+    r_min: float = field( # pyright: ignore[reportIncompatibleVariableOverride]
         init=False, repr=field_formatter()
-    )  # pyright: ignore[reportIncompatibleVariableOverride]
+    )
     #: Value of ``phi`` at minimum.
-    phi_min: float = field(
+    phi_min: float = field( # pyright: ignore[reportIncompatibleVariableOverride]
         init=False, repr=False
-    )  # pyright: ignore[reportIncompatibleVariableOverride]
+    )
     #: Integration limits.
-    segments: Sequence[float] = field(
+    segments: Sequence[float] = field( # pyright: ignore[reportIncompatibleVariableOverride]
         init=False
-    )  # pyright: ignore[reportIncompatibleVariableOverride]
+    )
+    # fmt: on
 
 
 docfiller_analytic = docfiller.factory_inherit_from_parent(Analytic)
@@ -461,9 +463,9 @@ class CubicTable(PhiBase):
         size = int(delta / ds)
         ds = delta / size
 
-        r: Array = np.sqrt(
-            np.arange(size + 1) * ds + bounds[0]
-        )  # pyright: ignore[reportUnknownMemberType]
+        # fmt: off
+        r: Array = np.sqrt(np.arange(size + 1) * ds + bounds[0])  # pyright: ignore[reportUnknownMemberType]
+        # fmt: on
 
         phi_table = phi(r)
 
@@ -512,9 +514,9 @@ class CubicTable(PhiBase):
 
             xi = sds - k
 
-            t: Array = np.take(
-                self.phi_table, [k, k + 1, k + 2], mode="clip"
-            )  # pyright: ignore[reportUnknownMemberType]
+            # fmt: off
+            t: Array = np.take(self.phi_table, [k, k + 1, k + 2], mode="clip")  # pyright: ignore[reportUnknownMemberType]
+            # fmt: on
             dt = np.diff(t, axis=0)
             ddt = np.diff(dt, axis=0)
 
@@ -534,10 +536,9 @@ class CubicTable(PhiBase):
     @property
     def rsq_table(self) -> Array:
         """Value of ``r**2`` where potential is defined."""
-
-        return (
-            self.smin + np.arange(self.size + 1) * self._ds
-        )  # pyright: ignore[reportUnknownMemberType]
+        # fmt: off
+        return (self.smin + np.arange(self.size + 1) * self._ds)  # pyright: ignore[reportUnknownMemberType]
+        # fmt: on
 
     @property
     def r_table(self) -> Array:

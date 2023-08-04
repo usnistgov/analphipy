@@ -418,8 +418,8 @@ class NoroFrenkelPair:
         """
 
         if (
-            phi.segments is not None
-            and phi.r_min is not None  # pyright: ignore
+            phi.segments is not None  # pyright: ignore
+            and phi.r_min is not None
             and phi.phi_min is not None
         ):
             return cls(

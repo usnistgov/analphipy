@@ -231,9 +231,9 @@ def diverg_kl_disc(
 
     p, q = np.asarray(p), np.asarray(q)
     diverg = diverg_kl_integrand(p, q)
-    out: Float_or_Array = diverg.sum(
-        axis=axis
-    )  # pyright: ignore[reportUnknownMemberType]
+    # fmt: off
+    out: Float_or_Array = diverg.sum(axis=axis)  # pyright: ignore[reportUnknownMemberType]
+    # fmt: on
     return out
 
 

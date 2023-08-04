@@ -121,14 +121,16 @@ def quad_segments(
             outputs_list.append(o)
 
         if sum_integrals:
-            integrals = cast(
-                float, np.sum(integrals_list)
-            )  # pyright: ignore[reportUnknownMemberType]
+            # fmt: off
+            integrals = cast(float, np.sum(integrals_list))  # pyright: ignore[reportUnknownMemberType]
+            # fmt: on
         else:
             integrals = integrals_list
 
         if sum_errors:
+            # fmt: off
             errors = np.sum(errors_list)  # pyright: ignore[reportUnknownMemberType]
+            # fmt: on
         else:
             errors = errors_list
 
