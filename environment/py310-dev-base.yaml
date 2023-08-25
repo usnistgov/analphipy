@@ -25,9 +25,6 @@ dependencies:
   - ipython
   - ipykernel
   - matplotlib
-  - nox
-  - ruamel.yaml
   - pip
   - pip:
       - pytest-accept
-      - noxopt
