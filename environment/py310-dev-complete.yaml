@@ -6,15 +6,32 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.11
+  - python=3.10
   - attrs
+  - cruft
   - docstring-inheritance
+  - ipykernel
+  - ipython
+  - matplotlib
   - module-utilities >= 0.6
+  - mypy >=1.4.1
+  - nbqa
+  - nox
   - numpy
   - pandas
+  - pandas-stubs
+  - pre-commit
   - pytest
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
+  - pytype
+  - ruamel.yaml
   - scipy
+  - scriv
+  - setuptools-scm
   - typing-extensions
+  - pip
+  - pip:
+      - noxopt
+      - pytest-accept

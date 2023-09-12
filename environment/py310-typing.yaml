@@ -8,16 +8,16 @@ channels:
 dependencies:
   - python=3.10
   - attrs
-  - typing-extensions
-  - numpy
-  - scipy
   - docstring-inheritance
   - module-utilities >= 0.6
-  - pytype
   - mypy >=1.4.1
+  - numpy
+  - pandas
   - pandas-stubs
   - pytest
-  - pytest-xdist
   - pytest-cov
   - pytest-sugar
-  - pandas
+  - pytest-xdist
+  - pytype
+  - scipy
+  - typing-extensions

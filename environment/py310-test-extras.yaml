@@ -7,8 +7,8 @@ channels:
   - conda-forge
 dependencies:
   - python=3.10
+  - pandas
   - pytest
-  - pytest-xdist
   - pytest-cov
   - pytest-sugar
-  - pandas
+  - pytest-xdist
