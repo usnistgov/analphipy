@@ -210,6 +210,28 @@ done
 
 Also, set the variable `nox.python.paths` (see [](#setup-user-configuration)).
 
+### See nox sessions/options
+
+To see all nox session, run:
+
+```bash
+nox --list
+```
+
+We use [noxopt] to pass command line options to the different sessions. Use the
+following to get help on these options:
+
+```bash
+nox -- --help
+```
+
+Note that these options should be passed _after_ `--`. For exmaple, to build and
+open the documentation, run:
+
+```bash
+nox -s docs -- -d build open
+```
+
 ### Creating environment.yaml/requirement.txt files
 
 The project is setup to create `environemt.yaml` and `requirement.txt` files
@@ -416,6 +438,7 @@ that, please use nox.
 [nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
 [pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
 [nbqa]: https://github.com/nbQA-dev/nbQA
+[pyright]: https://github.com/microsoft/pyright
 
 We recommend installing the following tools with [pipx] or [condax]. If you'd
 like to install them in the development environment instead, include the
@@ -439,6 +462,7 @@ Additional tools are:
 - [pyproject2conda] (optional)
 - [cog] (optional)
 - [nbqa] (optional)
+- [pyright] (recommended)
 
 These are setup using the following:
 
@@ -451,6 +475,7 @@ pipx install scriv
 condax/pipx install commitizen
 condax/pipx install cogapp
 condax/pipx install nbqa
+condax/pipx install pyright
 ```
 
 If you'd like to install a central [nox] to be used with this project, use one

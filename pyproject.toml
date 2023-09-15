@@ -76,11 +76,14 @@ dev = [
     "analphipy[typing-extras]",
     "analphipy[dev-extras]",
 ]
+pyright = ["pyright"]
 tools = [
     "pre-commit", #
     # "cruft",
     "scriv", # p2c: -p
     "nbqa",
+    "analphipy[pyright]", #
+
 ]
 dev-complete = [
     "analphipy[dev]", #
