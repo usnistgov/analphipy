@@ -8,7 +8,6 @@ channels:
 dependencies:
   - python=3.10
   - attrs
-  - cruft
   - docstring-inheritance
   - ipykernel
   - ipython
@@ -28,10 +27,10 @@ dependencies:
   - pytype
   - ruamel.yaml
   - scipy
-  - scriv
   - setuptools-scm
   - typing-extensions
   - pip
   - pip:
       - noxopt
       - pytest-accept
+      - scriv

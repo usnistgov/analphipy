@@ -8,23 +8,23 @@ channels:
 dependencies:
   - python=3.10
   - attrs
-  - typing-extensions
-  - numpy
-  - scipy
   - docstring-inheritance
+  - ipykernel
+  - ipython
+  - matplotlib
   - module-utilities >= 0.6
+  - mypy >=1.4.1
+  - numpy
+  - pandas
+  - pandas-stubs
   - pytest
-  - pytest-xdist
   - pytest-cov
   - pytest-sugar
-  - pandas
+  - pytest-xdist
   - pytype
-  - mypy >=1.4.1
-  - pandas-stubs
+  - scipy
   - setuptools-scm
-  - ipython
-  - ipykernel
-  - matplotlib
+  - typing-extensions
   - pip
   - pip:
       - pytest-accept
