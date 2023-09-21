@@ -117,4 +117,5 @@ cruft.patch
 /analphipy-feedstock*/
 /src/**/_version.py
 tuna-loadtime.log
-/requirements/**/py*-dev*.y*ml
+/requirements/py*-dev.yaml
+/requirements/lock/py*-dev-conda-lock.yml
