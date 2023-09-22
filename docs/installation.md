@@ -2,7 +2,7 @@
 
 ## Stable release
 
-To install analphipy, run this command in your terminal:
+To install `analphipy`, run this command in your terminal:
 
 ```bash
 pip install analphipy
