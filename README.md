@@ -107,18 +107,7 @@ The author can be reached at <wpk@nist.gov>.
 
 ## Credits
 
-This package was created with [Cookiecutter] and the
-[wpk-nist-gov/cookiecutter-pypackage] Project template forked from
-[audreyr/cookiecutter-pypackage].
-
-[audreyr/cookiecutter-pypackage]:
-  https://github.com/audreyr/cookiecutter-pypackage
-[cookiecutter]: https://github.com/audreyr/cookiecutter
-[wpk-nist-gov/cookiecutter-pypackage]:
-  https://github.com/wpk-nist-gov/cookiecutter-pypackage
-
-## TODO
-
-- [ ] remove `# type: ignore` from potentials.py, base_potentials.py
-- [ ] add back `check_untyped_defs` to pyproject.toml mypy config
-- [ ] remove use of `custom_inherit`
+This package was created using
+[Cookiecutter](https://github.com/audreyr/cookiecutter) with the
+[usnistgov/cookiecutter-nist-python](https://github.com/usnistgov/cookiecutter-nist-python)
+template.
