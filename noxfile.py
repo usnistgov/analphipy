@@ -7,15 +7,24 @@ import sys
 from dataclasses import replace  # noqa
 from pathlib import Path
 from typing import (
-    Annotated,
     Any,
     Callable,
     Iterator,
     Sequence,
-    TypeAlias,
     TypeVar,
     cast,
 )
+
+if sys.version_info > (3, 10):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
+
+if sys.version_info > (3, 9):
+    from typing import Annotated
+else:
+    from typing_extensions import Annotated
+
 
 import nox  # type: ignore[unused-ignore,import]
 from noxopt import NoxOpt, Option, Session  # type: ignore[unused-ignore,import]
@@ -105,19 +114,19 @@ LOCK_OPT = Option(type=bool, help="If True, use conda-lock")
 
 
 def opts_annotated(**kwargs: Any):  # type: ignore[unused-ignore,no-untyped-def]
-    return Annotated[list[str], replace(OPTS_OPT, **kwargs)]
+    return Annotated["list[str]", replace(OPTS_OPT, **kwargs)]
 
 
 def cmd_annotated(**kwargs: Any):  # type: ignore[unused-ignore,no-untyped-def]
-    return Annotated[list[str], replace(CMD_OPT, **kwargs)]
+    return Annotated["list[str]", replace(CMD_OPT, **kwargs)]
 
 
 def run_annotated(**kwargs: Any):  # type: ignore[unused-ignore,no-untyped-def]
-    return Annotated[list[list[str]], replace(RUN_OPT, **kwargs)]
+    return Annotated["list[list[str]]", replace(RUN_OPT, **kwargs)]
 
 
 LOCK_CLI = Annotated[bool, LOCK_OPT]
-RUN_CLI = Annotated[list[list[str]], RUN_OPT]
+RUN_CLI = Annotated["list[list[str]]", RUN_OPT]
 TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest")
 DEV_EXTRAS_CLI = cmd_annotated(help="extras included in user dev environment")
 PYTHON_PATHS_CLI = cmd_annotated(help="python paths to append to PATHS")
