@@ -27,7 +27,7 @@ dependencies:
   - pytest-xdist
   - pytype
   - scipy
-  - setuptools-scm
+  - setuptools-scm>=8.0
   - typing-extensions
   - pip
   - pip:

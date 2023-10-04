@@ -10,7 +10,7 @@ from . import measures, norofrenkel, potential
 
 # updated versioning scheme
 try:
-    from ._version import __version__
+    from ._version import __version__  # type: ignore[unused-ignore,import]
 except Exception:  # pragma: no cover
     __version__ = "999"
 

@@ -32,7 +32,7 @@ dependencies:
   - pytype
   - ruamel.yaml
   - scipy
-  - setuptools-scm
+  - setuptools-scm>=8.0
   - typing-extensions
   - pip
   - pip:
