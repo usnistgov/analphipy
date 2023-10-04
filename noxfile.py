@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import shutil
 import sys
+
+# Should only use on python version > 3.10
+assert sys.version_info >= (3, 10)
+
 from dataclasses import replace  # noqa
 from pathlib import Path
 from typing import (
@@ -255,7 +259,7 @@ def requirements(
     """
     pkg_install_venv(
         session=session,
-        reqs=["pyproject2conda>=0.7.0"],
+        reqs=["pyproject2conda>=0.8.0"],
         name="reqs",
         update=update,
         log_session=log_session,

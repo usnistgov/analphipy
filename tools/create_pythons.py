@@ -4,7 +4,7 @@ from __future__ import annotations
 import sys
 from functools import lru_cache
 
-assert sys.version_info[:2] >= (3, 9)
+assert sys.version_info >= (3, 9)
 
 
 @lru_cache
