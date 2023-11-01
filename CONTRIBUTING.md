@@ -7,7 +7,9 @@ You can contribute in many ways:
 
 ## Types of Contributions
 
+<!-- prettier-ignore-start -->
 [issues]: https://github.com/usnistgov/analphipy/issues
+<!-- prettier-ignore-end -->
 
 ### Report Bugs
 
@@ -50,7 +52,7 @@ If you are proposing a feature:
 
 Ready to contribute? Here's how to set up `analphipy` for local development.
 
-- Fork the `analphipy` repo on GitHub.
+- Fork the repo on GitHub.
 
 - Clone your fork locally:
 

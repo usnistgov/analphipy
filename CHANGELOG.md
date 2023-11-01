@@ -1,5 +1,6 @@
 <!-- markdownlint-disable MD024 -->
-
+<!-- markdownlint-disable MD013 -->
+<!-- prettier-ignore-start -->
 # Changelog
 
 Changelog for `analphipy`
@@ -7,6 +8,8 @@ Changelog for `analphipy`
 ## Unreleased
 
 See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy)
+
+<!-- prettier-ignore-end -->
 
 <!-- scriv-insert-here -->
 

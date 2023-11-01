@@ -12,6 +12,7 @@
   [pypi-badge]: https://badge.fury.io/py/analphipy
 -->
 
+<!-- prettier-ignore-start -->
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/psf/black
 [pypi-badge]: https://img.shields.io/pypi/v/analphipy
@@ -24,6 +25,7 @@
 [conda-link]: https://anaconda.org/conda-forge/analphipy
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
+<!-- prettier-ignore-end -->
 
 <!-- other links -->
 
