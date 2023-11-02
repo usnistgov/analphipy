@@ -260,7 +260,8 @@ class PhiAbstract:
 
         if r0 == "mean":
             if bounds is not None:
-                r0 = cast(float, np.mean(bounds))
+                assert isinstance(bounds, tuple)
+                r0 = cast(float, np.mean(bounds))  # pyright: ignore
             else:
                 raise ValueError('must specify bounds with r0="mean"')
 

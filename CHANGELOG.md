@@ -11,6 +11,8 @@ See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy/t
 
 <!-- prettier-ignore-end -->
 
+<!-- markdownlint-enable MD013 -->
+
 <!-- scriv-insert-here -->
 
 ## v0.3.0 — 2023-08-04
