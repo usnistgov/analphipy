@@ -200,7 +200,7 @@ def minimize_phi(
         if isinstance(outputs["fun"], float):
             ymin = outputs["fun"]
         else:
-            ymin = outputs["fun"][0]
+            ymin = outputs["fun"][0]  # pyright: ignore
 
         return cast(
             "tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs)

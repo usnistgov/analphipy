@@ -7,9 +7,11 @@ Changelog for `analphipy`
 
 ## Unreleased
 
-See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy)
+See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy/tree/main/changelog.d)
 
 <!-- prettier-ignore-end -->
+
+<!-- markdownlint-enable MD013 -->
 
 <!-- scriv-insert-here -->
 
