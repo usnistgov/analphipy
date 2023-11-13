@@ -229,7 +229,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "analphipy"
-copyright = "2023, William P. Krekelberg"
+copyright = "2021, William P. Krekelberg"
 author = "William P. Krekelberg"
 
 # The version info for the project you're documenting, acts as replacement
