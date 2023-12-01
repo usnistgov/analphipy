@@ -157,6 +157,9 @@ test = "pytest"
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --doctest-glob='*.md' --pyargs"
 testpaths = ["README.md", "src", "tests"]
+filterwarnings = [
+    "ignore::docstring_inheritance.docstring_inheritors.bases.inheritor.DocstringInheritanceWarning",
+]
 
 [tool.coverage.report]
 exclude_also = ["if TYPE_CHECKING:", "@overload"]
