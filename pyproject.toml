@@ -155,7 +155,7 @@ fallback_version = "999"
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md'"
+addopts = "--doctest-modules --doctest-glob='*.md' --pyargs"
 testpaths = ["README.md", "src", "tests"]
 
 [tool.coverage.report]
