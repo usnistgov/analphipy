@@ -7,13 +7,12 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
-attrs
-docstring-inheritance
-module-utilities>=0.6
-mypy>=1.4.1
-numpy
-pandas-stubs
-pytest
-pytype;python_version<"3.11"
-scipy
-typing-extensions
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas
+  - pytest
+  - pytest-cov
+  - pytest-sugar
+  - pytest-xdist

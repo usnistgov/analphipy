@@ -12,11 +12,9 @@ docstring-inheritance
 ipykernel
 ipython
 matplotlib
-module-utilities >= 0.6
-mypy >=1.4.1
-nbqa
+module-utilities>=0.6
+mypy>=1.4.1
 nox
-noxopt
 numpy
 pandas
 pandas-stubs
@@ -27,9 +25,8 @@ pytest-accept
 pytest-cov
 pytest-sugar
 pytest-xdist
-pytype; python_version < '3.11'
+pytype;python_version<"3.11"
 ruamel.yaml
 scipy
 scriv
-setuptools-scm>=8.0
 typing-extensions
