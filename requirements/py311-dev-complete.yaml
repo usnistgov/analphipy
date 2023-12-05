@@ -18,6 +18,8 @@ dependencies:
   - matplotlib
   - module-utilities>=0.6
   - mypy>=1.4.1
+  - nbqa
+  - nbval
   - nox
   - numpy
   - pandas

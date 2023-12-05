@@ -48,11 +48,11 @@ test = [
     "pytest-sugar",
     "pandas",
 ]
+nbval = ["nbval", "matplotlib", "pandas"]
 dev-extras = [
     "pytest-accept", # p2c: -p
     "ipython",
     "ipykernel",
-    "matplotlib",
     "pandas",
 ]
 typing-extras = [
@@ -66,6 +66,7 @@ typing = [
 ]
 nox = ["nox", "ruamel.yaml"]
 dev = [
+    "analphipy[nbval]", # optional
     "analphipy[test]", #
     "analphipy[typing-extras]",
     "analphipy[dev-extras]",
@@ -73,7 +74,7 @@ dev = [
 tools = [
     "pre-commit", #
     "scriv", # p2c: -p
-    # "nbqa",
+    "nbqa",
     "pyright",
 ]
 dev-complete = [
@@ -92,8 +93,8 @@ docs = [
     "myst-nb",
     "sphinx-book-theme",
     "autodocsumm",
-    "matplotlib",
     "pandas",
+    "matplotlib",
 ]
 
 [tool.pyproject2conda]
@@ -128,6 +129,10 @@ deps = ["pip"]
 [[tool.pyproject2conda.overrides]]
 envs = ["test", "typing", "test-extras"]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+# Project specific
+[tool.pyproject2conda.envs.test-notebook]
+extras = ["test", "nbval"]
 
 ## grayskull still messes some things up, but use scripts/recipe-append.sh for this
 [tool.setuptools]
@@ -341,7 +346,8 @@ module = [
     "ruamel.yaml",
     "scipy.integrate.*",
     "scipy.optimize.*",
-    "scipy.misc.*"
+    "scipy.misc.*",
+    "matplotlib.*",
 ]
 
 [[tool.mypy.overrides]]
