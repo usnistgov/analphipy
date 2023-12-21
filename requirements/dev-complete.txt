@@ -20,6 +20,7 @@ nox
 numpy
 pandas
 pandas-stubs
+pip-tools
 pre-commit
 pyright
 pytest
@@ -28,7 +29,6 @@ pytest-cov
 pytest-sugar
 pytest-xdist
 pytype;python_version<"3.11"
-ruamel.yaml
 scipy
 scriv
 typing-extensions
