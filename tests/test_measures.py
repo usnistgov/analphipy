@@ -1,19 +1,19 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 # from typing import Sequence, Any
 # from typing_extensions import reveal_type
-
 import numpy as np
 import pandas as pd
 
-
-import analphipy.measures as measures
 import analphipy.potential as pots
+from analphipy import measures
 from analphipy.norofrenkel import NoroFrenkelPair
 
-from analphipy.base_potential import PhiAbstract
+if TYPE_CHECKING:
+    from analphipy.base_potential import PhiAbstract
 
 data = Path(__file__).parent / "data"
 
@@ -27,7 +27,7 @@ nsamp = 20
 #     )
 
 #     def hello(x: Sequence[float]) -> Sequence[float]:
-#         return x * 2 # type: ignore
+#         return x * 2
 
 
 #     reveal_type(df)
@@ -40,7 +40,7 @@ nsamp = 20
 #     # reveal_type(hello(df['sig'].to_numpy(dtype=float)))
 
 
-def test_B2_sw():
+def test_B2_sw() -> None:
     df = (
         pd.read_csv(data / "vir_sw_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
@@ -60,7 +60,7 @@ def test_B2_sw():
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"])
 
 
-def test_B2_lj():
+def test_B2_lj() -> None:
     df = (
         pd.read_csv(data / "vir_lj_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
@@ -93,7 +93,7 @@ def test_B2_lj():
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"], rtol=1e-3)
 
 
-def test_B2_nm():
+def test_B2_nm() -> None:
     df = (
         pd.read_csv(data / "vir_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
@@ -117,7 +117,7 @@ def test_B2_nm():
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"], rtol=1e-3)
 
 
-def test_B2_yk():
+def test_B2_yk() -> None:
     df = (
         pd.read_csv(data / "vir_yukawa_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
@@ -140,7 +140,7 @@ def test_B2_yk():
         np.testing.assert_allclose(-g["dBn_2"], out["B2_dbeta"], rtol=1e-6)
 
 
-def test_B2_hs():
+def test_B2_hs() -> None:
     sig = np.random.rand()
 
     p = pots.HardSphere(sig=sig)

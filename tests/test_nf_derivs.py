@@ -1,4 +1,6 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pytest
 from scipy.misc import derivative
@@ -6,10 +8,11 @@ from scipy.misc import derivative
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
-from analphipy.base_potential import PhiAbstract
+if TYPE_CHECKING:
+    from analphipy.base_potential import PhiAbstract
 
 
-def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3):
+def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3) -> None:
     a = getattr(nf, dprop)(beta)
 
     f = getattr(nf, prop)
@@ -20,10 +23,7 @@ def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3):
 
 
 def factory_lj(lfs=False, cut=False, **kws):
-    if lfs or cut:
-        rcut = kws.pop("rcut")
-    else:
-        rcut = None
+    rcut = kws.pop("rcut") if lfs or cut else None
 
     p: PhiAbstract
 
@@ -31,16 +31,16 @@ def factory_lj(lfs=False, cut=False, **kws):
 
     if cut:
         return p.cut(rcut=rcut)
-    elif lfs:
+    if lfs:
         return p.lfs(rcut=rcut)
-    else:
-        return p
+
+    return p
 
 
 BETAS = [0.1, 0.5, 1.0]
 
 
-def test_nf_deriv_lj():
+def test_nf_deriv_lj() -> None:
     sig = eps = 1.0
 
     p = pots.LennardJones(sig=sig, eps=eps)
@@ -55,7 +55,7 @@ def test_nf_deriv_lj():
 
 
 @pytest.mark.parametrize("rcut", [2.0, 3.0, 5.0])
-def test_nf_deriv_lj_cut(rcut):
+def test_nf_deriv_lj_cut(rcut) -> None:
     sig = eps = 1.0
 
     p = pots.LennardJones(sig=sig, eps=eps).cut(rcut)
@@ -70,7 +70,7 @@ def test_nf_deriv_lj_cut(rcut):
 
 
 @pytest.mark.parametrize("z", [1.0, 2.0, 4.0])
-def test_nf_deriv_yk(z):
+def test_nf_deriv_yk(z) -> None:
     sig = eps = 1.0
 
     p = pots.Yukawa(sig=sig, eps=eps, z=z)

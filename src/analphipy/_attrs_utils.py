@@ -14,20 +14,13 @@ if TYPE_CHECKING:
     R = TypeVar("R")
 
 
-# def attrs_clear_cache(self: S, attribute: Any, value: T) -> T: # pyright: ignore
-#     """Clear out _cache if setting value."""
-#     self._cache = {} # pyright: ignore[reportPrivateUsage]
-#     return value
-
-
 def optional_converter(converter: Callable[[T], R]) -> Callable[[T], T | R]:
     """Create a converter which can pass through None."""
 
     def wrapped(value: T) -> T | R:  # pragma: no cover
-        if value in [None, attrs.NOTHING]:
+        if value in {None, attrs.NOTHING}:
             return value
-        else:
-            return converter(value)
+        return converter(value)
 
     return wrapped
 
@@ -53,6 +46,6 @@ def field_array_formatter(threshold: int = 3, **kws: Any) -> Callable[[Any], str
     return wrapped
 
 
-def private_field(init: bool = False, repr: bool = False, **kws: Any) -> Any:
+def private_field(init: bool = False, repr: bool = False, **kws: Any) -> Any:  # noqa: A002
     """Create a private attrs field."""
     return attrs.field(init=init, repr=repr, **kws)  # pytype: disable=not-supported-yet

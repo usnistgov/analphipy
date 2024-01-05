@@ -111,7 +111,6 @@ class PhiAbstract:
         ...
         ...     def __attrs_post_init__(self):
         ...         self._immutable_setattrs(_derived=self.r_min + 10)
-        ...
 
         >>> x = Derived(r_min=5)
         >>> x._derived
@@ -166,13 +165,13 @@ class PhiAbstract:
             if f.name in include:
                 includes.append(f)
 
-            elif f.name in exclude:
-                pass
-
-            elif exclude_private and f.name.startswith("_"):
-                pass
-
-            elif exclude_no_init and not f.init:
+            elif (
+                f.name in exclude
+                or exclude_private
+                and f.name.startswith("_")
+                or exclude_no_init
+                and not f.init
+            ):
                 pass
 
             else:
@@ -194,7 +193,8 @@ class PhiAbstract:
             Evaluated pair potential.
         """
 
-        raise NotImplementedError("Must implement in subclass")
+        msg = "Must implement in subclass"
+        raise NotImplementedError(msg)
 
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r"""
@@ -213,7 +213,8 @@ class PhiAbstract:
             Pair potential values.
 
         """
-        raise NotImplementedError("Must implement in subclass")
+        msg = "Must implement in subclass"
+        raise NotImplementedError(msg)
 
     def minimize(
         self,
@@ -253,7 +254,7 @@ class PhiAbstract:
         """
 
         if bounds == "segments":
-            if self.segments is not None:  # pyright: ignore
+            if self.segments is not None:  # pyright: ignore[reportUnnecessaryComparison]
                 bounds = (self.segments[0], self.segments[-1])
             else:
                 bounds = None  # pragma: no cover
@@ -261,9 +262,10 @@ class PhiAbstract:
         if r0 == "mean":
             if bounds is not None:
                 assert isinstance(bounds, tuple)
-                r0 = cast(float, np.mean(bounds))  # pyright: ignore
+                r0 = cast(float, np.mean(bounds))
             else:
-                raise ValueError('must specify bounds with r0="mean"')
+                msg = 'must specify bounds with r0="mean"'
+                raise ValueError(msg)
 
         return minimize_phi(self.phi, r0=r0, bounds=bounds, **kws)
 
@@ -297,7 +299,8 @@ class PhiAbstract:
         nf : :class:`analphipy.norofrenkel.NoroFrenkelPair`
         """
         if self.r_min is None:
-            raise ValueError("must set `self.r_min` to use NoroFrenkel")
+            msg = "must set `self.r_min` to use NoroFrenkel"
+            raise ValueError(msg)
 
         for k in ["phi", "segments", "r_min", "phi_min"]:
             if k not in kws:
@@ -370,16 +373,17 @@ class PhiCutBase(PhiAbstract):
     #: Position to cut the potential
     rcut: float = field(converter=float)
     #: Integration limits
-    segments: Sequence[  # pyright: ignore[reportIncompatibleVariableOverride]
-        float
-    ] = private_field()
+    segments: Sequence[float] = private_field()  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __attrs_post_init__(self) -> None:
-        if self.phi_base.segments is None:  # pyright: ignore
-            raise ValueError("must specify segments")  # pragma: no cover
+        if self.phi_base.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
+            msg = "must specify segments"
+            raise ValueError(msg)  # pragma: no cover
         self._immutable_setattrs(
-            segments=tuple(x for x in self.phi_base.segments if x < self.rcut)
-            + (self.rcut,)
+            segments=(
+                *tuple(x for x in self.phi_base.segments if x < self.rcut),
+                self.rcut,
+            )
         )
 
     @docfiller_phiabstract()
@@ -478,8 +482,7 @@ class PhiLFS(PhiCutBase):
         )
 
     def _vcorrect(self, r: Array) -> Array:
-        out = -(self._vcut + self._dvdrcut * (r - self.rcut))
-        return out
+        return -(self._vcut + self._dvdrcut * (r - self.rcut))
 
     def _dvdrcorrect(self, r: Array) -> Array:
         out = -self._dvdrcut

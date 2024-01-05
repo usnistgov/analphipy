@@ -40,8 +40,8 @@ if TYPE_CHECKING:
         QuadSegments,
     )
 
-# Hack to document module level docstring
-__doc__ = __doc__.format(**docfiller.data)
+# Workaround to document module level docstring
+__doc__ = __doc__.format(**docfiller.data)  # noqa: A001
 
 __all__ = [
     "sig_nf",
@@ -151,10 +151,7 @@ def sig_nf_dbeta(
 ) -> QuadSegments:
     def integrand(r: Float_or_Array) -> Array:
         v = phi_rep(r)
-        if np.isinf(v):
-            out = np.array(0.0)
-        else:
-            out = v * np.exp(-beta * v)
+        out = np.array(0.0) if np.isinf(v) else v * np.exp(-beta * v)
 
         return cast("Array", out)
 
@@ -260,9 +257,7 @@ def lam_nf_dbeta(
 
     e = np.exp(beta * eps)
 
-    out: float = (
-        1.0 / (3 * lam**2 * (e - 1)) * (dB2stardbeta * e - eps * (lam**3 - 1))
-    )
+    out: float = 1.0 / (3 * lam**2 * (e - 1)) * (dB2stardbeta * e - eps * (lam**3 - 1))
 
     return out
 
@@ -290,7 +285,7 @@ class NoroFrenkelPair:
         r_min: float,
         phi_min: Float_or_Array | None,
         quad_kws: Mapping[str, Any] | None = None,
-    ):
+    ) -> None:
         self.phi = phi
         self.r_min = r_min
 
@@ -377,7 +372,8 @@ class NoroFrenkelPair:
             bounds = (segments[0], segments[-1])
 
         if bounds[-1] == np.inf and r_min is None:
-            raise ValueError("if specify infinite bounds, must supply guess")
+            msg = "if specify infinite bounds, must supply guess"
+            raise ValueError(msg)
 
         if r_min is None:
             r_min = cast(float, np.mean(bounds))
@@ -418,7 +414,7 @@ class NoroFrenkelPair:
         """
 
         if (
-            phi.segments is not None  # pyright: ignore
+            phi.segments is not None  # pyright: ignore[reportUnnecessaryComparison]
             and phi.r_min is not None
             and phi.phi_min is not None
         ):
@@ -430,17 +426,16 @@ class NoroFrenkelPair:
                 quad_kws=quad_kws,
             )
 
-        else:
-            assert phi.segments is not None
+        assert phi.segments is not None
 
-            return cls.from_phi(
-                phi=phi.phi,
-                segments=phi.segments,
-                r_min=r_min,
-                bounds=bounds,
-                quad_kws=quad_kws,
-                **kws,
-            )
+        return cls.from_phi(
+            phi=phi.phi,
+            segments=phi.segments,
+            r_min=r_min,
+            bounds=bounds,
+            quad_kws=quad_kws,
+            **kws,
+        )
 
     @cached.meth
     @add_quad_kws
@@ -475,7 +470,7 @@ class NoroFrenkelPair:
             **kws,
         )
 
-    def eps(self, beta: float, **kws: Any) -> float:
+    def eps(self, beta: float | None = None, **kws: Any) -> float:  # noqa: ARG002
         """
         Effective square well epsilon.
 
@@ -503,8 +498,9 @@ class NoroFrenkelPair:
                 eps=self.eps(beta, **kws),
                 B2=B2,
             )
-        else:
-            raise ValueError(f"Bad kws={kws}")
+
+        msg = f"Bad kws={kws}"
+        raise ValueError(msg)
 
     @cached.meth
     @add_quad_kws
@@ -517,8 +513,9 @@ class NoroFrenkelPair:
         if is_float(sig) and is_float(B2):
             lam = lam_nf(beta=beta, sig=sig, eps=eps, B2=B2)
             return {"sig": sig, "eps": eps, "lam": lam}
-        else:
-            raise ValueError(f"Bad kws={kws}")
+
+        msg = f"Bad kws={kws}"
+        raise ValueError(msg)
 
     @cached.meth
     @add_quad_kws
@@ -579,8 +576,9 @@ class NoroFrenkelPair:
                 B2_dbeta=B2_dbeta,
                 sig_dbeta=sig_dbeta,
             )
-        else:
-            raise ValueError(f"Bad kws={kws}")  # pragma: no cover
+
+        msg = f"Bad kws={kws}"
+        raise ValueError(msg)  # pragma: no cover
 
     @cached.meth
     def secondvirial_sw(self, /, beta: float, **kws: Any) -> float:
@@ -601,8 +599,9 @@ class NoroFrenkelPair:
                 eps=eps,
                 lam=lam,
             )
-        else:
-            raise ValueError(f"Bad kws={kws}")  # pragma: no cover
+
+        msg = f"Bad kws={kws}"
+        raise ValueError(msg)  # pragma: no cover
 
     def B2(self, beta: float, **kws: Any) -> QuadSegments:
         """Alias to :meth:`secondvirial`."""

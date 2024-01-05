@@ -1,30 +1,31 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
+import pytest
 
 # import analphipy.measures as measures
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
-from analphipy.base_potential import PhiAbstract
-
-import pytest
+if TYPE_CHECKING:
+    from analphipy.base_potential import PhiAbstract
 
 data = Path(__file__).parent / "data"
 
 nsamp = 20
 
 
-def test_simple():
+def test_simple() -> None:
     p = pots.LennardJones()
 
     n = p.to_nf()
 
-    np.testing.assert_allclose(n.secondvirial(1.0), n.secondvirial_sw(1.0))  # type: ignore
+    np.testing.assert_allclose(n.secondvirial(1.0), n.secondvirial_sw(1.0))  # type: ignore[arg-type]
 
-    np.testing.assert_allclose(n.secondvirial(1.0), n.B2_sw(1.0))  # type: ignore
+    np.testing.assert_allclose(n.secondvirial(1.0), n.B2_sw(1.0))  # type: ignore[arg-type]
 
     with pytest.raises(ValueError):
         n.lam(beta=1.0, err=True)
@@ -41,7 +42,7 @@ def test_simple():
     assert isinstance(n.sw_dict(1.0), dict)
 
 
-def test_nf_sw():
+def test_nf_sw() -> None:
     cols = ["sig", "eps", "lam", "B2"]
     df = pd.read_csv(data / "eff_sw_.csv").assign(beta=lambda x: 1.0 / x["temp"])
 
@@ -53,14 +54,14 @@ def test_nf_sw():
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
 
-        out = a.table(g["beta"], props=None)  # type: ignore
+        out = a.table(g["beta"], props=None)  # type: ignore[arg-type]
 
         for col in cols:
             left = col + "_eff"
             np.testing.assert_allclose(g[left], out[col])
 
 
-def test_nf_lj():
+def test_nf_lj() -> None:
     cols = ["sig", "eps", "lam", "B2", "sig_dbeta"]
 
     df = (
@@ -89,14 +90,14 @@ def test_nf_lj():
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
-        out = a.table(g["beta"], cols)  # type: ignore
+        out = a.table(g["beta"], cols)  # type: ignore[arg-type]
 
         for col in cols:
             left = col + "_eff"
             np.testing.assert_allclose(g[left], out[col], rtol=1e-3)
 
 
-def test_nf_nm():
+def test_nf_nm() -> None:
     cols = ["sig", "eps", "lam", "B2"]
     df = (
         pd.read_csv(data / "eff_lj_nm_.csv")
@@ -115,14 +116,14 @@ def test_nf_nm():
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
-        out = a.table(g["beta"], cols)  # type: ignore
+        out = a.table(g["beta"], cols)  # type: ignore[arg-type]
 
         for col in cols:
             left = col + "_eff"
             np.testing.assert_allclose(g[left], out[col], rtol=1e-3)
 
 
-def test_nf_yk():
+def test_nf_yk() -> None:
     cols = ["sig", "eps", "lam", "B2"]
 
     df = (
@@ -136,11 +137,11 @@ def test_nf_yk():
     sig = eps = 1.0
 
     for (z_yukawa), g in df.groupby("z_yukawa"):
-        p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)  # type: ignore
+        p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)  # type: ignore[arg-type]
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)
 
-        out = a.table(g["beta"], cols)  # type: ignore
+        out = a.table(g["beta"], cols)  # type: ignore[arg-type]
 
         for col in cols:
             left = col + "_eff"

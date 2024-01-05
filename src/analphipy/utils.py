@@ -97,7 +97,9 @@ def quad_segments(
     --------
     scipy.integrate.quad
     """
-    from scipy.integrate import quad  # pyright: ignore
+    from scipy.integrate import (  # pyright: ignore[reportMissingTypeStubs]
+        quad,  # pyright: ignore[reportUnknownVariableType]
+    )
 
     out: list[tuple[float, float, dict[str, Any]]] = [
         quad(func, a=a, b=b, args=args, full_output=True, **kws)
@@ -120,31 +122,28 @@ def quad_segments(
             errors_list.append(e)
             outputs_list.append(o)
 
-        if sum_integrals:
-            # fmt: off
-            integrals = cast(float, np.sum(integrals_list))  # pyright: ignore[reportUnknownMemberType]
-            # fmt: on
-        else:
-            integrals = integrals_list
+        integrals = (
+            cast(float, np.sum(integrals_list))  # pyright: ignore[reportUnknownMemberType]
+            if sum_integrals
+            else integrals_list
+        )
 
-        if sum_errors:
-            # fmt: off
-            errors = np.sum(errors_list)  # pyright: ignore[reportUnknownMemberType]
-            # fmt: on
-        else:
-            errors = errors_list
+        errors = (
+            np.sum(errors_list)  # pyright: ignore[reportUnknownMemberType]
+            if sum_errors
+            else errors_list
+        )
 
         outputs = outputs_list
 
     # Gather final results
     if err and full_output:
         return integrals, errors, outputs
-    elif err and not full_output:
+    if err and not full_output:
         return integrals, errors
-    elif not err and full_output:
+    if not err and full_output:
         return integrals, outputs
-    else:
-        return integrals
+    return integrals
 
 
 def minimize_phi(
@@ -177,7 +176,9 @@ def minimize_phi(
     --------
     scipy.optimize.minimize
     """
-    from scipy.optimize import minimize  # pyright: ignore
+    from scipy.optimize import (  # pyright: ignore[reportMissingTypeStubs]
+        minimize,  # pyright: ignore[reportUnknownVariableType]
+    )
 
     if bounds is None:
         bounds = (0.0, np.inf)
@@ -187,24 +188,18 @@ def minimize_phi(
         xmin = bounds[0]
         ymin = phi(xmin)
         return xmin, ymin, None
-    else:
-        outputs = cast(
-            "OptimizeResultInterface", minimize(phi, r0, bounds=[bounds], **kws)
-        )
 
-        if not outputs["success"]:
-            raise ValueError("could not find min of phi")
+    outputs = cast("OptimizeResultInterface", minimize(phi, r0, bounds=[bounds], **kws))
 
-        xmin = outputs["x"][0]
+    if not outputs["success"]:
+        msg = "could not find min of phi"
+        raise ValueError(msg)
 
-        if isinstance(outputs["fun"], float):
-            ymin = outputs["fun"]
-        else:
-            ymin = outputs["fun"][0]  # pyright: ignore
+    xmin = outputs["x"][0]
 
-        return cast(
-            "tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs)
-        )
+    ymin = outputs["fun"] if isinstance(outputs["fun"], float) else outputs["fun"][0]  # pyright: ignore[reportGeneralTypeIssues, reportUnknownVariableType]
+
+    return cast("tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs))
 
 
 # * Phi utilities
@@ -230,11 +225,11 @@ def segments_to_segments_cut(segments: Iterable[float], rcut: float) -> list[flo
 
 
 def add_quad_kws(
-    func: Callable[Concatenate[S, P], R]
+    func: Callable[Concatenate[S, P], R],
 ) -> Callable[Concatenate[S, P], R]:
     @wraps(func)
     def wrapped(self: S, /, *args: P.args, **kws: P.kwargs) -> R:
-        kws = dict(self.quad_kws, **kws)  # type: ignore
+        kws = dict(self.quad_kws, **kws)  # type: ignore[assignment]
         return func(self, *args, **kws)
 
     return wrapped
