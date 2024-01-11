@@ -13,15 +13,11 @@ dependencies:
   - python=3.10
   - attrs
   - docstring-inheritance
-  - module-utilities >= 0.6
-  - mypy >=1.4.1
+  - module-utilities>=0.6
+  - mypy>=1.4.1
   - numpy
-  - pandas
   - pandas-stubs
   - pytest
-  - pytest-cov
-  - pytest-sugar
-  - pytest-xdist
   - pytype
   - scipy
   - typing-extensions

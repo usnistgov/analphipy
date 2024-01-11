@@ -13,7 +13,7 @@ dependencies:
   - python=3.8
   - attrs
   - docstring-inheritance
-  - module-utilities >= 0.6
+  - module-utilities>=0.6
   - numpy
   - pandas
   - pytest
@@ -22,3 +22,4 @@ dependencies:
   - pytest-xdist
   - scipy
   - typing-extensions
+  - pip

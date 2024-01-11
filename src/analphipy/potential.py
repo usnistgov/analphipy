@@ -52,7 +52,8 @@ class Generic(PhiBase):
     @docfiller_phibase()
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         if self.dphidr_func is None:
-            raise ValueError("Must specify dphidr_func")
+            msg = "Must specify dphidr_func"
+            raise ValueError(msg)
         r = np.asarray(r)
         return self.dphidr_func(r)
 
@@ -72,15 +73,15 @@ class Analytic(PhiBase):
 
     # fmt: off
     #: Position of minimum in :math:`\phi(r)`
-    r_min: float = field( # pyright: ignore[reportIncompatibleVariableOverride]
+    r_min: float = field(  # pyright: ignore[reportIncompatibleVariableOverride]
         init=False, repr=field_formatter()
     )
     #: Value of ``phi`` at minimum.
-    phi_min: float = field( # pyright: ignore[reportIncompatibleVariableOverride]
+    phi_min: float = field(  # pyright: ignore[reportIncompatibleVariableOverride]
         init=False, repr=False
     )
     #: Integration limits.
-    segments: Sequence[float] = field( # pyright: ignore[reportIncompatibleVariableOverride]
+    segments: Sequence[float] = field(  # pyright: ignore[reportIncompatibleVariableOverride]
         init=False
     )
     # fmt: on
@@ -193,16 +194,16 @@ class LennardJonesNM(Analytic):
         out = eps * (n / (n - m)) * (n / m) ** (m / (n - m))
         if isinstance(out, float):
             return out
-        else:
-            raise ValueError(f"Bad parameters lead to unknown prefac {out}")
+
+        msg = f"Bad parameters lead to unknown prefac {out}"
+        raise ValueError(msg)
 
     @docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
 
         x = self.sig / r
-        out = self._prefac * (x**self.n - x**self.m)
-        return out
+        return self._prefac * (x**self.n - x**self.m)
 
     @docfiller_analytic()
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
@@ -361,7 +362,7 @@ class SquareWell(Analytic):
         return phi
 
 
-def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None:
+def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None:  # noqa: ARG001
     assert len(bounds) == 2, "length of bounds must be 2"
 
 
@@ -422,7 +423,7 @@ class CubicTable(PhiBase):
             _dsinv=1.0 / ds,
         )
 
-        if self.segments is None:  # pyright: ignore
+        if self.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
             self._immutable_setattrs(segments=tuple(np.sqrt(x) for x in self.bounds))
 
     @classmethod
@@ -605,7 +606,8 @@ def factory(
         phi = HardSphere(**kws)
 
     else:
-        raise ValueError(f"{name} must be in {_PHI_NAMES}")
+        msg = f"{name} must be in {_PHI_NAMES}"
+        raise ValueError(msg)
 
     if lfs or cut:
         assert rcut is not None

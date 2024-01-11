@@ -10,22 +10,24 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.11
   - attrs
-  - autodocsumm
   - docstring-inheritance
-  - ghp-import
+  - ipykernel
   - ipython
   - matplotlib
-  - module-utilities >= 0.6
-  - myst-nb
+  - module-utilities>=0.6
+  - mypy>=1.4.1
+  - nbval
   - numpy
   - pandas
-  - pyenchant
+  - pandas-stubs
+  - pytest
+  - pytest-cov
+  - pytest-sugar
+  - pytest-xdist
   - scipy
-  - sphinx >= 5.3.0
-  - sphinx-autobuild
-  - sphinx-book-theme
-  - sphinx-copybutton
-  - sphinxcontrib-spelling
   - typing-extensions
+  - pip
+  - pip:
+      - pytest-accept

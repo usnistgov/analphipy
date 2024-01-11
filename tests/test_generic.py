@@ -8,14 +8,11 @@ def _get_generic(p):
     return potential.Generic(phi_func=p.phi, dphidr_func=p.dphidr, segments=p.segments)
 
 
-def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
+def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True) -> None:
     if kws is None:
         kws = params.asdict()
 
-    if cut or lfs:
-        rcut = kws.pop("rcut")
-    else:
-        rcut = None
+    rcut = kws.pop("rcut") if cut or lfs else None
 
     p = factory(**kws)
     p = _get_generic(p)
@@ -40,23 +37,23 @@ def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
     np.testing.assert_allclose(phi0, phi1)
 
 
-def test_lj(lj_params):
+def test_lj(lj_params) -> None:
     _do_test(lj_params, potential.LennardJones)
 
 
-def test_lj_cut(lj_cut_params):
+def test_lj_cut(lj_cut_params) -> None:
     _do_test(lj_cut_params, potential.LennardJones, cut=True)
 
 
-def test_lj_lfs(lj_lfs_params):
+def test_lj_lfs(lj_lfs_params) -> None:
     _do_test(lj_lfs_params, potential.LennardJones, lfs=True)
 
 
-def test_nm(nm_params):
+def test_nm(nm_params) -> None:
     _do_test(nm_params, potential.LennardJonesNM)
 
 
-def test_nm_cut(lj_cut_params):
+def test_nm_cut(lj_cut_params) -> None:
     params = lj_cut_params
 
     phi0, dphi0 = params.get_phidphi()
@@ -74,7 +71,7 @@ def test_nm_cut(lj_cut_params):
     np.testing.assert_allclose(dphi0, dphi1)
 
 
-def test_nm_lfs(lj_lfs_params):
+def test_nm_lfs(lj_lfs_params) -> None:
     params = lj_lfs_params
 
     phi0, dphi0 = params.get_phidphi()
@@ -92,9 +89,9 @@ def test_nm_lfs(lj_lfs_params):
     np.testing.assert_allclose(dphi0, dphi1)
 
 
-def test_sw(sw_params):
+def test_sw(sw_params) -> None:
     _do_test(sw_params, potential.SquareWell, phidphi=False)
 
 
-def test_yk(yk_params):
+def test_yk(yk_params) -> None:
     _do_test(yk_params, potential.Yukawa, kws=yk_params.asdict(), phidphi=False)

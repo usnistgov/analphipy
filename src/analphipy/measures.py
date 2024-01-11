@@ -130,11 +130,7 @@ def secondvirial_dbeta(
 
     def integrand(r: Float_or_Array) -> Array:
         v = phi(r)
-        if np.isinf(v):
-            out = np.array(0.0)
-
-        else:
-            out = TWO_PI * r**2 * v * np.exp(-beta * v)
+        out = np.array(0.0) if np.isinf(v) else TWO_PI * r**2 * v * np.exp(-beta * v)
         return cast("Array", out)
 
     return quad_segments(
@@ -238,19 +234,20 @@ def diverg_kl_disc(
 
 
 def _check_volume_func(
-    volume: str | Callable[[Float_or_Array], Float_or_Array] | None = None
+    volume: str | Callable[[Float_or_Array], Float_or_Array] | None = None,
 ) -> Callable[[Float_or_Array], Float_or_Array]:
     if volume is None:
         volume = "1d"
     if isinstance(volume, str):
         if volume == "1d":
-            volume = lambda x: 1.0
+            volume = lambda x: 1.0  # noqa: ARG005
         elif volume == "2d":
             volume = lambda x: 2.0 * np.pi * x
         elif volume == "3d":
             volume = lambda x: 4 * np.pi * x**2
         else:
-            raise ValueError("unknown dimension")
+            msg = "unknown dimension"
+            raise ValueError(msg)
     else:
         assert callable(volume)
 
@@ -258,7 +255,7 @@ def _check_volume_func(
 
 
 @docfiller(
-    summary="Calculate continuous Kullback–Leibler divergence for continuous pdf"
+    summary="Calculate continuous Kullback-Leibler divergence for continuous pdf"
 )
 def diverg_kl_cont(
     p: Callable[[Float_or_Array], Float_or_Array],
@@ -315,7 +312,7 @@ def diverg_kl_cont(
 
 
 # @doc_inherit(diverg_kl_disc, style="numpy_with_merge")
-@docfiller(diverg_kl_disc, summary="Discrete Jensen–Shannon divergence")
+@docfiller(diverg_kl_disc, summary="Discrete Jensen-Shannon divergence")
 def diverg_js_disc(
     p: Float_or_ArrayLike, q: Float_or_ArrayLike, axis: int | None = None
 ) -> Float_or_Array:
@@ -323,8 +320,7 @@ def diverg_js_disc(
 
     m = 0.5 * (p + q)
 
-    out = 0.5 * (diverg_kl_disc(p, m, axis=axis) + diverg_kl_disc(q, m, axis=axis))
-    return out
+    return 0.5 * (diverg_kl_disc(p, m, axis=axis) + diverg_kl_disc(q, m, axis=axis))
 
 
 def diverg_js_integrand(
@@ -345,7 +341,7 @@ def diverg_js_integrand(
     return out
 
 
-@docfiller(diverg_kl_cont, summary="Continuous Jensen–Shannon divergence")
+@docfiller(diverg_kl_cont, summary="Continuous Jensen-Shannon divergence")
 def diverg_js_cont(
     p: Callable[[Float_or_Array], Float_or_Array],
     q: Callable[[Float_or_Array], Float_or_Array],
