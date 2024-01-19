@@ -239,24 +239,12 @@ project = "analphipy"
 copyright = "2021, William P. Krekelberg"  # noqa: A001
 author = "William P. Krekelberg"
 
+
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
 # the built documents.
 #
 # The short X.Y version.
-# versioning with scm with editable install has issues.
-# instead, try to use scm if available.
-# try:
-#     from setuptools_scm import get_version
-
-#     version = get_version(root="..", relative_to=__file__)
-#     release = version
-# except ImportError:
-#     version = analphipy.__version__
-#     # The full version, including alpha/beta/rc tags.
-#     release = analphipy.__version__
-
-
 def _get_version() -> str:
     if (version := os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION")) is None:
         version = analphipy.__version__

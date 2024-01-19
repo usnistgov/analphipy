@@ -103,6 +103,9 @@ ENV/
 # mypy
 .mypy_cache/
 
+# pytype
+.pytype/
+
 # IDE settings
 .vscode/
 pyrightconfig.json
@@ -121,3 +124,7 @@ tuna-loadtime.log
 /requirements/dev-user.txt
 /requirements/lock/py*-dev-user-conda-lock.yml*
 /requirements/lock/py*-dev-user.txt*
+
+
+/README.pdf
+/notebooks/
