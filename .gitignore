@@ -103,8 +103,11 @@ ENV/
 # mypy
 .mypy_cache/
 
-# pytype
+# pytpe
 .pytype/
+
+# PDF output
+README.pdf
 
 # IDE settings
 .vscode/
@@ -126,5 +129,4 @@ tuna-loadtime.log
 /requirements/lock/py*-dev-user.txt*
 
 
-/README.pdf
 /notebooks/
