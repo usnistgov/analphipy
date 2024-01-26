@@ -28,6 +28,7 @@ from .utils import minimize_phi
 
 # * attrs utilities
 def segments_converter(segments: Sequence[Any]) -> tuple[float, ...]:
+    """Make sure segments are in correct format."""
     return tuple(float(x) for x in segments)
 
 
@@ -116,9 +117,8 @@ class PhiAbstract:
         >>> x._derived
         15.0
         """
-
         for key, value in kws.items():
-            object.__setattr__(self, key, value)
+            object.__setattr__(self, key, value)  # noqa: PLC2801
 
     def _get_smart_filter(
         self,
@@ -167,10 +167,8 @@ class PhiAbstract:
 
             elif (
                 f.name in exclude
-                or exclude_private
-                and f.name.startswith("_")
-                or exclude_no_init
-                and not f.init
+                or (exclude_private and f.name.startswith("_"))
+                or (exclude_no_init and not f.init)
             ):
                 pass
 
@@ -192,7 +190,6 @@ class PhiAbstract:
         phi : ndarray
             Evaluated pair potential.
         """
-
         msg = "Must implement in subclass"
         raise NotImplementedError(msg)
 
@@ -252,7 +249,6 @@ class PhiAbstract:
         --------
         ~analphipy.utils.minimize_phi
         """
-
         if bounds == "segments":
             if self.segments is not None:  # pyright: ignore[reportUnnecessaryComparison]
                 bounds = (self.segments[0], self.segments[-1])
@@ -261,7 +257,9 @@ class PhiAbstract:
 
         if r0 == "mean":
             if bounds is not None:
-                assert isinstance(bounds, tuple)
+                if not isinstance(bounds, tuple):  # pyright: ignore[reportUnnecessaryIsInstance]
+                    msg = "bounds must be a tuple"
+                    raise TypeError(msg)
                 r0 = cast(float, np.mean(bounds))
             else:
                 msg = 'must specify bounds with r0="mean"'
@@ -280,7 +278,6 @@ class PhiAbstract:
 
         call :meth:`minimize`
         """
-
         r_min, phi_min, _ = self.minimize(r0=r0, bounds=bounds, **kws)
         return self.new_like(r_min=r_min, phi_min=phi_min)
 
@@ -322,7 +319,6 @@ class PhiAbstract:
         -------
         nf : :class:`analphipy.measures.Measures`
         """
-
         for k in ["phi", "segments"]:
             if k not in kws:
                 kws[k] = getattr(self, k)
@@ -387,7 +383,7 @@ class PhiCutBase(PhiAbstract):
         )
 
     @docfiller_phiabstract()
-    def phi(self, r: Float_or_ArrayLike) -> Array:
+    def phi(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         v = np.empty_like(r)
 
@@ -401,7 +397,7 @@ class PhiCutBase(PhiAbstract):
         return v
 
     @docfiller_phiabstract()
-    def dphidr(self, r: Float_or_ArrayLike) -> Array:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         dvdr = np.empty_like(r)
 

@@ -110,7 +110,7 @@ def quad_segments(
     errors: float | list[float]
     outputs: dict[str, Any] | list[dict[str, Any]]
 
-    if len(segments) == 2:
+    if len(segments) == 2:  # noqa: PLR2004
         integrals, errors, outputs = out[0]
     else:
         integrals_list: list[float] = []
@@ -197,7 +197,9 @@ def minimize_phi(
 
     xmin = outputs["x"][0]
 
-    ymin = outputs["fun"] if isinstance(outputs["fun"], float) else outputs["fun"][0]  # pyright: ignore[reportGeneralTypeIssues, reportUnknownVariableType]
+    # ymin = outputs["fun"] if isinstance(outputs["fun"], float) else outputs["fun"][0]  # pyright: ignore[reportGeneralTypeIssues, reportUnknownVariableType, reportUnnecessaryIsInstance, reportIndexIssue]
+    _tmp = outputs["fun"]
+    ymin = _tmp[0] if isinstance(_tmp, np.ndarray) else _tmp
 
     return cast("tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs))
 
@@ -214,6 +216,7 @@ if TYPE_CHECKING:
 
 
 def partial_phi(phi: Callable[..., R], **params: Any) -> Callable[..., R]:
+    """Partial potential with params set."""
     from functools import partial
 
     return partial(phi, **params)
@@ -227,6 +230,8 @@ def segments_to_segments_cut(segments: Iterable[float], rcut: float) -> list[flo
 def add_quad_kws(
     func: Callable[Concatenate[S, P], R],
 ) -> Callable[Concatenate[S, P], R]:
+    """Add quad keyword arguments."""
+
     @wraps(func)
     def wrapped(self: S, /, *args: P.args, **kws: P.kwargs) -> R:
         kws = dict(self.quad_kws, **kws)  # type: ignore[assignment]

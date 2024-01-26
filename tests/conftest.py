@@ -53,7 +53,7 @@ def phidphi_lj_cut(r, rcut, sig=1.0, eps=1.0):
     return phi, dphi
 
 
-def phidphi_lj_lfs(r, rcut, sig=1.0, eps=1):
+def phidphi_lj_lfs(r, rcut, sig=1.0, eps=1.0):
     r = np.array(r)
     phi = np.empty_like(r)
     dphi = np.empty_like(r)

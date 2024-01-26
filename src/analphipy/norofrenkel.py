@@ -44,11 +44,11 @@ if TYPE_CHECKING:
 __doc__ = __doc__.format(**docfiller.data)  # noqa: A001
 
 __all__ = [
-    "sig_nf",
-    "sig_nf_dbeta",
+    "NoroFrenkelPair",
     "lam_nf",
     "lam_nf_dbeta",
-    "NoroFrenkelPair",
+    "sig_nf",
+    "sig_nf_dbeta",
 ]
 
 d = docfiller.update(
@@ -149,6 +149,8 @@ def sig_nf_dbeta(
     full_output: bool = False,
     **kws: Any,
 ) -> QuadSegments:
+    """Calculate beta derivative of Noro-Frenkel sigma."""
+
     def integrand(r: Float_or_Array) -> Array:
         v = phi_rep(r)
         out = np.array(0.0) if np.isinf(v) else v * np.exp(-beta * v)
@@ -247,7 +249,6 @@ def lam_nf_dbeta(
     --------
     lam_nf
     """
-
     B2_hs = TWO_PI / 3.0 * sig**3
 
     dB2stardbeta = 1.0 / B2_hs * (B2_dbeta - B2 * 3.0 * sig_dbeta / sig)
@@ -367,7 +368,6 @@ class NoroFrenkelPair:
         output : object
             instance of calling class
         """
-
         if bounds is None:
             bounds = (segments[0], segments[-1])
 
@@ -412,12 +412,11 @@ class NoroFrenkelPair:
         output : object
             instance of calling class
         """
+        if phi.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
+            msg = "need phi.segments to be set"
+            raise ValueError(msg)
 
-        if (
-            phi.segments is not None  # pyright: ignore[reportUnnecessaryComparison]
-            and phi.r_min is not None
-            and phi.phi_min is not None
-        ):
+        if phi.r_min is not None and phi.phi_min is not None:
             return cls(
                 phi=phi.phi,
                 segments=phi.segments,
@@ -425,8 +424,6 @@ class NoroFrenkelPair:
                 phi_min=phi.phi_min,
                 quad_kws=quad_kws,
             )
-
-        assert phi.segments is not None
 
         return cls.from_phi(
             phi=phi.phi,
@@ -552,7 +549,6 @@ class NoroFrenkelPair:
         --------
         ~analphipy.norofrenkel.lam_nf_dbeta
         """
-
         sig = self.sig(beta, **kws)
         eps = self.eps(beta, **kws)
         lam = self.lam(beta, **kws)
@@ -587,7 +583,6 @@ class NoroFrenkelPair:
 
         For testing.  This should be the same of value from :meth:`secondvirial`
         """
-
         sig = self.sig(beta, **kws)
         eps = self.eps(beta, **kws)
         lam = self.lam(beta, **kws)

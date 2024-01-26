@@ -363,7 +363,9 @@ class SquareWell(Analytic):
 
 
 def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None:  # noqa: ARG001
-    assert len(bounds) == 2, "length of bounds must be 2"
+    if len(bounds) != 2:  # noqa: PLR2004
+        msg = "length of bounds must be 2"
+        raise ValueError(msg)
 
 
 # def _convert_bounds(bounds: Sequence[float]) -> Sequence[float]:
@@ -414,7 +416,7 @@ class CubicTable(PhiBase):
     _dsinv: float = private_field()
 
     def __attrs_post_init__(self) -> None:
-        assert isinstance(self.phi_table, np.ndarray)
+        assert isinstance(self.phi_table, np.ndarray)  # noqa: S101
 
         ds = (self.bounds[1] - self.bounds[0]) / self.size
 
@@ -585,7 +587,6 @@ def factory(
     HardSphere
     Yukawa
     """
-
     name = potential_name.lower()
 
     phi: PhiAbstract
@@ -610,7 +611,9 @@ def factory(
         raise ValueError(msg)
 
     if lfs or cut:
-        assert rcut is not None
+        if rcut is None:
+            msg = "rcut cannot be None"
+            raise TypeError(msg)
         if cut:
             phi = phi.cut(rcut=rcut)
 

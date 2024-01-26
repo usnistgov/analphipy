@@ -29,9 +29,16 @@ def factory_lj(lfs=False, cut=False, **kws):
 
     p = pots.LennardJones(**kws)
 
+    if cut and lfs:
+        msg = "Can only specify one of lfs and cut"
+        raise ValueError(msg)
+
     if cut:
+        assert isinstance(rcut, float)
         return p.cut(rcut=rcut)
+
     if lfs:
+        assert isinstance(rcut, float)
         return p.lfs(rcut=rcut)
 
     return p

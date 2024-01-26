@@ -17,9 +17,15 @@ def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True) -> N
     p = factory(**kws)
     p = _get_generic(p)
 
+    if cut and lfs:
+        msg = "Can only specify one of `cut` and `lfs`"
+        raise ValueError(msg)
+
     if cut:
+        assert isinstance(rcut, float)
         p = p.cut(rcut=rcut)
-    if lfs:
+    elif lfs:
+        assert isinstance(rcut, float)
         p = p.lfs(rcut=rcut)
 
     if phidphi:
