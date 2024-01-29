@@ -111,7 +111,7 @@ pygments==2.17.2
     # via ipython
 pyparsing==3.1.1
     # via matplotlib
-pytest==7.4.4
+pytest==8.0.0
     # via
     #   -r requirements/test-notebook.txt
     #   nbval
@@ -129,13 +129,13 @@ python-dateutil==2.8.2
     #   jupyter-client
     #   matplotlib
     #   pandas
-pytz==2023.3.post1
+pytz==2023.4
     # via pandas
 pyzmq==25.1.2
     # via
     #   ipykernel
     #   jupyter-client
-referencing==0.32.1
+referencing==0.33.0
     # via
     #   jsonschema
     #   jsonschema-specifications
