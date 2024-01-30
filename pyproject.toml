@@ -145,21 +145,13 @@ select = ["ALL"]
 # unfixable = []
 # Exclude a variety of commonly ignored directories.
 ignore = [
-    "PD",        # - not using pandas?
-    "NPY",       # - not using numpy?
     "CPY",       # - Don't require copyright
     "ERA",       # - eradicate (want to keep some stuff)
     "FBT",       # - bools are ok
     # * Annotations
-    # "SLF001",  # - flake8-self (private access sometimes OK)
-    # "ANN",     # - Annotations (just use mypy/pyright)
     "ANN101",    # - Leads to issues with methods and self
     "ANN102",    # - Leads to issues with classmethods and cls
     "ANN401",    # - Any ok sometimes
-    # * pylint
-    # "PLR2004", # - numbers in comparison sometimes ok
-    # "PLR0913", # - complexity sometimes ok
-    # "PLR0917", # - complexity sometimes ok
     # * Allow non top level imports
     "PLC0415",   # - import should be at top level (leads to issues with imports in func?)
     "TID252",    # - Allow relative imports
@@ -171,13 +163,10 @@ ignore = [
     "D105",      # - Missing magic method docstring
     "D205",      # - blank line after summary
     # * This leads to errors with placing titles in module
-    # "D102",    # - Missing docstring in public method
-    # "D103",    # - Missing docstring in public function
     "D400",      # - First line should end with a period
     "D401",      # - First line of docstring should be in imperative mood: "{first_line}"
     "D415",      # - First line should end with a period, question mark, or exclamation point
     # * Not a fan of these.  And lead to issues with docfiller
-    # "D202",    # - blank line after docstring
     "D107",      # - Missing docstring in __init__
     "D203",      # - 1 blank line required before class docstring
     "D212",      # - Multi-line docstring summary should start at the first line
@@ -188,6 +177,23 @@ ignore = [
 ]
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+# Use extend-ignore for project specific ignores (avoid changing ignore directly)
+extend-ignore = [
+    # "PD",      # - not using pandas?
+    # "NPY",     # - not using numpy?
+    # * Annotations
+    # "SLF001",  # - flake8-self (private access sometimes OK)
+    # "ANN",     # - Annotations (just use mypy/pyright)
+    # * pylint
+    # "PLR2004", # - numbers in comparison sometimes ok
+    # "PLR0913", # - complexity sometimes ok
+    # "PLR0917", # - complexity sometimes ok
+    # * Docstrings ymmv
+    # "D102",    # - Missing docstring in public method
+    # "D103",    # - Missing docstring in public function
+    # "D202",    # - blank line after docstring
+]
+
 
 [tool.ruff.lint.pylint]
 max-args = 15
@@ -203,6 +209,7 @@ max-public-methods = 30
 "**/*.ipynb" = ["D100", "B018", "INP001"]
 
 [tool.ruff.lint.extend-per-file-ignores]
+# Project specific ignores (avoid changing per-file-ignores directly)
 "**/base_potential.py" = ["PLR6301", "ARG002"]
 "**/norofrenkel.py" = ["N802", "N803", "N806"]
 "**/potential.py" = ["D102"]
