@@ -132,6 +132,7 @@ extend-include = ["*.ipynb"]
 extend-exclude = [
     ".venv",
     "dist-conda",
+    ".numba_cache",
     # "tests/",
     # "src/analphipy/tests",
 ]
@@ -261,7 +262,7 @@ show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
-exclude = [".eggs", ".tox", ".nox", ".venv", "docs"]
+exclude = [".eggs", ".tox", ".nox", ".venv", ".numba_cache", "docs"]
 check_untyped_defs = true
 strict = true
 
@@ -280,7 +281,7 @@ module = []
 
 [tool.pyright]
 include = ["src", "tests"]
-exclude = ["**/__pycache__", ".tox/**", ".nox/**", ".venv/**", "**/.mypy_cache"]
+exclude = ["**/__pycache__", ".tox/**", ".nox/**", ".venv/**", "**/.mypy_cache", "**/.numba_cache"]
 strict = ["src", "noxfile.py", "tools/*.py"]
 pythonVersion = "3.11"
 # typeCheckingMode = "strict"
