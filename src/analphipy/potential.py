@@ -36,6 +36,7 @@ class Generic(PhiBase):
         Function ``phi(r)``
     dphidr : Callable, optional
         Optional function ``dphidr(r)``.
+
     """
 
     #: Function :math:`\phi(r)`
@@ -69,6 +70,7 @@ class Analytic(PhiBase):
     Specific subclasses should set values for ``r_min``,
     ``phi_min``, and ``segments``, as well as
     forms for ``phi`` and ``dphidr``.
+
     """
 
     # fmt: off
@@ -106,6 +108,7 @@ class LennardJones(Analytic):
         Length parameter :math:`\sigma`.
     eps : float
         Energy parameter :math:`\epsilon`.
+
     """
 
     #: Length parameter :math:`\sigma`
@@ -172,6 +175,7 @@ class LennardJonesNM(Analytic):
     Notes
     -----
     with parameters ``n=12`` and ``m=6``, this is equivalent to :class:`LennardJones`.
+
     """
 
     n: int = 12  #: ``n`` parameter
@@ -287,6 +291,7 @@ class HardSphere(Analytic):
     ----------
     sig: float
         Length scale parameter :math:`\sigma`
+
     """
 
     sig: float = 1.0  #: Length parameter
@@ -330,6 +335,7 @@ class SquareWell(Analytic):
         Energy parameter :math:`\epsilon`.  Note that here, ``eps`` is the value inside the well.  So, to specify an attractive square well potential, pass a negative value for ``eps``.
     lam : float
         Width of well parameter :math:`lambda`.
+
     """
 
     sig: float = 1.0  #: Length parameter.
@@ -394,6 +400,7 @@ class CubicTable(PhiBase):
 
     phi_left, phi_right, dphi_left, dphi_right : float, optional
         Values to set for ``phi``/``-1/r dphidr`` if  (left) ``r < bounds[0]`` or (right) ``r > bounds[1]``.
+
     """
 
     #: Minimum and maximum values of squared pair separation :math:`r^2`
@@ -458,6 +465,7 @@ class CubicTable(PhiBase):
         Returns
         -------
         table : CubicTable
+
         """
         bounds: tuple[float, float] = (rmin * rmin, rmax * rmax)
 
@@ -586,6 +594,7 @@ def factory(
     SquareWell
     HardSphere
     Yukawa
+
     """
     name = potential_name.lower()
 

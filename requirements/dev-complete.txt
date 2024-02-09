@@ -30,4 +30,4 @@ pytest-xdist
 pytype;python_version<"3.11"
 scipy
 scriv
-typing-extensions
+typing-extensions;python_version<"3.11"

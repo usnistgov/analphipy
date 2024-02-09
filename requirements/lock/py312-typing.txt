@@ -35,6 +35,5 @@ types-pytz==2024.1.0.20240203
     # via pandas-stubs
 typing-extensions==4.9.0
     # via
-    #   -r requirements/typing.txt
     #   module-utilities
     #   mypy

@@ -19,4 +19,3 @@ dependencies:
   - pandas-stubs
   - pytest
   - scipy
-  - typing-extensions

@@ -77,6 +77,7 @@ def secondvirial(
     See Also
     --------
     ~analphipy.utils.quad_segments
+
     """
 
     def integrand(r: Float_or_Array) -> Array:
@@ -223,6 +224,7 @@ def diverg_kl_disc(
     References
     ----------
     {kl_link}
+
     """
     p, q = np.asarray(p), np.asarray(q)
     diverg = diverg_kl_integrand(p, q)
@@ -291,6 +293,7 @@ def diverg_kl_cont(
     References
     ----------
     {kl_link}
+
     """
     volume_callable = _check_volume_func(volume)
 
@@ -382,6 +385,7 @@ class Measures:
     {phi}
     {segments}
     {quad_kws}
+
     """
 
     def __init__(
@@ -425,6 +429,7 @@ class Measures:
         See Also
         --------
         ~analphipy.measures.secondvirial
+
         """
         return secondvirial(
             phi=self.phi,
@@ -460,6 +465,7 @@ class Measures:
         See Also
         --------
         ~analphipy.measures.secondvirial_dbeta
+
         """
         return secondvirial_dbeta(
             phi=self.phi,
@@ -509,6 +515,7 @@ class Measures:
         References
         ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
+
         """
         if beta_other is None:
             beta_other = beta
@@ -568,6 +575,7 @@ class Measures:
         References
         ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
+
         """
         if beta_other is None:
             beta_other = beta

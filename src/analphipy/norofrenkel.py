@@ -12,6 +12,7 @@ References
 
 .. [3] {ref_WCA}
 
+
 """
 from __future__ import annotations
 
@@ -27,8 +28,6 @@ from .utils import TWO_PI, add_quad_kws, is_float, minimize_phi, quad_segments
 if TYPE_CHECKING:
     from typing import Any, Mapping, Sequence
 
-    from typing_extensions import Self
-
     from analphipy.base_potential import PhiAbstract
 
     from ._typing import (
@@ -39,6 +38,7 @@ if TYPE_CHECKING:
         Phi_Signature,
         QuadSegments,
     )
+    from ._typing_compat import Self
 
 # Workaround to document module level docstring
 __doc__ = __doc__.format(**docfiller.data)  # noqa: A001
@@ -248,6 +248,7 @@ def lam_nf_dbeta(
     See Also
     --------
     lam_nf
+
     """
     B2_hs = TWO_PI / 3.0 * sig**3
 
@@ -277,6 +278,7 @@ class NoroFrenkelPair:
     {r_min_exact}
     {phi_min_exact}
     {quad_kws}
+
     """
 
     def __init__(
@@ -326,6 +328,7 @@ class NoroFrenkelPair:
         -------
         output : float or ndarray
             Value of ``phi_ref`` at separation(s) ``r``.
+
         """
         r = np.array(r)
         phi = np.empty_like(r)
@@ -367,6 +370,7 @@ class NoroFrenkelPair:
         -------
         output : object
             instance of calling class
+
         """
         if bounds is None:
             bounds = (segments[0], segments[-1])
@@ -411,6 +415,7 @@ class NoroFrenkelPair:
         -------
         output : object
             instance of calling class
+
         """
         if phi.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
             msg = "need phi.segments to be set"
@@ -443,6 +448,7 @@ class NoroFrenkelPair:
         See Also
         --------
         ~analphipy.measures.secondvirial
+
         """
         return secondvirial(phi=self.phi, beta=beta, segments=self.segments, **kws)
 
@@ -459,6 +465,7 @@ class NoroFrenkelPair:
         See Also
         --------
         ~analphipy.norofrenkel.sig_nf
+
         """
         return sig_nf(
             self.phi_rep,
@@ -484,6 +491,7 @@ class NoroFrenkelPair:
         See Also
         --------
         ~analphipy.norofrenkel.lam_nf
+
         """
         sig = self.sig(beta, **kws)
         B2 = self.secondvirial(beta, **kws)
@@ -523,6 +531,7 @@ class NoroFrenkelPair:
         See Also
         --------
         ~analphipy.measures.secondvirial_dbeta
+
         """
         return secondvirial_dbeta(
             phi=self.phi, beta=beta, segments=self.segments, **kws
@@ -537,6 +546,7 @@ class NoroFrenkelPair:
         See Also
         --------
         ~analphipy.norofrenkel.sig_nf_dbeta
+
         """
         return sig_nf_dbeta(self.phi_rep, beta=beta, segments=self.segments, **kws)
 
@@ -548,6 +558,7 @@ class NoroFrenkelPair:
         See Also
         --------
         ~analphipy.norofrenkel.lam_nf_dbeta
+
         """
         sig = self.sig(beta, **kws)
         eps = self.eps(beta, **kws)
@@ -633,6 +644,7 @@ class NoroFrenkelPair:
         -------
         output : dict
             dictionary of arrays.
+
         """
         if props is None:
             props = ["B2", "sig", "eps", "lam"]

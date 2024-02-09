@@ -15,9 +15,8 @@ from ._docstrings import docfiller
 if TYPE_CHECKING:
     from typing import Any, Callable, Iterable, Mapping, Protocol, TypeVar
 
-    from typing_extensions import Concatenate, TypeGuard
-
     from ._typing import ArrayLike, OptimizeResultInterface, P, QuadSegments, R
+    from ._typing_compat import Concatenate, TypeGuard
 
 
 TWO_PI: float = 2.0 * np.pi
@@ -36,6 +35,7 @@ def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
     -------
     combined : list of float
         sorted unique values for ``a`` and ``b``.
+
     """
     aa, bb = set(a), set(b)
     return sorted(aa.union(bb))
@@ -96,6 +96,7 @@ def quad_segments(
     See Also
     --------
     scipy.integrate.quad
+
     """
     from scipy.integrate import (  # pyright: ignore[reportMissingTypeStubs]
         quad,  # pyright: ignore[reportUnknownVariableType]
@@ -175,6 +176,7 @@ def minimize_phi(
     See Also
     --------
     scipy.optimize.minimize
+
     """
     from scipy.optimize import (  # pyright: ignore[reportMissingTypeStubs]
         minimize,  # pyright: ignore[reportUnknownVariableType]

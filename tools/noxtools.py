@@ -273,6 +273,7 @@ class Installer:
     config_path :
         Where to save env config for future comparison.  Defaults to
         `session.virtualenv.location / "tmp" / "env.json"`.
+
     """
 
     def __init__(
@@ -828,6 +829,7 @@ class Installer:
             Base name for file.  For example, passing
             envname = "dev" will convert to
             `requirements/py{py}-dev.yaml` for `filename`
+
         """
         if envname is not None and conda_yaml is None:
             if not isinstance(session.python, str):
@@ -1039,6 +1041,7 @@ def check_for_change_manager(
     changed: bool
 
     If exit normally, write hashes to hash_path file
+
     """
     try:
         changed, hashes, hash_path = check_hash_path_for_change(

@@ -272,7 +272,6 @@ traitlets==5.14.1
     #   nbformat
 typing-extensions==4.9.0
     # via
-    #   -r requirements/docs.txt
     #   module-utilities
     #   myst-nb
     #   pydata-sphinx-theme

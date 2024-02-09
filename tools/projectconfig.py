@@ -38,6 +38,7 @@ class ProjectConfig:
         Paths to append to "PATH" to find python interpreters.
         Note that this can include wildcards.
     env_extras : mapping from str to list of str, option
+
     """
 
     def __init__(

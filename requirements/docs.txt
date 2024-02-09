@@ -24,4 +24,4 @@ sphinx-book-theme
 sphinx-copybutton
 sphinx>=5.3.0
 sphinxcontrib-spelling
-typing-extensions
+typing-extensions;python_version<"3.11"

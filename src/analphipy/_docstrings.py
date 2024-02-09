@@ -39,6 +39,7 @@ def _docstrings_shared() -> None:
         Volume element in integration.
         For example, use ``volume = lambda x: 4 * np.pi * x ** 2`` for spherically symmetric 3d integration.
         Can also pass string value of {'1d', '2d', '3d'}.  If passed None, then assume '1d' integration.
+
     """
 
 

@@ -40,7 +40,7 @@ dependencies = [
     "module-utilities >= 0.6",
     "numpy",
     "scipy",
-    "typing-extensions",
+    "typing-extensions;python_version<'3.11'",
 ]
 [project.optional-dependencies]
 dev = [

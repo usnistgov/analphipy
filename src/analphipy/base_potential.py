@@ -16,9 +16,8 @@ from ._docstrings import docfiller
 if TYPE_CHECKING:
     from typing import Any, Callable, Literal, Sequence
 
-    from typing_extensions import Self
-
     from ._typing import Array, Float_or_ArrayLike
+    from ._typing_compat import Self
 
 
 from .measures import Measures
@@ -53,6 +52,7 @@ class PhiAbstract:
     phi_min : float, optional
         Value of ``phi`` at ``r_min``.
     {segments}
+
     """
 
     #: Position of minimum in :math:`\phi(r)`
@@ -85,6 +85,7 @@ class PhiAbstract:
         ----------
         **kws
             `attribute`, `value` pairs.
+
         """
         return attrs.evolve(self, **kws)
 
@@ -116,6 +117,7 @@ class PhiAbstract:
         >>> x = Derived(r_min=5)
         >>> x._derived
         15.0
+
         """
         for key, value in kws.items():
             object.__setattr__(self, key, value)  # noqa: PLC2801
@@ -147,6 +149,7 @@ class PhiAbstract:
         `include, exclude, exclude_private exclude_no_init`.
         That is, if a name is in include and exclude and is private/no_init,
         it will be included
+
         """
         fields = attrs.fields(type(self))
 
@@ -189,6 +192,7 @@ class PhiAbstract:
         -------
         phi : ndarray
             Evaluated pair potential.
+
         """
         msg = "Must implement in subclass"
         raise NotImplementedError(msg)
@@ -248,6 +252,7 @@ class PhiAbstract:
         See Also
         --------
         ~analphipy.utils.minimize_phi
+
         """
         if bounds == "segments":
             if self.segments is not None:  # pyright: ignore[reportUnnecessaryComparison]
@@ -294,6 +299,7 @@ class PhiAbstract:
         Returns
         -------
         nf : :class:`analphipy.norofrenkel.NoroFrenkelPair`
+
         """
         if self.r_min is None:
             msg = "must set `self.r_min` to use NoroFrenkel"
@@ -318,6 +324,7 @@ class PhiAbstract:
         Returns
         -------
         nf : :class:`analphipy.measures.Measures`
+
         """
         for k in ["phi", "segments"]:
             if k not in kws:
@@ -436,6 +443,7 @@ class PhiCut(PhiCutBase):
         Potential class to perform cut on.
     rcut : float
         Where to 'cut' the potential.
+
     """
 
     _vcut: float = private_field()

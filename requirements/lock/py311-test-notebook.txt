@@ -167,9 +167,7 @@ traitlets==5.14.1
     #   matplotlib-inline
     #   nbformat
 typing-extensions==4.9.0
-    # via
-    #   -r requirements/test-notebook.txt
-    #   module-utilities
+    # via module-utilities
 tzdata==2023.4
     # via pandas
 wcwidth==0.2.13
