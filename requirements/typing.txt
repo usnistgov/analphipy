@@ -10,9 +10,10 @@
 attrs
 docstring-inheritance
 module-utilities>=0.6
-mypy>=1.4.1
+mypy>=1.8.0
 numpy
 pandas-stubs
+pyright>=1.1.352
 pytest
 pytype;python_version<"3.11"
 scipy

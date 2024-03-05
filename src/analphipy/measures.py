@@ -192,7 +192,7 @@ def diverg_kl_integrand(
 
     out = np.empty_like(p)
 
-    zero = p == 0.0  # noqa: PLR2004
+    zero = p == 0.0
     hero = ~zero
 
     out[zero] = 0.0

@@ -2,6 +2,7 @@
 Classes/routines for pair potentials (:mod:`analphipy.potential`)
 =================================================================
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

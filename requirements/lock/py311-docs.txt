@@ -40,11 +40,11 @@ contourpy==1.2.0
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
-debugpy==1.8.0
+debugpy==1.8.1
     # via ipykernel
 decorator==5.1.1
     # via ipython
-docstring-inheritance==2.1.2
+docstring-inheritance==2.2.0
     # via -r requirements/docs.txt
 docutils==0.20.1
     # via
@@ -55,7 +55,7 @@ executing==2.0.1
     # via stack-data
 fastjsonschema==2.19.1
     # via nbformat
-fonttools==4.48.1
+fonttools==4.49.0
     # via matplotlib
 ghp-import==2.1.0
     # via -r requirements/docs.txt
@@ -69,9 +69,9 @@ importlib-metadata==7.0.1
     # via
     #   jupyter-cache
     #   myst-nb
-ipykernel==6.29.2
+ipykernel==6.29.3
     # via myst-nb
-ipython==8.21.0
+ipython==8.22.2
     # via
     #   -r requirements/docs.txt
     #   ipykernel
@@ -108,7 +108,7 @@ markdown-it-py==3.0.0
     #   myst-parser
 markupsafe==2.1.5
     # via jinja2
-matplotlib==3.8.2
+matplotlib==3.8.3
     # via -r requirements/docs.txt
 matplotlib-inline==0.1.6
     # via
@@ -148,7 +148,7 @@ packaging==23.2
     #   matplotlib
     #   pydata-sphinx-theme
     #   sphinx
-pandas==2.2.0
+pandas==2.2.1
     # via -r requirements/docs.txt
 parso==0.8.3
     # via jedi
@@ -180,7 +180,7 @@ pygments==2.17.2
     #   sphinx
 pyparsing==3.1.1
     # via matplotlib
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via
     #   ghp-import
     #   jupyter-client
@@ -203,7 +203,7 @@ referencing==0.33.0
     #   jsonschema-specifications
 requests==2.31.0
     # via sphinx
-rpds-py==0.17.1
+rpds-py==0.18.0
     # via
     #   jsonschema
     #   referencing
@@ -231,7 +231,7 @@ sphinx==7.2.6
     #   sphinxcontrib-spelling
 sphinx-autobuild==2024.2.4
     # via -r requirements/docs.txt
-sphinx-book-theme==1.1.0
+sphinx-book-theme==1.1.2
     # via -r requirements/docs.txt
 sphinx-copybutton==0.5.2
     # via -r requirements/docs.txt
@@ -249,7 +249,7 @@ sphinxcontrib-serializinghtml==1.1.10
     # via sphinx
 sphinxcontrib-spelling==8.0.0
     # via -r requirements/docs.txt
-sqlalchemy==2.0.25
+sqlalchemy==2.0.28
     # via jupyter-cache
 stack-data==0.6.3
     # via ipython
@@ -270,15 +270,15 @@ traitlets==5.14.1
     #   matplotlib-inline
     #   nbclient
     #   nbformat
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via
     #   module-utilities
     #   myst-nb
     #   pydata-sphinx-theme
     #   sqlalchemy
-tzdata==2023.4
+tzdata==2024.1
     # via pandas
-urllib3==2.2.0
+urllib3==2.2.1
     # via requests
 wcwidth==0.2.13
     # via prompt-toolkit

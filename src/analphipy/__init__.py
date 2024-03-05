@@ -4,6 +4,7 @@ Top level API :mod:`analphipy`
 
 The top level API provides Pair potentials and analysis routines.
 """
+
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _version
 

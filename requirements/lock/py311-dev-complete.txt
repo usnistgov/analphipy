@@ -36,19 +36,19 @@ comm==0.2.1
     # via ipykernel
 contourpy==1.2.0
     # via matplotlib
-coverage==7.4.1
+coverage==7.4.3
     # via
     #   nbval
     #   pytest-cov
 cycler==0.12.1
     # via matplotlib
-debugpy==1.8.0
+debugpy==1.8.1
     # via ipykernel
 decorator==5.1.1
     # via ipython
 distlib==0.3.8
     # via virtualenv
-docstring-inheritance==2.1.2
+docstring-inheritance==2.2.0
     # via -r requirements/dev-complete.txt
 execnet==2.0.2
     # via pytest-xdist
@@ -58,19 +58,19 @@ fastjsonschema==2.19.1
     # via nbformat
 filelock==3.13.1
     # via virtualenv
-fonttools==4.48.1
+fonttools==4.49.0
     # via matplotlib
-identify==2.5.33
+identify==2.5.35
     # via pre-commit
 idna==3.6
     # via requests
 iniconfig==2.0.0
     # via pytest
-ipykernel==6.29.2
+ipykernel==6.29.3
     # via
     #   -r requirements/dev-complete.txt
     #   nbval
-ipython==8.21.0
+ipython==8.22.2
     # via
     #   -r requirements/dev-complete.txt
     #   ipykernel
@@ -86,11 +86,13 @@ jsonschema-specifications==2023.12.1
 jupyter-client==8.6.0
     # via
     #   ipykernel
+    #   nbclient
     #   nbval
 jupyter-core==5.7.1
     # via
     #   ipykernel
     #   jupyter-client
+    #   nbclient
     #   nbformat
 kiwisolver==1.4.5
     # via matplotlib
@@ -98,7 +100,7 @@ markdown-it-py==3.0.0
     # via scriv
 markupsafe==2.1.5
     # via jinja2
-matplotlib==3.8.2
+matplotlib==3.8.3
     # via -r requirements/dev-complete.txt
 matplotlib-inline==0.1.6
     # via
@@ -112,11 +114,15 @@ mypy==1.8.0
     # via -r requirements/dev-complete.txt
 mypy-extensions==1.0.0
     # via mypy
-nbformat==5.9.2
-    # via nbval
-nbqa==1.7.1
+nbclient==0.9.0
     # via -r requirements/dev-complete.txt
-nbval==0.10.0
+nbformat==5.9.2
+    # via
+    #   nbclient
+    #   nbval
+nbqa==1.8.3
+    # via -r requirements/dev-complete.txt
+nbval==0.11.0
     # via -r requirements/dev-complete.txt
 nest-asyncio==1.6.0
     # via ipykernel
@@ -124,7 +130,7 @@ nodeenv==1.8.0
     # via
     #   pre-commit
     #   pyright
-nox==2023.4.22
+nox==2024.3.2
     # via -r requirements/dev-complete.txt
 numpy==1.26.4
     # via
@@ -141,9 +147,9 @@ packaging==23.2
     #   nox
     #   pytest
     #   pytest-sugar
-pandas==2.2.0
+pandas==2.2.1
     # via -r requirements/dev-complete.txt
-pandas-stubs==2.1.4.231227
+pandas-stubs==2.2.0.240218
     # via -r requirements/dev-complete.txt
 parso==0.8.3
     # via jedi
@@ -157,7 +163,7 @@ platformdirs==4.2.0
     #   virtualenv
 pluggy==1.4.0
     # via pytest
-pre-commit==3.6.0
+pre-commit==3.6.2
     # via -r requirements/dev-complete.txt
 prompt-toolkit==3.0.43
     # via ipython
@@ -173,9 +179,9 @@ pygments==2.17.2
     # via ipython
 pyparsing==3.1.1
     # via matplotlib
-pyright==1.1.350
+pyright==1.1.352
     # via -r requirements/dev-complete.txt
-pytest==7.4.4
+pytest==8.0.2
     # via
     #   -r requirements/dev-complete.txt
     #   nbval
@@ -183,7 +189,7 @@ pytest==7.4.4
     #   pytest-cov
     #   pytest-sugar
     #   pytest-xdist
-pytest-accept==0.1.9
+pytest-accept==0.1.10
     # via -r requirements/dev-complete.txt
 pytest-cov==4.1.0
     # via -r requirements/dev-complete.txt
@@ -191,7 +197,7 @@ pytest-sugar==1.0.0
     # via -r requirements/dev-complete.txt
 pytest-xdist==3.5.0
     # via -r requirements/dev-complete.txt
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via
     #   jupyter-client
     #   matplotlib
@@ -210,7 +216,7 @@ referencing==0.33.0
     #   jsonschema-specifications
 requests==2.31.0
     # via scriv
-rpds-py==0.17.1
+rpds-py==0.18.0
     # via
     #   jsonschema
     #   referencing
@@ -242,18 +248,19 @@ traitlets==5.14.1
     #   jupyter-client
     #   jupyter-core
     #   matplotlib-inline
+    #   nbclient
     #   nbformat
 types-pytz==2024.1.0.20240203
     # via pandas-stubs
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via
     #   module-utilities
     #   mypy
-tzdata==2023.4
+tzdata==2024.1
     # via pandas
-urllib3==2.2.0
+urllib3==2.2.1
     # via requests
-virtualenv==20.25.0
+virtualenv==20.25.1
     # via
     #   nox
     #   pre-commit
@@ -261,5 +268,5 @@ wcwidth==0.2.13
     # via prompt-toolkit
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==69.0.3
+setuptools==69.1.1
     # via nodeenv

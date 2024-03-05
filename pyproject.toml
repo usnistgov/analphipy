@@ -57,6 +57,7 @@ dev-complete = [
 dev-extras = [
     "ipykernel",
     "ipython",
+    "nbclient",
     "nox",
     "pandas",
     "pytest-accept",
@@ -87,7 +88,6 @@ test = [
 tools = [
     "nbqa",
     "pre-commit",
-    "pyright",
     "scriv",
 ]
 typing = [
@@ -95,8 +95,9 @@ typing = [
     "pytest",
 ]
 typing-extras = [
-    "mypy >= 1.4.1",
+    "mypy >= 1.8.0",
     "pandas-stubs",
+    "pyright >= 1.1.352",
     "pytype; python_version < '3.11'",
 ]
 viz = [
@@ -216,7 +217,7 @@ max-public-methods = 30
 "**/norofrenkel.py" = ["N802", "N803", "N806"]
 "**/potential.py" = ["D102"]
 "tests/*.py" = ["ANN", "N802", "N806", "PT011"]
-"**/*.ipynb" = ["ANN001", "ANN201", "D103"]
+"**/*.ipynb" = ["ANN001", "ANN201", "D103", "E302"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["analphipy"]

@@ -17,17 +17,17 @@ comm==0.2.1
     # via ipykernel
 contourpy==1.2.0
     # via matplotlib
-coverage==7.4.1
+coverage==7.4.3
     # via
     #   nbval
     #   pytest-cov
 cycler==0.12.1
     # via matplotlib
-debugpy==1.8.0
+debugpy==1.8.1
     # via ipykernel
 decorator==5.1.1
     # via ipython
-docstring-inheritance==2.1.2
+docstring-inheritance==2.2.0
     # via -r requirements/test-notebook.txt
 execnet==2.0.2
     # via pytest-xdist
@@ -35,13 +35,13 @@ executing==2.0.1
     # via stack-data
 fastjsonschema==2.19.1
     # via nbformat
-fonttools==4.48.1
+fonttools==4.49.0
     # via matplotlib
 iniconfig==2.0.0
     # via pytest
-ipykernel==6.29.2
+ipykernel==6.29.3
     # via nbval
-ipython==8.21.0
+ipython==8.22.2
     # via ipykernel
 jedi==0.19.1
     # via ipython
@@ -60,7 +60,7 @@ jupyter-core==5.7.1
     #   nbformat
 kiwisolver==1.4.5
     # via matplotlib
-matplotlib==3.8.2
+matplotlib==3.8.3
     # via -r requirements/test-notebook.txt
 matplotlib-inline==0.1.6
     # via
@@ -70,7 +70,7 @@ module-utilities==0.9.0
     # via -r requirements/test-notebook.txt
 nbformat==5.9.2
     # via nbval
-nbval==0.10.0
+nbval==0.11.0
     # via -r requirements/test-notebook.txt
 nest-asyncio==1.6.0
     # via ipykernel
@@ -87,7 +87,7 @@ packaging==23.2
     #   matplotlib
     #   pytest
     #   pytest-sugar
-pandas==2.2.0
+pandas==2.2.1
     # via -r requirements/test-notebook.txt
 parso==0.8.3
     # via jedi
@@ -111,7 +111,7 @@ pygments==2.17.2
     # via ipython
 pyparsing==3.1.1
     # via matplotlib
-pytest==8.0.0
+pytest==8.0.2
     # via
     #   -r requirements/test-notebook.txt
     #   nbval
@@ -124,7 +124,7 @@ pytest-sugar==1.0.0
     # via -r requirements/test-notebook.txt
 pytest-xdist==3.5.0
     # via -r requirements/test-notebook.txt
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via
     #   jupyter-client
     #   matplotlib
@@ -139,7 +139,7 @@ referencing==0.33.0
     # via
     #   jsonschema
     #   jsonschema-specifications
-rpds-py==0.17.1
+rpds-py==0.18.0
     # via
     #   jsonschema
     #   referencing
@@ -166,9 +166,9 @@ traitlets==5.14.1
     #   jupyter-core
     #   matplotlib-inline
     #   nbformat
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via module-utilities
-tzdata==2023.4
+tzdata==2024.1
     # via pandas
 wcwidth==0.2.13
     # via prompt-toolkit

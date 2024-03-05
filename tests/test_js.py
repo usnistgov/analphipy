@@ -1,5 +1,6 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
 """Simple tests for js divergence..."""
+
 import numpy as np
 import pytest
 
