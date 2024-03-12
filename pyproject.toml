@@ -44,29 +44,22 @@ dependencies = [
 ]
 [project.optional-dependencies]
 dev = [
-    "analphipy[nbval]",
-    "analphipy[viz]",
-    "analphipy[test]",
-    "analphipy[typing-extras]",
-    "analphipy[dev-extras]",
+    "analphipy[dev-extras,test,typing,pipxrun,mypy,nbval,viz]",
 ]
 dev-complete = [
-    "analphipy[dev]",
-    "analphipy[tools]",
+    "analphipy[dev,tools]",
 ]
 dev-extras = [
     "ipykernel",
     "ipython",
     "nbclient",
-    "nox",
+    "nox >= 2024.3.2",
     "pandas",
     "pytest-accept",
 ]
 docs = [
     "analphipy[viz]",
     "autodocsumm",
-    "ghp-import",
-    "ipython",
     "myst-nb",
     "pyenchant",
     "sphinx >= 5.3.0",
@@ -75,8 +68,24 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
+mypy = [
+    "mypy >= 1.9.0",
+]
 nbval = [
     "nbval",
+]
+pipxrun = [
+    # Anything needed to run tools/pipxrun.py
+    "packaging",
+]
+pipxrun-tools = [
+    # these used solely for specking tools to be used with tools/pipxrun.py
+    "analphipy[mypy]",
+    "conda-lock >= 2.5.5",
+    "grayskull >= 2.5.3",
+    "nbqa >= 1.8.4",
+    "pyright >= 1.1.353",
+    "twine >= 5.0.0",
 ]
 test = [
     "pandas",
@@ -86,19 +95,14 @@ test = [
     "pytest-xdist",
 ]
 tools = [
-    "nbqa",
+    "pipx",
     "pre-commit",
     "scriv",
 ]
 typing = [
-    "analphipy[typing-extras]",
-    "pytest",
-]
-typing-extras = [
-    "mypy >= 1.8.0",
+    "analphipy[pipxrun]",
     "pandas-stubs",
-    "pyright >= 1.1.352",
-    "pytype; python_version < '3.11'",
+    "pytest",
 ]
 viz = [
     "matplotlib",
@@ -207,7 +211,7 @@ max-public-methods = 30
 [tool.ruff.lint.per-file-ignores]
 "docs/conf.py" = ["INP001"]
 "noxfile.py" = ["RUF009"]
-"tools/*.py" = ["S", "A", "SLF001"]
+"tools/*.py" = ["S", "A", "SLF001", "D102"]
 "tests/*.py" = ["D", "S101"]
 "**/*.ipynb" = ["D100", "B018", "INP001"]
 
@@ -329,6 +333,11 @@ scriv = { pip = true }
 [tool.pyproject2conda.envs.build]
 extras = "build-system.requires"
 reqs = ["build"]
+base = false
+style = "requirements"
+
+[tool.pyproject2conda.envs.pipxrun-tools]
+extras = "pipxrun-tools"
 base = false
 style = "requirements"
 

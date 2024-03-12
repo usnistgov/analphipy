@@ -17,14 +17,14 @@ dependencies:
   - ipython
   - matplotlib
   - module-utilities>=0.6
-  - mypy>=1.8.0
+  - mypy>=1.9.0
   - nbclient
   - nbval
-  - nox
+  - nox>=2024.3.2
   - numpy
+  - packaging
   - pandas
   - pandas-stubs
-  - pyright>=1.1.352
   - pytest
   - pytest-cov
   - pytest-sugar

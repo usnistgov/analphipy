@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 import os
 import shlex
 from contextlib import contextmanager
@@ -11,6 +12,8 @@ from typing import TYPE_CHECKING, cast
 
 # fmt: off
 from nox.sessions import SessionRunner
+
+DISALLOW_WHICH: list[str] = []
 
 # * Override SessionRunner._create_venv ------------------------------------------------
 
@@ -86,7 +89,7 @@ def factory_conda_backend(
 
 
 def factory_virtualenv_backend(
-    backend: Literal["virtualenv", "venv"] = "virtualenv",
+    backend: Literal["virtualenv", "venv", "uv"] = "virtualenv",
     location: str | None = None,
 ) -> Callable[..., CondaEnv | VirtualEnv]:
     """Factory virtualenv backend."""
@@ -100,7 +103,7 @@ def factory_virtualenv_backend(
             reuse_existing=runner.func.reuse_venv
             or runner.global_config.reuse_existing_virtualenvs,
             venv_params=runner.func.venv_params,
-            venv=(backend == "venv"),
+            venv_backend=backend,
         )
         venv.create()
         return venv
@@ -109,6 +112,21 @@ def factory_virtualenv_backend(
 
 
 # * Top level installation functions ---------------------------------------------------
+@functools.cache
+def cached_which(cmd: str) -> str | None:
+    """
+    Cached lookup of uv path.
+
+    Returns path or None if not installed.
+    """
+    if cmd in DISALLOW_WHICH:
+        return None
+
+    from shutil import which
+
+    return which(cmd)
+
+
 def py_prefix(python_version: Any) -> str:
     """
     Get python prefix.
@@ -585,6 +603,21 @@ class Installer:
 
         return out
 
+    def uv_install(self, *args: str, **kwargs: Any) -> None:
+        """Run uv pip install if available"""
+        if uv_path := cached_which("uv"):
+            self.session.run_always(
+                uv_path,
+                "pip",
+                "install",
+                f"--python={self.python_full_path}",
+                *args,
+                **kwargs,
+                external=True,
+            )
+        else:
+            self.session.install(*args, **kwargs)
+
     def pip_install_package(
         self,
         *args: Any,
@@ -605,7 +638,7 @@ class Installer:
             if opts:
                 command.extend(combine_list_str(opts))
 
-            self.session.install(*command, *args, **kwargs)
+            self.uv_install(*command, *args, **kwargs)
 
         return self
 
@@ -627,19 +660,30 @@ class Installer:
                 # Using pip-compile-{python_version} session.
                 if not isinstance(self.session.python, str):
                     raise TypeError
-                self.session.run_always(
-                    "nox",
-                    "-s",
-                    f"pip-compile-{self.session.python}",
-                    "--",
-                    "++pip-compile-run-internal",
-                    "pip-sync",
-                    "--python-executable",
-                    self.python_full_path,
-                    *map(str, self.requirements),
-                    silent=True,
-                    external=True,
-                )
+
+                if uv_path := cached_which("uv"):
+                    self.session.run_always(
+                        uv_path,
+                        "pip",
+                        "sync",
+                        f"--python={self.python_full_path}",
+                        *map(str, self.requirements),
+                        external=True,
+                    )
+                else:
+                    self.session.run_always(
+                        "nox",
+                        "-s",
+                        f"pip-compile-{self.session.python}",
+                        "--",
+                        "++pip-compile-run-internal",
+                        "pip-sync",
+                        "--python-executable",
+                        self.python_full_path,
+                        *map(str, self.requirements),
+                        silent=True,
+                        external=True,
+                    )
 
                 # Using central pip-sync
                 # The above fixes an fixes issue with using pip-sync on already
@@ -671,7 +715,7 @@ class Installer:
 
                     if opts:
                         install_args.extend(combine_list_str(opts))
-                    self.session.install(*install_args, *args, **kwargs)
+                    self.uv_install(*install_args, *args, **kwargs)
 
         return self
 

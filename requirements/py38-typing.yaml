@@ -14,11 +14,9 @@ dependencies:
   - attrs
   - docstring-inheritance
   - module-utilities>=0.6
-  - mypy>=1.8.0
   - numpy
+  - packaging
   - pandas-stubs
-  - pyright>=1.1.352
   - pytest
-  - pytype
   - scipy
   - typing-extensions

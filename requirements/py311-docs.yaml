@@ -14,8 +14,6 @@ dependencies:
   - attrs
   - autodocsumm
   - docstring-inheritance
-  - ghp-import
-  - ipython
   - matplotlib
   - module-utilities>=0.6
   - myst-nb
