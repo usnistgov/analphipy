@@ -32,7 +32,7 @@ matplotlib-inline==0.1.6  # via ipykernel, ipython
 module-utilities==0.9.0
 mypy==1.9.0
 mypy-extensions==1.0.0    # via mypy
-nbclient==0.9.1
+nbclient==0.10.0
 nbformat==5.10.2          # via nbclient, nbval
 nbval==0.11.0
 nest-asyncio==1.6.0       # via ipykernel

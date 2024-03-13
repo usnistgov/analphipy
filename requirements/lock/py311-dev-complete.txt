@@ -43,7 +43,7 @@ mdurl==0.1.2              # via markdown-it-py
 module-utilities==0.9.0
 mypy==1.9.0
 mypy-extensions==1.0.0    # via mypy
-nbclient==0.9.1
+nbclient==0.10.0
 nbformat==5.10.2          # via nbclient, nbval
 nbval==0.11.0
 nest-asyncio==1.6.0       # via ipykernel
@@ -80,7 +80,7 @@ requests==2.31.0          # via scriv
 rpds-py==0.18.0           # via jsonschema, referencing
 scipy==1.12.0
 scriv==1.5.1
-setuptools==69.1.1        # via nodeenv
+setuptools==69.2.0        # via nodeenv
 six==1.16.0               # via asttokens, python-dateutil
 stack-data==0.6.3         # via ipython
 termcolor==2.4.0          # via pytest-sugar
