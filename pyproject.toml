@@ -148,7 +148,7 @@ preview = true
 select = ["ALL"]
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 # fixable = ["A", "B", "C", "D", "E", "F", "..."]
-unfixable = ["T"]
+unfixable = ["T", "PLR6104"]
 # Exclude a variety of commonly ignored directories.
 ignore = [
     "CPY",       # - Don't require copyright
