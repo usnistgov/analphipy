@@ -26,7 +26,7 @@ docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
 
 
 @attrs.define(frozen=True)
-@docfiller_phibase(PhiBase)
+@docfiller.decorate
 class Generic(PhiBase):
     """
     Class to define potential using callables.
@@ -37,7 +37,9 @@ class Generic(PhiBase):
         Function ``phi(r)``
     dphidr : Callable, optional
         Optional function ``dphidr(r)``.
-
+    {r_min_exact}
+    {phi_min_exact}
+    {segments}
     """
 
     #: Function :math:`\phi(r)`
@@ -61,10 +63,16 @@ class Generic(PhiBase):
 
 
 @attrs.define(frozen=True)
-@docfiller_phibase(PhiBase)
+@docfiller.decorate
 class Analytic(PhiBase):
     """
     Base class for defining analytic potentials.
+
+    Parameters
+    ----------
+    {r_min_exact}
+    {phi_min_exact}
+    {segments}
 
     Notes
     -----
@@ -384,13 +392,15 @@ if TYPE_CHECKING:
 
 
 @attrs.define(frozen=True)
-@docfiller_phibase(PhiBase)
+@docfiller.decorate
 class CubicTable(PhiBase):
     """
     Cubic interpolation table potential.
 
     Parameters
     ----------
+    {r_min_exact}
+    {phi_min_exact}
     bounds : sequence of float
         the minimum and maximum values of squared pair separation `r**2` at which `phi_table` is evaluated.
     phi_table : array-like

@@ -48,10 +48,8 @@ class PhiAbstract:
 
     Parameters
     ----------
-    r_min : float, optional
-        Position of minimum.
-    phi_min : float, optional
-        Value of ``phi`` at ``r_min``.
+    {r_min_exact}
+    {phi_min_exact}
     {segments}
 
     """

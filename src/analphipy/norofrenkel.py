@@ -128,20 +128,7 @@ def sig_nf(
     )
 
 
-d = docfiller.update(
-    summary="Derivative with respect to inverse temperature ``beta`` of ``sig_nf``.",
-    extended_summary=r"""
-    See refs [1]_ [2]_ [3]_
-
-    .. math::
-
-        \frac{d \sigma_{\rm BH}}{d\beta} = \int_0^{\infty} dr \phi_{\rm rep}(r) \exp[-\beta \phi_{\rm rep}(r)]
-    """,
-).dedent()
-
-
-# @doc_inherit(sig_nf, style="numpy_with_merge")
-@d(sig_nf)
+@docfiller.inherit(sig_nf)
 def sig_nf_dbeta(
     phi_rep: Phi_Signature,
     beta: float,
@@ -150,7 +137,15 @@ def sig_nf_dbeta(
     full_output: bool = False,
     **kws: Any,
 ) -> QuadSegments:
-    """Calculate beta derivative of Noro-Frenkel sigma."""
+    r"""
+    Derivative with respect to inverse temperature ``beta`` of ``sig_nf``.
+
+    See refs [1]_ [2]_ [3]_
+
+    .. math::
+
+        \frac{{d \sigma_{{\rm BH}}}}{{d\beta}} = \int_0^{{\infty}} dr \phi_{{\rm rep}}(r) \exp[-\beta \phi_{{\rm rep}}(r)]
+    """
 
     def integrand(r: Float_or_Array) -> Array:
         v = phi_rep(r)
