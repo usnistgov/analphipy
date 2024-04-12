@@ -84,7 +84,7 @@ pipxrun-tools = [
     "conda-lock >= 2.5.5",
     "grayskull >= 2.5.3",
     "nbqa >= 1.8.4",
-    "pyright >= 1.1.353",
+    "pyright >= 1.1.357, != 1.1.358", # skipping 1.1.358.  Breaks module_utilities.cached.
     "twine >= 5.0.0",
 ]
 test = [
@@ -148,7 +148,7 @@ preview = true
 select = ["ALL"]
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 # fixable = ["A", "B", "C", "D", "E", "F", "..."]
-# unfixable = []
+unfixable = ["T"]
 # Exclude a variety of commonly ignored directories.
 ignore = [
     "CPY",       # - Don't require copyright

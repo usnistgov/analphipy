@@ -95,8 +95,8 @@ def phidphi_nm(r, n, m, sig=1.0, eps=1.0):
 
 
 def get_r(rmin, rmax, n=100):
-    rmin = rng.random() * 0.1 + rmin
-    rmax = rng.random() * 0.1 + rmax
+    rmin += rng.random() * 0.1
+    rmax += rng.random() * 0.1
 
     return np.linspace(rmin, rmax, n)
 
