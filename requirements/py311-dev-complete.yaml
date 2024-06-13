@@ -17,7 +17,7 @@ dependencies:
   - ipython
   - matplotlib
   - module-utilities>=0.6
-  - mypy>=1.9.0
+  - mypy>=1.10.0
   - nbclient>=0.10.0
   - nbval
   - nox>=2024.3.2

@@ -56,7 +56,7 @@ optional-dependencies.dev-extras = [
     "ipykernel",
     "ipython",
     "nbclient>=0.10.0",
-    "nox>=2024.3.2",
+    "nox>=2024.4.15",
     "pandas",
     "pytest-accept",
 ]
@@ -72,7 +72,7 @@ optional-dependencies.docs = [
     "sphinxcontrib-spelling",
 ]
 optional-dependencies.mypy = [
-    "mypy>=1.9.0",
+    "mypy>=1.10.0",
 ]
 optional-dependencies.nbval = [
     "nbval",
@@ -87,7 +87,7 @@ optional-dependencies.pipxrun-tools = [
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pyright>=1.1.357,!=1.1.358", # skipping 1.1.358.  Breaks module_utilities.cached.
+    "pyright>=1.1.367",
     "twine>=5.0.0",
 ]
 optional-dependencies.test = [
@@ -226,7 +226,6 @@ lint.extend-per-file-ignores."**/*.ipynb" = [
     "D103",
     "E302",
 ]
-# Project specific ignores (avoid changing per-file-ignores directly)
 lint.extend-per-file-ignores."**/base_potential.py" = [
     "ARG002",
     "PLR6301",
@@ -246,7 +245,6 @@ lint.extend-per-file-ignores."tests/*.py" = [
     "PT011",
 ]
 # Allow autofix for all enabled rules (when `--fix`) is provided.
-# fixable = ["A", "B", "C", "D", "E", "F", "..."]
 lint.unfixable = [
     "PLR6104",
     "T",

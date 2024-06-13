@@ -85,15 +85,15 @@ class Analytic(PhiBase):
     # fmt: off
     #: Position of minimum in :math:`\phi(r)`
     r_min: float = field(  # pyright: ignore[reportIncompatibleVariableOverride]
-        init=False, repr=field_formatter()
+        default=np.nan, init=False, repr=field_formatter()
     )
     #: Value of ``phi`` at minimum.
     phi_min: float = field(  # pyright: ignore[reportIncompatibleVariableOverride]
-        init=False, repr=False
+        default=np.nan, init=False, repr=False
     )
     #: Integration limits.
     segments: Sequence[float] = field(  # pyright: ignore[reportIncompatibleVariableOverride]
-        init=False
+        default=(), init=False
     )
     # fmt: on
 
