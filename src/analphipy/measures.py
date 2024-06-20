@@ -16,7 +16,8 @@ from ._docstrings import docfiller
 
 # from module_utilities.docfiller import DocFiller
 if TYPE_CHECKING:
-    from typing import Any, Callable, Mapping, Sequence
+    from collections.abc import Mapping, Sequence
+    from typing import Any, Callable
 
     from ._typing import (
         Array,

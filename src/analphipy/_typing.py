@@ -4,7 +4,6 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    Sequence,
     TypedDict,
     TypeVar,
     Union,
@@ -16,6 +15,8 @@ from numpy.typing import NDArray  # , ArrayLike
 from ._typing_compat import ParamSpec, TypeAlias
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from .base_potential import PhiAbstract
 
 P = ParamSpec("P")
@@ -25,7 +26,7 @@ R = TypeVar("R")
 """Return Type"""
 
 Array: TypeAlias = NDArray[np.float64]
-ArrayLike: TypeAlias = Union[Sequence[float], NDArray[np.float64]]
+ArrayLike: TypeAlias = Union["Sequence[float]", NDArray[np.float64]]
 Float_or_ArrayLike: TypeAlias = "float | ArrayLike"
 Float_or_Array: TypeAlias = "float | Array"
 Phi_Signature: TypeAlias = Callable[..., Array]

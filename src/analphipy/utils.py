@@ -13,7 +13,8 @@ import numpy as np
 from ._docstrings import docfiller
 
 if TYPE_CHECKING:
-    from typing import Any, Callable, Iterable, Mapping, Protocol, TypeVar
+    from collections.abc import Iterable, Mapping
+    from typing import Any, Callable, Protocol, TypeVar
 
     from ._typing import ArrayLike, OptimizeResultInterface, P, QuadSegments, R
     from ._typing_compat import Concatenate, TypeGuard

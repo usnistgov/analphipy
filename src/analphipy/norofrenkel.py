@@ -27,7 +27,8 @@ from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, is_float, minimize_phi, quad_segments
 
 if TYPE_CHECKING:
-    from typing import Any, Mapping, Sequence
+    from collections.abc import Mapping, Sequence
+    from typing import Any
 
     from analphipy.base_potential import PhiAbstract
 

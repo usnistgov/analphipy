@@ -14,7 +14,8 @@ from attrs import field
 from ._attrs_utils import field_array_formatter, field_formatter, private_field
 
 if TYPE_CHECKING:
-    from typing import Any, Literal, Sequence, TypeVar
+    from collections.abc import Sequence
+    from typing import Any, Literal, TypeVar
 
     from ._typing import Array, ArrayLike, Float_or_ArrayLike, Phi_Signature
 

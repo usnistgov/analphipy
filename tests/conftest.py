@@ -2,11 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Any, Iterable
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
 from typing_extensions import Self
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 rng = np.random.default_rng()
 

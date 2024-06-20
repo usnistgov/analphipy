@@ -15,7 +15,8 @@ from ._attrs_utils import field_formatter, private_field
 from ._docstrings import docfiller
 
 if TYPE_CHECKING:
-    from typing import Any, Callable, Literal, Sequence
+    from collections.abc import Sequence
+    from typing import Any, Callable, Literal
 
     from ._typing import Array, Float_or_ArrayLike
     from ._typing_compat import Self
