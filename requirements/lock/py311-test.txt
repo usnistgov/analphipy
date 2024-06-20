@@ -6,7 +6,7 @@ docstring-inheritance==2.2.0  # via -r requirements/test.txt
 execnet==2.1.1            # via pytest-xdist
 iniconfig==2.0.0          # via pytest
 module-utilities==0.9.0   # via -r requirements/test.txt
-numpy==1.26.4             # via pandas, scipy, -r requirements/test.txt
+numpy==2.0.0              # via pandas, scipy, -r requirements/test.txt
 packaging==24.1           # via pytest, pytest-sugar
 pandas==2.2.2             # via -r requirements/test.txt
 pluggy==1.5.0             # via pytest

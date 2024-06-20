@@ -19,7 +19,7 @@ license-files = { paths = [
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
-requires-python = ">=3.8,<=3.12"
+requires-python = ">=3.8,<3.13"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
@@ -87,7 +87,7 @@ optional-dependencies.pipxrun-tools = [
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pyright>=1.1.367",
+    "pyright>=1.1.368",
     "twine>=5.0.0",
 ]
 optional-dependencies.test = [

@@ -20,7 +20,7 @@ dependencies:
   - mypy>=1.10.0
   - nbclient>=0.10.0
   - nbval
-  - nox>=2024.3.2
+  - nox>=2024.4.15
   - numpy
   - packaging
   - pandas

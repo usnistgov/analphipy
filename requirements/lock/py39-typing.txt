@@ -5,7 +5,7 @@ docstring-inheritance==2.2.0  # via -r requirements/typing.txt
 exceptiongroup==1.2.1     # via pytest
 iniconfig==2.0.0          # via pytest
 module-utilities==0.9.0   # via -r requirements/typing.txt
-numpy==1.26.4             # via pandas-stubs, scipy, -r requirements/typing.txt
+numpy==2.0.0              # via pandas-stubs, scipy, -r requirements/typing.txt
 packaging==24.1           # via pytest, -r requirements/typing.txt
 pandas-stubs==2.2.2.240603  # via -r requirements/typing.txt
 pluggy==1.5.0             # via pytest
