@@ -9,6 +9,6 @@ packaging==24.1           # via pytest, -r requirements/typing.txt
 pandas-stubs==2.2.2.240603  # via -r requirements/typing.txt
 pluggy==1.5.0             # via pytest
 pytest==8.2.2             # via -r requirements/typing.txt
-scipy==1.13.1             # via -r requirements/typing.txt
+scipy==1.14.0             # via -r requirements/typing.txt
 types-pytz==2024.1.0.20240417  # via pandas-stubs
 typing-extensions==4.12.2  # via module-utilities
