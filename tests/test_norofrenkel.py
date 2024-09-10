@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-# import analphipy.measures as measures
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 

@@ -8,13 +8,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, cast
 
 import numpy as np
-
-# from custom_inherit import doc_inherit
 from module_utilities import cached
 
 from ._docstrings import docfiller
 
-# from module_utilities.docfiller import DocFiller
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
     from typing import Any, Callable

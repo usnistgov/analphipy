@@ -33,14 +33,6 @@ def segments_converter(segments: Sequence[Any]) -> tuple[float, ...]:
     return tuple(float(x) for x in segments)
 
 
-# def validate_segments(self: Any, attribute: Any, segments: Sequence[Any]) -> None:
-#     assert len(segments) >= 2, "Segments must be at least of length 2"
-
-
-# def _kw_only_field(kw_only: bool = True, default: Any = None, **kws: Any) -> Any:
-#     return attrs.field(kw_only=kw_only, default=default, **kws)
-
-
 @attrs.define(frozen=True, kw_only=True)
 @docfiller.decorate
 class PhiAbstract:

@@ -3,8 +3,6 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-# from typing import Sequence, Any
-# from typing_extensions import reveal_type
 import numpy as np
 import pandas as pd
 
@@ -18,26 +16,6 @@ if TYPE_CHECKING:
 data = Path(__file__).parent / "data"
 
 nsamp = 20
-
-# def test_typing():
-#     table = (
-#         pd.read_csv(data / "vir_sw_.csv")
-#         .assign(beta=lambda x: 1.0 / x["temp"])
-#         .drop_duplicates()
-#     )
-
-#     def hello(x: Sequence[float]) -> Sequence[float]:
-#         return x * 2
-
-
-#     reveal_type(table)
-#     # reveal_type(table["sig"].to_numpy(dtype=np.float_))
-#     reveal_type(np.asarray(table['sig'], dtype=np.float_))
-#     reveal_type(np.array(table['sig'], dtype=np.float_))
-#     reveal_type(np.array([1,2,3], dtype=np.float_))
-#     reveal_type(np.array([1,2,3], dtype=float))
-#     # reveal_type(hello)
-#     # reveal_type(hello(table['sig'].to_numpy(dtype=float)))
 
 
 def test_B2_sw() -> None:

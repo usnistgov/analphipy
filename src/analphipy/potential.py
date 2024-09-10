@@ -384,10 +384,6 @@ def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None
         raise ValueError(msg)
 
 
-# def _convert_bounds(bounds: Sequence[float]) -> Sequence[float]:
-#     return tuple(bounds)
-
-
 if TYPE_CHECKING:
     T_CubicTable = TypeVar("T_CubicTable", bound="CubicTable")
 

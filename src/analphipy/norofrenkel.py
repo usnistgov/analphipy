@@ -43,7 +43,7 @@ if TYPE_CHECKING:
     from ._typing_compat import Self
 
 # Workaround to document module level docstring
-__doc__ = __doc__.format(**docfiller.data)  # noqa: A001
+__doc__ = __doc__.format(**docfiller.data)  # noqa: A001  # pyright: ignore[reportOptionalMemberAccess]
 
 __all__ = [
     "NoroFrenkelPair",
@@ -251,12 +251,11 @@ def lam_nf_dbeta(
 
     dB2stardbeta = 1.0 / B2_hs * (B2_dbeta - B2 * 3.0 * sig_dbeta / sig)
 
-    # e = np.exp(-beta * eps)
-    # f = 1. - e
+    _e = np.exp(beta * eps)
 
-    e = np.exp(beta * eps)
-
-    out: float = 1.0 / (3 * lam**2 * (e - 1)) * (dB2stardbeta * e - eps * (lam**3 - 1))
+    out: float = (
+        1.0 / (3 * lam**2 * (_e - 1)) * (dB2stardbeta * _e - eps * (lam**3 - 1))
+    )
 
     return out
 

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-# from ._docfiller import DocFiller
 from module_utilities.docfiller import DocFiller
 
 

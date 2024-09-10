@@ -47,7 +47,7 @@ dependencies = [
     "typing-extensions; python_version<'3.11'",
 ]
 optional-dependencies.dev = [
-    "analphipy[dev-extras,test,typing,pipxrun,mypy,nbval,viz]",
+    "analphipy[dev-extras,test,typing,uvxrun,mypy,nbval,viz]",
 ]
 optional-dependencies.dev-complete = [
     "analphipy[dev,tools]",
@@ -72,23 +72,10 @@ optional-dependencies.docs = [
     "sphinxcontrib-spelling",
 ]
 optional-dependencies.mypy = [
-    "mypy>=1.10.1",
+    "mypy>=1.11.2",
 ]
 optional-dependencies.nbval = [
     "nbval",
-]
-optional-dependencies.pipxrun = [
-    # Anything needed to run tools/pipxrun.py
-    "packaging",
-]
-optional-dependencies.pipxrun-tools = [
-    # these used solely for specking tools to be used with tools/pipxrun.py
-    "analphipy[mypy]",
-    "conda-lock>=2.5.5",
-    "grayskull>=2.5.3",
-    "nbqa>=1.8.4",
-    "pyright>=1.1.370",
-    "twine>=5.0.0",
 ]
 optional-dependencies.test = [
     "pandas",
@@ -98,14 +85,26 @@ optional-dependencies.test = [
     "pytest-xdist",
 ]
 optional-dependencies.tools = [
-    "pipx",
     "pre-commit",
     "scriv",
 ]
 optional-dependencies.typing = [
-    "analphipy[pipxrun]",
+    "analphipy[uvxrun]",
     "pandas-stubs",
     "pytest",
+]
+optional-dependencies.uvxrun = [
+    # Anything needed to run tools/uvxrun.py
+    "packaging",
+]
+optional-dependencies.uvxrun-tools = [
+    # these used solely for specking tools to be used with tools/uvxrun.py
+    "analphipy[mypy]",
+    "conda-lock>=2.5.5",
+    "grayskull>=2.5.3",
+    "nbqa>=1.8.4",
+    "pyright>=1.1.379",
+    "twine>=5.0.0",
 ]
 optional-dependencies.viz = [
     "matplotlib",
@@ -176,7 +175,6 @@ lint.ignore = [
     # * Other
     "E501", # - line too long - let formatter fix this
     "E731", # - do not assign a lambda expression, use a def
-    "ERA",  # - eradicate (want to keep some stuff)
     "FBT",  # - bools are ok
     "ISC",  # - flake8-implicit-str-concat
     # * Allow non top level imports
@@ -185,6 +183,7 @@ lint.ignore = [
 ]
 # Use extend-ignore for project specific ignores (avoid changing ignore directly)
 lint.extend-ignore = [
+    # "ERA",     # - eradicate (want to keep some stuff)
     # "PD",      # - not using pandas?
     # "NPY",     # - not using numpy?
     # * Annotations
@@ -198,6 +197,11 @@ lint.extend-ignore = [
     # "D102",    # - Missing docstring in public method
     # "D103",    # - Missing docstring in public function
     # "D202",    # - blank line after docstring
+    "DOC201", # - Missing return from documentation
+    "DOC202", # - Missing return from documentation
+    "DOC501", # - Missing raises from documentation
+    "NPY",    # - not using numpy?
+    "PD",     # - not using pandas?
 ]
 lint.per-file-ignores."**/*.ipynb" = [
     "B018",
@@ -205,6 +209,7 @@ lint.per-file-ignores."**/*.ipynb" = [
     "INP001",
 ]
 lint.per-file-ignores."docs/conf.py" = [
+    "ERA",
     "INP001",
 ]
 lint.per-file-ignores."noxfile.py" = [
@@ -217,6 +222,7 @@ lint.per-file-ignores."tests/*.py" = [
 lint.per-file-ignores."tools/*.py" = [
     "A",
     "D102",
+    "DOC",
     "S",
     "SLF001",
 ]
@@ -425,8 +431,8 @@ reqs = [
 base = false
 style = "requirements"
 
-[tool.pyproject2conda.envs.pipxrun-tools]
-extras = "pipxrun-tools"
+[tool.pyproject2conda.envs.uvxrun-tools]
+extras = "uvxrun-tools"
 base = false
 style = "requirements"
 
@@ -469,9 +475,19 @@ python = [
     "3.12",
 ]
 
+# * pip-tools (keeping for legacy) ---------------------------------------------
+
 [tool.pip-tools]
 allow-unsafe = true
 strip-extras = true
+
+# * uv -------------------------------------------------------------------------
+
+[tool.uv]
+managed = false
+
+[tool.uv.pip]
+annotation-style = "line"
 
 # * Other tools ----------------------------------------------------------------
 

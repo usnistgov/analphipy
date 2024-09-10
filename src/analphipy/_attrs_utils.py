@@ -8,8 +8,6 @@ import numpy as np
 if TYPE_CHECKING:
     from typing import Any, Callable, TypeVar
 
-    # from module_utilities._typing import S
-
     T = TypeVar("T", bound=Any)
     R = TypeVar("R")
 
