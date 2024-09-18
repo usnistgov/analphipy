@@ -20,7 +20,7 @@ ipython==8.27.0           # via ipykernel
 jedi==0.19.1              # via ipython
 jsonschema==4.23.0        # via nbformat
 jsonschema-specifications==2023.12.1  # via jsonschema
-jupyter-client==8.6.2     # via ipykernel, nbval
+jupyter-client==8.6.3     # via ipykernel, nbval
 jupyter-core==5.7.2       # via ipykernel, jupyter-client, nbformat
 kiwisolver==1.4.7         # via matplotlib
 matplotlib==3.9.2         # via -r requirements/test-notebook.txt
@@ -31,11 +31,11 @@ nbval==0.11.0             # via -r requirements/test-notebook.txt
 nest-asyncio==1.6.0       # via ipykernel
 numpy==2.1.1              # via contourpy, matplotlib, pandas, scipy, -r requirements/test-notebook.txt
 packaging==24.1           # via ipykernel, matplotlib, pytest, pytest-sugar
-pandas==2.2.2             # via -r requirements/test-notebook.txt
+pandas==2.2.3             # via -r requirements/test-notebook.txt
 parso==0.8.4              # via jedi
 pexpect==4.9.0            # via ipython
 pillow==10.4.0            # via matplotlib
-platformdirs==4.3.2       # via jupyter-core
+platformdirs==4.3.6       # via jupyter-core
 pluggy==1.5.0             # via pytest
 prompt-toolkit==3.0.47    # via ipython
 psutil==6.0.0             # via ipykernel
@@ -48,7 +48,7 @@ pytest-cov==5.0.0         # via -r requirements/test-notebook.txt
 pytest-sugar==1.0.0       # via -r requirements/test-notebook.txt
 pytest-xdist==3.6.1       # via -r requirements/test-notebook.txt
 python-dateutil==2.9.0.post0  # via jupyter-client, matplotlib, pandas
-pytz==2024.1              # via pandas
+pytz==2024.2              # via pandas
 pyzmq==26.2.0             # via ipykernel, jupyter-client
 referencing==0.35.1       # via jsonschema, jsonschema-specifications
 rpds-py==0.20.0           # via jsonschema, referencing
