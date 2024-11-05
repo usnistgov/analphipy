@@ -11,6 +11,6 @@ pandas-stubs==2.2.2.240807  # via -r requirements/typing.txt
 pluggy==1.5.0             # via pytest
 pytest==8.3.3             # via -r requirements/typing.txt
 scipy==1.13.1             # via -r requirements/typing.txt
-tomli==2.0.1              # via pytest
-types-pytz==2024.2.0.20240913  # via pandas-stubs
+tomli==2.0.2              # via pytest
+types-pytz==2024.2.0.20241003  # via pandas-stubs
 typing-extensions==4.12.2  # via module-utilities, -r requirements/typing.txt

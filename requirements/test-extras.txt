@@ -7,8 +7,14 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
+attrs
+docstring-inheritance
+module-utilities>=0.6
+numpy
 pandas
 pytest
 pytest-cov
 pytest-sugar
 pytest-xdist
+scipy
+typing-extensions;python_version<"3.11"

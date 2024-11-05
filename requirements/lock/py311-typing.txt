@@ -4,11 +4,11 @@ attrs==24.2.0             # via -r requirements/typing.txt
 docstring-inheritance==2.2.1  # via -r requirements/typing.txt
 iniconfig==2.0.0          # via pytest
 module-utilities==0.9.0   # via -r requirements/typing.txt
-numpy==2.1.1              # via pandas-stubs, scipy, -r requirements/typing.txt
+numpy==2.1.3              # via pandas-stubs, scipy, -r requirements/typing.txt
 packaging==24.1           # via pytest, -r requirements/typing.txt
-pandas-stubs==2.2.2.240909  # via -r requirements/typing.txt
+pandas-stubs==2.2.3.241009  # via -r requirements/typing.txt
 pluggy==1.5.0             # via pytest
 pytest==8.3.3             # via -r requirements/typing.txt
 scipy==1.14.1             # via -r requirements/typing.txt
-types-pytz==2024.2.0.20240913  # via pandas-stubs
+types-pytz==2024.2.0.20241003  # via pandas-stubs
 typing-extensions==4.12.2  # via module-utilities
