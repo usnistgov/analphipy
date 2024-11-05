@@ -7,13 +7,6 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
-attrs
-build
-docstring-inheritance
 hatch-fancy-pypi-readme
 hatch-vcs
 hatchling
-module-utilities>=0.6
-numpy
-scipy
-typing-extensions;python_version<"3.11"

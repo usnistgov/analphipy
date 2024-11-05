@@ -47,22 +47,30 @@ dependencies = [
     "scipy",
     "typing-extensions; python_version<'3.11'",
 ]
-optional-dependencies.dev = [
-    "analphipy[dev-extras,test,typing,uvxrun,mypy,nbval,viz]",
-]
-optional-dependencies.dev-complete = [
-    "analphipy[dev,tools]",
-]
-optional-dependencies.dev-extras = [
-    "ipykernel",
-    "ipython",
-    "nbclient>=0.10.0",
-    "nox>=2024.4.15",
+optional-dependencies.viz = [
+    "matplotlib",
     "pandas",
-    "pytest-accept",
 ]
-optional-dependencies.docs = [
-    "analphipy[viz]",
+urls.Documentation = "https://pages.nist.gov/analphipy/"
+urls.Homepage = "https://github.com/usnistgov/analphipy"
+
+[dependency-groups]
+dev = [
+    { include-group = "dev-extras" },
+    { include-group = "mypy" },
+    { include-group = "nbval" },
+    { include-group = "test" },
+    { include-group = "typing" },
+    { include-group = "uvxrun" },
+]
+test = [
+    "pandas",
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+]
+docs = [
     "autodocsumm",
     "myst-nb",
     "pyenchant",
@@ -72,47 +80,47 @@ optional-dependencies.docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
-optional-dependencies.mypy = [
-    "mypy>=1.11.2",
+dev-complete = [
+    { include-group = "dev" },
+    { include-group = "tools" },
 ]
-optional-dependencies.nbval = [
+dev-extras = [
+    "ipykernel",
+    "ipython",
+    "nbclient>=0.10.0",
+    "nox>=2024.4.15",
+    "pandas",
+    "pytest-accept",
+]
+mypy = [
+    "mypy>=1.13.0",
+]
+nbval = [
     "nbval",
 ]
-optional-dependencies.test = [
-    "pandas",
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
-]
-optional-dependencies.tools = [
+tools = [
     "pre-commit",
     "scriv",
 ]
-optional-dependencies.typing = [
-    "analphipy[uvxrun]",
+typing = [
     "pandas-stubs",
     "pytest",
+    { include-group = "uvxrun" },
 ]
-optional-dependencies.uvxrun = [
+uvxrun = [
     # Anything needed to run tools/uvxrun.py
     "packaging",
 ]
-optional-dependencies.uvxrun-tools = [
+uvxrun-tools = [
     # these used solely for specking tools to be used with tools/uvxrun.py
-    "analphipy[mypy]",
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
+    "pyproject2conda>=0.13.0",
     "pyright>=1.1.381",
     "twine>=5.0.0",
+    { include-group = "mypy" },
 ]
-optional-dependencies.viz = [
-    "matplotlib",
-    "pandas",
-]
-urls.Documentation = "https://pages.nist.gov/analphipy/"
-urls.Homepage = "https://github.com/usnistgov/analphipy"
 
 [tool.hatch.version]
 source = "vcs"
@@ -418,6 +426,7 @@ default_envs = [
     "docs",
     "dev",
     "dev-complete",
+    "uvxrun-tools",
 ]
 
 [tool.pyproject2conda.dependencies]
@@ -426,29 +435,27 @@ scriv = { pip = true }
 
 [tool.pyproject2conda.envs.build]
 extras = "build-system.requires"
-reqs = [
-    "build",
-]
-base = false
-style = "requirements"
-
-[tool.pyproject2conda.envs.uvxrun-tools]
-extras = "uvxrun-tools"
-base = false
-style = "requirements"
 
 [tool.pyproject2conda.envs.test-extras]
-extras = [
-    "test",
-]
-base = false
+groups = "test"
 
 [tool.pyproject2conda.envs.test-notebook]
-extras = [
-    "test",
-    "nbval",
-    "viz",
+groups = [ "test", "nbval" ]
+extras = [ "viz" ]
+
+[[tool.pyproject2conda.overrides]]
+# Extras
+envs = [ "dev", "dev-complete", "docs" ]
+extras = [ "viz" ]
+
+[[tool.pyproject2conda.overrides]]
+envs = [
+    "build",
+    "uvxrun-tools",
+    "test-extras",
 ]
+skip_package = true
+style = "requirements"
 
 [[tool.pyproject2conda.overrides]]
 # Ensure these have pip in yaml file
