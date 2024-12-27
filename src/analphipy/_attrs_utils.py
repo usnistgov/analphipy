@@ -17,7 +17,7 @@ def optional_converter(converter: Callable[[T], R]) -> Callable[[T], T | R]:
 
     def wrapped(value: T) -> T | R:  # pragma: no cover
         if value in {None, attrs.NOTHING}:
-            return value
+            return value  # pyright: ignore[reportReturnType]
         return converter(value)
 
     return wrapped

@@ -239,15 +239,18 @@ def _check_volume_func(
         volume = "1d"
     if isinstance(volume, str):
         if volume == "1d":
-            volume = lambda x: 1.0  # noqa: ARG005
-        elif volume == "2d":
-            volume = lambda x: 2.0 * np.pi * x
-        elif volume == "3d":
-            volume = lambda x: 4 * np.pi * x**2
-        else:
-            msg = "unknown dimension"
-            raise ValueError(msg)
-    elif not callable(volume):
+            return lambda x: 1.0  # noqa: ARG005
+
+        if volume == "2d":
+            return lambda x: 2.0 * np.pi * x
+
+        if volume == "3d":
+            return lambda x: 4 * np.pi * x**2
+
+        msg = "unknown dimension"
+        raise ValueError(msg)
+
+    if not callable(volume):
         msg = "volume should be str or callable"
         raise TypeError(msg)
 

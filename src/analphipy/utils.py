@@ -39,7 +39,7 @@ def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
 
     """
     aa, bb = set(a), set(b)
-    return sorted(aa.union(bb))
+    return sorted(aa.union(bb))  # type: ignore[arg-type, unused-ignore]
 
 
 def is_float(val: Any) -> TypeGuard[float]:
@@ -125,7 +125,7 @@ def quad_segments(
             outputs_list.append(o)
 
         integrals = (
-            cast(float, np.sum(integrals_list))  # pyright: ignore[reportUnknownMemberType]
+            cast("float", np.sum(integrals_list))  # pyright: ignore[reportUnknownMemberType]
             if sum_integrals
             else integrals_list
         )
@@ -200,8 +200,8 @@ def minimize_phi(
 
     xmin = outputs["x"][0]
 
-    _tmp = outputs["fun"]
-    ymin = _tmp[0] if isinstance(_tmp, np.ndarray) else _tmp
+    tmp = outputs["fun"]
+    ymin = tmp[0] if isinstance(tmp, np.ndarray) else tmp
 
     return cast("tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs))
 

@@ -1,14 +1,14 @@
 import sys
 
-if sys.version_info < (3, 11):
-    from typing_extensions import Self
-else:
+if sys.version_info >= (3, 11):
     from typing import Self
-
-if sys.version_info < (3, 10):
-    from typing_extensions import Concatenate, ParamSpec, TypeAlias, TypeGuard
 else:
+    from typing_extensions import Self
+
+if sys.version_info >= (3, 10):
     from typing import Concatenate, ParamSpec, TypeAlias, TypeGuard
+else:
+    from typing_extensions import Concatenate, ParamSpec, TypeAlias, TypeGuard
 
 
 __all__ = [

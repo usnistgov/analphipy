@@ -1,5 +1,5 @@
 """
-Base classes (:mod:`analphipy.base_potential`)
+Base classes (:mod:`analphipy.base_otential`)
 ==============================================
 """
 
@@ -11,7 +11,7 @@ import attrs
 import numpy as np
 from attrs import field
 
-from ._attrs_utils import field_formatter, private_field
+from ._attrs_utils import field_formatter
 from ._docstrings import docfiller
 
 if TYPE_CHECKING:
@@ -257,7 +257,7 @@ class PhiAbstract:
                 if not isinstance(bounds, tuple):  # pyright: ignore[reportUnnecessaryIsInstance]
                     msg = "bounds must be a tuple"
                     raise TypeError(msg)
-                r0 = cast(float, np.mean(bounds))
+                r0 = cast("float", np.mean(bounds))
             else:
                 msg = 'must specify bounds with r0="mean"'
                 raise ValueError(msg)
@@ -368,7 +368,7 @@ class PhiCutBase(PhiAbstract):
     #: Position to cut the potential
     rcut: float = field(converter=float)
     #: Integration limits
-    segments: Sequence[float] = private_field()  # pyright: ignore[reportIncompatibleVariableOverride]
+    segments: Sequence[float] = field(init=False, repr=False)  # pyright: ignore[reportGeneralTypeIssues, reportIncompatibleVariableOverride]
 
     def __attrs_post_init__(self) -> None:
         if self.phi_base.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
@@ -438,7 +438,7 @@ class PhiCut(PhiCutBase):
 
     """
 
-    _vcut: float = private_field()
+    _vcut: float = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
@@ -468,8 +468,8 @@ class PhiLFS(PhiCutBase):
             \end{{cases}}
     """
 
-    _vcut: float = private_field()
-    _dvdrcut: float = private_field()
+    _vcut: float = field(init=False, repr=False)
+    _dvdrcut: float = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()

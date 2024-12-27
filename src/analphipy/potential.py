@@ -11,7 +11,7 @@ import attrs
 import numpy as np
 from attrs import field
 
-from ._attrs_utils import field_array_formatter, field_formatter, private_field
+from ._attrs_utils import field_array_formatter, field_formatter
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -427,8 +427,8 @@ class CubicTable(PhiBase):
     #: value of `dphi` at right bound
     dphi_right: float = field(converter=float, default=0.0)
 
-    _ds: float = private_field()
-    _dsinv: float = private_field()
+    _ds: float = field(init=False, repr=False)
+    _dsinv: float = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         assert isinstance(self.phi_table, np.ndarray)  # noqa: S101
