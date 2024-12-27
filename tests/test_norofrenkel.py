@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-# import analphipy.measures as measures
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
@@ -44,12 +43,12 @@ def test_simple() -> None:
 
 def test_nf_sw() -> None:
     cols = ["sig", "eps", "lam", "B2"]
-    df = pd.read_csv(data / "eff_sw_.csv").assign(beta=lambda x: 1.0 / x["temp"])
+    table = pd.read_csv(data / "eff_sw_.csv").assign(beta=lambda x: 1.0 / x["temp"])
 
-    if len(df) > nsamp:
-        df = df.sample(nsamp)
+    if len(table) > nsamp:
+        table = table.sample(nsamp)
 
-    for (sig, eps, lam), g in df.groupby(["sig", "eps", "lam"]):
+    for (sig, eps, lam), g in table.groupby(["sig", "eps", "lam"]):
         p = pots.SquareWell(sig=sig, eps=eps, lam=lam)
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
@@ -64,21 +63,21 @@ def test_nf_sw() -> None:
 def test_nf_lj() -> None:
     cols = ["sig", "eps", "lam", "B2", "sig_dbeta"]
 
-    df = (
+    table = (
         pd.read_csv(data / "eff_lj_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
         .assign(sig_dbeta_eff=lambda x: -x["dsig_eff"])
     )
 
-    if len(df) > nsamp:
-        df = df.sample(nsamp)
+    if len(table) > nsamp:
+        table = table.sample(nsamp)
     sig = eps = 1.0
     p_base = pots.LennardJones(sig=sig, eps=eps)
 
     p: PhiAbstract
 
-    for (rcut, tail), g in df.groupby(["rcut", "tail"]):
+    for (rcut, tail), g in table.groupby(["rcut", "tail"]):
         if tail == "LFS":
             p = p_base.lfs(rcut=rcut)
         elif tail == "CUT":
@@ -99,17 +98,17 @@ def test_nf_lj() -> None:
 
 def test_nf_nm() -> None:
     cols = ["sig", "eps", "lam", "B2"]
-    df = (
+    table = (
         pd.read_csv(data / "eff_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
     )
 
-    if len(df) > nsamp:
-        df = df.sample(nsamp)
+    if len(table) > nsamp:
+        table = table.sample(nsamp)
     sig = eps = 1.0
 
-    for (n_exp, m_exp), g in df.groupby(["n_exp", "m_exp"]):
+    for (n_exp, m_exp), g in table.groupby(["n_exp", "m_exp"]):
         p = pots.LennardJonesNM(n=n_exp, m=m_exp, sig=sig, eps=eps)
 
         a = NoroFrenkelPair.from_phi(
@@ -126,17 +125,17 @@ def test_nf_nm() -> None:
 def test_nf_yk() -> None:
     cols = ["sig", "eps", "lam", "B2"]
 
-    df = (
+    table = (
         pd.read_csv(data / "eff_yukawa_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
     )
 
-    if len(df) > nsamp:
-        df = df.sample(nsamp)
+    if len(table) > nsamp:
+        table = table.sample(nsamp)
     sig = eps = 1.0
 
-    for (z_yukawa), g in df.groupby("z_yukawa"):
+    for (z_yukawa), g in table.groupby("z_yukawa"):
         p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)  # type: ignore[arg-type]
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)

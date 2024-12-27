@@ -8,15 +8,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, cast
 
 import numpy as np
-
-# from custom_inherit import doc_inherit
 from module_utilities import cached
 
 from ._docstrings import docfiller
 
-# from module_utilities.docfiller import DocFiller
 if TYPE_CHECKING:
-    from typing import Any, Callable, Mapping, Sequence
+    from collections.abc import Mapping, Sequence
+    from typing import Any, Callable
 
     from ._typing import (
         Array,
@@ -33,11 +31,11 @@ from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 __all__ = [
     "Measures",
+    "diverg_js_cont",
+    "diverg_kl_cont",
     "secondvirial",
     "secondvirial_dbeta",
     "secondvirial_sw",
-    "diverg_kl_cont",
-    "diverg_js_cont",
 ]
 
 
@@ -77,6 +75,7 @@ def secondvirial(
     See Also
     --------
     ~analphipy.utils.quad_segments
+
     """
 
     def integrand(r: Float_or_Array) -> Array:
@@ -223,8 +222,8 @@ def diverg_kl_disc(
     References
     ----------
     {kl_link}
-    """
 
+    """
     p, q = np.asarray(p), np.asarray(q)
     diverg = diverg_kl_integrand(p, q)
     # fmt: off
@@ -248,8 +247,9 @@ def _check_volume_func(
         else:
             msg = "unknown dimension"
             raise ValueError(msg)
-    else:
-        assert callable(volume)
+    elif not callable(volume):
+        msg = "volume should be str or callable"
+        raise TypeError(msg)
 
     return volume
 
@@ -291,6 +291,7 @@ def diverg_kl_cont(
     References
     ----------
     {kl_link}
+
     """
     volume_callable = _check_volume_func(volume)
 
@@ -352,6 +353,7 @@ def diverg_js_cont(
     full_output: bool = False,
     **kws: Any,
 ) -> QuadSegments:
+    """Calculate Jensen-Shannon divergence for continuous functions."""
     volume_callable = _check_volume_func(volume)
 
     if segments_q is not None:
@@ -381,6 +383,7 @@ class Measures:
     {phi}
     {segments}
     {quad_kws}
+
     """
 
     def __init__(
@@ -424,6 +427,7 @@ class Measures:
         See Also
         --------
         ~analphipy.measures.secondvirial
+
         """
         return secondvirial(
             phi=self.phi,
@@ -459,6 +463,7 @@ class Measures:
         See Also
         --------
         ~analphipy.measures.secondvirial_dbeta
+
         """
         return secondvirial_dbeta(
             phi=self.phi,
@@ -508,8 +513,8 @@ class Measures:
         References
         ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
-        """
 
+        """
         if beta_other is None:
             beta_other = beta
 
@@ -568,8 +573,8 @@ class Measures:
         References
         ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
-        """
 
+        """
         if beta_other is None:
             beta_other = beta
 

@@ -2,6 +2,7 @@
 Classes/routines for pair potentials (:mod:`analphipy.potential`)
 =================================================================
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -13,7 +14,8 @@ from attrs import field
 from ._attrs_utils import field_array_formatter, field_formatter, private_field
 
 if TYPE_CHECKING:
-    from typing import Any, Literal, Sequence, TypeVar
+    from collections.abc import Sequence
+    from typing import Any, Literal, TypeVar
 
     from ._typing import Array, ArrayLike, Float_or_ArrayLike, Phi_Signature
 
@@ -25,7 +27,7 @@ docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
 
 
 @attrs.define(frozen=True)
-@docfiller_phibase(PhiBase)
+@docfiller.decorate
 class Generic(PhiBase):
     """
     Class to define potential using callables.
@@ -36,6 +38,9 @@ class Generic(PhiBase):
         Function ``phi(r)``
     dphidr : Callable, optional
         Optional function ``dphidr(r)``.
+    {r_min_exact}
+    {phi_min_exact}
+    {segments}
     """
 
     #: Function :math:`\phi(r)`
@@ -59,30 +64,37 @@ class Generic(PhiBase):
 
 
 @attrs.define(frozen=True)
-@docfiller_phibase(PhiBase)
+@docfiller.decorate
 class Analytic(PhiBase):
     """
     Base class for defining analytic potentials.
+
+    Parameters
+    ----------
+    {r_min_exact}
+    {phi_min_exact}
+    {segments}
 
     Notes
     -----
     Specific subclasses should set values for ``r_min``,
     ``phi_min``, and ``segments``, as well as
     forms for ``phi`` and ``dphidr``.
+
     """
 
     # fmt: off
     #: Position of minimum in :math:`\phi(r)`
     r_min: float = field(  # pyright: ignore[reportIncompatibleVariableOverride]
-        init=False, repr=field_formatter()
+        default=np.nan, init=False, repr=field_formatter()
     )
     #: Value of ``phi`` at minimum.
     phi_min: float = field(  # pyright: ignore[reportIncompatibleVariableOverride]
-        init=False, repr=False
+        default=np.nan, init=False, repr=False
     )
     #: Integration limits.
     segments: Sequence[float] = field(  # pyright: ignore[reportIncompatibleVariableOverride]
-        init=False
+        default=(), init=False
     )
     # fmt: on
 
@@ -106,6 +118,7 @@ class LennardJones(Analytic):
         Length parameter :math:`\sigma`.
     eps : float
         Energy parameter :math:`\epsilon`.
+
     """
 
     #: Length parameter :math:`\sigma`
@@ -172,6 +185,7 @@ class LennardJonesNM(Analytic):
     Notes
     -----
     with parameters ``n=12`` and ``m=6``, this is equivalent to :class:`LennardJones`.
+
     """
 
     n: int = 12  #: ``n`` parameter
@@ -287,6 +301,7 @@ class HardSphere(Analytic):
     ----------
     sig: float
         Length scale parameter :math:`\sigma`
+
     """
 
     sig: float = 1.0  #: Length parameter
@@ -330,6 +345,7 @@ class SquareWell(Analytic):
         Energy parameter :math:`\epsilon`.  Note that here, ``eps`` is the value inside the well.  So, to specify an attractive square well potential, pass a negative value for ``eps``.
     lam : float
         Width of well parameter :math:`lambda`.
+
     """
 
     sig: float = 1.0  #: Length parameter.
@@ -363,11 +379,9 @@ class SquareWell(Analytic):
 
 
 def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None:  # noqa: ARG001
-    assert len(bounds) == 2, "length of bounds must be 2"
-
-
-# def _convert_bounds(bounds: Sequence[float]) -> Sequence[float]:
-#     return tuple(bounds)
+    if len(bounds) != 2:  # noqa: PLR2004
+        msg = "length of bounds must be 2"
+        raise ValueError(msg)
 
 
 if TYPE_CHECKING:
@@ -375,13 +389,15 @@ if TYPE_CHECKING:
 
 
 @attrs.define(frozen=True)
-@docfiller_phibase(PhiBase)
+@docfiller.decorate
 class CubicTable(PhiBase):
     """
     Cubic interpolation table potential.
 
     Parameters
     ----------
+    {r_min_exact}
+    {phi_min_exact}
     bounds : sequence of float
         the minimum and maximum values of squared pair separation `r**2` at which `phi_table` is evaluated.
     phi_table : array-like
@@ -392,6 +408,7 @@ class CubicTable(PhiBase):
 
     phi_left, phi_right, dphi_left, dphi_right : float, optional
         Values to set for ``phi``/``-1/r dphidr`` if  (left) ``r < bounds[0]`` or (right) ``r > bounds[1]``.
+
     """
 
     #: Minimum and maximum values of squared pair separation :math:`r^2`
@@ -414,7 +431,7 @@ class CubicTable(PhiBase):
     _dsinv: float = private_field()
 
     def __attrs_post_init__(self) -> None:
-        assert isinstance(self.phi_table, np.ndarray)
+        assert isinstance(self.phi_table, np.ndarray)  # noqa: S101
 
         ds = (self.bounds[1] - self.bounds[0]) / self.size
 
@@ -456,6 +473,7 @@ class CubicTable(PhiBase):
         Returns
         -------
         table : CubicTable
+
         """
         bounds: tuple[float, float] = (rmin * rmin, rmax * rmax)
 
@@ -584,8 +602,8 @@ def factory(
     SquareWell
     HardSphere
     Yukawa
-    """
 
+    """
     name = potential_name.lower()
 
     phi: PhiAbstract
@@ -610,7 +628,9 @@ def factory(
         raise ValueError(msg)
 
     if lfs or cut:
-        assert rcut is not None
+        if rcut is None:
+            msg = "rcut cannot be None"
+            raise TypeError(msg)
         if cut:
             phi = phi.cut(rcut=rcut)
 

@@ -82,13 +82,13 @@ conda install -c conda-forge analphipy
 >>> n = p.to_nf()
 
 # Get effective parameters at inverse temperature beta
->>> n.sig(beta=1.0)
+>>> print(n.sig(beta=1.0))
 1.01560...
 
->>> n.eps(beta=1.0)
+>>> print(n.eps(beta=1.0))
 -1.0
 
->>> n.lam(beta=1.0)
+>>> print(n.lam(beta=1.0))
 1.44097...
 
 ```

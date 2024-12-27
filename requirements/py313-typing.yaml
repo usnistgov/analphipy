@@ -10,7 +10,7 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.12
+  - python=3.13
   - attrs
   - docstring-inheritance
   - module-utilities>=0.6

@@ -10,24 +10,15 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.11
+  - python=3.13
   - attrs
   - docstring-inheritance
-  - ipykernel
-  - ipython
-  - matplotlib
   - module-utilities>=0.6
-  - mypy>=1.4.1
-  - nbval
   - numpy
   - pandas
-  - pandas-stubs
   - pytest
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
   - scipy
-  - typing-extensions
   - pip
-  - pip:
-      - pytest-accept

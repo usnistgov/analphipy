@@ -13,10 +13,12 @@ ipykernel
 ipython
 matplotlib
 module-utilities>=0.6
-mypy>=1.4.1
+mypy>=1.13.0
+nbclient>=0.10.0
 nbval
-nox
+nox>=2024.4.15
 numpy
+packaging
 pandas
 pandas-stubs
 pytest
@@ -24,6 +26,5 @@ pytest-accept
 pytest-cov
 pytest-sugar
 pytest-xdist
-pytype;python_version<"3.11"
 scipy
-typing-extensions
+typing-extensions;python_version<"3.11"

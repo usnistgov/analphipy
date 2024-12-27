@@ -2,11 +2,16 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Any, Iterable
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
 from typing_extensions import Self
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+rng = np.random.default_rng()
 
 
 def phidphi_lj(r, sig=1.0, eps=1.0):
@@ -53,7 +58,7 @@ def phidphi_lj_cut(r, rcut, sig=1.0, eps=1.0):
     return phi, dphi
 
 
-def phidphi_lj_lfs(r, rcut, sig=1.0, eps=1):
+def phidphi_lj_lfs(r, rcut, sig=1.0, eps=1.0):
     r = np.array(r)
     phi = np.empty_like(r)
     dphi = np.empty_like(r)
@@ -93,8 +98,8 @@ def phidphi_nm(r, n, m, sig=1.0, eps=1.0):
 
 
 def get_r(rmin, rmax, n=100):
-    rmin = np.random.rand() * 0.1 + rmin
-    rmax = np.random.rand() * 0.1 + rmax
+    rmin += rng.random() * 0.1
+    rmax += rng.random() * 0.1
 
     return np.linspace(rmin, rmax, n)
 
@@ -149,8 +154,8 @@ class LJParams(BaseParams):
     @classmethod
     def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(nsamp) * 4,
-            eps=np.random.rand(nsamp),
+            sig=rng.random(nsamp) * 4,
+            eps=rng.random(nsamp),
         )
 
 
@@ -167,9 +172,9 @@ class LJCutParams(LJParams):
     @classmethod
     def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(nsamp),
-            eps=np.random.rand(nsamp),
-            rcut=np.random.rand(nsamp) + 3.0,
+            sig=rng.random(nsamp),
+            eps=rng.random(nsamp),
+            rcut=rng.random(nsamp) + 3.0,
         )
 
 
@@ -210,7 +215,7 @@ class NMParams(LJParams):
         if nsamp is None:
             nsamp = len(n)
 
-        return kws_to_ld(sig=np.random.rand(nsamp), eps=np.random.rand(nsamp), n=n, m=m)
+        return kws_to_ld(sig=rng.random(nsamp), eps=rng.random(nsamp), n=n, m=m)
 
 
 @pytest.fixture(params=NMParams.get_objects(), scope="module")
@@ -252,9 +257,9 @@ class SWParams(LJParams):
     @classmethod
     def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(nsamp),
-            eps=(np.random.rand(nsamp) - 0.5) * 2.0,
-            lam=np.random.rand(nsamp) + 1.0,
+            sig=rng.random(nsamp),
+            eps=(rng.random(nsamp) - 0.5) * 2.0,
+            lam=rng.random(nsamp) + 1.0,
         )
 
 
@@ -285,9 +290,9 @@ class YKParams(LJParams):
     @classmethod
     def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(nsamp),
-            eps=(np.random.rand(nsamp) - 0.5) * 2.0,
-            z=np.random.rand(nsamp) * 4,
+            sig=rng.random(nsamp),
+            eps=(rng.random(nsamp) - 0.5) * 2.0,
+            z=rng.random(nsamp) * 4,
         )
 
 
@@ -320,7 +325,7 @@ class HSParams(BaseParams):
 
     @classmethod
     def get_params(cls, nsamp=10):
-        return kws_to_ld(sig=np.random.rand(nsamp))
+        return kws_to_ld(sig=rng.random(nsamp))
 
 
 @pytest.fixture(params=HSParams.get_objects(), scope="module")

@@ -10,10 +10,9 @@
 attrs
 docstring-inheritance
 module-utilities>=0.6
-mypy>=1.4.1
 numpy
+packaging
 pandas-stubs
 pytest
-pytype;python_version<"3.11"
 scipy
-typing-extensions
+typing-extensions;python_version<"3.11"

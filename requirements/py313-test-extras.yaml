@@ -10,12 +10,9 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.12
-  - attrs
-  - docstring-inheritance
-  - module-utilities>=0.6
-  - numpy
-  - packaging
-  - pandas-stubs
+  - python=3.13
+  - pandas
   - pytest
-  - scipy
+  - pytest-cov
+  - pytest-sugar
+  - pytest-xdist
