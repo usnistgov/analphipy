@@ -60,6 +60,7 @@ dev = [
     { include-group = "test" },
     { include-group = "typing" },
     { include-group = "uvxrun" },
+    { include-group = "viz" },
 ]
 test = [
     { include-group = "test-extras" },
@@ -73,6 +74,7 @@ docs = [
     "sphinx-book-theme",
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
+    { include-group = "viz" },
 ]
 cog = [ "cogapp" ]
 dev-extras = [
@@ -91,6 +93,11 @@ test-extras = [
     "pytest-cov",
     "pytest-sugar",
     "pytest-xdist",
+]
+test-notebook = [
+    { include-group = "nbval" },
+    { include-group = "test-extras" },
+    { include-group = "viz" },
 ]
 tools = [
     "pre-commit",
@@ -114,6 +121,10 @@ uvxrun-tools = [
     "scriv",
     "twine>=5.0.0",
     { include-group = "mypy" },
+]
+viz = [
+    "matplotlib",
+    "pandas",
 ]
 
 [tool.hatch.version]
@@ -157,8 +168,6 @@ lint.select = [
 # Exclude a variety of commonly ignored directories.
 lint.ignore = [
     # * Annotations
-    "ANN101", # - Leads to issues with methods and self
-    "ANN102", # - Leads to issues with classmethods and cls
     "ANN401", # - Any ok sometimes
     # * These conflict with formatter
     "COM", # - flake8-commas, formatter should take care of this?
@@ -419,10 +428,10 @@ groups = "test-extras"
 skip_package = true
 python = "all"
 
-[[tool.pyproject2conda.overrides]]
-# Extras
-envs = [ "dev" ]
-extras = [ "viz" ]
+[tool.pyproject2conda.envs.uvxrun-tools]
+groups = "uvxrun-tools"
+style = "requirements"
+skip_package = true
 
 [[tool.pyproject2conda.overrides]]
 # Ensure these have pip in yaml file
@@ -439,11 +448,6 @@ envs = [
 python = "all"
 
 # * uv -------------------------------------------------------------------------
-
-[tool.pyproject2conda.envs.uvxrun-tools]
-groups = "uvxrun-tools"
-style = "requirements"
-skip_package = true
 
 [tool.uv]
 managed = true

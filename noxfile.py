@@ -664,9 +664,7 @@ def docs(
     calls 'make -C docs html'. With 'release' option, you can set the
     message with 'message=...' in posargs.
     """
-    install_dependencies(
-        session, "--extra=viz", name="docs", opts=opts, include_editable_package=True
-    )
+    install_dependencies(session, name="docs", opts=opts, include_editable_package=True)
 
     if opts.version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = opts.version
