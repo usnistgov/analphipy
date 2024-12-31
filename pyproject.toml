@@ -57,10 +57,10 @@ dev = [
     { include-group = "dev-extras" },
     { include-group = "mypy" },
     { include-group = "nbval" },
+    { include-group = "optional" },
     { include-group = "test" },
     { include-group = "typing" },
     { include-group = "uvxrun" },
-    { include-group = "viz" },
 ]
 test = [
     { include-group = "test-extras" },
@@ -74,7 +74,7 @@ docs = [
     "sphinx-book-theme",
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
-    { include-group = "viz" },
+    { include-group = "optional" },
 ]
 cog = [ "cogapp" ]
 dev-extras = [
@@ -87,6 +87,10 @@ dev-extras = [
 ]
 mypy = [ "mypy>=1.14.0" ]
 nbval = [ "nbval" ]
+optional = [
+    "matplotlib",
+    "pandas",
+]
 test-extras = [
     "pandas",
     "pytest",
@@ -96,8 +100,8 @@ test-extras = [
 ]
 test-notebook = [
     { include-group = "nbval" },
+    { include-group = "optional" },
     { include-group = "test-extras" },
-    { include-group = "viz" },
 ]
 tools = [
     "pre-commit",
@@ -116,15 +120,11 @@ uvxrun-tools = [
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
     "pre-commit",
-    "pyproject2conda>=0.15.0",
+    "pyproject2conda>=0.16.0",
     "pyright>=1.1.391",
     "scriv",
     "twine>=5.0.0",
     { include-group = "mypy" },
-]
-viz = [
-    "matplotlib",
-    "pandas",
 ]
 
 [tool.hatch.version]

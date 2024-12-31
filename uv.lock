@@ -62,7 +62,7 @@ wheels = [
 
 [[package]]
 name = "analphipy"
-version = "0.3.1.dev90"
+version = "0.3.1.dev92"
 source = { editable = "." }
 dependencies = [
     { name = "attrs" },
@@ -157,6 +157,13 @@ mypy = [
 nbval = [
     { name = "nbval" },
 ]
+optional = [
+    { name = "matplotlib", version = "3.7.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
+    { name = "matplotlib", version = "3.9.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
+    { name = "matplotlib", version = "3.10.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "pandas", version = "2.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
+    { name = "pandas", version = "2.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
+]
 test = [
     { name = "pandas", version = "2.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
     { name = "pandas", version = "2.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
@@ -217,13 +224,6 @@ uvxrun-tools = [
     { name = "scriv" },
     { name = "twine" },
 ]
-viz = [
-    { name = "matplotlib", version = "3.7.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
-    { name = "matplotlib", version = "3.9.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
-    { name = "matplotlib", version = "3.10.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
-    { name = "pandas", version = "2.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
-    { name = "pandas", version = "2.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
-]
 
 [package.metadata]
 requires-dist = [
@@ -278,6 +278,10 @@ docs = [
 ]
 mypy = [{ name = "mypy", specifier = ">=1.14.0" }]
 nbval = [{ name = "nbval" }]
+optional = [
+    { name = "matplotlib" },
+    { name = "pandas" },
+]
 test = [
     { name = "pandas" },
     { name = "pytest" },
@@ -317,14 +321,10 @@ uvxrun-tools = [
     { name = "mypy", specifier = ">=1.14.0" },
     { name = "nbqa", specifier = ">=1.8.4" },
     { name = "pre-commit" },
-    { name = "pyproject2conda", specifier = ">=0.15.0" },
+    { name = "pyproject2conda", specifier = ">=0.16.0" },
     { name = "pyright", specifier = ">=1.1.391" },
     { name = "scriv" },
     { name = "twine", specifier = ">=5.0.0" },
-]
-viz = [
-    { name = "matplotlib" },
-    { name = "pandas" },
 ]
 
 [[package]]
@@ -3984,7 +3984,7 @@ wheels = [
 
 [[package]]
 name = "pyproject2conda"
-version = "0.15.0"
+version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "packaging" },
@@ -3992,9 +3992,9 @@ dependencies = [
     { name = "typer" },
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4a/ae/83ad461d43f336cc91b370584b221d02d4ee6b3508183399b67495ce746f/pyproject2conda-0.15.0.tar.gz", hash = "sha256:8e12a027081d37069aa3fe0b6f250f11916a5ec79259c6489a596fb99a732c5f", size = 104448 }
+sdist = { url = "https://files.pythonhosted.org/packages/4c/85/dfdeaa282272e14b4b8d1ce8df6fbd4d7d7ccf664d0c2728b2b64e5acd7e/pyproject2conda-0.16.0.tar.gz", hash = "sha256:fa1dfd4ac2ac703878316de0185ea710fd2ef80be09b2ad7e9ff16096df11266", size = 314983 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3c/e8/826452b41e093321d96a4d757f56414914f9b6c1fe8ea535bfcaea92049e/pyproject2conda-0.15.0-py3-none-any.whl", hash = "sha256:231fdb844ca6fd13b288a50a5a80466de31a80bcd2ccf46d26a53b9c1d444528", size = 35338 },
+    { url = "https://files.pythonhosted.org/packages/e7/9e/48486e4b34479d4da6c3c2ca440d0bbd092347cd491a8fa38f4521d0219a/pyproject2conda-0.16.0-py3-none-any.whl", hash = "sha256:98b6de6f3c3e0c348fc7051cef4de75f208ab15dcac971ff589881f320084c32", size = 35551 },
 ]
 
 [[package]]
