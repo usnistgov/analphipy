@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
-from scipy.misc import derivative
 
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
@@ -17,7 +16,8 @@ def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3) -> None:
 
     f = getattr(nf, prop)
 
-    b = derivative(f, beta, dx=dx)
+    # central difference:
+    b = (f(beta + dx * 0.5) - f(beta - dx * 0.5)) / dx
 
     np.testing.assert_allclose(a, b, rtol=rtol)
 
