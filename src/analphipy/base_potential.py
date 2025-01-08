@@ -13,6 +13,9 @@ from attrs import field
 
 from ._attrs_utils import field_formatter
 from ._docstrings import docfiller
+from .measures import Measures
+from .norofrenkel import NoroFrenkelPair
+from .utils import minimize_phi
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -20,11 +23,6 @@ if TYPE_CHECKING:
 
     from ._typing import Array, Float_or_ArrayLike
     from ._typing_compat import Self
-
-
-from .measures import Measures
-from .norofrenkel import NoroFrenkelPair
-from .utils import minimize_phi
 
 
 # * attrs utilities

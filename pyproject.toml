@@ -108,7 +108,9 @@ tools = [
     "scriv",
 ]
 typing = [
+    "pandas",
     "pandas-stubs",
+    "pylint",
     "pytest",
     { include-group = "uvxrun" },
 ]

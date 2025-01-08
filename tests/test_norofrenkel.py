@@ -1,6 +1,6 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=duplicate-code
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
@@ -9,8 +9,7 @@ import pytest
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
-if TYPE_CHECKING:
-    from analphipy.base_potential import PhiAbstract
+from .utils import iter_phi_lj
 
 data = Path(__file__).parent / "data"
 
@@ -70,25 +69,7 @@ def test_nf_lj() -> None:
         .assign(sig_dbeta_eff=lambda x: -x["dsig_eff"])
     )
 
-    if len(table) > nsamp:
-        table = table.sample(nsamp)
-    sig = eps = 1.0
-    p_base = pots.LennardJones(sig=sig, eps=eps)
-
-    p: PhiAbstract
-
-    for (rcut, tail), g in table.groupby(["rcut", "tail"]):
-        if tail == "LFS":
-            p = p_base.lfs(rcut=rcut)
-        elif tail == "CUT":
-            p = p_base.cut(rcut=rcut)
-        elif tail == "LRC":
-            p = p_base
-
-        a = NoroFrenkelPair.from_phi(
-            phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
-        )
-
+    for g, a in iter_phi_lj(table, nsamp):
         out = a.table(g["beta"], cols)  # type: ignore[arg-type]
 
         for col in cols:

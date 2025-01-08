@@ -1,4 +1,5 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=duplicate-code
 import numpy as np
 import pytest
 

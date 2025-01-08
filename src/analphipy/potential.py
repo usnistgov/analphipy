@@ -12,6 +12,8 @@ import numpy as np
 from attrs import field
 
 from ._attrs_utils import field_array_formatter, field_formatter
+from ._docstrings import docfiller
+from .base_potential import PhiAbstract, PhiBase
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -19,9 +21,6 @@ if TYPE_CHECKING:
 
     from ._typing import Array, ArrayLike, Float_or_ArrayLike, Phi_Signature
 
-
-from ._docstrings import docfiller
-from .base_potential import PhiAbstract, PhiBase
 
 docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
 
@@ -60,7 +59,7 @@ class Generic(PhiBase):
             msg = "Must specify dphidr_func"
             raise ValueError(msg)
         r = np.asarray(r)
-        return self.dphidr_func(r)
+        return self.dphidr_func(r)  # pylint: disable=not-callable,useless-suppression
 
 
 @attrs.define(frozen=True)

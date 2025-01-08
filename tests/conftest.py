@@ -1,4 +1,5 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=missing-class-docstring,duplicate-code
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -314,7 +315,7 @@ def phi_hs(r, sig=1.0):
 
 
 @dataclass
-class HSParams(BaseParams):
+class HSParams(BaseParams):  # pylint: disable=abstract-method
     sig: float
 
     def __post_init__(self):

@@ -42,8 +42,3 @@ def field_array_formatter(threshold: int = 3, **kws: Any) -> Callable[[Any], str
             return str(value)
 
     return wrapped
-
-
-def private_field(init: bool = False, repr: bool = False, **kws: Any) -> Any:  # noqa: A002
-    """Create a private attrs field."""
-    return attrs.field(init=init, repr=repr, **kws)  # pytype: disable=not-supported-yet

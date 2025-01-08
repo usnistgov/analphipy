@@ -11,6 +11,7 @@ import numpy as np
 from module_utilities import cached
 
 from ._docstrings import docfiller
+from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
@@ -26,8 +27,6 @@ if TYPE_CHECKING:
     )
     from .base_potential import PhiAbstract
 
-
-from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 __all__ = [
     "Measures",
