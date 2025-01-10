@@ -25,6 +25,7 @@ dependencies:
   - packaging
   - pandas
   - pandas-stubs
+  - pylint
   - pytest
   - pytest-cov
   - pytest-sugar
