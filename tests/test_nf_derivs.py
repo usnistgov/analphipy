@@ -56,7 +56,7 @@ def test_nf_deriv_lj() -> None:
         p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
     )
 
-    for prop in ["sig", "B2", "lam"]:
+    for prop in ("sig", "B2", "lam"):
         for beta in BETAS:
             _do_test(nf, beta, prop, prop + "_dbeta", dx=1e-8, rtol=1e-2)
 
@@ -71,7 +71,7 @@ def test_nf_deriv_lj_cut(rcut) -> None:
         p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
     )
 
-    for prop in ["sig", "B2", "lam"]:
+    for prop in ("sig", "B2", "lam"):
         for beta in BETAS:
             _do_test(nf, beta, prop, prop + "_dbeta", dx=1e-8, rtol=1e-2)
 
@@ -84,6 +84,6 @@ def test_nf_deriv_yk(z) -> None:
 
     nf = NoroFrenkelPair(p.phi, p.segments, r_min=sig, phi_min=-1.0)
 
-    for prop in ["sig", "B2", "lam"]:
+    for prop in ("sig", "B2", "lam"):
         for beta in BETAS:
             _do_test(nf, beta, prop, prop + "_dbeta", dx=1e-8, rtol=1e-2)

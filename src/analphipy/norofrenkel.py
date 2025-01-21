@@ -301,7 +301,7 @@ class NoroFrenkelPair:
         params = ",\n    ".join(
             [
                 f"{v}={getattr(self, v)}"
-                for v in ["phi", "segments", "r_min", "phi_min", "quad_kws"]
+                for v in ("phi", "segments", "r_min", "phi_min", "quad_kws")
             ]
         )
 

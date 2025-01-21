@@ -631,9 +631,9 @@ def factory(
             msg = "rcut cannot be None"
             raise TypeError(msg)
         if cut:
-            phi = phi.cut(rcut=rcut)
+            return phi.cut(rcut=rcut)
 
-        elif lfs:
-            phi = phi.lfs(rcut=rcut)
+        if lfs:
+            return phi.lfs(rcut=rcut)
 
     return phi

@@ -1,5 +1,5 @@
 """
-Base classes (:mod:`analphipy.base_otential`)
+Base classes (:mod:`analphipy.base_potential`)
 ==============================================
 """
 
@@ -18,8 +18,8 @@ from .norofrenkel import NoroFrenkelPair
 from .utils import minimize_phi
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-    from typing import Any, Callable, Literal
+    from collections.abc import Callable, Sequence
+    from typing import Any, Literal
 
     from ._typing import Array, Float_or_ArrayLike
     from ._typing_compat import Self
@@ -44,6 +44,8 @@ class PhiAbstract:
     {segments}
 
     """
+
+    # pylint: disable=redundant-returns-doc,no-self-use
 
     #: Position of minimum in :math:`\phi(r)`
     r_min: float | None = attrs.field(
@@ -295,7 +297,7 @@ class PhiAbstract:
             msg = "must set `self.r_min` to use NoroFrenkel"
             raise ValueError(msg)
 
-        for k in ["phi", "segments", "r_min", "phi_min"]:
+        for k in ("phi", "segments", "r_min", "phi_min"):
             if k not in kws:
                 kws[k] = getattr(self, k)
 
@@ -316,7 +318,7 @@ class PhiAbstract:
         nf : :class:`analphipy.measures.Measures`
 
         """
-        for k in ["phi", "segments"]:
+        for k in ("phi", "segments"):
             if k not in kws:
                 kws[k] = getattr(self, k)
 

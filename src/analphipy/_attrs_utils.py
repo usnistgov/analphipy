@@ -6,7 +6,8 @@ import attrs
 import numpy as np
 
 if TYPE_CHECKING:
-    from typing import Any, Callable, TypeVar
+    from collections.abc import Callable
+    from typing import Any, TypeVar
 
     T = TypeVar("T", bound=Any)
     R = TypeVar("R")

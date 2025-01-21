@@ -14,8 +14,8 @@ from ._docstrings import docfiller
 from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, Sequence
-    from typing import Any, Callable
+    from collections.abc import Callable, Mapping, Sequence
+    from typing import Any
 
     from ._typing import (
         Array,
@@ -189,7 +189,7 @@ def diverg_kl_integrand(
 
     out = np.empty_like(p)
 
-    zero = p == 0.0
+    zero = p == 0.0  # pylint: disable=use-implicit-booleaness-not-comparison-to-zero
     hero = ~zero
 
     out[zero] = 0.0
@@ -404,7 +404,7 @@ class Measures:
     @cached.meth
     @add_quad_kws
     @docfiller.decorate
-    def secondvirial(
+    def secondvirial(  # pylint: disable=missing-type-doc
         self, /, beta: float, err: bool = False, full_output: bool = False, **kws: Any
     ) -> QuadSegments:
         """
@@ -415,7 +415,6 @@ class Measures:
         {beta}
         {err}
         {full_output}
-
         **kws
             Extra arguments to :func:`analphipy.utils.quad_segments`
 
@@ -478,7 +477,7 @@ class Measures:
 
     @docfiller.decorate
     @add_quad_kws
-    def boltz_diverg_js(
+    def boltz_diverg_js(  # pylint: disable=missing-type-doc
         self,
         /,
         other: PhiAbstract,

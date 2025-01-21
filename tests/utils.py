@@ -6,7 +6,7 @@ from analphipy import potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
 if TYPE_CHECKING:
-    from typing import Iterator
+    from collections.abc import Iterator
 
     import pandas as pd
 
