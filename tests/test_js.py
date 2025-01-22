@@ -1,4 +1,5 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=unnecessary-lambda-assignment
 """Simple tests for js divergence..."""
 
 import numpy as np

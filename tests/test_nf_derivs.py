@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 import pytest
-from scipy.misc import derivative
 
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
@@ -17,7 +16,8 @@ def _do_test(nf, beta, prop, dprop, dx=1e-8, rtol=1e-3) -> None:
 
     f = getattr(nf, prop)
 
-    b = derivative(f, beta, dx=dx)
+    # central difference:
+    b = (f(beta + dx * 0.5) - f(beta - dx * 0.5)) / dx
 
     np.testing.assert_allclose(a, b, rtol=rtol)
 
@@ -56,7 +56,7 @@ def test_nf_deriv_lj() -> None:
         p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
     )
 
-    for prop in ["sig", "B2", "lam"]:
+    for prop in ("sig", "B2", "lam"):
         for beta in BETAS:
             _do_test(nf, beta, prop, prop + "_dbeta", dx=1e-8, rtol=1e-2)
 
@@ -71,7 +71,7 @@ def test_nf_deriv_lj_cut(rcut) -> None:
         p.phi, p.segments, r_min=sig, bounds=[0.5 * sig, 1.5 * sig]
     )
 
-    for prop in ["sig", "B2", "lam"]:
+    for prop in ("sig", "B2", "lam"):
         for beta in BETAS:
             _do_test(nf, beta, prop, prop + "_dbeta", dx=1e-8, rtol=1e-2)
 
@@ -84,6 +84,6 @@ def test_nf_deriv_yk(z) -> None:
 
     nf = NoroFrenkelPair(p.phi, p.segments, r_min=sig, phi_min=-1.0)
 
-    for prop in ["sig", "B2", "lam"]:
+    for prop in ("sig", "B2", "lam"):
         for beta in BETAS:
             _do_test(nf, beta, prop, prop + "_dbeta", dx=1e-8, rtol=1e-2)

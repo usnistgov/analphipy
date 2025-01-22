@@ -5,7 +5,7 @@ from __future__ import annotations
 from module_utilities.docfiller import DocFiller
 
 
-def _docstrings_shared() -> None:
+def _docstrings_shared() -> None:  # pylint: disable=differing-param-doc,differing-type-doc
     """
     Parameters
     ----------

@@ -6,7 +6,8 @@ import attrs
 import numpy as np
 
 if TYPE_CHECKING:
-    from typing import Any, Callable, TypeVar
+    from collections.abc import Callable
+    from typing import Any, TypeVar
 
     T = TypeVar("T", bound=Any)
     R = TypeVar("R")
@@ -17,7 +18,7 @@ def optional_converter(converter: Callable[[T], R]) -> Callable[[T], T | R]:
 
     def wrapped(value: T) -> T | R:  # pragma: no cover
         if value in {None, attrs.NOTHING}:
-            return value
+            return value  # pyright: ignore[reportReturnType]
         return converter(value)
 
     return wrapped
@@ -42,8 +43,3 @@ def field_array_formatter(threshold: int = 3, **kws: Any) -> Callable[[Any], str
             return str(value)
 
     return wrapped
-
-
-def private_field(init: bool = False, repr: bool = False, **kws: Any) -> Any:  # noqa: A002
-    """Create a private attrs field."""
-    return attrs.field(init=init, repr=repr, **kws)  # pytype: disable=not-supported-yet

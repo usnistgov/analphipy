@@ -11,10 +11,11 @@ import numpy as np
 from module_utilities import cached
 
 from ._docstrings import docfiller
+from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, Sequence
-    from typing import Any, Callable
+    from collections.abc import Callable, Mapping, Sequence
+    from typing import Any
 
     from ._typing import (
         Array,
@@ -26,8 +27,6 @@ if TYPE_CHECKING:
     )
     from .base_potential import PhiAbstract
 
-
-from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
 __all__ = [
     "Measures",
@@ -190,7 +189,7 @@ def diverg_kl_integrand(
 
     out = np.empty_like(p)
 
-    zero = p == 0.0
+    zero = p == 0.0  # pylint: disable=use-implicit-booleaness-not-comparison-to-zero
     hero = ~zero
 
     out[zero] = 0.0
@@ -239,15 +238,18 @@ def _check_volume_func(
         volume = "1d"
     if isinstance(volume, str):
         if volume == "1d":
-            volume = lambda x: 1.0  # noqa: ARG005
-        elif volume == "2d":
-            volume = lambda x: 2.0 * np.pi * x
-        elif volume == "3d":
-            volume = lambda x: 4 * np.pi * x**2
-        else:
-            msg = "unknown dimension"
-            raise ValueError(msg)
-    elif not callable(volume):
+            return lambda x: 1.0  # noqa: ARG005
+
+        if volume == "2d":
+            return lambda x: 2.0 * np.pi * x
+
+        if volume == "3d":
+            return lambda x: 4 * np.pi * x**2
+
+        msg = "unknown dimension"
+        raise ValueError(msg)
+
+    if not callable(volume):
         msg = "volume should be str or callable"
         raise TypeError(msg)
 
@@ -402,7 +404,7 @@ class Measures:
     @cached.meth
     @add_quad_kws
     @docfiller.decorate
-    def secondvirial(
+    def secondvirial(  # pylint: disable=missing-type-doc
         self, /, beta: float, err: bool = False, full_output: bool = False, **kws: Any
     ) -> QuadSegments:
         """
@@ -413,7 +415,6 @@ class Measures:
         {beta}
         {err}
         {full_output}
-
         **kws
             Extra arguments to :func:`analphipy.utils.quad_segments`
 
@@ -476,7 +477,7 @@ class Measures:
 
     @docfiller.decorate
     @add_quad_kws
-    def boltz_diverg_js(
+    def boltz_diverg_js(  # pylint: disable=missing-type-doc
         self,
         /,
         other: PhiAbstract,

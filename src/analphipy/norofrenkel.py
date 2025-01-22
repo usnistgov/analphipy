@@ -251,11 +251,9 @@ def lam_nf_dbeta(
 
     dB2stardbeta = 1.0 / B2_hs * (B2_dbeta - B2 * 3.0 * sig_dbeta / sig)
 
-    _e = np.exp(beta * eps)
+    e = np.exp(beta * eps)
 
-    out: float = (
-        1.0 / (3 * lam**2 * (_e - 1)) * (dB2stardbeta * _e - eps * (lam**3 - 1))
-    )
+    out: float = 1.0 / (3 * lam**2 * (e - 1)) * (dB2stardbeta * e - eps * (lam**3 - 1))
 
     return out
 
@@ -303,7 +301,7 @@ class NoroFrenkelPair:
         params = ",\n    ".join(
             [
                 f"{v}={getattr(self, v)}"
-                for v in ["phi", "segments", "r_min", "phi_min", "quad_kws"]
+                for v in ("phi", "segments", "r_min", "phi_min", "quad_kws")
             ]
         )
 
@@ -376,7 +374,7 @@ class NoroFrenkelPair:
             raise ValueError(msg)
 
         if r_min is None:
-            r_min = cast(float, np.mean(bounds))
+            r_min = cast("float", np.mean(bounds))
 
         r_min, phi_min, _ = minimize_phi(phi, r0=r_min, bounds=bounds, **kws)
         return cls(
@@ -476,7 +474,7 @@ class NoroFrenkelPair:
 
         This is equal to the minimum in ``phi``.
         """
-        return cast(float, self.phi_min)
+        return cast("float", self.phi_min)
 
     @cached.meth
     @add_quad_kws

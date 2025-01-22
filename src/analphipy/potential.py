@@ -11,7 +11,9 @@ import attrs
 import numpy as np
 from attrs import field
 
-from ._attrs_utils import field_array_formatter, field_formatter, private_field
+from ._attrs_utils import field_array_formatter, field_formatter
+from ._docstrings import docfiller
+from .base_potential import PhiAbstract, PhiBase
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -19,9 +21,6 @@ if TYPE_CHECKING:
 
     from ._typing import Array, ArrayLike, Float_or_ArrayLike, Phi_Signature
 
-
-from ._docstrings import docfiller
-from .base_potential import PhiAbstract, PhiBase
 
 docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
 
@@ -60,7 +59,7 @@ class Generic(PhiBase):
             msg = "Must specify dphidr_func"
             raise ValueError(msg)
         r = np.asarray(r)
-        return self.dphidr_func(r)
+        return self.dphidr_func(r)  # pylint: disable=not-callable,useless-suppression
 
 
 @attrs.define(frozen=True)
@@ -427,8 +426,8 @@ class CubicTable(PhiBase):
     #: value of `dphi` at right bound
     dphi_right: float = field(converter=float, default=0.0)
 
-    _ds: float = private_field()
-    _dsinv: float = private_field()
+    _ds: float = field(init=False, repr=False)
+    _dsinv: float = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         assert isinstance(self.phi_table, np.ndarray)  # noqa: S101
@@ -632,9 +631,9 @@ def factory(
             msg = "rcut cannot be None"
             raise TypeError(msg)
         if cut:
-            phi = phi.cut(rcut=rcut)
+            return phi.cut(rcut=rcut)
 
-        elif lfs:
-            phi = phi.lfs(rcut=rcut)
+        if lfs:
+            return phi.lfs(rcut=rcut)
 
     return phi

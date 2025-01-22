@@ -1,4 +1,5 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=duplicate-code
 import numpy as np
 import pytest
 
@@ -7,6 +8,7 @@ from analphipy.base_potential import PhiAbstract
 
 
 def test_asdict() -> None:
+    # pylint: disable=redefined-variable-type
     p_lj = pots.LennardJones(sig=1.5, eps=1.5)
 
     p = p_lj

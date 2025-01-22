@@ -1,4 +1,5 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=duplicate-code
 import numpy as np
 
 from analphipy import potential
@@ -9,6 +10,7 @@ def _get_generic(p):
 
 
 def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True) -> None:
+    # pylint: disable=redefined-variable-type
     if kws is None:
         kws = params.asdict()
 
@@ -60,6 +62,7 @@ def test_nm(nm_params) -> None:
 
 
 def test_nm_cut(lj_cut_params) -> None:
+    # pylint: disable=redefined-variable-type
     params = lj_cut_params
 
     phi0, dphi0 = params.get_phidphi()
@@ -78,6 +81,7 @@ def test_nm_cut(lj_cut_params) -> None:
 
 
 def test_nm_lfs(lj_lfs_params) -> None:
+    # pylint: disable=redefined-variable-type
     params = lj_lfs_params
 
     phi0, dphi0 = params.get_phidphi()
