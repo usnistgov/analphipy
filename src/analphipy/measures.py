@@ -8,15 +8,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, cast
 
 import numpy as np
-
-# from custom_inherit import doc_inherit
 from module_utilities import cached
 
 from ._docstrings import docfiller
+from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
 
-# from module_utilities.docfiller import DocFiller
 if TYPE_CHECKING:
-    from typing import Any, Callable, Mapping, Sequence
+    from collections.abc import Callable, Mapping, Sequence
+    from typing import Any
 
     from ._typing import (
         Array,
@@ -29,15 +28,13 @@ if TYPE_CHECKING:
     from .base_potential import PhiAbstract
 
 
-from .utils import TWO_PI, add_quad_kws, combine_segmets, quad_segments
-
 __all__ = [
     "Measures",
+    "diverg_js_cont",
+    "diverg_kl_cont",
     "secondvirial",
     "secondvirial_dbeta",
     "secondvirial_sw",
-    "diverg_kl_cont",
-    "diverg_js_cont",
 ]
 
 
@@ -77,6 +74,7 @@ def secondvirial(
     See Also
     --------
     ~analphipy.utils.quad_segments
+
     """
 
     def integrand(r: Float_or_Array) -> Array:
@@ -130,11 +128,7 @@ def secondvirial_dbeta(
 
     def integrand(r: Float_or_Array) -> Array:
         v = phi(r)
-        if np.isinf(v):
-            out = np.array(0.0)
-
-        else:
-            out = TWO_PI * r**2 * v * np.exp(-beta * v)
+        out = np.array(0.0) if np.isinf(v) else TWO_PI * r**2 * v * np.exp(-beta * v)
         return cast("Array", out)
 
     return quad_segments(
@@ -195,7 +189,7 @@ def diverg_kl_integrand(
 
     out = np.empty_like(p)
 
-    zero = p == 0.0
+    zero = p == 0.0  # pylint: disable=use-implicit-booleaness-not-comparison-to-zero
     hero = ~zero
 
     out[zero] = 0.0
@@ -227,8 +221,8 @@ def diverg_kl_disc(
     References
     ----------
     {kl_link}
-    """
 
+    """
     p, q = np.asarray(p), np.asarray(q)
     diverg = diverg_kl_integrand(p, q)
     # fmt: off
@@ -238,27 +232,32 @@ def diverg_kl_disc(
 
 
 def _check_volume_func(
-    volume: str | Callable[[Float_or_Array], Float_or_Array] | None = None
+    volume: str | Callable[[Float_or_Array], Float_or_Array] | None = None,
 ) -> Callable[[Float_or_Array], Float_or_Array]:
     if volume is None:
         volume = "1d"
     if isinstance(volume, str):
         if volume == "1d":
-            volume = lambda x: 1.0
-        elif volume == "2d":
-            volume = lambda x: 2.0 * np.pi * x
-        elif volume == "3d":
-            volume = lambda x: 4 * np.pi * x**2
-        else:
-            raise ValueError("unknown dimension")
-    else:
-        assert callable(volume)
+            return lambda x: 1.0  # noqa: ARG005
+
+        if volume == "2d":
+            return lambda x: 2.0 * np.pi * x
+
+        if volume == "3d":
+            return lambda x: 4 * np.pi * x**2
+
+        msg = "unknown dimension"
+        raise ValueError(msg)
+
+    if not callable(volume):
+        msg = "volume should be str or callable"
+        raise TypeError(msg)
 
     return volume
 
 
 @docfiller(
-    summary="Calculate continuous Kullback–Leibler divergence for continuous pdf"
+    summary="Calculate continuous Kullback-Leibler divergence for continuous pdf"
 )
 def diverg_kl_cont(
     p: Callable[[Float_or_Array], Float_or_Array],
@@ -294,6 +293,7 @@ def diverg_kl_cont(
     References
     ----------
     {kl_link}
+
     """
     volume_callable = _check_volume_func(volume)
 
@@ -315,7 +315,7 @@ def diverg_kl_cont(
 
 
 # @doc_inherit(diverg_kl_disc, style="numpy_with_merge")
-@docfiller(diverg_kl_disc, summary="Discrete Jensen–Shannon divergence")
+@docfiller(diverg_kl_disc, summary="Discrete Jensen-Shannon divergence")
 def diverg_js_disc(
     p: Float_or_ArrayLike, q: Float_or_ArrayLike, axis: int | None = None
 ) -> Float_or_Array:
@@ -323,8 +323,7 @@ def diverg_js_disc(
 
     m = 0.5 * (p + q)
 
-    out = 0.5 * (diverg_kl_disc(p, m, axis=axis) + diverg_kl_disc(q, m, axis=axis))
-    return out
+    return 0.5 * (diverg_kl_disc(p, m, axis=axis) + diverg_kl_disc(q, m, axis=axis))
 
 
 def diverg_js_integrand(
@@ -345,7 +344,7 @@ def diverg_js_integrand(
     return out
 
 
-@docfiller(diverg_kl_cont, summary="Continuous Jensen–Shannon divergence")
+@docfiller(diverg_kl_cont, summary="Continuous Jensen-Shannon divergence")
 def diverg_js_cont(
     p: Callable[[Float_or_Array], Float_or_Array],
     q: Callable[[Float_or_Array], Float_or_Array],
@@ -356,6 +355,7 @@ def diverg_js_cont(
     full_output: bool = False,
     **kws: Any,
 ) -> QuadSegments:
+    """Calculate Jensen-Shannon divergence for continuous functions."""
     volume_callable = _check_volume_func(volume)
 
     if segments_q is not None:
@@ -385,6 +385,7 @@ class Measures:
     {phi}
     {segments}
     {quad_kws}
+
     """
 
     def __init__(
@@ -403,7 +404,7 @@ class Measures:
     @cached.meth
     @add_quad_kws
     @docfiller.decorate
-    def secondvirial(
+    def secondvirial(  # pylint: disable=missing-type-doc
         self, /, beta: float, err: bool = False, full_output: bool = False, **kws: Any
     ) -> QuadSegments:
         """
@@ -414,7 +415,6 @@ class Measures:
         {beta}
         {err}
         {full_output}
-
         **kws
             Extra arguments to :func:`analphipy.utils.quad_segments`
 
@@ -428,6 +428,7 @@ class Measures:
         See Also
         --------
         ~analphipy.measures.secondvirial
+
         """
         return secondvirial(
             phi=self.phi,
@@ -463,6 +464,7 @@ class Measures:
         See Also
         --------
         ~analphipy.measures.secondvirial_dbeta
+
         """
         return secondvirial_dbeta(
             phi=self.phi,
@@ -475,7 +477,7 @@ class Measures:
 
     @docfiller.decorate
     @add_quad_kws
-    def boltz_diverg_js(
+    def boltz_diverg_js(  # pylint: disable=missing-type-doc
         self,
         /,
         other: PhiAbstract,
@@ -512,8 +514,8 @@ class Measures:
         References
         ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
-        """
 
+        """
         if beta_other is None:
             beta_other = beta
 
@@ -572,8 +574,8 @@ class Measures:
         References
         ----------
         `See here for more info <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Symmetrised_divergence>`
-        """
 
+        """
         if beta_other is None:
             beta_other = beta
 

@@ -12,6 +12,7 @@
   [pypi-badge]: https://badge.fury.io/py/analphipy
 -->
 
+<!-- prettier-ignore-start -->
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/psf/black
 [pypi-badge]: https://img.shields.io/pypi/v/analphipy
@@ -24,6 +25,7 @@
 [conda-link]: https://anaconda.org/conda-forge/analphipy
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
+<!-- prettier-ignore-end -->
 
 <!-- other links -->
 
@@ -80,13 +82,13 @@ conda install -c conda-forge analphipy
 >>> n = p.to_nf()
 
 # Get effective parameters at inverse temperature beta
->>> n.sig(beta=1.0)
+>>> print(n.sig(beta=1.0))
 1.01560...
 
->>> n.eps(beta=1.0)
+>>> print(n.eps(beta=1.0))
 -1.0
 
->>> n.lam(beta=1.0)
+>>> print(n.lam(beta=1.0))
 1.44097...
 
 ```
@@ -107,18 +109,7 @@ The author can be reached at <wpk@nist.gov>.
 
 ## Credits
 
-This package was created with [Cookiecutter] and the
-[wpk-nist-gov/cookiecutter-pypackage] Project template forked from
-[audreyr/cookiecutter-pypackage].
-
-[audreyr/cookiecutter-pypackage]:
-  https://github.com/audreyr/cookiecutter-pypackage
-[cookiecutter]: https://github.com/audreyr/cookiecutter
-[wpk-nist-gov/cookiecutter-pypackage]:
-  https://github.com/wpk-nist-gov/cookiecutter-pypackage
-
-## TODO
-
-- [ ] remove `# type: ignore` from potentials.py, base_potentials.py
-- [ ] add back `check_untyped_defs` to pyproject.toml mypy config
-- [ ] remove use of `custom_inherit`
+This package was created using
+[Cookiecutter](https://github.com/audreyr/cookiecutter) with the
+[usnistgov/cookiecutter-nist-python](https://github.com/usnistgov/cookiecutter-nist-python)
+template.

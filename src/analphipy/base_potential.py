@@ -2,6 +2,7 @@
 Base classes (:mod:`analphipy.base_potential`)
 ==============================================
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, cast
@@ -10,33 +11,24 @@ import attrs
 import numpy as np
 from attrs import field
 
-from ._attrs_utils import field_formatter, private_field
+from ._attrs_utils import field_formatter
 from ._docstrings import docfiller
-
-if TYPE_CHECKING:
-    from typing import Any, Callable, Literal, Sequence
-
-    from typing_extensions import Self
-
-    from ._typing import Array, Float_or_ArrayLike
-
-
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
 from .utils import minimize_phi
 
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
+    from typing import Any, Literal
+
+    from ._typing import Array, Float_or_ArrayLike
+    from ._typing_compat import Self
+
 
 # * attrs utilities
 def segments_converter(segments: Sequence[Any]) -> tuple[float, ...]:
+    """Make sure segments are in correct format."""
     return tuple(float(x) for x in segments)
-
-
-# def validate_segments(self: Any, attribute: Any, segments: Sequence[Any]) -> None:
-#     assert len(segments) >= 2, "Segments must be at least of length 2"
-
-
-# def _kw_only_field(kw_only: bool = True, default: Any = None, **kws: Any) -> Any:
-#     return attrs.field(kw_only=kw_only, default=default, **kws)
 
 
 @attrs.define(frozen=True, kw_only=True)
@@ -47,12 +39,13 @@ class PhiAbstract:
 
     Parameters
     ----------
-    r_min : float, optional
-        Position of minimum.
-    phi_min : float, optional
-        Value of ``phi`` at ``r_min``.
+    {r_min_exact}
+    {phi_min_exact}
     {segments}
+
     """
+
+    # pylint: disable=redundant-returns-doc,no-self-use
 
     #: Position of minimum in :math:`\phi(r)`
     r_min: float | None = attrs.field(
@@ -84,6 +77,7 @@ class PhiAbstract:
         ----------
         **kws
             `attribute`, `value` pairs.
+
         """
         return attrs.evolve(self, **kws)
 
@@ -111,15 +105,14 @@ class PhiAbstract:
         ...
         ...     def __attrs_post_init__(self):
         ...         self._immutable_setattrs(_derived=self.r_min + 10)
-        ...
 
         >>> x = Derived(r_min=5)
         >>> x._derived
         15.0
-        """
 
+        """
         for key, value in kws.items():
-            object.__setattr__(self, key, value)
+            object.__setattr__(self, key, value)  # noqa: PLC2801
 
     def _get_smart_filter(
         self,
@@ -148,6 +141,7 @@ class PhiAbstract:
         `include, exclude, exclude_private exclude_no_init`.
         That is, if a name is in include and exclude and is private/no_init,
         it will be included
+
         """
         fields = attrs.fields(type(self))
 
@@ -166,13 +160,11 @@ class PhiAbstract:
             if f.name in include:
                 includes.append(f)
 
-            elif f.name in exclude:
-                pass
-
-            elif exclude_private and f.name.startswith("_"):
-                pass
-
-            elif exclude_no_init and not f.init:
+            elif (
+                f.name in exclude
+                or (exclude_private and f.name.startswith("_"))
+                or (exclude_no_init and not f.init)
+            ):
                 pass
 
             else:
@@ -192,9 +184,10 @@ class PhiAbstract:
         -------
         phi : ndarray
             Evaluated pair potential.
-        """
 
-        raise NotImplementedError("Must implement in subclass")
+        """
+        msg = "Must implement in subclass"
+        raise NotImplementedError(msg)
 
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r"""
@@ -213,7 +206,8 @@ class PhiAbstract:
             Pair potential values.
 
         """
-        raise NotImplementedError("Must implement in subclass")
+        msg = "Must implement in subclass"
+        raise NotImplementedError(msg)
 
     def minimize(
         self,
@@ -250,19 +244,23 @@ class PhiAbstract:
         See Also
         --------
         ~analphipy.utils.minimize_phi
-        """
 
+        """
         if bounds == "segments":
-            if self.segments is not None:  # pyright: ignore
+            if self.segments is not None:  # pyright: ignore[reportUnnecessaryComparison]
                 bounds = (self.segments[0], self.segments[-1])
             else:
                 bounds = None  # pragma: no cover
 
         if r0 == "mean":
             if bounds is not None:
-                r0 = cast(float, np.mean(bounds))
+                if not isinstance(bounds, tuple):  # pyright: ignore[reportUnnecessaryIsInstance]
+                    msg = "bounds must be a tuple"
+                    raise TypeError(msg)
+                r0 = cast("float", np.mean(bounds))
             else:
-                raise ValueError('must specify bounds with r0="mean"')
+                msg = 'must specify bounds with r0="mean"'
+                raise ValueError(msg)
 
         return minimize_phi(self.phi, r0=r0, bounds=bounds, **kws)
 
@@ -277,7 +275,6 @@ class PhiAbstract:
 
         call :meth:`minimize`
         """
-
         r_min, phi_min, _ = self.minimize(r0=r0, bounds=bounds, **kws)
         return self.new_like(r_min=r_min, phi_min=phi_min)
 
@@ -294,11 +291,13 @@ class PhiAbstract:
         Returns
         -------
         nf : :class:`analphipy.norofrenkel.NoroFrenkelPair`
+
         """
         if self.r_min is None:
-            raise ValueError("must set `self.r_min` to use NoroFrenkel")
+            msg = "must set `self.r_min` to use NoroFrenkel"
+            raise ValueError(msg)
 
-        for k in ["phi", "segments", "r_min", "phi_min"]:
+        for k in ("phi", "segments", "r_min", "phi_min"):
             if k not in kws:
                 kws[k] = getattr(self, k)
 
@@ -317,9 +316,9 @@ class PhiAbstract:
         Returns
         -------
         nf : :class:`analphipy.measures.Measures`
-        """
 
-        for k in ["phi", "segments"]:
+        """
+        for k in ("phi", "segments"):
             if k not in kws:
                 kws[k] = getattr(self, k)
 
@@ -369,20 +368,21 @@ class PhiCutBase(PhiAbstract):
     #: Position to cut the potential
     rcut: float = field(converter=float)
     #: Integration limits
-    segments: Sequence[  # pyright: ignore[reportIncompatibleVariableOverride]
-        float
-    ] = private_field()
+    segments: Sequence[float] = field(init=False, repr=False)  # pyright: ignore[reportGeneralTypeIssues, reportIncompatibleVariableOverride]
 
     def __attrs_post_init__(self) -> None:
-        if self.phi_base.segments is None:  # pyright: ignore
-            raise ValueError("must specify segments")  # pragma: no cover
+        if self.phi_base.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
+            msg = "must specify segments"
+            raise ValueError(msg)  # pragma: no cover
         self._immutable_setattrs(
-            segments=tuple(x for x in self.phi_base.segments if x < self.rcut)
-            + (self.rcut,)
+            segments=(
+                *tuple(x for x in self.phi_base.segments if x < self.rcut),
+                self.rcut,
+            )
         )
 
     @docfiller_phiabstract()
-    def phi(self, r: Float_or_ArrayLike) -> Array:
+    def phi(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         v = np.empty_like(r)
 
@@ -396,7 +396,7 @@ class PhiCutBase(PhiAbstract):
         return v
 
     @docfiller_phiabstract()
-    def dphidr(self, r: Float_or_ArrayLike) -> Array:
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         dvdr = np.empty_like(r)
 
@@ -435,9 +435,10 @@ class PhiCut(PhiCutBase):
         Potential class to perform cut on.
     rcut : float
         Where to 'cut' the potential.
+
     """
 
-    _vcut: float = private_field()
+    _vcut: float = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
@@ -467,8 +468,8 @@ class PhiLFS(PhiCutBase):
             \end{{cases}}
     """
 
-    _vcut: float = private_field()
-    _dvdrcut: float = private_field()
+    _vcut: float = field(init=False, repr=False)
+    _dvdrcut: float = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
@@ -477,8 +478,7 @@ class PhiLFS(PhiCutBase):
         )
 
     def _vcorrect(self, r: Array) -> Array:
-        out = -(self._vcut + self._dvdrcut * (r - self.rcut))
-        return out
+        return -(self._vcut + self._dvdrcut * (r - self.rcut))
 
     def _dvdrcorrect(self, r: Array) -> Array:
         out = -self._dvdrcut

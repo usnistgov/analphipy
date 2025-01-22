@@ -1,12 +1,18 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=missing-class-docstring,duplicate-code
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Iterable, Any
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
+from typing_extensions import Self
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+rng = np.random.default_rng()
 
 
 def phidphi_lj(r, sig=1.0, eps=1.0):
@@ -45,7 +51,7 @@ def phidphi_lj_cut(r, rcut, sig=1.0, eps=1.0):
 
     if np.any(m):
         v, dv = phidphi_lj(r[m], sig=sig, eps=eps)
-        vcut, dvcut = phidphi_lj(rcut, sig=sig, eps=eps)
+        vcut, _dvcut = phidphi_lj(rcut, sig=sig, eps=eps)
 
         phi[m] = v - vcut
         dphi[m] = dv
@@ -53,7 +59,7 @@ def phidphi_lj_cut(r, rcut, sig=1.0, eps=1.0):
     return phi, dphi
 
 
-def phidphi_lj_lfs(r, rcut, sig=1.0, eps=1):
+def phidphi_lj_lfs(r, rcut, sig=1.0, eps=1.0):
     r = np.array(r)
     phi = np.empty_like(r)
     dphi = np.empty_like(r)
@@ -93,8 +99,8 @@ def phidphi_nm(r, n, m, sig=1.0, eps=1.0):
 
 
 def get_r(rmin, rmax, n=100):
-    rmin = np.random.rand() * 0.1 + rmin
-    rmax = np.random.rand() * 0.1 + rmax
+    rmin += rng.random() * 0.1
+    rmax += rng.random() * 0.1
 
     return np.linspace(rmin, rmax, n)
 
@@ -104,32 +110,31 @@ def kws_to_ld(**kws: Iterable[Any]) -> list[dict[str, Any]]:
 
 
 @dataclass
-class Base_params:
+class BaseParams:
     def __post_init__(self):
         self.r = None
 
-    def phidphi(self, r):
+    def phidphi(self, r) -> None:
         raise NotImplementedError
 
     def get_phidphi(self):
         if hasattr(self, "phidphi"):
             return self.phidphi(self.r)
-        else:
-            raise NotImplementedError
+        raise NotImplementedError
 
     def phi(self, r):
-        return self.phidphi(r)[0]
+        return self.phidphi(r)[0]  # type: ignore[func-returns-value]
 
     def get_phi(self):
         return self.phi(self.r)
 
     @classmethod
-    def get_params(cls, N):
+    def get_params(cls, nsamp) -> None:
         raise NotImplementedError
 
     @classmethod
-    def get_objects(cls, N=10) -> Iterable[Self]:
-        for params in cls.get_params(N=N):
+    def get_objects(cls, nsamp=10) -> Iterable[Self]:
+        for params in cls.get_params(nsamp=nsamp):  # type: ignore[attr-defined]
             yield cls(**params)
 
     def asdict(self):
@@ -137,7 +142,7 @@ class Base_params:
 
 
 @dataclass
-class LJ_params(Base_params):
+class LJParams(BaseParams):
     sig: float
     eps: float
 
@@ -148,15 +153,15 @@ class LJ_params(Base_params):
         return phidphi_lj(r, sig=self.sig, eps=self.eps)
 
     @classmethod
-    def get_params(cls, N=10):
+    def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(N) * 4,
-            eps=np.random.rand(N),
+            sig=rng.random(nsamp) * 4,
+            eps=rng.random(nsamp),
         )
 
 
 @dataclass
-class LJ_cut_params(LJ_params):
+class LJCutParams(LJParams):
     rcut: float
 
     def __post_init__(self):
@@ -166,37 +171,37 @@ class LJ_cut_params(LJ_params):
         return phidphi_lj_cut(r, sig=self.sig, eps=self.eps, rcut=self.rcut)
 
     @classmethod
-    def get_params(cls, N=10):
+    def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(N),
-            eps=np.random.rand(N),
-            rcut=np.random.rand(N) + 3.0,
+            sig=rng.random(nsamp),
+            eps=rng.random(nsamp),
+            rcut=rng.random(nsamp) + 3.0,
         )
 
 
 @dataclass
-class LJ_lfs_params(LJ_cut_params):
+class LJLFSParams(LJCutParams):
     def phidphi(self, r):
         return phidphi_lj_lfs(r, sig=self.sig, eps=self.eps, rcut=self.rcut)
 
 
-@pytest.fixture(params=LJ_params.get_objects(), scope="module")
+@pytest.fixture(params=LJParams.get_objects(), scope="module")
 def lj_params(request):
     return request.param
 
 
-@pytest.fixture(params=LJ_cut_params.get_objects(), scope="module")
+@pytest.fixture(params=LJCutParams.get_objects(), scope="module")
 def lj_cut_params(request):
     return request.param
 
 
-@pytest.fixture(params=LJ_lfs_params.get_objects(), scope="module")
+@pytest.fixture(params=LJLFSParams.get_objects(), scope="module")
 def lj_lfs_params(request):
     return request.param
 
 
 @dataclass
-class NM_params(LJ_params):
+class NMParams(LJParams):
     n: int
     m: int
 
@@ -204,17 +209,17 @@ class NM_params(LJ_params):
         return phidphi_nm(r, n=self.n, m=self.m, sig=self.sig, eps=self.eps)
 
     @classmethod
-    def get_params(cls, N=None):
+    def get_params(cls, nsamp=None):
         n = [8, 10, 12, 18]
         m = [6, 7, 6, 9]
 
-        if N is None:
-            N = len(n)
+        if nsamp is None:
+            nsamp = len(n)
 
-        return kws_to_ld(sig=np.random.rand(N), eps=np.random.rand(N), n=n, m=m)
+        return kws_to_ld(sig=rng.random(nsamp), eps=rng.random(nsamp), n=n, m=m)
 
 
-@pytest.fixture(params=NM_params.get_objects(), scope="module")
+@pytest.fixture(params=NMParams.get_objects(), scope="module")
 def nm_params(request):
     return request.param
 
@@ -244,22 +249,22 @@ def phi_sw(r, sig=1.0, eps=-1.0, lam=1.5):
 
 
 @dataclass
-class SW_params(LJ_params):
+class SWParams(LJParams):
     lam: float
 
     def phi(self, r):
         return phi_sw(r, sig=self.sig, eps=self.eps, lam=self.lam)
 
     @classmethod
-    def get_params(cls, N=10):
+    def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(N),
-            eps=(np.random.rand(N) - 0.5) * 2.0,
-            lam=np.random.rand(N) + 1.0,
+            sig=rng.random(nsamp),
+            eps=(rng.random(nsamp) - 0.5) * 2.0,
+            lam=rng.random(nsamp) + 1.0,
         )
 
 
-@pytest.fixture(params=SW_params.get_objects(), scope="module")
+@pytest.fixture(params=SWParams.get_objects(), scope="module")
 def sw_params(request):
     return request.param
 
@@ -277,22 +282,22 @@ def phi_yk(r, z, sig=1.0, eps=1.0):
 
 
 @dataclass
-class YK_params(LJ_params):
+class YKParams(LJParams):
     z: float
 
     def phi(self, r):
         return phi_yk(r, z=self.z, sig=self.sig, eps=self.eps)
 
     @classmethod
-    def get_params(cls, N=10):
+    def get_params(cls, nsamp=10):
         return kws_to_ld(
-            sig=np.random.rand(N),
-            eps=(np.random.rand(N) - 0.5) * 2.0,
-            z=np.random.rand(N) * 4,
+            sig=rng.random(nsamp),
+            eps=(rng.random(nsamp) - 0.5) * 2.0,
+            z=rng.random(nsamp) * 4,
         )
 
 
-@pytest.fixture(params=YK_params.get_objects(), scope="module")
+@pytest.fixture(params=YKParams.get_objects(), scope="module")
 def yk_params(request):
     return request.param
 
@@ -310,20 +315,20 @@ def phi_hs(r, sig=1.0):
 
 
 @dataclass
-class HS_params(Base_params):
+class HSParams(BaseParams):  # pylint: disable=abstract-method
     sig: float
 
     def __post_init__(self):
         self.r = get_r(rmin=0.1 * self.sig, rmax=2 * self.sig, n=100)
 
-    def phi(self, r):
+    def phi(self, r):  # noqa: ARG002
         return phi_hs(self.r, sig=self.sig)
 
     @classmethod
-    def get_params(cls, N=10):
-        return kws_to_ld(sig=np.random.rand(N))
+    def get_params(cls, nsamp=10):
+        return kws_to_ld(sig=rng.random(nsamp))
 
 
-@pytest.fixture(params=HS_params.get_objects(), scope="module")
+@pytest.fixture(params=HSParams.get_objects(), scope="module")
 def hs_params(request):
     return request.param

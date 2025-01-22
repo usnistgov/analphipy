@@ -1,14 +1,14 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=duplicate-code
 import numpy as np
-
-from analphipy import potential as pots
-
-from analphipy.base_potential import PhiAbstract
-
 import pytest
 
+from analphipy import potential as pots
+from analphipy.base_potential import PhiAbstract
 
-def test_asdict():
+
+def test_asdict() -> None:
+    # pylint: disable=redefined-variable-type
     p_lj = pots.LennardJones(sig=1.5, eps=1.5)
 
     p = p_lj
@@ -31,7 +31,7 @@ def test_asdict():
 
     from analphipy.base_potential import PhiCutBase
 
-    p = PhiCutBase(p_lj, rcut=2.5)  # type: ignore
+    p = PhiCutBase(p_lj, rcut=2.5)  # type: ignore[assignment]
 
     with pytest.raises(NotImplementedError):
         p.phi(1.0)
@@ -42,13 +42,13 @@ def test_asdict():
     p_lj = pots.LennardJones()
 
     p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(1.1, bounds=(0.5, 1.5))
-    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore[arg-type]
 
     p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(1.1, bounds="segments")
-    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore[arg-type]
 
     p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(r0="mean", bounds=(0.5, 1.5))
-    np.testing.assert_allclose(p_lfs.r_min, 1.123148919, atol=1e-5)  # type: ignore
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919, atol=1e-5)  # type: ignore[arg-type]
 
     with pytest.raises(ValueError):
         p_lj.lfs(rcut=2.5).assign_min_numeric(r0="mean", bounds=None)
@@ -57,14 +57,11 @@ def test_asdict():
         p_lj.lfs(rcut=2.5).to_nf()
 
 
-def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
+def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True) -> None:
     if kws is None:
         kws = params.asdict()
 
-    if cut or lfs:
-        rcut = kws.pop("rcut")
-    else:
-        rcut = None
+    rcut = kws.pop("rcut") if cut or lfs else None
 
     p = factory(**kws)
 
@@ -88,23 +85,23 @@ def _do_test(params, factory, kws=None, cut=False, lfs=False, phidphi=True):
     np.testing.assert_allclose(phi0, phi1)
 
 
-def test_lj(lj_params):
+def test_lj(lj_params) -> None:
     _do_test(lj_params, pots.LennardJones)
 
 
-def test_lj_cut(lj_cut_params):
+def test_lj_cut(lj_cut_params) -> None:
     _do_test(lj_cut_params, pots.LennardJones, cut=True)
 
 
-def test_lj_lfs(lj_lfs_params):
+def test_lj_lfs(lj_lfs_params) -> None:
     _do_test(lj_lfs_params, pots.LennardJones, lfs=True)
 
 
-def test_nm(nm_params):
+def test_nm(nm_params) -> None:
     _do_test(nm_params, pots.LennardJonesNM)
 
 
-def test_nm_cut(lj_cut_params):
+def test_nm_cut(lj_cut_params) -> None:
     params = lj_cut_params
 
     phi0, dphi0 = params.get_phidphi()
@@ -120,7 +117,7 @@ def test_nm_cut(lj_cut_params):
     np.testing.assert_allclose(dphi0, dphi1)
 
 
-def test_nm_lfs(lj_lfs_params):
+def test_nm_lfs(lj_lfs_params) -> None:
     params = lj_lfs_params
 
     phi0, dphi0 = params.get_phidphi()
@@ -136,13 +133,13 @@ def test_nm_lfs(lj_lfs_params):
     np.testing.assert_allclose(dphi0, dphi1)
 
 
-def test_sw(sw_params):
+def test_sw(sw_params) -> None:
     _do_test(sw_params, pots.SquareWell, phidphi=False)
 
 
-def test_yk(yk_params):
+def test_yk(yk_params) -> None:
     _do_test(yk_params, pots.Yukawa, kws=yk_params.asdict(), phidphi=False)
 
 
-def test_hs(hs_params):
+def test_hs(hs_params) -> None:
     _do_test(hs_params, pots.HardSphere, phidphi=False)

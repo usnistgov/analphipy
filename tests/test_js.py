@@ -1,5 +1,7 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
+# pylint: disable=unnecessary-lambda-assignment
 """Simple tests for js divergence..."""
+
 import numpy as np
 import pytest
 
@@ -9,7 +11,7 @@ from analphipy.measures import diverg_js_cont
 
 @pytest.mark.parametrize("beta", [0.5, 1.0, 2.0])
 @pytest.mark.parametrize("beta_other", [0.5, 1.0])
-def test_boltz_js_lj(beta, beta_other):
+def test_boltz_js_lj(beta, beta_other) -> None:
     p0 = analphipy.potential.LennardJones(sig=1.0, eps=1.0)
     p1 = analphipy.potential.LennardJonesNM(n=14, m=7, sig=1.0, eps=1)
 
@@ -22,4 +24,4 @@ def test_boltz_js_lj(beta, beta_other):
         f0, f1, segments=p0.segments, segments_q=p1.segments, volume="3d"
     )
 
-    np.testing.assert_allclose(v0, v1)  # type: ignore
+    np.testing.assert_allclose(v0, v1)  # type: ignore[arg-type]
