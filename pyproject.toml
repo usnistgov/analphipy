@@ -40,7 +40,7 @@ dynamic = [
 dependencies = [
     "attrs",
     "docstring-inheritance",
-    "module-utilities>=0.6",
+    "module-utilities>=0.10.1",
     "numpy",
     "scipy",
     "typing-extensions; python_version<'3.11'",

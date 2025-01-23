@@ -13,7 +13,7 @@ dependencies:
   - python=3.9
   - attrs
   - docstring-inheritance
-  - module-utilities>=0.6
+  - module-utilities>=0.10.1
   - numpy
   - pandas
   - pytest
