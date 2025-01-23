@@ -7,10 +7,11 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
-from typing_extensions import Self
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
+
+    from analphipy._typing_compat import Self
 
 rng = np.random.default_rng()
 
