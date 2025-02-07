@@ -17,9 +17,10 @@ from .base_potential import PhiAbstract, PhiBase
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
-    from typing import Any, Literal, TypeVar
+    from typing import Any, Literal
 
     from ._typing import Array, ArrayLike, Float_or_ArrayLike, Phi_Signature
+    from ._typing_compat import Self
 
 
 docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
@@ -383,10 +384,6 @@ def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None
         raise ValueError(msg)
 
 
-if TYPE_CHECKING:
-    T_CubicTable = TypeVar("T_CubicTable", bound="CubicTable")
-
-
 @attrs.define(frozen=True)
 @docfiller.decorate
 class CubicTable(PhiBase):
@@ -444,13 +441,13 @@ class CubicTable(PhiBase):
 
     @classmethod
     def from_phi(
-        cls: type[T_CubicTable],
+        cls,
         phi: Phi_Signature,
         rmin: float,
         rmax: float,
         ds: float,
         **kws: Any,
-    ) -> T_CubicTable:
+    ) -> Self:
         """
         Create object from callable pair potential function.
 

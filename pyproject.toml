@@ -12,8 +12,8 @@ description = "Utilities to perform stat mech analysis of pair potentials"
 keywords = [
     "analphipy",
 ]
-license = { text = "NIST-PD" }
-license-files = { paths = [ "LICENSE" ] }
+license = "NIST-PD"
+license-files = [ "LICENSE" ]
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
@@ -345,9 +345,9 @@ module = [
     "matplotlib.*",
 ]
 
-[[tool.mypy.overrides]]
-ignore_errors = true
-module = [  ]
+# [[tool.mypy.overrides]]
+# ignore_errors = true
+# module = [  ]
 
 [tool.pyright]
 include = [
@@ -429,7 +429,6 @@ reqs = [
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
     "pre-commit",
-    "pyproject2conda>=0.18.0",
     "pyright>=1.1.392",
     "scriv",
     "twine>=5.0.0",
