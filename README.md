@@ -1,10 +1,13 @@
 <!-- markdownlint-disable MD041 -->
 
-[![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
+<!-- prettier-ignore-start -->
+[![Repo][repo-badge]][repo-link]
+[![Docs][docs-badge]][docs-link]
 [![PyPI license][license-badge]][license-link]
 [![PyPI version][pypi-badge]][pypi-link]
 [![Conda (channel only)][conda-badge]][conda-link]
-[![Code style: black][black-badge]][black-link]
+[![Code style: ruff][ruff-badge]][ruff-link]
+[![uv][uv-badge]][uv-link]
 
 <!-- For more badges, see
   https://shields.io/category/other
@@ -12,9 +15,10 @@
   [pypi-badge]: https://badge.fury.io/py/analphipy
 -->
 
-<!-- prettier-ignore-start -->
-[black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
-[black-link]: https://github.com/psf/black
+[ruff-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+[ruff-link]: https://github.com/astral-sh/ruff
+[uv-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json
+[uv-link]: https://github.com/astral-sh/uv
 [pypi-badge]: https://img.shields.io/pypi/v/analphipy
 [pypi-link]: https://pypi.org/project/analphipy
 [docs-badge]: https://img.shields.io/badge/docs-sphinx-informational
@@ -23,16 +27,15 @@
 [repo-link]: https://github.com/usnistgov/analphipy
 [conda-badge]: https://img.shields.io/conda/v/conda-forge/analphipy
 [conda-link]: https://anaconda.org/conda-forge/analphipy
-[license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
+[license-badge]: https://img.shields.io/pypi/l/analphipy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
-<!-- prettier-ignore-end -->
 
 <!-- other links -->
 
-[jensen-shannon]:
-  https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
-[noro-frenkel]:
-  https://en.wikipedia.org/wiki/Noro%E2%80%93Frenkel_law_of_corresponding_states
+[jensen-shannon]: https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
+[noro-frenkel]: https://en.wikipedia.org/wiki/Noro%E2%80%93Frenkel_law_of_corresponding_states
+
+<!-- prettier-ignore-end -->
 
 # `analphipy`
 
@@ -57,20 +60,6 @@ creation. Several routines to calculate metrics are included in the package.
 This package is actively used by the author. Please feel free to create a pull
 request for wanted features and suggestions!
 
-## Quick start
-
-Use one of the following to install `analphipy`
-
-```bash
-pip install analphipy
-```
-
-or
-
-```bash
-conda install -c conda-forge analphipy
-```
-
 ## Example usage
 
 ```pycon
@@ -94,6 +83,24 @@ conda install -c conda-forge analphipy
 ```
 
 <!-- end-docs -->
+
+## Installation
+
+<!-- start-installation -->
+
+Use one of the following to install `analphipy`
+
+```bash
+pip install analphipy
+```
+
+or
+
+```bash
+conda install -c conda-forge analphipy
+```
+
+<!-- end-installation -->
 
 ## Documentation
 

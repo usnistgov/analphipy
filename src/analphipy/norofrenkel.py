@@ -43,7 +43,7 @@ if TYPE_CHECKING:
     from ._typing_compat import Self
 
 # Workaround to document module level docstring
-__doc__ = __doc__.format(**docfiller.data)  # noqa: A001  # pyright: ignore[reportOptionalMemberAccess]
+__doc__ = __doc__.format(**docfiller.data)  # pyright: ignore[reportOptionalMemberAccess]  # ty: ignore[possibly-unbound-attribute]
 
 __all__ = [
     "NoroFrenkelPair",
@@ -340,7 +340,7 @@ class NoroFrenkelPair:
         phi: Phi_Signature,
         segments: ArrayLike,
         r_min: float | None = None,
-        bounds: ArrayLike | None = None,
+        bounds: Sequence[float] | None = None,
         quad_kws: Mapping[str, Any] | None = None,
         **kws: Any,
     ) -> Self:
@@ -386,7 +386,7 @@ class NoroFrenkelPair:
         cls,
         phi: PhiAbstract,
         r_min: float | None = None,
-        bounds: tuple[float, float] | None = None,
+        bounds: Sequence[float] | None = None,
         quad_kws: dict[str, Any] | None = None,
         **kws: Any,
     ) -> Self:
@@ -412,7 +412,7 @@ class NoroFrenkelPair:
 
         """
         if phi.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
-            msg = "need phi.segments to be set"
+            msg = "need phi.segments to be set"  # type: ignore[unreachable]
             raise ValueError(msg)
 
         if phi.r_min is not None and phi.phi_min is not None:
@@ -448,7 +448,7 @@ class NoroFrenkelPair:
 
     @cached.prop
     def _segments_rep(self) -> list[float]:
-        return [x for x in self.segments if x < self.r_min] + [self.r_min]
+        return [float(x) for x in self.segments if x < self.r_min] + [self.r_min]
 
     @cached.meth
     @add_quad_kws

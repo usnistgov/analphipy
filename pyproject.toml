@@ -17,15 +17,13 @@ license-files = [ "LICENSE" ]
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
-    "License :: Public Domain",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -54,71 +52,64 @@ urls.Homepage = "https://github.com/usnistgov/analphipy"
 
 [dependency-groups]
 dev = [
-    { include-group = "dev-extras" },
     { include-group = "mypy" },
-    { include-group = "nbval" },
+    { include-group = "notebook" },
+    { include-group = "nox" },
     { include-group = "optional" },
+    { include-group = "pytest-accept" },
     { include-group = "test" },
-    { include-group = "typing" },
-    { include-group = "uvxrun" },
+    { include-group = "test-notebook" },
+    { include-group = "typecheck" },
 ]
 test = [
-    { include-group = "test-extras" },
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+    { include-group = "pandas" },
+    { include-group = "pytest" },
 ]
 docs = [
     "autodocsumm",
-    "myst-nb; python_version>'3.9'",
-    "pyenchant",
+    "myst-nb",
     "sphinx>=5.3.0",
     "sphinx-book-theme",
     "sphinx-copybutton",
-    "sphinxcontrib-spelling",
     { include-group = "optional" },
 ]
-cog = [ "cogapp" ]
-dev-extras = [
-    "ipykernel",
-    "ipython",
-    "nbclient>=0.10.0",
-    "nox>=2024.4.15",
-    "pandas",
-    "pytest-accept",
-]
+# other packages/tools
+ipython = [ "ipython" ]
+mypy = [ "mypy>=1.15.0", "orjson" ]
+notebook = [ "ipykernel", "nbclient" ]
+nox = [ "nox>=2025.5.1" ]
+pandas = [ "pandas" ]
+pylint = [ "pylint" ]
+pytest = [ "pytest" ]
+pytest-accept = [ "pytest-accept" ]
+# other environments
+optional = [ "analphipy[viz]" ]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
 ]
-mypy = [ "mypy>=1.14.0" ]
-nbval = [ "nbval" ]
-optional = [
-    "analphipy[viz]",
+docs-spelling = [
+    "pyenchant",
+    "sphinxcontrib-spelling",
+    { include-group = "docs" },
 ]
 test-extras = [
-    "pandas",
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
+    { include-group = "test" },
 ]
 test-notebook = [
-    { include-group = "nbval" },
+    "nbval",
     { include-group = "optional" },
-    { include-group = "test-extras" },
+    { include-group = "test" },
 ]
-tools = [
-    "pre-commit",
-    "scriv",
-]
-typing = [
-    "pandas",
+typecheck = [
     "pandas-stubs",
-    "pylint",
-    "pytest",
-    { include-group = "uvxrun" },
+    { include-group = "pandas" },
+    { include-group = "pylint" },
+    { include-group = "pytest" },
 ]
-# Anything needed to run tools/uvxrun.py
-# NOTE: uvxrun-tools defined explicitly in tool.pyproject2conda.envs.uvxrun-tools
-uvxrun = [ "packaging" ]
 
 [tool.hatch.version]
 source = "vcs"
@@ -137,6 +128,15 @@ fragments = [
     { path = "LICENSE" },
 ]
 
+[tool.repo-review]
+ignore = [
+    "GH",    # enable for actions
+    "PC140", # do this externally
+    "PC170", # pygrep
+    "PC901", # ci message
+    "RTD",
+]
+
 [tool.check-wheel-contents]
 toplevel = [ "analphipy" ]
 src_dir = [ "src" ]
@@ -148,6 +148,9 @@ src_dir = [ "src" ]
 
 [tool.pytest.ini_options]
 addopts = [
+    "-ra",
+    "--strict-config",
+    "--strict-markers",
     "--doctest-modules",
     "--doctest-glob=*.md",
     "--pyargs",
@@ -158,6 +161,10 @@ testpaths = [
     "tests",
     "README.md",
 ]
+minversion = "8"
+log_cli_level = "INFO"
+xfail_strict = true
+filterwarnings = [ "error" ]
 
 [tool.coverage.run]
 branch = true
@@ -182,17 +189,17 @@ source = [
     ".nox/**/site-packages/",
 ]
 
-# * Typing ---------------------------------------------------------------------
+# * typecheck ---------------------------------------------------------------------
 
 [tool.mypy]
 files = [
     "src",
     "tests",
 ]
-show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
+warn_unreachable = true
 exclude = [
     ".eggs",
     ".tox",
@@ -203,6 +210,11 @@ exclude = [
 ]
 check_untyped_defs = true
 strict = true
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
@@ -267,9 +279,10 @@ inputs = [
 # * Dependency creation --------------------------------------------------------
 
 [tool.pyproject2conda]
-user_config = "config/userconfig.toml"
-template_python = "requirements/py{py}-{env}"
+user-config = "config/userconfig.toml"
+template-python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
+name = "py{py}-{env}"
 python = "default"
 channels = "conda-forge"
 style = "yaml"
@@ -288,21 +301,28 @@ python = "all"
 [tool.pyproject2conda.envs.test-extras]
 groups = "test-extras"
 python = "all"
-skip_package = true
+skip-package = true
 
-[tool.pyproject2conda.envs.uvxrun-tools]
+[tool.pyproject2conda.envs.uvx-tools]
 reqs = [
-    # these used solely for specking tools to be used with tools/uvxrun.py
+    # these used solely for specking tools to be used with uvx ...
     "conda-lock>=2.5.5",
+    "cruft",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pre-commit",
-    "pyright>=1.1.392",
+    "pre-commit>=4.0.0",
+    "pre-commit-uv",
+    "pyrefly",
+    "pyright>=1.1.396",
     "scriv",
     "twine>=5.0.0",
+    "ty",
 ]
-groups = "mypy"
-skip_package = true
+groups = [
+    "mypy",
+    "nox",
+]
+skip-package = true
 style = "requirements"
 
 # * uv -------------------------------------------------------------------------
@@ -311,10 +331,22 @@ style = "requirements"
 managed = true
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
-required-version = ">=0.5.21"
+required-version = ">=0.7.15"
 
 [tool.uv.pip]
 annotation-style = "line"
+generate-hashes = true
+
+[tool.uv.dependency-groups]
+dev.requires-python = ">=3.12"
+docs.requires-python = ">=3.12"
+docs-live.requires-python = ">=3.12"
+docs-spelling.requires-python = ">=3.12"
+# other tools
+ipython.requires-python = ">=3.12"
+mypy.requires-python = ">=3.12"
+notebook.requires-python = ">=3.12"
+nox.requires-python = ">=3.12"
 
 # * Other tools ----------------------------------------------------------------
 

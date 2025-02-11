@@ -437,7 +437,7 @@ class CubicTable(PhiBase):
         )
 
         if self.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
-            self._immutable_setattrs(segments=tuple(np.sqrt(x) for x in self.bounds))
+            self._immutable_setattrs(segments=tuple(np.sqrt(x) for x in self.bounds))  # type: ignore[unreachable]
 
     @classmethod
     def from_phi(

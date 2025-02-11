@@ -13,7 +13,7 @@ import numpy as np
 from ._docstrings import docfiller
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable, Mapping
+    from collections.abc import Callable, Iterable, Mapping, Sequence
     from typing import Any, Protocol, TypeVar
 
     from ._typing import ArrayLike, OptimizeResultInterface, P, QuadSegments, R
@@ -149,7 +149,10 @@ def quad_segments(
 
 
 def minimize_phi(
-    phi: Callable[..., Any], r0: float, bounds: ArrayLike | None = None, **kws: Any
+    phi: Callable[..., Any],
+    r0: float,
+    bounds: Sequence[float] | None = None,
+    **kws: Any,
 ) -> tuple[float, float, OptimizeResultInterface | None]:
     """
     Find value of ``r`` which minimized ``phi``.

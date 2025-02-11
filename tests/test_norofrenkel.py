@@ -79,7 +79,7 @@ def test_nf_lj() -> None:
 
 def test_nf_nm() -> None:
     cols = ["sig", "eps", "lam", "B2"]
-    table = (
+    table: pd.DataFrame = (  # pyright: ignore[reportAssignmentType]
         pd.read_csv(data / "eff_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
@@ -106,7 +106,7 @@ def test_nf_nm() -> None:
 def test_nf_yk() -> None:
     cols = ["sig", "eps", "lam", "B2"]
 
-    table = (
+    table: pd.DataFrame = (  # pyright: ignore[reportAssignmentType]
         pd.read_csv(data / "eff_yukawa_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()

@@ -17,7 +17,7 @@ nsamp = 20
 
 
 def test_B2_sw() -> None:
-    table = (
+    table: pd.DataFrame = (  # pyright: ignore[reportAssignmentType]
         pd.read_csv(data / "vir_sw_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
@@ -52,7 +52,7 @@ def test_B2_lj() -> None:
 
 
 def test_B2_nm() -> None:
-    table = (
+    table: pd.DataFrame = (  # pyright: ignore[reportAssignmentType]
         pd.read_csv(data / "vir_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
@@ -76,7 +76,7 @@ def test_B2_nm() -> None:
 
 
 def test_B2_yk() -> None:
-    table = (
+    table: pd.DataFrame = (  # pyright: ignore[reportAssignmentType]
         pd.read_csv(data / "vir_yukawa_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()

@@ -45,28 +45,17 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
-    # "IPython.sphinxext.ipython_directive",
-    # "IPython.sphinxext.ipython_console_highlighting",
-    # "nbsphinx",
-    # - easier external links
-    # "sphinx.ext.extlinks",
-    # - view source code on created page
-    # "sphinx.ext.viewcode",
-    # - view source code on github
     "sphinx.ext.linkcode",
-    # - add copy button
     "sphinx_copybutton",
-    # - redirect stuff?
-    # "sphinxext.rediraffe",
-    # - pretty things up?
-    # "sphinx_design"
-    # - myst stuff
     "myst_nb",
-    # "myst_parser",
 ]
 
-nitpicky = True
 autosectionlabel_prefix_document = True
+nitpicky = True
+suppress_warnings = ["autosectionlabel.*"]
+nitpick_ignore = [
+    # ("py:class", "Command"),
+]
 
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
@@ -264,7 +253,7 @@ release = version = _get_version()
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -417,15 +406,8 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
     "numpy": ("https://numpy.org/doc/stable", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
-    "numba": ("https://numba.readthedocs.io/en/stable/", None),
-    "matplotlib": ("https://matplotlib.org/stable/", None),
-    "dask": ("https://docs.dask.org/en/latest", None),
-    "cftime": ("https://unidata.github.io/cftime", None),
-    "sparse": ("https://sparse.pydata.org/en/latest/", None),
-    "xarray": ("https://docs.xarray.dev/en/stable/", None),
 }
 
 linkcheck_ignore = ["https://doi.org/"]

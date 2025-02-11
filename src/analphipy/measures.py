@@ -250,7 +250,7 @@ def _check_volume_func(
         raise ValueError(msg)
 
     if not callable(volume):
-        msg = "volume should be str or callable"
+        msg = "volume should be str or callable"  # type: ignore[unreachable]
         raise TypeError(msg)
 
     return volume
@@ -523,7 +523,10 @@ class Measures:
             return cast("Array", np.exp(-beta * self.phi(x)))
 
         def q_func(x: Float_or_Array) -> Array:
-            return cast("Array", np.exp(-beta_other * other.phi(x)))
+            return cast(
+                "Array",
+                np.exp(-beta_other * other.phi(x)),  # ty: ignore[unsupported-operator]
+            )
 
         return diverg_js_cont(
             p=p_func,
@@ -584,7 +587,10 @@ class Measures:
             return out
 
         def q_func(x: Float_or_Array) -> Array:
-            out: Array = np.exp(-beta_other * other.phi(x)) - 1.0
+            out: Array = (
+                np.exp(-beta_other * other.phi(x))  # ty: ignore[unsupported-operator]
+                - 1.0
+            )
             return out
 
         return diverg_js_cont(

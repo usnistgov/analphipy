@@ -7,19 +7,30 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
+name: py313-dev
 channels:
   - conda-forge
 dependencies:
-  - python=3.8
+  - python=3.13
   - attrs
   - docstring-inheritance
+  - ipykernel
+  - matplotlib
   - module-utilities>=0.10.1
+  - mypy>=1.15.0
+  - nbclient
+  - nbval
+  - nox>=2025.5.1
   - numpy
+  - orjson
   - pandas
+  - pandas-stubs
+  - pylint
   - pytest
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
   - scipy
-  - typing-extensions
   - pip
+  - pip:
+      - pytest-accept

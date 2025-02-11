@@ -48,19 +48,19 @@ class PhiAbstract:
     # pylint: disable=redundant-returns-doc,no-self-use
 
     #: Position of minimum in :math:`\phi(r)`
-    r_min: float | None = attrs.field(
+    r_min: float | None = attrs.field(  # pyright: ignore[reportUnknownVariableType]
         default=None,
         converter=attrs.converters.optional(float),
         repr=field_formatter(),
     )
 
     #: Value of ``phi`` at minimum.
-    phi_min: float | None = attrs.field(
+    phi_min: float | None = attrs.field(  # pyright: ignore[reportUnknownVariableType]
         default=None, converter=attrs.converters.optional(float), repr=field_formatter()
     )
 
     #: Integration limits
-    segments: Sequence[float] = attrs.field(
+    segments: Sequence[float] = attrs.field(  # pyright: ignore[reportUnknownVariableType]
         default=None,
         converter=attrs.converters.optional(segments_converter),
     )
@@ -212,7 +212,7 @@ class PhiAbstract:
     def minimize(
         self,
         r0: float | Literal["mean"],
-        bounds: tuple[float, float] | Literal["segments"] | None = None,
+        bounds: Sequence[float] | Literal["segments"] | None = None,
         **kws: Any,
     ) -> tuple[float, float, Any]:
         """
@@ -250,7 +250,7 @@ class PhiAbstract:
             if self.segments is not None:  # pyright: ignore[reportUnnecessaryComparison]
                 bounds = (self.segments[0], self.segments[-1])
             else:
-                bounds = None  # pragma: no cover
+                bounds = None  # type: ignore[unreachable] # pragma: no cover
 
         if r0 == "mean":
             if bounds is not None:
@@ -267,7 +267,7 @@ class PhiAbstract:
     def assign_min_numeric(
         self,
         r0: float | Literal["mean"],
-        bounds: tuple[float, float] | Literal["segments"] | None = None,
+        bounds: Sequence[float] | Literal["segments"] | None = None,
         **kws: Any,
     ) -> Self:
         """
@@ -301,7 +301,7 @@ class PhiAbstract:
             if k not in kws:
                 kws[k] = getattr(self, k)
 
-        return NoroFrenkelPair(**kws)
+        return NoroFrenkelPair(**kws)  # ty: ignore[missing-argument]
 
     def to_measures(self, **kws: Any) -> Measures:
         """
@@ -322,7 +322,7 @@ class PhiAbstract:
             if k not in kws:
                 kws[k] = getattr(self, k)
 
-        return Measures(**kws)
+        return Measures(**kws)  # ty: ignore[missing-argument]
 
 
 docfiller_phiabstract = docfiller.factory_inherit_from_parent(PhiAbstract)
@@ -372,7 +372,7 @@ class PhiCutBase(PhiAbstract):
 
     def __attrs_post_init__(self) -> None:
         if self.phi_base.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
-            msg = "must specify segments"
+            msg = "must specify segments"  # type: ignore[unreachable]
             raise ValueError(msg)  # pragma: no cover
         self._immutable_setattrs(
             segments=(

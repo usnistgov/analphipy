@@ -1,5 +1,5 @@
 # need this to pick up requires-python from pyproject.toml
-extend = "./pyproject.toml"
+# extend = "./pyproject.toml"
 extend-include = [
     "*.ipynb",
 ]
@@ -34,37 +34,23 @@ ignore = [
     "D105",    # - Missing magic method docstring
     "D107",    # - Missing docstring in __init__
     "D203",    # - 1 blank line required before class docstring
+    "D205",    # - blank line after summary
     "D212",    # - Multi-line docstring summary should start at the first line
+    "D400",    # - First line should end with a period
+    "D401",    # - First line of docstring should be in imperative mood: "{first_line}"
+    "DOC201",  # - Missing return from documentation
+    "DOC501",  # - Missing raises from documentation
     "E501",    # - line too long - let formatter fix this
     "E731",    # - do not assign a lambda expression, use a def
     "FBT",     # - bools are ok
+    "S404",    # - Want to use subprocess sometimes
+    "S603",    # - subprocess-without-shell-equals-true
+    "S607",    # - start-process-with-partial-path
     "PLC0415", # - import should be at top level (leads to issues with imports in func?)
     "TID252",  # - Allow relative imports
 ]
-# Use extend-ignore for project specific ignores (avoid changing ignore directly)
-extend-ignore = [
-    # "ANN",     # - Annotations (just use mypy/pyright)
-    # "D102",    # - Missing docstring in public method
-    # "D103",    # - Missing docstring in public function
-    # "D202",    # - blank line after docstring
-    "D205", # - blank line after summary
-    "D400", # - First line should end with a period
-    "D401", # - First line of docstring should be in imperative mood: "{first_line}"
-    # "D415",    # - First line should end with a period, question mark, or exclamation point
-    # "D417",    # - Missing argument description in the docstring for {definition}: {name} (bad with docfiller)
-    "DOC201", # - Missing return from documentation
-    "DOC501", # - Missing raises from documentation
-    # "DOC202",  # - Missing return from documentation
-    # "E402",    # - module level import not at top of file
-    # "ERA",     # - eradicate (want to keep some stuff)
-    # "ISC",     # - flake8-implicit-str-concat
-    # "NPY", # - not using numpy?
-    # "SLF001",  # - flake8-self (private access sometimes OK)
-    # "PD", # - not using pandas?
-    # "PLR2004", # - numbers in comparison sometimes ok
-    # "PLR0913", # - complexity sometimes ok
-    # "PLR0917", # - complexity sometimes ok
-]
+# Use extend-ignore for project specific ignores. Prefer lint.extend-per-file-ignores."src/**/*.py" below
+# extend-ignore = [ ]
 # Allow unused variables when underscore-prefixed.
 isort.known-first-party = [
     "analphipy",
@@ -110,17 +96,17 @@ pylint.max-public-methods = 30
     "E302",
     "E402",
 ]
-"**/base_potential.py" = [
+"src/**/base_potential.py" = [
     "ARG002",
     "DOC202",
     "PLR6301",
 ]
-"**/norofrenkel.py" = [
+"src/**/norofrenkel.py" = [
     "N802",
     "N803",
     "N806",
 ]
-"**/potential.py" = [
+"src/**/potential.py" = [
     "D102",
 ]
 "tests/*.py" = [
