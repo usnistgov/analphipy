@@ -31,6 +31,8 @@ def iter_phi_lj(
             p = p_base.cut(rcut=rcut)
         elif tail == "LRC":
             p = p_base
+        else:
+            raise ValueError
 
         a = NoroFrenkelPair.from_phi(
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]

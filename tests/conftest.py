@@ -124,7 +124,7 @@ class BaseParams:
         raise NotImplementedError
 
     def phi(self, r):
-        return self.phidphi(r)[0]  # type: ignore[func-returns-value]
+        return self.phidphi(r)[0]  # type: ignore[func-returns-value]  # pyright: ignore[reportOptionalSubscript]
 
     def get_phi(self):
         return self.phi(self.r)
@@ -135,7 +135,7 @@ class BaseParams:
 
     @classmethod
     def get_objects(cls, nsamp=10) -> Iterable[Self]:
-        for params in cls.get_params(nsamp=nsamp):  # type: ignore[attr-defined]
+        for params in cls.get_params(nsamp=nsamp):  # type: ignore[attr-defined]  # pyright: ignore[reportGeneralTypeIssues]
             yield cls(**params)
 
     def asdict(self):
@@ -150,11 +150,11 @@ class LJParams(BaseParams):
     def __post_init__(self):
         self.r = get_r(rmin=0.1 * self.sig, rmax=5.0 * self.sig, n=100)
 
-    def phidphi(self, r):
+    def phidphi(self, r):  # pyright: ignore[reportIncompatibleMethodOverride]
         return phidphi_lj(r, sig=self.sig, eps=self.eps)
 
     @classmethod
-    def get_params(cls, nsamp=10):
+    def get_params(cls, nsamp=10):  # pyright: ignore[reportIncompatibleMethodOverride]
         return kws_to_ld(
             sig=rng.random(nsamp) * 4,
             eps=rng.random(nsamp),
@@ -326,7 +326,7 @@ class HSParams(BaseParams):  # pylint: disable=abstract-method
         return phi_hs(self.r, sig=self.sig)
 
     @classmethod
-    def get_params(cls, nsamp=10):
+    def get_params(cls, nsamp=10):  # pyright: ignore[reportIncompatibleMethodOverride]
         return kws_to_ld(sig=rng.random(nsamp))
 
 

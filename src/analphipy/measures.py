@@ -250,7 +250,7 @@ def _check_volume_func(
         raise ValueError(msg)
 
     if not callable(volume):
-        msg = "volume should be str or callable"  # type: ignore[unreachable]
+        msg = "volume should be str or callable"  # type: ignore[unreachable]  # pyright: ignore[reportUnreachable]
         raise TypeError(msg)
 
     return volume
