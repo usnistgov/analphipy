@@ -21,9 +21,9 @@ def test_simple() -> None:
 
     n = p.to_nf()
 
-    np.testing.assert_allclose(n.secondvirial(1.0), n.secondvirial_sw(1.0))  # type: ignore[arg-type]
+    np.testing.assert_allclose(n.secondvirial(1.0), n.secondvirial_sw(1.0))  # type: ignore[arg-type]  # pyright: ignore[reportCallIssue,reportArgumentType]
 
-    np.testing.assert_allclose(n.secondvirial(1.0), n.B2_sw(1.0))  # type: ignore[arg-type]
+    np.testing.assert_allclose(n.secondvirial(1.0), n.B2_sw(1.0))  # type: ignore[arg-type]  # pyright: ignore[reportCallIssue,reportArgumentType]
 
     with pytest.raises(ValueError):
         n.lam(beta=1.0, err=True)
@@ -52,7 +52,7 @@ def test_nf_sw() -> None:
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
 
-        out = a.table(g["beta"], props=None)  # type: ignore[arg-type]
+        out = a.table(g["beta"], props=None)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
         for col in cols:
             left = col + "_eff"
@@ -70,7 +70,7 @@ def test_nf_lj() -> None:
     )
 
     for g, a in iter_phi_lj(table, nsamp):
-        out = a.table(g["beta"], cols)  # type: ignore[arg-type]
+        out = a.table(g["beta"], cols)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
         for col in cols:
             left = col + "_eff"
@@ -79,7 +79,7 @@ def test_nf_lj() -> None:
 
 def test_nf_nm() -> None:
     cols = ["sig", "eps", "lam", "B2"]
-    table: pd.DataFrame = (  # pyright: ignore[reportAssignmentType]
+    table: pd.DataFrame = (
         pd.read_csv(data / "eff_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
@@ -96,7 +96,7 @@ def test_nf_nm() -> None:
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]
         )
 
-        out = a.table(g["beta"], cols)  # type: ignore[arg-type]
+        out = a.table(g["beta"], cols)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
         for col in cols:
             left = col + "_eff"
@@ -106,7 +106,7 @@ def test_nf_nm() -> None:
 def test_nf_yk() -> None:
     cols = ["sig", "eps", "lam", "B2"]
 
-    table: pd.DataFrame = (  # pyright: ignore[reportAssignmentType]
+    table: pd.DataFrame = (
         pd.read_csv(data / "eff_yukawa_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
@@ -117,11 +117,11 @@ def test_nf_yk() -> None:
     sig = eps = 1.0
 
     for (z_yukawa), g in table.groupby("z_yukawa"):
-        p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)  # type: ignore[arg-type]
+        p = pots.Yukawa(z=z_yukawa, sig=sig, eps=eps)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
         a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=-1.0)
 
-        out = a.table(g["beta"], cols)  # type: ignore[arg-type]
+        out = a.table(g["beta"], cols)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
         for col in cols:
             left = col + "_eff"

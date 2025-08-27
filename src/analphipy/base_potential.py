@@ -48,19 +48,19 @@ class PhiAbstract:
     # pylint: disable=redundant-returns-doc,no-self-use
 
     #: Position of minimum in :math:`\phi(r)`
-    r_min: float | None = attrs.field(  # pyright: ignore[reportUnknownVariableType]
+    r_min: float | None = attrs.field(
         default=None,
         converter=attrs.converters.optional(float),
         repr=field_formatter(),
     )
 
     #: Value of ``phi`` at minimum.
-    phi_min: float | None = attrs.field(  # pyright: ignore[reportUnknownVariableType]
+    phi_min: float | None = attrs.field(
         default=None, converter=attrs.converters.optional(float), repr=field_formatter()
     )
 
     #: Integration limits
-    segments: Sequence[float] = attrs.field(  # pyright: ignore[reportUnknownVariableType]
+    segments: Sequence[float] = attrs.field(
         default=None,
         converter=attrs.converters.optional(segments_converter),
     )
@@ -254,7 +254,7 @@ class PhiAbstract:
 
         if r0 == "mean":
             if bounds is not None:
-                if not isinstance(bounds, tuple):  # pyright: ignore[reportUnnecessaryIsInstance]
+                if not isinstance(bounds, tuple):
                     msg = "bounds must be a tuple"
                     raise TypeError(msg)
                 r0 = cast("float", np.mean(bounds))
@@ -325,7 +325,7 @@ class PhiAbstract:
         return Measures(**kws)  # ty: ignore[missing-argument]
 
 
-docfiller_phiabstract = docfiller.factory_inherit_from_parent(PhiAbstract)
+_docfiller_phiabstract = docfiller.factory_inherit_from_parent(PhiAbstract)
 
 
 @attrs.define(frozen=True)
@@ -381,7 +381,7 @@ class PhiCutBase(PhiAbstract):
             )
         )
 
-    @docfiller_phiabstract()
+    @_docfiller_phiabstract()
     def phi(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         v = np.empty_like(r)
@@ -395,7 +395,7 @@ class PhiCutBase(PhiAbstract):
             v[left] = self.phi_base.phi(r[left]) + self._vcorrect(r[left])
         return v
 
-    @docfiller_phiabstract()
+    @_docfiller_phiabstract()
     def dphidr(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         dvdr = np.empty_like(r)

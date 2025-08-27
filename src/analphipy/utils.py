@@ -39,7 +39,7 @@ def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
 
     """
     aa, bb = set(a), set(b)
-    return sorted(aa.union(bb))  # type: ignore[arg-type, unused-ignore]
+    return sorted(aa.union(bb))  # type: ignore[arg-type, unused-ignore]  # pyright: ignore[reportReturnType]
 
 
 def is_float(val: Any) -> TypeGuard[float]:
@@ -125,16 +125,10 @@ def quad_segments(
             outputs_list.append(o)
 
         integrals = (
-            cast("float", np.sum(integrals_list))  # pyright: ignore[reportUnknownMemberType]
-            if sum_integrals
-            else integrals_list
+            cast("float", np.sum(integrals_list)) if sum_integrals else integrals_list
         )
 
-        errors = (
-            np.sum(errors_list)  # pyright: ignore[reportUnknownMemberType]
-            if sum_errors
-            else errors_list
-        )
+        errors = np.sum(errors_list) if sum_errors else errors_list
 
         outputs = outputs_list
 
@@ -239,7 +233,7 @@ def add_quad_kws(
 
     @wraps(func)
     def wrapped(self: S, /, *args: P.args, **kws: P.kwargs) -> R:
-        kws = dict(self.quad_kws, **kws)  # type: ignore[assignment]
+        kws = dict(self.quad_kws, **kws)  # type: ignore[assignment]  # pyright: ignore[reportAssignmentType]
         return func(self, *args, **kws)
 
     return wrapped

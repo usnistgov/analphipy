@@ -53,7 +53,7 @@ __all__ = [
     "sig_nf_dbeta",
 ]
 
-d = docfiller.update(
+_d = docfiller.update(
     summary="Noro-Frenkel/Barker-Henderson effective hard sphere diameter.",
     extended_summary=r"""
     This is calculated using the formula [1]_ [2]_
@@ -67,7 +67,7 @@ d = docfiller.update(
 ).dedent()
 
 
-@d.decorate
+@_d.decorate
 def sig_nf(
     phi_rep: Phi_Signature,
     beta: float,

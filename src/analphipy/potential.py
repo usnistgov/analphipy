@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from ._typing_compat import Self
 
 
-docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
+_docfiller_phibase = docfiller.factory_inherit_from_parent(PhiBase)
 
 
 @attrs.define(frozen=True)
@@ -49,12 +49,12 @@ class Generic(PhiBase):
     #: Function :math:`d\phi(r)/dr`
     dphidr_func: Phi_Signature | None = None
 
-    @docfiller_phibase()
+    @_docfiller_phibase()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
         return self.phi_func(r)
 
-    @docfiller_phibase()
+    @_docfiller_phibase()
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         if self.dphidr_func is None:
             msg = "Must specify dphidr_func"
@@ -99,11 +99,11 @@ class Analytic(PhiBase):
     # fmt: on
 
 
-docfiller_analytic = docfiller.factory_inherit_from_parent(Analytic)
+_docfiller_analytic = docfiller.factory_inherit_from_parent(Analytic)
 
 
 @attrs.define(frozen=True)
-@docfiller_analytic(Analytic)
+@_docfiller_analytic(Analytic)
 class LennardJones(Analytic):
     r"""
     Lennard-Jones potential.
@@ -141,14 +141,14 @@ class LennardJones(Analytic):
     def _four_eps(self) -> float:
         return 4.0 * self.eps
 
-    @docfiller_analytic()
+    @_docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
         x2: Array = self._sigsq / (r * r)
         x6: Array = x2 * x2 * x2
         return self._four_eps * x6 * (x6 - 1.0)
 
-    @docfiller_analytic()
+    @_docfiller_analytic()
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         """Calculate phi and dphi (=-1/r dphi/dr) at particular r."""
         r = np.array(r)
@@ -161,7 +161,7 @@ class LennardJones(Analytic):
 
 
 @attrs.define(frozen=True)
-@docfiller_analytic(Analytic)
+@_docfiller_analytic(Analytic)
 class LennardJonesNM(Analytic):
     r"""
     Generalized Lennard-Jones potential
@@ -212,14 +212,14 @@ class LennardJonesNM(Analytic):
         msg = f"Bad parameters lead to unknown prefac {out}"
         raise ValueError(msg)
 
-    @docfiller_analytic()
+    @_docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
 
         x = self.sig / r
         return self._prefac * (x**self.n - x**self.m)
 
-    @docfiller_analytic()
+    @_docfiller_analytic()
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
         x = self.sig / r
@@ -231,7 +231,7 @@ class LennardJonesNM(Analytic):
 
 
 @attrs.define(frozen=True)
-@docfiller_analytic(Analytic)
+@_docfiller_analytic(Analytic)
 class Yukawa(Analytic):
     r"""
     Hard core Yukawa potential
@@ -268,7 +268,7 @@ class Yukawa(Analytic):
             segments=(0.0, self.sig, np.inf),
         )
 
-    @docfiller_analytic()
+    @_docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         sig, eps = self.sig, self.eps
 
@@ -284,7 +284,7 @@ class Yukawa(Analytic):
 
 
 @attrs.define(frozen=True)
-@docfiller_analytic(Analytic)
+@_docfiller_analytic(Analytic)
 class HardSphere(Analytic):
     r"""
     Hard-sphere pair potential
@@ -309,7 +309,7 @@ class HardSphere(Analytic):
     def __attrs_post_init__(self) -> None:
         self._immutable_setattrs(segments=(0.0, self.sig))
 
-    @docfiller_analytic()
+    @_docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
 
@@ -322,7 +322,7 @@ class HardSphere(Analytic):
 
 
 @attrs.define(frozen=True)
-@docfiller_analytic(Analytic)
+@_docfiller_analytic(Analytic)
 class SquareWell(Analytic):
     r"""
     Square-well pair potential
@@ -359,7 +359,7 @@ class SquareWell(Analytic):
             segments=(0.0, self.sig, self.sig * self.lam),
         )
 
-    @docfiller_analytic()
+    @_docfiller_analytic()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         sig, eps, lam = self.sig, self.eps, self.lam
 
@@ -479,7 +479,7 @@ class CubicTable(PhiBase):
         ds = delta / size
 
         # fmt: off
-        r: Array = np.sqrt(np.arange(size + 1) * ds + bounds[0])  # pyright: ignore[reportUnknownMemberType]
+        r: Array = np.sqrt(np.arange(size + 1) * ds + bounds[0])
         # fmt: on
 
         phi_table = phi(r)
@@ -530,7 +530,7 @@ class CubicTable(PhiBase):
             xi = sds - k
 
             # fmt: off
-            t: Array = np.take(self.phi_table, [k, k + 1, k + 2], mode="clip")  # pyright: ignore[reportUnknownMemberType]
+            t: Array = np.take(self.phi_table, [k, k + 1, k + 2], mode="clip")
             # fmt: on
             dt = np.diff(t, axis=0)
             ddt = np.diff(dt, axis=0)
@@ -539,11 +539,11 @@ class CubicTable(PhiBase):
             dv[mid] = -2.0 * self._dsinv * (dt[0, :] + (xi - 0.5) * ddt[0, :])
         return v, dv
 
-    @docfiller_phibase()
+    @_docfiller_phibase()
     def phi(self, r: Float_or_ArrayLike) -> Array:
         return self.phidphi(r)[0]
 
-    @docfiller_phibase()
+    @_docfiller_phibase()
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
         return -r * self.phidphi(r)[1]
@@ -552,7 +552,7 @@ class CubicTable(PhiBase):
     def rsq_table(self) -> Array:
         """Value of ``r**2`` where potential is defined."""
         # fmt: off
-        return (self.smin + np.arange(self.size + 1) * self._ds)  # pyright: ignore[reportUnknownMemberType]
+        return (self.smin + np.arange(self.size + 1) * self._ds)
         # fmt: on
 
     @property
