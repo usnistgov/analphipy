@@ -31,7 +31,7 @@ wheels = [
 
 [[package]]
 name = "analphipy"
-version = "0.4.2.dev15"
+version = "0.4.1.dev15"
 source = { editable = "." }
 dependencies = [
     { name = "attrs" },
