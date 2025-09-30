@@ -29,6 +29,7 @@
 [conda-link]: https://anaconda.org/conda-forge/analphipy
 [license-badge]: https://img.shields.io/pypi/l/analphipy?color=informational
 [license-link]: https://github.com/usnistgov/analphipy/blob/main/LICENSE
+[changelog-link]: https://github.com/usnistgov/analphipy/blob/main/CHANGELOG.md
 
 <!-- other links -->
 
@@ -105,6 +106,10 @@ conda install -c conda-forge analphipy
 ## Documentation
 
 See the [documentation][docs-link] for a look at `analphipy` in action.
+
+## What's new?
+
+See [changelog][changelog-link].
 
 ## License
 
