@@ -39,7 +39,7 @@ def combine_segmets(a: ArrayLike, b: ArrayLike) -> list[float]:
 
     """
     aa, bb = set(a), set(b)
-    return sorted(aa.union(bb))  # type: ignore[arg-type, unused-ignore]  # pyright: ignore[reportReturnType]
+    return sorted(aa.union(bb))  # type: ignore[arg-type, unused-ignore]
 
 
 def is_float(val: Any) -> TypeGuard[float]:
