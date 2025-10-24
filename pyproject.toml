@@ -121,15 +121,15 @@ annotation-style = "line"
 generate-hashes = true
 
 [tool.uv.dependency-groups]
-dev.requires-python = ">=3.12"
-docs.requires-python = ">=3.12"
-docs-live.requires-python = ">=3.12"
-docs-spelling.requires-python = ">=3.12"
+dev.requires-python = ">=3.14"
+docs.requires-python = ">=3.14"
+docs-live.requires-python = ">=3.14"
+docs-spelling.requires-python = ">=3.14"
 # other tools
-ipython.requires-python = ">=3.12"
-mypy.requires-python = ">=3.12"
-notebook.requires-python = ">=3.12"
-nox.requires-python = ">=3.12"
+ipython.requires-python = ">=3.14"
+mypy.requires-python = ">=3.14"
+notebook.requires-python = ">=3.14"
+nox.requires-python = ">=3.14"
 
 [tool.uv.build-backend]
 source-include = [ "tests/**" ]
