@@ -13,6 +13,7 @@ from attrs import field
 
 from ._attrs_utils import field_array_formatter, field_formatter
 from ._docstrings import docfiller
+from ._typing_compat import override
 from .base_potential import PhiAbstract, PhiBase
 
 if TYPE_CHECKING:
@@ -50,11 +51,13 @@ class Generic(PhiBase):
     dphidr_func: Phi_Signature | None = None
 
     @_docfiller_phibase()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
         return self.phi_func(r)
 
     @_docfiller_phibase()
+    @override
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         if self.dphidr_func is None:
             msg = "Must specify dphidr_func"
@@ -142,6 +145,7 @@ class LennardJones(Analytic):
         return 4.0 * self.eps
 
     @_docfiller_analytic()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
         x2: Array = self._sigsq / (r * r)
@@ -149,6 +153,7 @@ class LennardJones(Analytic):
         return self._four_eps * x6 * (x6 - 1.0)
 
     @_docfiller_analytic()
+    @override
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         """Calculate phi and dphi (=-1/r dphi/dr) at particular r."""
         r = np.array(r)
@@ -213,6 +218,7 @@ class LennardJonesNM(Analytic):
         raise ValueError(msg)
 
     @_docfiller_analytic()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
 
@@ -220,6 +226,7 @@ class LennardJonesNM(Analytic):
         return self._prefac * (x**self.n - x**self.m)
 
     @_docfiller_analytic()
+    @override
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
         x = self.sig / r
@@ -269,6 +276,7 @@ class Yukawa(Analytic):
         )
 
     @_docfiller_analytic()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:
         sig, eps = self.sig, self.eps
 
@@ -310,6 +318,7 @@ class HardSphere(Analytic):
         self._immutable_setattrs(segments=(0.0, self.sig))
 
     @_docfiller_analytic()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:
         r = np.array(r)
 
@@ -360,6 +369,7 @@ class SquareWell(Analytic):
         )
 
     @_docfiller_analytic()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:
         sig, eps, lam = self.sig, self.eps, self.lam
 
@@ -412,7 +422,7 @@ class CubicTable(PhiBase):
         validator=_validate_bounds
     )  # validator=_validate_bounds, converter=tuple)
     #: Values of potential evaluated on even grid of :math:`r^2` values.
-    phi_table: ArrayLike = field(converter=np.asarray, repr=field_array_formatter())
+    phi_table: ArrayLike = field(converter=np.asarray, repr=field_array_formatter())  # ty:ignore[dataclass-field-order]
     #: value of `phi` at left bound (`r < bounds[0]`)
     phi_left: float = field(converter=float, default=np.inf)
     #: value of `phi` at right bound (`r > bounds[1]`)
@@ -540,10 +550,12 @@ class CubicTable(PhiBase):
         return v, dv
 
     @_docfiller_phibase()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:
         return self.phidphi(r)[0]
 
     @_docfiller_phibase()
+    @override
     def dphidr(self, r: Float_or_ArrayLike) -> Array:
         r = np.asarray(r)
         return -r * self.phidphi(r)[1]

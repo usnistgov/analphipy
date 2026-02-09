@@ -26,9 +26,11 @@ def iter_phi_lj(
 
     for (rcut, tail), g in table.groupby(["rcut", "tail"]):
         if tail == "LFS":
-            p = p_base.lfs(rcut=rcut)
+            # pyrefly: ignore [bad-argument-type]
+            p = p_base.lfs(rcut=rcut)  # ty:ignore[invalid-argument-type]
         elif tail == "CUT":
-            p = p_base.cut(rcut=rcut)
+            # pyrefly: ignore [bad-argument-type]
+            p = p_base.cut(rcut=rcut)  # ty:ignore[invalid-argument-type]
         elif tail == "LRC":
             p = p_base
         else:

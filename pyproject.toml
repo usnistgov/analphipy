@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.8.22,<0.9.0",
+    "uv-build>=0.8.22,<0.10.0",
 ]
 
 [project]
@@ -17,14 +17,13 @@ license-files = [ "LICENSE" ]
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -34,18 +33,19 @@ classifiers = [
 ]
 dependencies = [
     "attrs",
-    "docstring-inheritance",
-    "module-utilities>=0.10.1",
+    "module-utilities[inherit]>=0.10.1",
     "numpy",
     "scipy",
     "typing-extensions; python_version<'3.11'",
 ]
-optional-dependencies.viz = [
+[project.optional-dependencies]
+viz = [
     "matplotlib",
     "pandas",
 ]
-urls.Documentation = "https://pages.nist.gov/analphipy/"
-urls.Homepage = "https://github.com/usnistgov/analphipy"
+[project.urls]
+Documentation = "https://pages.nist.gov/analphipy/"
+Homepage = "https://github.com/usnistgov/analphipy"
 
 [dependency-groups]
 dev = [
@@ -69,19 +69,22 @@ docs = [
     "autodocsumm",
     "myst-nb",
     "sphinx>=5.3.0",
+    # myst-parser, ipython,
     "sphinx-book-theme",
     "sphinx-copybutton",
     { include-group = "optional" },
 ]
 # other packages/tools
+basedpyright = [ "basedpyright>=1.31.3" ]
 ipython = [ "ipython" ]
-mypy = [ "mypy>=1.15.0", "orjson" ]
+mypy = [ "mypy[faster-cache]>=1.15.0" ]
 notebook = [ "ipykernel", "nbclient" ]
 nox = [ "nox>=2025.5.1" ]
 pandas = [ "pandas" ]
 pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 pytest-accept = [ "pytest-accept" ]
+typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 # other environments
 optional = [ "analphipy[viz]" ]
 docs-live = [
@@ -103,9 +106,11 @@ test-notebook = [
 ]
 typecheck = [
     "pandas-stubs",
+    "scipy-stubs",
     { include-group = "pandas" },
     { include-group = "pylint" },
     { include-group = "pytest" },
+    { include-group = "typecheck-runner" },
 ]
 
 # * uv -------------------------------------------------------------------------
@@ -116,9 +121,8 @@ default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 required-version = ">=0.7.15"
 
-[tool.uv.pip]
-annotation-style = "line"
-generate-hashes = true
+[tool.uv.build-backend]
+source-include = [ "tests/**" ]
 
 [tool.uv.dependency-groups]
 dev.requires-python = ">=3.14"
@@ -131,18 +135,19 @@ mypy.requires-python = ">=3.14"
 notebook.requires-python = ">=3.14"
 nox.requires-python = ">=3.14"
 
-[tool.uv.build-backend]
-source-include = [ "tests/**" ]
+[tool.uv.pip]
+annotation-style = "line"
+generate-hashes = true
 
 # * Checks ---------------------------------------------------------------------
 
 [tool.repo-review]
 ignore = [
-    "GH",    # enable for actions
-    "PC140", # do this externally
-    "PC170", # pygrep
-    "PC901", # ci message
-    "RTD",
+    "NOX103", # I prefer using "nox.options.sessions"
+    "PC111",  # use doccmd instead of blacken-docs
+    "PC140",  # do this externally
+    "PC160",  # use typos
+    "PC170",  # pygrep
 ]
 
 [tool.check-wheel-contents]
@@ -150,52 +155,66 @@ toplevel = [ "analphipy" ]
 src_dir = [ "src" ]
 
 [tool.pyproject-fmt]
+indent = 4
 # max_supported_python = "3.13"
+keep_full_version = true
+expand_tables = [
+    "project.entry-points",
+    "project.optional-dependencies",
+    "project.scripts",
+    "project.urls",
+]
+collapse_tables = [  ]
+
+[tool.typos.default.extend-identifiers]
+CPY = "CPY"
 
 # * Testing --------------------------------------------------------------------
 
 [tool.pytest.ini_options]
 addopts = [
-    "-ra",
+    "--cov-config=pyproject.toml",
+    "--doctest-glob=*.md",
+    "--doctest-modules",
+    "--pyargs",
     "--strict-config",
     "--strict-markers",
-    "--doctest-modules",
-    "--doctest-glob=*.md",
-    "--pyargs",
-    "--cov-config=pyproject.toml",
+    "-ra",
 ]
 testpaths = [
+    "README.md",
     "analphipy",
     "tests",
-    "README.md",
 ]
 minversion = "8"
 log_cli_level = "INFO"
-xfail_strict = true
+log_level = "INFO"
+strict_xfail = "true"
 filterwarnings = [ "error" ]
 
-[tool.coverage.run]
-branch = true
+[tool.coverage.paths]
+source = [
+    "src/",
+    # needed for testing source if not editable install
+    ".nox/**/site-packages/",
+]
 
 [tool.coverage.report]
 show_missing = true
 exclude_also = [
-    "if TYPE_CHECKING:",
     "@overload",
+    "if TYPE_CHECKING:",
 ]
 omit = [
-    "*/vendored/*",
     "*/_typing.py",
+    "*/vendored/*",
 ]
 include = [
     "src/*",
 ]
 
-[tool.coverage.paths]
-source = [
-    "src/",
-    ".nox/**/site-packages/",
-]
+[tool.coverage.run]
+branch = true
 
 # * typecheck ---------------------------------------------------------------------
 
@@ -210,10 +229,10 @@ warn_unused_configs = true
 warn_unreachable = true
 exclude = [
     ".eggs",
-    ".tox",
     ".nox",
-    ".venv",
     ".numba_cache",
+    ".tox",
+    ".venv",
     "docs",
 ]
 check_untyped_defs = true
@@ -227,15 +246,16 @@ enable_error_code = [
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
 module = [
-    "scipy.integrate.*",
-    "scipy.optimize.*",
-    "scipy.misc.*",
     "matplotlib.*",
 ]
 
-# [[tool.mypy.overrides]]
-# ignore_errors = true
-# module = [  ]
+[[tool.mypy.overrides]]
+disable_error_code = "arg-type"
+module = [ "tests.*" ]
+
+[tool.pyrefly]
+project-includes = [ "src", "tests" ]
+enabled-ignores = [ "pyrefly" ]
 
 [tool.pyright]
 include = [
@@ -243,32 +263,60 @@ include = [
     "tests",
 ]
 exclude = [
-    "**/__pycache__",
-    ".tox/**",
-    ".nox/**",
-    ".venv/**",
     "**/.mypy_cache",
     "**/.numba_cache",
+    "**/__pycache__",
+    ".nox/**",
+    ".tox/**",
+    ".venv/**",
 ]
-pythonVersion = "3.11"
 typeCheckingMode = "standard"
 strict = [
-    "src",
     "noxfile.py",
+    "src",
     "tools/*.py",
 ]
-reportDuplicateImport = true
-reportInvalidStubStatement = true
 reportOverlappingOverload = true
 reportPropertyTypeMismatch = true
 reportUntypedClassDecorator = true
 reportUntypedFunctionDecorator = true
-reportUntypedNamedTuple = true
-reportUnusedImport = true
 # Extra flags
 enableTypeIgnoreComments = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
+
+deprecateTypingAliases = true
+enableReachabilityAnalysis = false
+reportCallInDefaultInitializer = true
+reportImplicitOverride = true
+# reportImportCycles = true  # TODO(wpk): enable when refactored
+# reportMissingSuperCall = true
+reportUninitializedInstanceVariable = true
+reportUnusedCallResult = true
+
+# type-checkers should type-check; linters should lint
+reportImplicitStringConcatenation = false
+reportPrivateUsage = false                # dupe of PLC2701
+reportPrivateImportUsage = false          # dupe of PLC2701
+reportUnusedImport = false                # dupe of F401
+reportUnusedVariable = false              # dupe of F841
+
+[[tool.pyright.executionEnvironments]]
+root = "tests"
+# TODO(wpk): get rid of these
+reportImplicitOverride = false
+reportArgumentType = false
+reportUnknownArgumentType = false
+reportUnknownVariableType = false
+reportUnknownMemberType = false
+reportUnusedCallResult = false
+
+[tool.ty.analysis]
+# Disable support for `type: ignore` comments
+respect-type-ignore-comments = false
+
+[tool.ty.src]
+include = [ "src", "tests" ]
 
 [tool.pytype]
 inputs = [
@@ -291,8 +339,32 @@ deps = "pip"
 [tool.pyproject2conda.dependencies]
 pytest-accept = { pip = true }
 
+[tool.pyproject2conda.envs.build]
+groups = "build-system.requires"
+skip-package = true
+style = "requirements"
+
 [tool.pyproject2conda.envs.dev]
 groups = "dev"
+
+[tool.pyproject2conda.envs.docs]
+groups = "docs"
+style = "requirements"
+
+[tool.pyproject2conda.envs.docs-live]
+groups = "docs-live"
+style = "requirements"
+
+[tool.pyproject2conda.envs.docs-spelling]
+groups = "docs-spelling"
+style = "requirements"
+
+[tool.pyproject2conda.envs.pre-commit-additional-dependencies]
+reqs = [
+    "rust-just",
+]
+skip-package = true
+style = "requirements"
 
 [tool.pyproject2conda.envs.test]
 groups = "test"
@@ -307,22 +379,22 @@ skip-package = true
 reqs = [
     # these used solely for specking tools to be used with uvx ...
     "conda-lock>=2.5.5",
-    "cruft",
+    "copier",
+    "copier-template-extensions>=0.3.1",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pre-commit>=4.0.0",
-    "pre-commit-uv",
     "prek",
-    "pyrefly",
+    "pyrefly>=0.37.0",
     "pyright>=1.1.396",
-    "basedpyright>=1.31.3",
     "scriv",
     "twine>=5.0.0",
-    "ty",
+    "ty>=0.0.14",
 ]
 groups = [
+    "basedpyright",
     "mypy",
     "nox",
+    "typecheck-runner",
 ]
 skip-package = true
 style = "requirements"
@@ -336,5 +408,3 @@ new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
 
 [tool.commitizen]
 use_shortcuts = true
-
-[tool.cruft]

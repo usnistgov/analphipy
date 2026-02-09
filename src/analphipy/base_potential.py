@@ -13,6 +13,7 @@ from attrs import field
 
 from ._attrs_utils import field_formatter
 from ._docstrings import docfiller
+from ._typing_compat import override
 from .measures import Measures
 from .norofrenkel import NoroFrenkelPair
 from .utils import minimize_phi
@@ -257,6 +258,7 @@ class PhiAbstract:
                 if not isinstance(bounds, tuple):
                     msg = "bounds must be a tuple"
                     raise TypeError(msg)
+                # pyrefly: ignore [no-matching-overload]
                 r0 = cast("float", np.mean(bounds))
             else:
                 msg = 'must specify bounds with r0="mean"'
@@ -301,7 +303,7 @@ class PhiAbstract:
             if k not in kws:
                 kws[k] = getattr(self, k)
 
-        return NoroFrenkelPair(**kws)  # ty: ignore[missing-argument]
+        return NoroFrenkelPair(**kws)
 
     def to_measures(self, **kws: Any) -> Measures:
         """
@@ -322,7 +324,7 @@ class PhiAbstract:
             if k not in kws:
                 kws[k] = getattr(self, k)
 
-        return Measures(**kws)  # ty: ignore[missing-argument]
+        return Measures(**kws)
 
 
 _docfiller_phiabstract = docfiller.factory_inherit_from_parent(PhiAbstract)
@@ -382,6 +384,7 @@ class PhiCutBase(PhiAbstract):
         )
 
     @_docfiller_phiabstract()
+    @override
     def phi(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         v = np.empty_like(r)
@@ -396,6 +399,7 @@ class PhiCutBase(PhiAbstract):
         return v
 
     @_docfiller_phiabstract()
+    @override
     def dphidr(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
         dvdr = np.empty_like(r)
@@ -440,13 +444,16 @@ class PhiCut(PhiCutBase):
 
     _vcut: float = field(init=False, repr=False)
 
+    @override
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
         self._immutable_setattrs(_vcut=self.phi_base.phi(self.rcut))
 
+    @override
     def _vcorrect(self, r: Array) -> Array:
         return -cast("Array", self._vcut)
 
+    @override
     def _dvdrcorrect(self, r: Array) -> Array:
         return np.array(0.0)
 
@@ -471,15 +478,18 @@ class PhiLFS(PhiCutBase):
     _vcut: float = field(init=False, repr=False)
     _dvdrcut: float = field(init=False, repr=False)
 
+    @override
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
         self._immutable_setattrs(
             _vcut=self.phi_base.phi(self.rcut), _dvdrcut=self.phi_base.dphidr(self.rcut)
         )
 
+    @override
     def _vcorrect(self, r: Array) -> Array:
         return -(self._vcut + self._dvdrcut * (r - self.rcut))
 
+    @override
     def _dvdrcorrect(self, r: Array) -> Array:
         out = -self._dvdrcut
         return cast("Array", out)

@@ -9,6 +9,7 @@ import analphipy.potential as pots
 from analphipy import measures
 from analphipy.norofrenkel import NoroFrenkelPair
 
+# pyrefly: ignore [missing-import]
 from .utils import iter_phi_lj
 
 data = Path(__file__).parent / "data"
@@ -26,9 +27,11 @@ def test_B2_sw() -> None:
     if len(table) > nsamp:
         table = table.sample(nsamp)
     for (sig, eps, lam), g in table.groupby(["sig", "eps", "lam"]):
-        p = pots.SquareWell(sig=sig, eps=eps, lam=lam)
+        # pyrefly: ignore [bad-argument-type]
+        p = pots.SquareWell(sig=sig, eps=eps, lam=lam)  # ty:ignore[invalid-argument-type]
 
-        a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)
+        # pyrefly: ignore [bad-argument-type]
+        a = NoroFrenkelPair(phi=p.phi, segments=p.segments, r_min=sig, phi_min=eps)  # ty:ignore[invalid-argument-type]
 
         out = a.table(np.asarray(g["beta"], dtype=np.float64), ["B2", "B2_dbeta"])
 
@@ -63,7 +66,8 @@ def test_B2_nm() -> None:
     sig = eps = 1.0
 
     for (n_exp, m_exp), g in table.groupby(["n_exp", "m_exp"]):
-        p = pots.LennardJonesNM(n=n_exp, m=m_exp, sig=sig, eps=eps)
+        # pyrefly: ignore [bad-argument-type]
+        p = pots.LennardJonesNM(n=n_exp, m=m_exp, sig=sig, eps=eps)  # ty:ignore[invalid-argument-type]
 
         a = NoroFrenkelPair.from_phi(
             phi=p.phi, segments=p.segments, r_min=sig, bounds=[0.5, 1.5]

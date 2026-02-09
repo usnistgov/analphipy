@@ -525,7 +525,7 @@ class Measures:
         def q_func(x: Float_or_Array) -> Array:
             return cast(
                 "Array",
-                np.exp(-beta_other * other.phi(x)),  # ty: ignore[unsupported-operator]
+                np.exp(-beta_other * other.phi(x)),
             )
 
         return diverg_js_cont(
@@ -587,10 +587,7 @@ class Measures:
             return out
 
         def q_func(x: Float_or_Array) -> Array:
-            out: Array = (
-                np.exp(-beta_other * other.phi(x))  # ty: ignore[unsupported-operator]
-                - 1.0
-            )
+            out: Array = np.exp(-beta_other * other.phi(x)) - 1.0
             return out
 
         return diverg_js_cont(

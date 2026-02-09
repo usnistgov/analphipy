@@ -7,18 +7,16 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
-name: py311-test
-channels:
-  - conda-forge
-dependencies:
-  - python=3.11
-  - attrs
-  - module-utilities>=0.10.1
-  - numpy
-  - pandas
-  - pytest
-  - pytest-cov
-  - pytest-sugar
-  - pytest-xdist
-  - scipy
-  - pip
+attrs
+autodocsumm
+matplotlib
+module-utilities[inherit]>=0.10.1
+myst-nb
+numpy
+pandas
+scipy
+sphinx-autobuild
+sphinx-book-theme
+sphinx-copybutton
+sphinx>=5.3.0
+typing-extensions; python_version < "3.11"
