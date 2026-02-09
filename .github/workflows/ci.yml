@@ -163,7 +163,7 @@ jobs:
         with:
           name:
             coverage-data-${{ matrix.os }}-${{ matrix.python-version }}-${{
-            matrix.python-style }}
+            matrix.style }}
           path: .nox/test-*/tmp/.coverage*
           include-hidden-files: true
           if-no-files-found: ignore
