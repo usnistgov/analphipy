@@ -42,13 +42,16 @@ def test_asdict() -> None:
     p_lj = pots.LennardJones()
 
     p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(1.1, bounds=(0.5, 1.5))
-    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore[arg-type]  # pyright: ignore[reportCallIssue,reportArgumentType]
+    # pyrefly: ignore [no-matching-overload]
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # pyright: ignore[reportCallIssue]  # ty:ignore[no-matching-overload]
 
     p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(1.1, bounds="segments")
-    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # type: ignore[arg-type]  # pyright: ignore[reportCallIssue,reportArgumentType]
+    # pyrefly: ignore [no-matching-overload]
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919)  # pyright: ignore[reportCallIssue]  # ty:ignore[no-matching-overload]
 
     p_lfs = p_lj.lfs(rcut=2.5).assign_min_numeric(r0="mean", bounds=(0.5, 1.5))
-    np.testing.assert_allclose(p_lfs.r_min, 1.123148919, atol=1e-5)  # type: ignore[arg-type]  # pyright: ignore[reportCallIssue,reportArgumentType]
+    # pyrefly: ignore [no-matching-overload]
+    np.testing.assert_allclose(p_lfs.r_min, 1.123148919, atol=1e-5)  # pyright: ignore[reportCallIssue]  # ty:ignore[no-matching-overload]
 
     with pytest.raises(ValueError):
         p_lj.lfs(rcut=2.5).assign_min_numeric(r0="mean", bounds=None)

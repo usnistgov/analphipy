@@ -24,4 +24,5 @@ def test_boltz_js_lj(beta, beta_other) -> None:
         f0, f1, segments=p0.segments, segments_q=p1.segments, volume="3d"
     )
 
-    np.testing.assert_allclose(v0, v1)  # type: ignore[arg-type]  # pyright: ignore[reportCallIssue,reportArgumentType]
+    # pyrefly: ignore [no-matching-overload]
+    np.testing.assert_allclose(v0, v1)  # pyright: ignore[reportCallIssue]  # ty:ignore[no-matching-overload]

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence  # noqa: F401
 from typing import (
-    TYPE_CHECKING,
     Any,
     TypedDict,
     TypeVar,
@@ -12,9 +11,6 @@ import numpy as np  # noqa: F401
 from numpy.typing import NDArray
 
 from ._typing_compat import ParamSpec, TypeAlias
-
-if TYPE_CHECKING:
-    from .base_potential import PhiAbstract
 
 P = ParamSpec("P")
 """Parameter specification"""
@@ -30,9 +26,6 @@ Phi_Signature: TypeAlias = "Callable[..., Array]"
 
 # To bind input and output to same type
 T_Float_or_Array = TypeVar("T_Float_or_Array", float, Array)
-
-
-T_PhiAbstract = TypeVar("T_PhiAbstract", bound="PhiAbstract")
 
 
 # Quadrature

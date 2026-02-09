@@ -107,13 +107,13 @@ def get_r(rmin, rmax, n=100):
 
 
 def kws_to_ld(**kws: Iterable[Any]) -> list[dict[str, Any]]:
-    return [dict(zip(kws, t)) for t in zip(*kws.values())]
+    return [dict(zip(kws, t, strict=True)) for t in zip(*kws.values(), strict=False)]
 
 
 @dataclass
 class BaseParams:
     def __post_init__(self):
-        self.r = None
+        self.r = None  # pyright: ignore[reportUninitializedInstanceVariable]
 
     def phidphi(self, r) -> None:
         raise NotImplementedError
@@ -124,7 +124,8 @@ class BaseParams:
         raise NotImplementedError
 
     def phi(self, r):
-        return self.phidphi(r)[0]  # type: ignore[func-returns-value]  # pyright: ignore[reportOptionalSubscript]
+        # pyrefly: ignore [unsupported-operation]
+        return self.phidphi(r)[0]  # type: ignore[func-returns-value]  # pyright: ignore[reportOptionalSubscript]  # ty:ignore[not-subscriptable]
 
     def get_phi(self):
         return self.phi(self.r)
@@ -135,7 +136,8 @@ class BaseParams:
 
     @classmethod
     def get_objects(cls, nsamp=10) -> Iterable[Self]:
-        for params in cls.get_params(nsamp=nsamp):  # type: ignore[attr-defined]  # pyright: ignore[reportGeneralTypeIssues]
+        # pyrefly: ignore [not-iterable]
+        for params in cls.get_params(nsamp=nsamp):  # type: ignore[attr-defined]  # pyright: ignore[reportGeneralTypeIssues]  # ty:ignore[not-iterable]
             yield cls(**params)
 
     def asdict(self):
@@ -150,10 +152,12 @@ class LJParams(BaseParams):
     def __post_init__(self):
         self.r = get_r(rmin=0.1 * self.sig, rmax=5.0 * self.sig, n=100)
 
+    # pyrefly: ignore [bad-override]
     def phidphi(self, r):  # pyright: ignore[reportIncompatibleMethodOverride]
         return phidphi_lj(r, sig=self.sig, eps=self.eps)
 
     @classmethod
+    # pyrefly: ignore [bad-override]
     def get_params(cls, nsamp=10):  # pyright: ignore[reportIncompatibleMethodOverride]
         return kws_to_ld(
             sig=rng.random(nsamp) * 4,
@@ -326,6 +330,7 @@ class HSParams(BaseParams):  # pylint: disable=abstract-method
         return phi_hs(self.r, sig=self.sig)
 
     @classmethod
+    # pyrefly: ignore [bad-override]
     def get_params(cls, nsamp=10):  # pyright: ignore[reportIncompatibleMethodOverride]
         return kws_to_ld(sig=rng.random(nsamp))
 

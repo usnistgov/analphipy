@@ -17,12 +17,14 @@ References
 
 from __future__ import annotations
 
+from textwrap import dedent
 from typing import TYPE_CHECKING, cast
 
 import numpy as np
 from module_utilities import cached
 
 from ._docstrings import docfiller
+from ._typing_compat import override
 from .measures import secondvirial, secondvirial_dbeta, secondvirial_sw
 from .utils import TWO_PI, add_quad_kws, is_float, minimize_phi, quad_segments
 
@@ -43,7 +45,7 @@ if TYPE_CHECKING:
     from ._typing_compat import Self
 
 # Workaround to document module level docstring
-__doc__ = __doc__.format(**docfiller.data)  # pyright: ignore[reportOptionalMemberAccess]  # ty: ignore[possibly-unbound-attribute]
+__doc__ = __doc__.format(**docfiller.data)  # pyright: ignore[reportOptionalMemberAccess]  # ty: ignore[possibly-missing-attribute]
 
 __all__ = [
     "NoroFrenkelPair",
@@ -129,7 +131,17 @@ def sig_nf(
     )
 
 
-@docfiller.inherit(sig_nf)
+@docfiller.inherit(
+    sig_nf,
+    summary="Derivative with respect to inverse temperature ``beta`` of ``sig_nf``.",
+    extended_summary=dedent(r"""
+    See refs [1]_ [2]_ [3]_
+
+    .. math::
+
+        \frac{{d \sigma_{{\rm BH}}}}{{d\beta}} = \int_0^{{\infty}} dr \phi_{{\rm rep}}(r) \exp[-\beta \phi_{{\rm rep}}(r)]
+    """),
+)
 def sig_nf_dbeta(
     phi_rep: Phi_Signature,
     beta: float,
@@ -297,6 +309,7 @@ class NoroFrenkelPair:
 
         self._cache: dict[str, Any] = {}
 
+    @override
     def __repr__(self) -> str:
         params = ",\n    ".join(
             [

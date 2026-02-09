@@ -6,6 +6,7 @@ Utilities module (:mod:`analphipy.utils`)
 from __future__ import annotations
 
 from functools import wraps
+from itertools import pairwise
 from typing import TYPE_CHECKING, cast
 
 import numpy as np
@@ -99,13 +100,11 @@ def quad_segments(
     scipy.integrate.quad
 
     """
-    from scipy.integrate import (  # pyright: ignore[reportMissingTypeStubs]
-        quad,  # pyright: ignore[reportUnknownVariableType]
-    )
+    from scipy.integrate import quad
 
     out: list[tuple[float, float, dict[str, Any]]] = [
         quad(func, a=a, b=b, args=args, full_output=True, **kws)
-        for a, b in zip(segments[:-1], segments[1:])
+        for a, b in pairwise(segments)
     ]
 
     integrals: float | list[float]
@@ -176,9 +175,7 @@ def minimize_phi(
     scipy.optimize.minimize
 
     """
-    from scipy.optimize import (  # pyright: ignore[reportMissingTypeStubs]
-        minimize,  # pyright: ignore[reportUnknownVariableType]
-    )
+    from scipy.optimize import minimize
 
     if bounds is None:
         bounds = (0.0, np.inf)
@@ -189,7 +186,10 @@ def minimize_phi(
         ymin = phi(xmin)
         return xmin, ymin, None
 
-    outputs = cast("OptimizeResultInterface", minimize(phi, r0, bounds=[bounds], **kws))
+    outputs = cast(
+        "OptimizeResultInterface",
+        minimize(phi, r0, bounds=[(bounds[0], bounds[-1])], **kws),
+    )
 
     if not outputs["success"]:
         msg = "could not find min of phi"
@@ -198,7 +198,7 @@ def minimize_phi(
     xmin = outputs["x"][0]
 
     tmp = outputs["fun"]
-    ymin = tmp[0] if isinstance(tmp, np.ndarray) else tmp
+    ymin = tmp[0] if isinstance(tmp, np.ndarray) else tmp  # ty:ignore[invalid-argument-type]
 
     return cast("tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs))
 
@@ -233,7 +233,8 @@ def add_quad_kws(
 
     @wraps(func)
     def wrapped(self: S, /, *args: P.args, **kws: P.kwargs) -> R:
-        kws = dict(self.quad_kws, **kws)  # type: ignore[assignment]  # pyright: ignore[reportAssignmentType]
+        # pyrefly: ignore [bad-assignment]
+        kws = dict(self.quad_kws, **kws)  # type: ignore[assignment]  # pyright: ignore[reportAssignmentType]  # ty:ignore[invalid-assignment]
         return func(self, *args, **kws)
 
     return wrapped
