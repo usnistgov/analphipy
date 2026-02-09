@@ -339,25 +339,8 @@ deps = "pip"
 [tool.pyproject2conda.dependencies]
 pytest-accept = { pip = true }
 
-[tool.pyproject2conda.envs.build]
-groups = "build-system.requires"
-skip-package = true
-style = "requirements"
-
 [tool.pyproject2conda.envs.dev]
 groups = "dev"
-
-[tool.pyproject2conda.envs.docs]
-groups = "docs"
-style = "requirements"
-
-[tool.pyproject2conda.envs.docs-live]
-groups = "docs-live"
-style = "requirements"
-
-[tool.pyproject2conda.envs.docs-spelling]
-groups = "docs-spelling"
-style = "requirements"
 
 [tool.pyproject2conda.envs.pre-commit-additional-dependencies]
 reqs = [
