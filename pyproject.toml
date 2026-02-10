@@ -38,6 +38,7 @@ dependencies = [
     "scipy",
     "typing-extensions; python_version<'3.11'",
 ]
+
 [project.optional-dependencies]
 viz = [
     "matplotlib",
