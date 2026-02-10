@@ -43,6 +43,7 @@ viz = [
     "matplotlib",
     "pandas",
 ]
+
 [project.urls]
 Documentation = "https://pages.nist.gov/analphipy/"
 Homepage = "https://github.com/usnistgov/analphipy"
@@ -74,19 +75,8 @@ docs = [
     "sphinx-copybutton",
     { include-group = "optional" },
 ]
-# other packages/tools
+# other envs
 basedpyright = [ "basedpyright>=1.31.3" ]
-ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=1.15.0" ]
-notebook = [ "ipykernel", "nbclient" ]
-nox = [ "nox>=2025.5.1" ]
-pandas = [ "pandas" ]
-pylint = [ "pylint" ]
-pytest = [ "pytest" ]
-pytest-accept = [ "pytest-accept" ]
-typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
-# other environments
-optional = [ "analphipy[viz]" ]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -96,6 +86,15 @@ docs-spelling = [
     "sphinxcontrib-spelling",
     { include-group = "docs" },
 ]
+ipython = [ "ipython" ]
+mypy = [ "mypy[faster-cache]>=1.15.0" ]
+notebook = [ "ipykernel", "nbclient" ]
+nox = [ "nox>=2025.5.1" ]
+optional = [ "analphipy[viz]" ]
+pandas = [ "pandas" ]
+pylint = [ "pylint" ]
+pytest = [ "pytest" ]
+pytest-accept = [ "pytest-accept" ]
 test-extras = [
     { include-group = "test" },
 ]
@@ -112,17 +111,18 @@ typecheck = [
     { include-group = "pytest" },
     { include-group = "typecheck-runner" },
 ]
+typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
-managed = true
+required-version = ">=0.7.15"
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
-required-version = ">=0.7.15"
-
-[tool.uv.build-backend]
-source-include = [ "tests/**" ]
+managed = true
+build-backend.source-include = [ "tests/**" ]
+pip.annotation-style = "line"
+pip.generate-hashes = true
 
 [tool.uv.dependency-groups]
 dev.requires-python = ">=3.14"
@@ -134,10 +134,6 @@ ipython.requires-python = ">=3.14"
 mypy.requires-python = ">=3.14"
 notebook.requires-python = ">=3.14"
 nox.requires-python = ">=3.14"
-
-[tool.uv.pip]
-annotation-style = "line"
-generate-hashes = true
 
 # * Checks ---------------------------------------------------------------------
 
@@ -163,8 +159,12 @@ expand_tables = [
     "project.optional-dependencies",
     "project.scripts",
     "project.urls",
+    "tool.pyproject2conda",
+    "tool.pyright.executionEnvironments",
+    "tool.pytest",
+    "tool.typos",
+    "tool.uv.dependency-groups",
 ]
-collapse_tables = [  ]
 
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
@@ -192,29 +192,25 @@ log_level = "INFO"
 strict_xfail = "true"
 filterwarnings = [ "error" ]
 
-[tool.coverage.paths]
-source = [
+[tool.coverage]
+run.branch = true
+paths.source = [
     "src/",
     # needed for testing source if not editable install
     ".nox/**/site-packages/",
 ]
-
-[tool.coverage.report]
-show_missing = true
-exclude_also = [
+report.exclude_also = [
     "@overload",
     "if TYPE_CHECKING:",
 ]
-omit = [
+report.include = [
+    "src/*",
+]
+report.omit = [
     "*/_typing.py",
     "*/vendored/*",
 ]
-include = [
-    "src/*",
-]
-
-[tool.coverage.run]
-branch = true
+report.show_missing = true
 
 # * typecheck ---------------------------------------------------------------------
 
@@ -242,16 +238,12 @@ enable_error_code = [
     "redundant-expr",
     "truthy-bool",
 ]
-
-[[tool.mypy.overrides]]
-ignore_missing_imports = true
-module = [
-    "matplotlib.*",
+overrides = [
+    { disable_error_code = "arg-type", module = [ "tests.*" ] },
+    { ignore_missing_imports = true, module = [
+        "matplotlib.*",
+    ] },
 ]
-
-[[tool.mypy.overrides]]
-disable_error_code = "arg-type"
-module = [ "tests.*" ]
 
 [tool.pyrefly]
 project-includes = [ "src", "tests" ]
@@ -281,42 +273,38 @@ reportPropertyTypeMismatch = true
 reportUntypedClassDecorator = true
 reportUntypedFunctionDecorator = true
 # Extra flags
-enableTypeIgnoreComments = false
-reportUnnecessaryTypeIgnoreComment = true
-reportUnreachable = "warning"
-
 deprecateTypingAliases = true
 enableReachabilityAnalysis = false
+enableTypeIgnoreComments = false
 reportCallInDefaultInitializer = true
 reportImplicitOverride = true
 # reportImportCycles = true  # TODO(wpk): enable when refactored
 # reportMissingSuperCall = true
 reportUninitializedInstanceVariable = true
+reportUnnecessaryTypeIgnoreComment = true
+reportUnreachable = "warning"
 reportUnusedCallResult = true
-
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
-reportPrivateUsage = false                # dupe of PLC2701
-reportPrivateImportUsage = false          # dupe of PLC2701
-reportUnusedImport = false                # dupe of F401
-reportUnusedVariable = false              # dupe of F841
+reportPrivateUsage = false
+reportPrivateImportUsage = false
+reportUnusedImport = false
+reportUnusedVariable = false
 
 [[tool.pyright.executionEnvironments]]
 root = "tests"
 # TODO(wpk): get rid of these
-reportImplicitOverride = false
 reportArgumentType = false
+reportImplicitOverride = false
 reportUnknownArgumentType = false
-reportUnknownVariableType = false
 reportUnknownMemberType = false
+reportUnknownVariableType = false
 reportUnusedCallResult = false
 
-[tool.ty.analysis]
+[tool.ty]
 # Disable support for `type: ignore` comments
-respect-type-ignore-comments = false
-
-[tool.ty.src]
-include = [ "src", "tests" ]
+analysis.respect-type-ignore-comments = false
+src.include = [ "src", "tests" ]
 
 [tool.pytype]
 inputs = [
