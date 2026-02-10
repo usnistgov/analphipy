@@ -36,7 +36,7 @@ dependencies = [
     "module-utilities[inherit]>=0.10.1",
     "numpy",
     "scipy",
-    "typing-extensions; python_version<'3.11'",
+    "typing-extensions; python_version<'3.12'",
 ]
 
 [project.optional-dependencies]
