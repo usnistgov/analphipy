@@ -1,15 +1,15 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.6.0-123-g098bef9
+_commit: v0.6.0-144-g938a0cd
 _src_path: https://github.com/usnistgov/cookiecutter-nist-python.git
 command_line_interface: none
-conda_channel: wpk-nist
+conda_channel: conda-forge
 email: wpk@nist.gov
 full_name: William P. Krekelberg
-github_username: wpk-nist-gov
-project_name: mypackage
+github_username: usnistgov
+project_name: analphipy
 project_short_description: All the boilerplate you need to create a Python package.
-project_slug: mypackage
+project_slug: analphipy
 pypi_username: wpk-nist
 sphinx_theme: sphinx_book_theme
 sphinx_use_autodocsumm: true
-year: '2025'
+year: '2021'
