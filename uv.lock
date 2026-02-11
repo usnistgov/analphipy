@@ -160,7 +160,7 @@ test-notebook = [
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
 ]
-typecheck = [
+type = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pandas", version = "3.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pandas-stubs", version = "2.3.3.260113", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -269,7 +269,7 @@ test-notebook = [
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
 ]
-typecheck = [
+type = [
     { name = "pandas" },
     { name = "pandas-stubs" },
     { name = "pylint" },
