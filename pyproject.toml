@@ -275,21 +275,20 @@ strict = [
 ]
 typeCheckingMode = "standard"
 # options
-reportOverlappingOverload = true
-reportPropertyTypeMismatch = true
-reportUntypedClassDecorator = true
-reportUntypedFunctionDecorator = true
-# Extra flags
+# reportImportCycles = true  # TODO(wpk): enable when refactored
+# reportMissingSuperCall = true
 deprecateTypingAliases = true
 enableReachabilityAnalysis = false
 enableTypeIgnoreComments = false
 reportCallInDefaultInitializer = true
 reportImplicitOverride = true
-# reportImportCycles = true  # TODO(wpk): enable when refactored
-# reportMissingSuperCall = true
+reportOverlappingOverload = true
+reportPropertyTypeMismatch = true
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
+reportUntypedClassDecorator = true
+reportUntypedFunctionDecorator = true
 reportUnusedCallResult = true
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
