@@ -189,7 +189,7 @@ def diverg_kl_integrand(
 
     out = np.empty_like(p)
 
-    zero = p == 0.0  # pylint: disable=use-implicit-booleaness-not-comparison-to-zero
+    zero = p == 0.0  # pylint: disable=use-implicit-booleaness-not-comparison-to-zero  # noqa: RUF069
     hero = ~zero
 
     out[zero] = 0.0
