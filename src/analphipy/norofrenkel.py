@@ -45,7 +45,7 @@ if TYPE_CHECKING:
     from ._typing_compat import Self
 
 # Workaround to document module level docstring
-__doc__ = __doc__.format(**docfiller.data)  # pyright: ignore[reportOptionalMemberAccess]  # ty: ignore[possibly-missing-attribute]
+__doc__ = __doc__.format(**docfiller.data)  # pyright: ignore[reportOptionalMemberAccess]  # ty: ignore[unresolved-attribute]
 
 __all__ = [
     "NoroFrenkelPair",
