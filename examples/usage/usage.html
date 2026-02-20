@@ -1,0 +1,1036 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Why analphipy &#8212; analphipy 0.4.2.dev15 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=69045b54"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/usage/usage';</script>
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
+    <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"></script>
+    <script src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+    <script src="../../_static/js/leave_notice.js?v=133c5535"></script>
+    <script async="async" id="_fed_au_ua_tag" type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API Reference" href="../../reference/index.html" />
+    <link rel="prev" title="User guide" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="2026-02-20"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">analphipy 0.4.2.dev15 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    analphipy
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">User guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../reference/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/generated/analphipy.potential.html">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</a></li>
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../reference/generated/analphipy.norofrenkel.html">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../reference/generated/analphipy.measures.html">Routines to calculate measures of pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.measures</span></code>)</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../reference/generated/analphipy.utils.html">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../reference/generated/analphipy.base_potential.html">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../navigation.html">Indices and tables</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy/issues/new?title=Issue%20on%20page%20%2Fexamples/usage/usage.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/examples/usage/usage.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Why analphipy</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-references">Useful references</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example">A simple example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-your-own-potential">Defining your own potential</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cut-potential">Cut potential</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="why-analphipy">
+<h1>Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code><a class="headerlink" href="#why-analphipy" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">analphipy</span></code> is a python package for common analysis on pair potentials.  It’s features include</p>
+<ul class="simple">
+<li><p>Simple interface for defining a pair potential</p></li>
+<li><p>Methods to create ‘cut’, ‘linear force shifted’, and ‘table’ potentials</p></li>
+<li><p>Calculation of common metrics, like the second virial coefficient, and Noro-Frenkel effective parameters</p></li>
+</ul>
+<p>This package is used actively by the author, so new metrics and potentials will be added over time.  If you have a suggestion, please let the author know!</p>
+<section id="useful-references">
+<h2>Useful references<a class="headerlink" href="#useful-references" title="Link to this heading">#</a></h2>
+<p>Please see the following for a primer on the type of analysis provided in <code class="docutils literal notranslate"><span class="pre">analphipy</span></code>.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://doi.org/10.1063/1.1288684">M.G. Noro and D. Frenkel (2000), “Extended corresponding-states behavior for particles with variable range attractions”. Journal of Chemical Physics, 113, 2941.</a></p></li>
+<li><p><a class="reference external" href="https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.48.587">J.A. Barker and D. Henderson (1976), “What Is Liquid? Understanding the States of Matter”. Reviews of Modern Physics, 48, 587-671.</a></p></li>
+<li><p><a class="reference external" href="https://doi.org/10.1063/1.1674820">J.D. Weeks, D. Chandler and H.C. Andersen (1971), “Role of Repulsive Forces in Determining the Equilibrium Structure of Simple Liquids”, Journal of Chemical Physics 54, 5237-5247</a></p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="a-simple-example">
+<h1>A simple example<a class="headerlink" href="#a-simple-example" title="Link to this heading">#</a></h1>
+<p>Let’s take a look at the properties of a <a class="reference external" href="https://en.wikipedia.org/wiki/Lennard-Jones_potential">Lennard-Jones</a> (LJ), which has a length scale <span class="math notranslate nohighlight">\(\sigma\)</span> and energy scale <span class="math notranslate nohighlight">\(\epsilon\)</span>.  It is typical to consider units of length in terms of <span class="math notranslate nohighlight">\(\sigma\)</span> and energy in terms of <span class="math notranslate nohighlight">\(\epsilon\)</span>, which is the same as setting <span class="math notranslate nohighlight">\(\sigma=1\)</span> and <span class="math notranslate nohighlight">\(\epsilon=1\)</span>.  We create a LJ potential object using the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the passed function should only be a function of r, so use partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">analphipy</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">analphipy</span><span class="o">.</span><span class="n">potential</span><span class="o">.</span><span class="n">LennardJones</span><span class="p">(</span><span class="n">sig</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">r_min</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.122462048309373
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">to_measures</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;analphipy.measures.Measures at 0x7f9b630174d0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>This defines an LJ potential.  This contains things like the potential energy function <a class="reference internal" href="../../reference/generated/analphipy.potential.html#analphipy.potential.LennardJones.phi" title="analphipy.potential.LennardJones.phi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LennardJones.phi()</span></code></a>, the derivative function <a class="reference internal" href="../../reference/generated/analphipy.potential.html#analphipy.potential.LennardJones.dphidr" title="analphipy.potential.LennardJones.dphidr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LennardJones.dphidr()</span></code></a>, the location of the minimum in the potential <a class="reference internal" href="../../reference/generated/analphipy.potential.html#analphipy.potential.Analytic.r_min" title="analphipy.potential.Analytic.r_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Analytic.r_min</span></code></a>, and the value at the minimum <a class="reference internal" href="../../reference/generated/analphipy.potential.html#analphipy.potential.Analytic.phi_min" title="analphipy.potential.Analytic.phi_min"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Analytic.phi_min</span></code></a>.
+For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">r_min</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">phi_min</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;dphidr&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">dphidr</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">r_min</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">dphidr</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">r_min</span><span class="p">),</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d7df6221333e75be84c612d267d48248bf13e5a13abc105e16f0b73f09b43e5d.png" src="../../_images/d7df6221333e75be84c612d267d48248bf13e5a13abc105e16f0b73f09b43e5d.png" />
+</div>
+</div>
+<p>A common question is, is the pair potential of interest like some other, perhaps simpler, potential? For example,
+Can given potential be mapped to some ‘effective’ hard-sphere or square-well potential?  There is a deep history to
+this <a class="reference external" href="http://www.sklogwiki.org/SklogWiki/index.php/Barker_and_Henderson_perturbation_theory">question</a>. In brief, what is commonly done (and what <code class="docutils literal notranslate"><span class="pre">analphipy</span></code> is designed to do) is</p>
+<ol class="arabic simple">
+<li><p>Determine an effective (temperature dependent) hard-sphere diameter</p></li>
+<li><p>Determine an effective square-well well depth</p></li>
+<li><p>Determine an effective square-well attractive range.</p></li>
+</ol>
+<p>Please look at the above references for further information. To perform the analysis on our LJ potential, we first need to create a <a class="reference internal" href="../../reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.  This is conveniently done with the following method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nf</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">to_nf</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, the object <code class="docutils literal notranslate"><span class="pre">nf</span></code> can be used to calculate effective metrics.  For example, to calculate the effective hard-sphere diameter at an inverse temperature <span class="math notranslate nohighlight">\(\beta = 1/(k_{\rm B} T)\)</span>, where <span class="math notranslate nohighlight">\(k_{\rm B}\)</span> is Boltzmann’s constant, use the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nf</span><span class="o">.</span><span class="n">sig</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0156054202252172
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">betas</span><span class="p">,</span> <span class="p">[</span><span class="n">nf</span><span class="o">.</span><span class="n">sig</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span> <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="n">betas</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f9b54a3e3c0&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/51ac8a8e8b078c879ee3268048f7ec478531cf50d99d31a88241e883ba55e456.png" src="../../_images/51ac8a8e8b078c879ee3268048f7ec478531cf50d99d31a88241e883ba55e456.png" />
+</div>
+</div>
+<p>Likewise, the effective attractive range <code class="docutils literal notranslate"><span class="pre">lambda</span></code> can be found using</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">betas</span><span class="p">,</span> <span class="p">[</span><span class="n">nf</span><span class="o">.</span><span class="n">lam</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span> <span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="n">betas</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f9b5479f0e0&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/9d13c9fe0a26b09f744255a139c38e7c8dcd4497cd3614dcbab1c7ccb2edd00c.png" src="../../_images/9d13c9fe0a26b09f744255a139c38e7c8dcd4497cd3614dcbab1c7ccb2edd00c.png" />
+</div>
+</div>
+<p>Since it is common want to calculate such metrics over a spectrum of values of <span class="math notranslate nohighlight">\(\beta\)</span>, there is a utility method <a class="reference internal" href="../../reference/generated/analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair.table" title="analphipy.norofrenkel.NoroFrenkelPair.table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">table()</span></code></a>.  This creates a dictionary of results, which can be easily converted to a pandas DataFrame</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dictionary of values</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">nf</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">betas</span><span class="o">=</span><span class="n">betas</span><span class="p">,</span> <span class="n">props</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sig&quot;</span><span class="p">,</span> <span class="s2">&quot;eps&quot;</span><span class="p">,</span> <span class="s2">&quot;lam&quot;</span><span class="p">])</span>
+<span class="n">table</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;beta&#39;: array([0.2, 0.8, 1.4, 2. ]),
+ &#39;sig&#39;: [0.9468474615554747,
+  1.0072387682627164,
+  1.0274539879239069,
+  1.0389955732798468],
+ &#39;eps&#39;: [-1.0, -1.0, -1.0, -1.0],
+ &#39;lam&#39;: [1.6162246932413373,
+  1.4699861479698415,
+  1.3923506242906025,
+  1.333901317192492]}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>beta</th>
+      <th>sig</th>
+      <th>eps</th>
+      <th>lam</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.2</td>
+      <td>0.946847</td>
+      <td>-1.0</td>
+      <td>1.616225</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.8</td>
+      <td>1.007239</td>
+      <td>-1.0</td>
+      <td>1.469986</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.4</td>
+      <td>1.027454</td>
+      <td>-1.0</td>
+      <td>1.392351</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.0</td>
+      <td>1.038996</td>
+      <td>-1.0</td>
+      <td>1.333901</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>There are several more metrics, and potential energy functions included in the modules <a class="reference internal" href="../../reference/generated/analphipy.measures.html#module-analphipy.measures" title="analphipy.measures"><code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.measures</span></code></a> and <a class="reference internal" href="../../reference/generated/analphipy.norofrenkel.html#module-analphipy.norofrenkel" title="analphipy.norofrenkel"><code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code></a>.  Please look at the api reference for
+further information!</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="defining-your-own-potential">
+<h1>Defining your own potential<a class="headerlink" href="#defining-your-own-potential" title="Link to this heading">#</a></h1>
+<p>If you’d like to define your own potential energy function, there are two routes.  The easiest is the define a callable
+potential energy function, and use <a class="reference internal" href="../../reference/generated/analphipy.potential.html#analphipy.potential.Generic" title="analphipy.potential.Generic"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.potential.Generic</span></code></a>.  For example, you can create a LJ potential using:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_lj_func</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="c1"># function should always return an array</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">r</span>
+
+    <span class="k">return</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">12</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
+
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">analphipy</span><span class="o">.</span><span class="n">potential</span><span class="o">.</span><span class="n">Generic</span><span class="p">(</span><span class="n">phi_func</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">my_lj_func</span><span class="p">,</span> <span class="n">sig</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+<span class="n">g</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generic(r_min=None, phi_min=None, segments=None, phi_func=functools.partial(&lt;function my_lj_func at 0x7f9b54540ca0&gt;, sig=1.0, eps=1.0), dphidr_func=None)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">p</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that additional info is not required, but you can explicitly pass it if so desired.  For example, include a
+form for <span class="math notranslate nohighlight">\(d\phi(r)/dr\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_lj_deriv_func</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">/</span> <span class="n">r</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">48</span> <span class="o">*</span> <span class="n">eps</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">12</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span> <span class="o">/</span> <span class="n">r</span>
+
+
+<span class="n">sig</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">analphipy</span><span class="o">.</span><span class="n">potential</span><span class="o">.</span><span class="n">Generic</span><span class="p">(</span>
+    <span class="n">phi_func</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">my_lj_func</span><span class="p">,</span> <span class="n">sig</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">),</span>
+    <span class="n">dphidr_func</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">my_lj_deriv_func</span><span class="p">,</span> <span class="n">sig</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+    <span class="c1"># infinite integration bounds</span>
+    <span class="n">segments</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">dphidr</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">p</span><span class="o">.</span><span class="n">dphidr</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that to investigate the Noro-Frenkel metrics, the values of <code class="docutils literal notranslate"><span class="pre">r_min</span></code> and <code class="docutils literal notranslate"><span class="pre">segments</span></code> must be set.  The latter is the integration bounds including any discontinuities.  This was done analytically in <a class="reference internal" href="../../reference/generated/analphipy.potential.html#analphipy.potential.LennardJones" title="analphipy.potential.LennardJones"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.potential.LennardJones</span></code></a>, but is not set in <a class="reference internal" href="../../reference/generated/analphipy.potential.html#analphipy.potential.Generic" title="analphipy.potential.Generic"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.potential.Generic</span></code></a>.  You can pass a value directly during the creation, or set the value numerically.  For example, we could use:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NBVAL_RAISES_EXCEPTION</span>
+<span class="c1"># this will raise an error because we don&#39;t have a minimum</span>
+<span class="n">g</span><span class="o">.</span><span class="n">to_nf</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># NBVAL_RAISES_EXCEPTION</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># this will raise an error because we don&#39;t have a minimum</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">g</span><span class="o">.</span><span class="n">to_nf</span><span class="p">()</span>
+
+<span class="nn">File ~/work/analphipy/analphipy/src/analphipy/base_potential.py:300,</span> in <span class="ni">PhiAbstract.to_nf</span><span class="nt">(self, **kws)</span>
+<span class="g g-Whitespace">    </span><span class="mi">298</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">299</span>     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;must set `self.r_min` to use NoroFrenkel&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">300</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">302</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="s2">&quot;segments&quot;</span><span class="p">,</span> <span class="s2">&quot;r_min&quot;</span><span class="p">,</span> <span class="s2">&quot;phi_min&quot;</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">303</span>     <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span><span class="p">:</span>
+
+<span class="ne">ValueError</span>: must set `self.r_min` to use NoroFrenkel
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># instead set the minimum numerically with the following</span>
+<span class="n">g_with_min</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">assign_min_numeric</span><span class="p">(</span>
+    <span class="n">r0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># guess for location of minimum</span>
+    <span class="n">bounds</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>  <span class="c1"># bounds for search</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g_with_min</span><span class="o">.</span><span class="n">to_nf</span><span class="p">()</span><span class="o">.</span><span class="n">lam</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.3815918477142934
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">to_nf</span><span class="p">()</span><span class="o">.</span><span class="n">lam</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.3815918477142932
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="cut-potential">
+<h1>Cut potential<a class="headerlink" href="#cut-potential" title="Link to this heading">#</a></h1>
+<p>The classes <a class="reference internal" href="../../reference/generated/analphipy.potential.html#module-analphipy.potential" title="analphipy.potential"><code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code></a> module provides a simple means to ‘cut’ the potential.  To perform a simple cut, use the method <a class="reference internal" href="../../reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.cut" title="analphipy.base_potential.PhiBase.cut"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiBase.cut()</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_cut</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_cut</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array(0.)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.016316891136000003
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p_cut</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f9b54371d30&gt;]
+</pre></div>
+</div>
+<img alt="../../_images/a9f555dc6c51daf6f2d6717c433c197d72a56b87052e01e5484c81777327542b.png" src="../../_images/a9f555dc6c51daf6f2d6717c433c197d72a56b87052e01e5484c81777327542b.png" />
+</div>
+</div>
+<p>To perform a cut with linear force shift, use the method <a class="reference internal" href="../../reference/generated/analphipy.base_potential.html#analphipy.base_potential.PhiBase.lfs" title="analphipy.base_potential.PhiBase.lfs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiBase.lfs()</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_lfs</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">lfs</span><span class="p">(</span><span class="n">rcut</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_lfs</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array(0.)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_lfs</span><span class="o">.</span><span class="n">dphidr</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array(0.)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_cut</span><span class="o">.</span><span class="n">dphidr</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array(0.03899948)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">dphidr</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03899947745280001
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that to use the <code class="docutils literal notranslate"><span class="pre">lfs</span></code> method, <code class="docutils literal notranslate"><span class="pre">dphidr</span></code> of the class must be specified.</p>
+<p>Please take a look at the api documentation for more information!</p>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">User guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../reference/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-references">Useful references</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example">A simple example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-your-own-potential">Defining your own potential</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#cut-potential">Cut potential</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By William P. Krekelberg
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021, William P. Krekelberg.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on 2026-02-20.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1866 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Base classes (analphipy.base_potential) &#8212; analphipy 0.4.2.dev15 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=69045b54"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/analphipy.base_potential';</script>
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
+    <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"></script>
+    <script src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+    <script src="../../_static/js/leave_notice.js?v=133c5535"></script>
+    <script async="async" id="_fed_au_ua_tag" type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="License" href="../../license.html" />
+    <link rel="prev" title="Utilities module (analphipy.utils)" href="analphipy.utils.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="2026-02-20"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">analphipy 0.4.2.dev15 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    analphipy
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/usage/usage.html">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analphipy.potential.html">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</a></li>
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.norofrenkel.html">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.measures.html">Routines to calculate measures of pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.measures</span></code>)</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.utils.html">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../navigation.html">Indices and tables</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy/issues/new?title=Issue%20on%20page%20%2Freference/generated/analphipy.base_potential.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/reference/generated/analphipy.base_potential.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Base classes (analphipy.base_potential)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.segments_converter"><code class="docutils literal notranslate"><span class="pre">segments_converter()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract"><code class="docutils literal notranslate"><span class="pre">PhiAbstract</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.r_min"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.segments"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.asdict"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.new_like"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.assign"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.phi"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.minimize"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.to_nf()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.to_measures()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase"><code class="docutils literal notranslate"><span class="pre">PhiCutBase</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi_base</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.rcut"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.rcut</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.segments"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.phi"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.asdict"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.assign"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.minimize"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.new_like"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.r_min"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.to_nf()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut"><code class="docutils literal notranslate"><span class="pre">PhiCut</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.asdict"><code class="docutils literal notranslate"><span class="pre">PhiCut.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.assign"><code class="docutils literal notranslate"><span class="pre">PhiCut.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiCut.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiCut.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.minimize"><code class="docutils literal notranslate"><span class="pre">PhiCut.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.new_like"><code class="docutils literal notranslate"><span class="pre">PhiCut.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.phi"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi_base</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.r_min"><code class="docutils literal notranslate"><span class="pre">PhiCut.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.rcut"><code class="docutils literal notranslate"><span class="pre">PhiCut.rcut</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.segments"><code class="docutils literal notranslate"><span class="pre">PhiCut.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiCut.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiCut.to_nf()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS"><code class="docutils literal notranslate"><span class="pre">PhiLFS</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.asdict"><code class="docutils literal notranslate"><span class="pre">PhiLFS.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.assign"><code class="docutils literal notranslate"><span class="pre">PhiLFS.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiLFS.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiLFS.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.minimize"><code class="docutils literal notranslate"><span class="pre">PhiLFS.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.new_like"><code class="docutils literal notranslate"><span class="pre">PhiLFS.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.phi"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi_base</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.r_min"><code class="docutils literal notranslate"><span class="pre">PhiLFS.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.rcut"><code class="docutils literal notranslate"><span class="pre">PhiLFS.rcut</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.segments"><code class="docutils literal notranslate"><span class="pre">PhiLFS.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiLFS.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiLFS.to_nf()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase"><code class="docutils literal notranslate"><span class="pre">PhiBase</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.cut"><code class="docutils literal notranslate"><span class="pre">PhiBase.cut()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.lfs"><code class="docutils literal notranslate"><span class="pre">PhiBase.lfs()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.asdict"><code class="docutils literal notranslate"><span class="pre">PhiBase.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.assign"><code class="docutils literal notranslate"><span class="pre">PhiBase.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiBase.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiBase.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.minimize"><code class="docutils literal notranslate"><span class="pre">PhiBase.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.new_like"><code class="docutils literal notranslate"><span class="pre">PhiBase.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.phi"><code class="docutils literal notranslate"><span class="pre">PhiBase.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiBase.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.r_min"><code class="docutils literal notranslate"><span class="pre">PhiBase.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.segments"><code class="docutils literal notranslate"><span class="pre">PhiBase.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiBase.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiBase.to_nf()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="base-classes-analphipy-base-potential">
+<span id="module-analphipy.base_potential"></span><h1>Base classes (<a class="reference internal" href="#module-analphipy.base_potential" title="analphipy.base_potential"><code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code></a>)<a class="headerlink" href="#base-classes-analphipy-base-potential" title="Link to this heading">#</a></h1>
+</section>
+<p><strong>Functions:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.segments_converter" title="analphipy.base_potential.segments_converter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments_converter</span></code></a>(segments)</p></td>
+<td><p>Make sure segments are in correct format.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhiAbstract</span></code></a>(*[, r_min, phi_min, segments])</p></td>
+<td><p>Abstract class from which base classes inherit.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase" title="analphipy.base_potential.PhiCutBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhiCutBase</span></code></a>(phi_base, rcut, *[, r_min, phi_min])</p></td>
+<td><p>Base Class for creating cut potential from base potential</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut" title="analphipy.base_potential.PhiCut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhiCut</span></code></a>(phi_base, rcut, *[, r_min, phi_min])</p></td>
+<td><p>Pair potential cut at position <code class="docutils literal notranslate"><span class="pre">r_cut</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS" title="analphipy.base_potential.PhiLFS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhiLFS</span></code></a>(phi_base, rcut, *[, r_min, phi_min])</p></td>
+<td><p>Pair potential cut and linear force shifted at <code class="docutils literal notranslate"><span class="pre">r_cut</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase" title="analphipy.base_potential.PhiBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhiBase</span></code></a>(*[, r_min, phi_min, segments])</p></td>
+<td><p>Base class for potentials.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="analphipy.base_potential.segments_converter">
+<span class="sig-prename descclassname"><span class="pre">analphipy.base_potential.</span></span><span class="sig-name descname"><span class="pre">segments_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segments</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L30-L32"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.segments_converter" title="Link to this definition">#</a></dt>
+<dd><p>Make sure segments are in correct format.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.base_potential.</span></span><span class="sig-name descname"><span class="pre">PhiAbstract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L35-L327"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Abstract class from which base classes inherit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Location of minimum in potential energy.</p></li>
+<li><p><strong>phi_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Value of potential energy at minimum.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.r_min" title="analphipy.base_potential.PhiAbstract.r_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_min</span></code></a></p></td>
+<td><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.phi_min" title="analphipy.base_potential.PhiAbstract.phi_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_min</span></code></a></p></td>
+<td><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.segments" title="analphipy.base_potential.PhiAbstract.segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments</span></code></a></p></td>
+<td><p>Integration limits</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.asdict" title="analphipy.base_potential.PhiAbstract.asdict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asdict</span></code></a>()</p></td>
+<td><p>Convert object to dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.new_like" title="analphipy.base_potential.PhiAbstract.new_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_like</span></code></a>(**kws)</p></td>
+<td><p>Create a new object with optional parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.assign" title="analphipy.base_potential.PhiAbstract.assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign</span></code></a>(**kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiAbstract.new_like" title="analphipy.base_potential.PhiAbstract.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.phi" title="analphipy.base_potential.PhiAbstract.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.dphidr" title="analphipy.base_potential.PhiAbstract.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.minimize" title="analphipy.base_potential.PhiAbstract.minimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize</span></code></a>(r0[, bounds])</p></td>
+<td><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.assign_min_numeric" title="analphipy.base_potential.PhiAbstract.assign_min_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_min_numeric</span></code></a>(r0[, bounds])</p></td>
+<td><p>Create new object with minima set by numerical minimization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.to_nf" title="analphipy.base_potential.PhiAbstract.to_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nf</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiAbstract.to_measures" title="analphipy.base_potential.PhiAbstract.to_measures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_measures</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.r_min">
+<span class="sig-name descname"><span class="pre">r_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.r_min" title="Link to this definition">#</a></dt>
+<dd><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.phi_min">
+<span class="sig-name descname"><span class="pre">phi_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.phi_min" title="Link to this definition">#</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.segments">
+<span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.segments" title="Link to this definition">#</a></dt>
+<dd><p>Integration limits</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.asdict">
+<span class="sig-name descname"><span class="pre">asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L69-L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.asdict" title="Link to this definition">#</a></dt>
+<dd><p>Convert object to dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.new_like">
+<span class="sig-name descname"><span class="pre">new_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L73-L83"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.new_like" title="Link to this definition">#</a></dt>
+<dd><p>Create a new object with optional parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – <cite>attribute</cite>, <cite>value</cite> pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.assign">
+<span class="sig-name descname"><span class="pre">assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L85-L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.assign" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiAbstract.new_like" title="analphipy.base_potential.PhiAbstract.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L175-L191"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L193-L211"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L213-L267"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.minimize" title="Link to this definition">#</a></dt>
+<dd><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Guess for position of minimum.
+If value is <cite>‘mean’</cite>, then use <code class="docutils literal notranslate"><span class="pre">r0</span> <span class="pre">=</span> <span class="pre">mean(bounds)</span></code>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">{'segments'}</span></code>, <em>optional</em>) – Bounds for minimization search.
+If tuple, should be of form <code class="docutils literal notranslate"><span class="pre">bounds=(lower_bound,</span> <span class="pre">upper_bound)</span></code>.
+If <cite>‘segments</cite>, then <code class="docutils literal notranslate"><span class="pre">bounds=(segments[0],</span> <span class="pre">segments[-1])</span></code>.
+If None, no bounds used.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.minimize_phi()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code> is found location of minimum.</p></li>
+<li><p><strong>phimin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code>, i.e., the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output class from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_phi</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.assign_min_numeric">
+<span class="sig-name descname"><span class="pre">assign_min_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L269-L281"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.assign_min_numeric" title="Link to this definition">#</a></dt>
+<dd><p>Create new object with minima set by numerical minimization.</p>
+<p>call <a class="reference internal" href="#analphipy.base_potential.PhiAbstract.minimize" title="analphipy.base_potential.PhiAbstract.minimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">minimize()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.to_nf">
+<span class="sig-name descname"><span class="pre">to_nf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L283-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.to_nf" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite>, <cite>r_min’, `phi_min</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiAbstract.to_measures">
+<span class="sig-name descname"><span class="pre">to_measures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L308-L327"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiAbstract.to_measures" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.base_potential.</span></span><span class="sig-name descname"><span class="pre">PhiCutBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L333-L419"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiAbstract</span></code></a></p>
+<p>Base Class for creating cut potential from base potential</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}\phi_{\rm cut}(r) =
+    \begin{cases}
+        \phi(r) + {\text _vcorrect}(r) &amp; r &lt; r_{\rm cut} \\
+        0 &amp; r_{\rm cut} \leq r
+    \end{cases}\end{split}\\\begin{split}\frac{d \phi_{\rm cut}(r)}{d r} =
+    \begin{cases}
+        \frac{d \phi(r)}{d r} + {\text _dvdrcorrect}(r) &amp; r &lt; r_{\rm cut} \\
+        0 &amp; r_{\rm cut} \leq r
+    \end{cases}\end{split}\end{aligned}\end{align} \]</div>
+<p>So, for example, for just cut, <cite>_vcorrect(r) = -v(rcut)</cite>, <cite>dvrcut=0</cite>,
+and for lfs, <cite>_vcorrect(r) = -v(rcut) - dv(rcut)/dr (r - rcut)</cite>
+<cite>_dvcorrect(r) = …</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Location of minimum in potential energy.</p></li>
+<li><p><strong>phi_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Value of potential energy at minimum.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.phi_base" title="analphipy.base_potential.PhiCutBase.phi_base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_base</span></code></a></p></td>
+<td><p>Instance of (sub)class of <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.rcut" title="analphipy.base_potential.PhiCutBase.rcut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rcut</span></code></a></p></td>
+<td><p>Position to cut the potential</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.segments" title="analphipy.base_potential.PhiCutBase.segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments</span></code></a></p></td>
+<td><p>Integration limits</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.phi_min" title="analphipy.base_potential.PhiCutBase.phi_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_min</span></code></a></p></td>
+<td><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.r_min" title="analphipy.base_potential.PhiCutBase.r_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_min</span></code></a></p></td>
+<td><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.phi" title="analphipy.base_potential.PhiCutBase.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.dphidr" title="analphipy.base_potential.PhiCutBase.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.asdict" title="analphipy.base_potential.PhiCutBase.asdict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asdict</span></code></a>()</p></td>
+<td><p>Convert object to dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.assign" title="analphipy.base_potential.PhiCutBase.assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign</span></code></a>(**kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiCutBase.new_like" title="analphipy.base_potential.PhiCutBase.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.assign_min_numeric" title="analphipy.base_potential.PhiCutBase.assign_min_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_min_numeric</span></code></a>(r0[, bounds])</p></td>
+<td><p>Create new object with minima set by numerical minimization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.minimize" title="analphipy.base_potential.PhiCutBase.minimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize</span></code></a>(r0[, bounds])</p></td>
+<td><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.new_like" title="analphipy.base_potential.PhiCutBase.new_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_like</span></code></a>(**kws)</p></td>
+<td><p>Create a new object with optional parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.to_measures" title="analphipy.base_potential.PhiCutBase.to_measures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_measures</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCutBase.to_nf" title="analphipy.base_potential.PhiCutBase.to_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nf</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.phi_base">
+<span class="sig-name descname"><span class="pre">phi_base</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.phi_base" title="Link to this definition">#</a></dt>
+<dd><p>Instance of (sub)class of <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.rcut">
+<span class="sig-name descname"><span class="pre">rcut</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.rcut" title="Link to this definition">#</a></dt>
+<dd><p>Position to cut the potential</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.segments">
+<span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.segments" title="Link to this definition">#</a></dt>
+<dd><p>Integration limits</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L386-L399"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L401-L413"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.asdict">
+<span class="sig-name descname"><span class="pre">asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L69-L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.asdict" title="Link to this definition">#</a></dt>
+<dd><p>Convert object to dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.assign">
+<span class="sig-name descname"><span class="pre">assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L85-L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.assign" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiCutBase.new_like" title="analphipy.base_potential.PhiCutBase.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.assign_min_numeric">
+<span class="sig-name descname"><span class="pre">assign_min_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L269-L281"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.assign_min_numeric" title="Link to this definition">#</a></dt>
+<dd><p>Create new object with minima set by numerical minimization.</p>
+<p>call <a class="reference internal" href="#analphipy.base_potential.PhiCutBase.minimize" title="analphipy.base_potential.PhiCutBase.minimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">minimize()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L213-L267"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.minimize" title="Link to this definition">#</a></dt>
+<dd><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Guess for position of minimum.
+If value is <cite>‘mean’</cite>, then use <code class="docutils literal notranslate"><span class="pre">r0</span> <span class="pre">=</span> <span class="pre">mean(bounds)</span></code>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">{'segments'}</span></code>, <em>optional</em>) – Bounds for minimization search.
+If tuple, should be of form <code class="docutils literal notranslate"><span class="pre">bounds=(lower_bound,</span> <span class="pre">upper_bound)</span></code>.
+If <cite>‘segments</cite>, then <code class="docutils literal notranslate"><span class="pre">bounds=(segments[0],</span> <span class="pre">segments[-1])</span></code>.
+If None, no bounds used.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.minimize_phi()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code> is found location of minimum.</p></li>
+<li><p><strong>phimin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code>, i.e., the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output class from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_phi</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.new_like">
+<span class="sig-name descname"><span class="pre">new_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L73-L83"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.new_like" title="Link to this definition">#</a></dt>
+<dd><p>Create a new object with optional parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – <cite>attribute</cite>, <cite>value</cite> pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.phi_min">
+<span class="sig-name descname"><span class="pre">phi_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.phi_min" title="Link to this definition">#</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.r_min">
+<span class="sig-name descname"><span class="pre">r_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.r_min" title="Link to this definition">#</a></dt>
+<dd><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.to_measures">
+<span class="sig-name descname"><span class="pre">to_measures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L308-L327"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.to_measures" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCutBase.to_nf">
+<span class="sig-name descname"><span class="pre">to_nf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L283-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCutBase.to_nf" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite>, <cite>r_min’, `phi_min</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.base_potential.</span></span><span class="sig-name descname"><span class="pre">PhiCut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L422-L458"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.base_potential.PhiCutBase" title="analphipy.base_potential.PhiCutBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiCutBase</span></code></a></p>
+<p>Pair potential cut at position <code class="docutils literal notranslate"><span class="pre">r_cut</span></code>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi_{\rm cut}(r) =
+    \begin{cases}
+        \phi(r) - \phi(r_{\rm cut})  &amp; r &lt; r_{\rm cut} \\
+        0 &amp; r_{\rm cut} \leq r
+    \end{cases}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi_base</strong> (<a class="reference internal" href="#analphipy.base_potential.PhiBase" title="analphipy.base_potential.PhiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiBase</span></code></a> instance) – Potential class to perform cut on.</p></li>
+<li><p><strong>rcut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Where to ‘cut’ the potential.</p></li>
+<li><p><strong>r_min</strong> – The description is missing.</p></li>
+<li><p><strong>phi_min</strong> – The description is missing.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.asdict" title="analphipy.base_potential.PhiCut.asdict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asdict</span></code></a>()</p></td>
+<td><p>Convert object to dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.assign" title="analphipy.base_potential.PhiCut.assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign</span></code></a>(**kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiCut.new_like" title="analphipy.base_potential.PhiCut.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.assign_min_numeric" title="analphipy.base_potential.PhiCut.assign_min_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_min_numeric</span></code></a>(r0[, bounds])</p></td>
+<td><p>Create new object with minima set by numerical minimization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.dphidr" title="analphipy.base_potential.PhiCut.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.minimize" title="analphipy.base_potential.PhiCut.minimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize</span></code></a>(r0[, bounds])</p></td>
+<td><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.new_like" title="analphipy.base_potential.PhiCut.new_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_like</span></code></a>(**kws)</p></td>
+<td><p>Create a new object with optional parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.phi" title="analphipy.base_potential.PhiCut.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.to_measures" title="analphipy.base_potential.PhiCut.to_measures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_measures</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.to_nf" title="analphipy.base_potential.PhiCut.to_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nf</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.phi_base" title="analphipy.base_potential.PhiCut.phi_base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_base</span></code></a></p></td>
+<td><p>Instance of (sub)class of <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.phi_min" title="analphipy.base_potential.PhiCut.phi_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_min</span></code></a></p></td>
+<td><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.r_min" title="analphipy.base_potential.PhiCut.r_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_min</span></code></a></p></td>
+<td><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.rcut" title="analphipy.base_potential.PhiCut.rcut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rcut</span></code></a></p></td>
+<td><p>Position to cut the potential</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiCut.segments" title="analphipy.base_potential.PhiCut.segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments</span></code></a></p></td>
+<td><p>Integration limits</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.asdict">
+<span class="sig-name descname"><span class="pre">asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L69-L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.asdict" title="Link to this definition">#</a></dt>
+<dd><p>Convert object to dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.assign">
+<span class="sig-name descname"><span class="pre">assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L85-L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.assign" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiCut.new_like" title="analphipy.base_potential.PhiCut.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.assign_min_numeric">
+<span class="sig-name descname"><span class="pre">assign_min_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L269-L281"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.assign_min_numeric" title="Link to this definition">#</a></dt>
+<dd><p>Create new object with minima set by numerical minimization.</p>
+<p>call <a class="reference internal" href="#analphipy.base_potential.PhiCut.minimize" title="analphipy.base_potential.PhiCut.minimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">minimize()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L401-L413"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L213-L267"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.minimize" title="Link to this definition">#</a></dt>
+<dd><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Guess for position of minimum.
+If value is <cite>‘mean’</cite>, then use <code class="docutils literal notranslate"><span class="pre">r0</span> <span class="pre">=</span> <span class="pre">mean(bounds)</span></code>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">{'segments'}</span></code>, <em>optional</em>) – Bounds for minimization search.
+If tuple, should be of form <code class="docutils literal notranslate"><span class="pre">bounds=(lower_bound,</span> <span class="pre">upper_bound)</span></code>.
+If <cite>‘segments</cite>, then <code class="docutils literal notranslate"><span class="pre">bounds=(segments[0],</span> <span class="pre">segments[-1])</span></code>.
+If None, no bounds used.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.minimize_phi()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code> is found location of minimum.</p></li>
+<li><p><strong>phimin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code>, i.e., the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output class from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_phi</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.new_like">
+<span class="sig-name descname"><span class="pre">new_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L73-L83"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.new_like" title="Link to this definition">#</a></dt>
+<dd><p>Create a new object with optional parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – <cite>attribute</cite>, <cite>value</cite> pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L386-L399"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.phi_base">
+<span class="sig-name descname"><span class="pre">phi_base</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCut.phi_base" title="Link to this definition">#</a></dt>
+<dd><p>Instance of (sub)class of <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.phi_min">
+<span class="sig-name descname"><span class="pre">phi_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCut.phi_min" title="Link to this definition">#</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.r_min">
+<span class="sig-name descname"><span class="pre">r_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCut.r_min" title="Link to this definition">#</a></dt>
+<dd><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.rcut">
+<span class="sig-name descname"><span class="pre">rcut</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCut.rcut" title="Link to this definition">#</a></dt>
+<dd><p>Position to cut the potential</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.segments">
+<span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#analphipy.base_potential.PhiCut.segments" title="Link to this definition">#</a></dt>
+<dd><p>Integration limits</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.to_measures">
+<span class="sig-name descname"><span class="pre">to_measures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L308-L327"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.to_measures" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiCut.to_nf">
+<span class="sig-name descname"><span class="pre">to_nf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L283-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiCut.to_nf" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite>, <cite>r_min’, `phi_min</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.base_potential.</span></span><span class="sig-name descname"><span class="pre">PhiLFS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L461-L495"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.base_potential.PhiCutBase" title="analphipy.base_potential.PhiCutBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiCutBase</span></code></a></p>
+<p>Pair potential cut and linear force shifted at <code class="docutils literal notranslate"><span class="pre">r_cut</span></code>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi_{\rm lfs}(r) =
+    \begin{cases}
+        \phi(r)
+        - \left( \frac{d \phi}{d r} \right)_{\rm cut} (r - r_{\rm cut})
+        - \phi(r_{\rm cut}) &amp; r &lt; r_{\rm cut} \\
+        0 &amp; r_{\rm cut} &lt; r
+    \end{cases}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi_base</strong> (<a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a>)</p></li>
+<li><p><strong>rcut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Position to cut the potential.</p></li>
+<li><p><strong>r_min</strong> – The description is missing.</p></li>
+<li><p><strong>phi_min</strong> – The description is missing.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.asdict" title="analphipy.base_potential.PhiLFS.asdict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asdict</span></code></a>()</p></td>
+<td><p>Convert object to dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.assign" title="analphipy.base_potential.PhiLFS.assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign</span></code></a>(**kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiLFS.new_like" title="analphipy.base_potential.PhiLFS.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.assign_min_numeric" title="analphipy.base_potential.PhiLFS.assign_min_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_min_numeric</span></code></a>(r0[, bounds])</p></td>
+<td><p>Create new object with minima set by numerical minimization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.dphidr" title="analphipy.base_potential.PhiLFS.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.minimize" title="analphipy.base_potential.PhiLFS.minimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize</span></code></a>(r0[, bounds])</p></td>
+<td><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.new_like" title="analphipy.base_potential.PhiLFS.new_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_like</span></code></a>(**kws)</p></td>
+<td><p>Create a new object with optional parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.phi" title="analphipy.base_potential.PhiLFS.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.to_measures" title="analphipy.base_potential.PhiLFS.to_measures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_measures</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.to_nf" title="analphipy.base_potential.PhiLFS.to_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nf</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.phi_base" title="analphipy.base_potential.PhiLFS.phi_base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_base</span></code></a></p></td>
+<td><p>Instance of (sub)class of <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.phi_min" title="analphipy.base_potential.PhiLFS.phi_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_min</span></code></a></p></td>
+<td><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.r_min" title="analphipy.base_potential.PhiLFS.r_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_min</span></code></a></p></td>
+<td><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.rcut" title="analphipy.base_potential.PhiLFS.rcut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rcut</span></code></a></p></td>
+<td><p>Position to cut the potential</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiLFS.segments" title="analphipy.base_potential.PhiLFS.segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments</span></code></a></p></td>
+<td><p>Integration limits</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.asdict">
+<span class="sig-name descname"><span class="pre">asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L69-L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.asdict" title="Link to this definition">#</a></dt>
+<dd><p>Convert object to dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.assign">
+<span class="sig-name descname"><span class="pre">assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L85-L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.assign" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiLFS.new_like" title="analphipy.base_potential.PhiLFS.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.assign_min_numeric">
+<span class="sig-name descname"><span class="pre">assign_min_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L269-L281"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.assign_min_numeric" title="Link to this definition">#</a></dt>
+<dd><p>Create new object with minima set by numerical minimization.</p>
+<p>call <a class="reference internal" href="#analphipy.base_potential.PhiLFS.minimize" title="analphipy.base_potential.PhiLFS.minimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">minimize()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L401-L413"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L213-L267"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.minimize" title="Link to this definition">#</a></dt>
+<dd><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Guess for position of minimum.
+If value is <cite>‘mean’</cite>, then use <code class="docutils literal notranslate"><span class="pre">r0</span> <span class="pre">=</span> <span class="pre">mean(bounds)</span></code>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">{'segments'}</span></code>, <em>optional</em>) – Bounds for minimization search.
+If tuple, should be of form <code class="docutils literal notranslate"><span class="pre">bounds=(lower_bound,</span> <span class="pre">upper_bound)</span></code>.
+If <cite>‘segments</cite>, then <code class="docutils literal notranslate"><span class="pre">bounds=(segments[0],</span> <span class="pre">segments[-1])</span></code>.
+If None, no bounds used.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.minimize_phi()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code> is found location of minimum.</p></li>
+<li><p><strong>phimin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code>, i.e., the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output class from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_phi</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.new_like">
+<span class="sig-name descname"><span class="pre">new_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L73-L83"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.new_like" title="Link to this definition">#</a></dt>
+<dd><p>Create a new object with optional parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – <cite>attribute</cite>, <cite>value</cite> pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L386-L399"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.phi_base">
+<span class="sig-name descname"><span class="pre">phi_base</span></span><a class="headerlink" href="#analphipy.base_potential.PhiLFS.phi_base" title="Link to this definition">#</a></dt>
+<dd><p>Instance of (sub)class of <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.phi_min">
+<span class="sig-name descname"><span class="pre">phi_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiLFS.phi_min" title="Link to this definition">#</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.r_min">
+<span class="sig-name descname"><span class="pre">r_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiLFS.r_min" title="Link to this definition">#</a></dt>
+<dd><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.rcut">
+<span class="sig-name descname"><span class="pre">rcut</span></span><a class="headerlink" href="#analphipy.base_potential.PhiLFS.rcut" title="Link to this definition">#</a></dt>
+<dd><p>Position to cut the potential</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.segments">
+<span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#analphipy.base_potential.PhiLFS.segments" title="Link to this definition">#</a></dt>
+<dd><p>Integration limits</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.to_measures">
+<span class="sig-name descname"><span class="pre">to_measures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L308-L327"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.to_measures" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiLFS.to_nf">
+<span class="sig-name descname"><span class="pre">to_nf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L283-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiLFS.to_nf" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite>, <cite>r_min’, `phi_min</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.base_potential.</span></span><span class="sig-name descname"><span class="pre">PhiBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L498-L509"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiAbstract</span></code></a></p>
+<p>Base class for potentials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Location of minimum in potential energy.</p></li>
+<li><p><strong>phi_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Value of potential energy at minimum.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.cut" title="analphipy.base_potential.PhiBase.cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code></a>(rcut)</p></td>
+<td><p>Create a <a class="reference internal" href="#analphipy.base_potential.PhiCut" title="analphipy.base_potential.PhiCut"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiCut</span></code></a> potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.lfs" title="analphipy.base_potential.PhiBase.lfs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lfs</span></code></a>(rcut)</p></td>
+<td><p>Create a <a class="reference internal" href="#analphipy.base_potential.PhiLFS" title="analphipy.base_potential.PhiLFS"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiLFS</span></code></a> potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.asdict" title="analphipy.base_potential.PhiBase.asdict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asdict</span></code></a>()</p></td>
+<td><p>Convert object to dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.assign" title="analphipy.base_potential.PhiBase.assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign</span></code></a>(**kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiBase.new_like" title="analphipy.base_potential.PhiBase.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.assign_min_numeric" title="analphipy.base_potential.PhiBase.assign_min_numeric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_min_numeric</span></code></a>(r0[, bounds])</p></td>
+<td><p>Create new object with minima set by numerical minimization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.dphidr" title="analphipy.base_potential.PhiBase.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.minimize" title="analphipy.base_potential.PhiBase.minimize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize</span></code></a>(r0[, bounds])</p></td>
+<td><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.new_like" title="analphipy.base_potential.PhiBase.new_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_like</span></code></a>(**kws)</p></td>
+<td><p>Create a new object with optional parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.phi" title="analphipy.base_potential.PhiBase.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.to_measures" title="analphipy.base_potential.PhiBase.to_measures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_measures</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.to_nf" title="analphipy.base_potential.PhiBase.to_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nf</span></code></a>(**kws)</p></td>
+<td><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.phi_min" title="analphipy.base_potential.PhiBase.phi_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_min</span></code></a></p></td>
+<td><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.r_min" title="analphipy.base_potential.PhiBase.r_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_min</span></code></a></p></td>
+<td><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.base_potential.PhiBase.segments" title="analphipy.base_potential.PhiBase.segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments</span></code></a></p></td>
+<td><p>Integration limits</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.cut">
+<span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L503-L505"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.cut" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="#analphipy.base_potential.PhiCut" title="analphipy.base_potential.PhiCut"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiCut</span></code></a> potential.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.lfs">
+<span class="sig-name descname"><span class="pre">lfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rcut</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L507-L509"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.lfs" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="#analphipy.base_potential.PhiLFS" title="analphipy.base_potential.PhiLFS"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiLFS</span></code></a> potential.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.asdict">
+<span class="sig-name descname"><span class="pre">asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L69-L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.asdict" title="Link to this definition">#</a></dt>
+<dd><p>Convert object to dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.assign">
+<span class="sig-name descname"><span class="pre">assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L85-L87"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.assign" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.base_potential.PhiBase.new_like" title="analphipy.base_potential.PhiBase.new_like"><code class="xref py py-meth docutils literal notranslate"><span class="pre">new_like()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.assign_min_numeric">
+<span class="sig-name descname"><span class="pre">assign_min_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L269-L281"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.assign_min_numeric" title="Link to this definition">#</a></dt>
+<dd><p>Create new object with minima set by numerical minimization.</p>
+<p>call <a class="reference internal" href="#analphipy.base_potential.PhiBase.minimize" title="analphipy.base_potential.PhiBase.minimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">minimize()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L193-L211"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L213-L267"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.minimize" title="Link to this definition">#</a></dt>
+<dd><p>Determine position <cite>r</cite> where <code class="docutils literal notranslate"><span class="pre">phi</span></code> is minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Guess for position of minimum.
+If value is <cite>‘mean’</cite>, then use <code class="docutils literal notranslate"><span class="pre">r0</span> <span class="pre">=</span> <span class="pre">mean(bounds)</span></code>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="docutils literal notranslate"><span class="pre">{'segments'}</span></code>, <em>optional</em>) – Bounds for minimization search.
+If tuple, should be of form <code class="docutils literal notranslate"><span class="pre">bounds=(lower_bound,</span> <span class="pre">upper_bound)</span></code>.
+If <cite>‘segments</cite>, then <code class="docutils literal notranslate"><span class="pre">bounds=(segments[0],</span> <span class="pre">segments[-1])</span></code>.
+If None, no bounds used.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.minimize_phi()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code> is found location of minimum.</p></li>
+<li><p><strong>phimin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">phi(rmin)</span></code>, i.e., the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output class from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.minimize()</span></code></a>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_phi</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.new_like">
+<span class="sig-name descname"><span class="pre">new_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L73-L83"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.new_like" title="Link to this definition">#</a></dt>
+<dd><p>Create a new object with optional parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – <cite>attribute</cite>, <cite>value</cite> pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L175-L191"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.phi_min">
+<span class="sig-name descname"><span class="pre">phi_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiBase.phi_min" title="Link to this definition">#</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.r_min">
+<span class="sig-name descname"><span class="pre">r_min</span></span><a class="headerlink" href="#analphipy.base_potential.PhiBase.r_min" title="Link to this definition">#</a></dt>
+<dd><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.segments">
+<span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#analphipy.base_potential.PhiBase.segments" title="Link to this definition">#</a></dt>
+<dd><p>Integration limits</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.to_measures">
+<span class="sig-name descname"><span class="pre">to_measures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L308-L327"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.to_measures" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.measures.html#analphipy.measures.Measures" title="analphipy.measures.Measures"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.measures.Measures</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.base_potential.PhiBase.to_nf">
+<span class="sig-name descname"><span class="pre">to_nf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/base_potential.py#L283-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.base_potential.PhiBase.to_nf" title="Link to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a> constructor.
+parameters <cite>phi</cite>, <cite>semgnets</cite>, <cite>r_min’, `phi_min</cite> default to values from <cite>self</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nf</strong> (<a class="reference internal" href="analphipy.norofrenkel.html#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.norofrenkel.NoroFrenkelPair</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="analphipy.utils.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../license.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">License</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.segments_converter"><code class="docutils literal notranslate"><span class="pre">segments_converter()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract"><code class="docutils literal notranslate"><span class="pre">PhiAbstract</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.r_min"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.segments"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.asdict"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.new_like"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.assign"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.phi"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.minimize"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.to_nf()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiAbstract.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiAbstract.to_measures()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase"><code class="docutils literal notranslate"><span class="pre">PhiCutBase</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi_base</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.rcut"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.rcut</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.segments"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.phi"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.asdict"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.assign"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.minimize"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.new_like"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.r_min"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCutBase.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiCutBase.to_nf()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut"><code class="docutils literal notranslate"><span class="pre">PhiCut</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.asdict"><code class="docutils literal notranslate"><span class="pre">PhiCut.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.assign"><code class="docutils literal notranslate"><span class="pre">PhiCut.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiCut.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiCut.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.minimize"><code class="docutils literal notranslate"><span class="pre">PhiCut.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.new_like"><code class="docutils literal notranslate"><span class="pre">PhiCut.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.phi"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi_base</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiCut.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.r_min"><code class="docutils literal notranslate"><span class="pre">PhiCut.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.rcut"><code class="docutils literal notranslate"><span class="pre">PhiCut.rcut</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.segments"><code class="docutils literal notranslate"><span class="pre">PhiCut.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiCut.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiCut.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiCut.to_nf()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS"><code class="docutils literal notranslate"><span class="pre">PhiLFS</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.asdict"><code class="docutils literal notranslate"><span class="pre">PhiLFS.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.assign"><code class="docutils literal notranslate"><span class="pre">PhiLFS.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiLFS.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiLFS.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.minimize"><code class="docutils literal notranslate"><span class="pre">PhiLFS.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.new_like"><code class="docutils literal notranslate"><span class="pre">PhiLFS.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.phi"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.phi_base"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi_base</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiLFS.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.r_min"><code class="docutils literal notranslate"><span class="pre">PhiLFS.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.rcut"><code class="docutils literal notranslate"><span class="pre">PhiLFS.rcut</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.segments"><code class="docutils literal notranslate"><span class="pre">PhiLFS.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiLFS.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiLFS.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiLFS.to_nf()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase"><code class="docutils literal notranslate"><span class="pre">PhiBase</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.cut"><code class="docutils literal notranslate"><span class="pre">PhiBase.cut()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.lfs"><code class="docutils literal notranslate"><span class="pre">PhiBase.lfs()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.asdict"><code class="docutils literal notranslate"><span class="pre">PhiBase.asdict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.assign"><code class="docutils literal notranslate"><span class="pre">PhiBase.assign()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.assign_min_numeric"><code class="docutils literal notranslate"><span class="pre">PhiBase.assign_min_numeric()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.dphidr"><code class="docutils literal notranslate"><span class="pre">PhiBase.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.minimize"><code class="docutils literal notranslate"><span class="pre">PhiBase.minimize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.new_like"><code class="docutils literal notranslate"><span class="pre">PhiBase.new_like()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.phi"><code class="docutils literal notranslate"><span class="pre">PhiBase.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.phi_min"><code class="docutils literal notranslate"><span class="pre">PhiBase.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.r_min"><code class="docutils literal notranslate"><span class="pre">PhiBase.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.segments"><code class="docutils literal notranslate"><span class="pre">PhiBase.segments</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.to_measures"><code class="docutils literal notranslate"><span class="pre">PhiBase.to_measures()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.base_potential.PhiBase.to_nf"><code class="docutils literal notranslate"><span class="pre">PhiBase.to_nf()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By William P. Krekelberg
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021, William P. Krekelberg.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on 2026-02-20.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1454 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Classes/routines for pair potentials (analphipy.potential) &#8212; analphipy 0.4.2.dev15 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=69045b54"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/analphipy.potential';</script>
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
+    <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"></script>
+    <script src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+    <script src="../../_static/js/leave_notice.js?v=133c5535"></script>
+    <script async="async" id="_fed_au_ua_tag" type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Noro-Frenkel pair potential analysis (analphipy.norofrenkel)" href="analphipy.norofrenkel.html" />
+    <link rel="prev" title="API Reference" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="2026-02-20"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">analphipy 0.4.2.dev15 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    analphipy
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/usage/usage.html">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</a></li>
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.norofrenkel.html">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.measures.html">Routines to calculate measures of pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.measures</span></code>)</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.utils.html">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.base_potential.html">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../navigation.html">Indices and tables</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy/issues/new?title=Issue%20on%20page%20%2Freference/generated/analphipy.potential.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/reference/generated/analphipy.potential.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Classes/routines for pair potentials (analphipy.potential)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic"><code class="docutils literal notranslate"><span class="pre">Generic</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.phi_func"><code class="docutils literal notranslate"><span class="pre">Generic.phi_func</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.dphidr_func"><code class="docutils literal notranslate"><span class="pre">Generic.dphidr_func</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.phi"><code class="docutils literal notranslate"><span class="pre">Generic.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.dphidr"><code class="docutils literal notranslate"><span class="pre">Generic.dphidr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic"><code class="docutils literal notranslate"><span class="pre">Analytic</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic.r_min"><code class="docutils literal notranslate"><span class="pre">Analytic.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic.phi_min"><code class="docutils literal notranslate"><span class="pre">Analytic.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic.segments"><code class="docutils literal notranslate"><span class="pre">Analytic.segments</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones"><code class="docutils literal notranslate"><span class="pre">LennardJones</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.sig"><code class="docutils literal notranslate"><span class="pre">LennardJones.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.eps"><code class="docutils literal notranslate"><span class="pre">LennardJones.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.phi"><code class="docutils literal notranslate"><span class="pre">LennardJones.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.dphidr"><code class="docutils literal notranslate"><span class="pre">LennardJones.dphidr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.n"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.n</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.m"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.m</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.sig"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.eps"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.phi"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.dphidr"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.dphidr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa"><code class="docutils literal notranslate"><span class="pre">Yukawa</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.z"><code class="docutils literal notranslate"><span class="pre">Yukawa.z</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.sig"><code class="docutils literal notranslate"><span class="pre">Yukawa.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.eps"><code class="docutils literal notranslate"><span class="pre">Yukawa.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.phi"><code class="docutils literal notranslate"><span class="pre">Yukawa.phi()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.HardSphere"><code class="docutils literal notranslate"><span class="pre">HardSphere</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.HardSphere.sig"><code class="docutils literal notranslate"><span class="pre">HardSphere.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.HardSphere.phi"><code class="docutils literal notranslate"><span class="pre">HardSphere.phi()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell"><code class="docutils literal notranslate"><span class="pre">SquareWell</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.sig"><code class="docutils literal notranslate"><span class="pre">SquareWell.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.eps"><code class="docutils literal notranslate"><span class="pre">SquareWell.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.lam"><code class="docutils literal notranslate"><span class="pre">SquareWell.lam</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.phi"><code class="docutils literal notranslate"><span class="pre">SquareWell.phi()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable"><code class="docutils literal notranslate"><span class="pre">CubicTable</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.bounds"><code class="docutils literal notranslate"><span class="pre">CubicTable.bounds</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_table</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi_left"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_left</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi_right"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_right</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.dphi_left"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphi_left</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.dphi_right"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphi_right</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.from_phi"><code class="docutils literal notranslate"><span class="pre">CubicTable.from_phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.size"><code class="docutils literal notranslate"><span class="pre">CubicTable.size</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.smin"><code class="docutils literal notranslate"><span class="pre">CubicTable.smin</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.smax"><code class="docutils literal notranslate"><span class="pre">CubicTable.smax</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phidphi"><code class="docutils literal notranslate"><span class="pre">CubicTable.phidphi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.dphidr"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.rsq_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.rsq_table</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.r_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.r_table</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.factory"><code class="docutils literal notranslate"><span class="pre">factory()</span></code></a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="classes-routines-for-pair-potentials-analphipy-potential">
+<span id="module-analphipy.potential"></span><h1>Classes/routines for pair potentials (<a class="reference internal" href="#module-analphipy.potential" title="analphipy.potential"><code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code></a>)<a class="headerlink" href="#classes-routines-for-pair-potentials-analphipy-potential" title="Link to this heading">#</a></h1>
+</section>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Generic" title="analphipy.potential.Generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Generic</span></code></a>(phi_func[, dphidr_func, r_min, ...])</p></td>
+<td><p>Class to define potential using callables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.Analytic" title="analphipy.potential.Analytic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Analytic</span></code></a>()</p></td>
+<td><p>Base class for defining analytic potentials.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.LennardJones" title="analphipy.potential.LennardJones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LennardJones</span></code></a>([sig, eps])</p></td>
+<td><p>Lennard-Jones potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.LennardJonesNM" title="analphipy.potential.LennardJonesNM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LennardJonesNM</span></code></a>([n, m, sig, eps])</p></td>
+<td><p>Generalized Lennard-Jones potential</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Yukawa" title="analphipy.potential.Yukawa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Yukawa</span></code></a>([z, sig, eps])</p></td>
+<td><p>Hard core Yukawa potential</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.HardSphere" title="analphipy.potential.HardSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HardSphere</span></code></a>([sig])</p></td>
+<td><p>Hard-sphere pair potential</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.SquareWell" title="analphipy.potential.SquareWell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SquareWell</span></code></a>([sig, eps, lam])</p></td>
+<td><p>Square-well pair potential</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable" title="analphipy.potential.CubicTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CubicTable</span></code></a>(bounds, phi_table[, phi_left, ...])</p></td>
+<td><p>Cubic interpolation table potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Functions:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.factory" title="analphipy.potential.factory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">factory</span></code></a>(potential_name[, rcut, lfs, cut])</p></td>
+<td><p>Factory function to construct Phi object by name.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.Generic">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">Generic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dphidr_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L30-L66"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.Generic" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="analphipy.base_potential.html#analphipy.base_potential.PhiBase" title="analphipy.base_potential.PhiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiBase</span></code></a></p>
+<p>Class to define potential using callables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi_func</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code>) – Function <code class="docutils literal notranslate"><span class="pre">phi(r)</span></code></p></li>
+<li><p><strong>dphidr</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code>, <em>optional</em>) – Optional function <code class="docutils literal notranslate"><span class="pre">dphidr(r)</span></code>.</p></li>
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Location of minimum in potential energy.</p></li>
+<li><p><strong>phi_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Value of potential energy at minimum.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Generic.phi_func" title="analphipy.potential.Generic.phi_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_func</span></code></a></p></td>
+<td><p>Function <span class="math notranslate nohighlight">\(\phi(r)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.Generic.dphidr_func" title="analphipy.potential.Generic.dphidr_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr_func</span></code></a></p></td>
+<td><p>Function <span class="math notranslate nohighlight">\(d\phi(r)/dr\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Generic.phi" title="analphipy.potential.Generic.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.Generic.dphidr" title="analphipy.potential.Generic.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Generic.phi_func">
+<span class="sig-name descname"><span class="pre">phi_func</span></span><a class="headerlink" href="#analphipy.potential.Generic.phi_func" title="Link to this definition">#</a></dt>
+<dd><p>Function <span class="math notranslate nohighlight">\(\phi(r)\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Generic.dphidr_func">
+<span class="sig-name descname"><span class="pre">dphidr_func</span></span><a class="headerlink" href="#analphipy.potential.Generic.dphidr_func" title="Link to this definition">#</a></dt>
+<dd><p>Function <span class="math notranslate nohighlight">\(d\phi(r)/dr\)</span></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.Generic.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L53-L57"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.Generic.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.Generic.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L59-L66"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.Generic.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.Analytic">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">Analytic</span></span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L69-L102"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.Analytic" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="analphipy.base_potential.html#analphipy.base_potential.PhiBase" title="analphipy.base_potential.PhiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiBase</span></code></a></p>
+<p>Base class for defining analytic potentials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Location of minimum in potential energy.</p></li>
+<li><p><strong>phi_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Value of potential energy at minimum.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Specific subclasses should set values for <code class="docutils literal notranslate"><span class="pre">r_min</span></code>,
+<code class="docutils literal notranslate"><span class="pre">phi_min</span></code>, and <code class="docutils literal notranslate"><span class="pre">segments</span></code>, as well as
+forms for <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code>.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Analytic.r_min" title="analphipy.potential.Analytic.r_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_min</span></code></a></p></td>
+<td><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.Analytic.phi_min" title="analphipy.potential.Analytic.phi_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_min</span></code></a></p></td>
+<td><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Analytic.segments" title="analphipy.potential.Analytic.segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segments</span></code></a></p></td>
+<td><p>Integration limits.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Analytic.r_min">
+<span class="sig-name descname"><span class="pre">r_min</span></span><a class="headerlink" href="#analphipy.potential.Analytic.r_min" title="Link to this definition">#</a></dt>
+<dd><p>Position of minimum in <span class="math notranslate nohighlight">\(\phi(r)\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Analytic.phi_min">
+<span class="sig-name descname"><span class="pre">phi_min</span></span><a class="headerlink" href="#analphipy.potential.Analytic.phi_min" title="Link to this definition">#</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at minimum.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Analytic.segments">
+<span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#analphipy.potential.Analytic.segments" title="Link to this definition">#</a></dt>
+<dd><p>Integration limits.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJones">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">LennardJones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L108-L165"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.LennardJones" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.potential.Analytic" title="analphipy.potential.Analytic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Analytic</span></code></a></p>
+<p>Lennard-Jones potential.</p>
+<div class="math notranslate nohighlight">
+\[\phi(r) = 4 \epsilon \left[ \left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^6\right]\]</div>
+<p class="rubric">Notes</p>
+<p>Specific subclasses should set values for <code class="docutils literal notranslate"><span class="pre">r_min</span></code>,
+<code class="docutils literal notranslate"><span class="pre">phi_min</span></code>, and <code class="docutils literal notranslate"><span class="pre">segments</span></code>, as well as
+forms for <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code>.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.LennardJones.sig" title="analphipy.potential.LennardJones.sig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig</span></code></a></p></td>
+<td><p>Length parameter <span class="math notranslate nohighlight">\(\sigma\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.LennardJones.eps" title="analphipy.potential.LennardJones.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
+<td><p>Energy parameter <span class="math notranslate nohighlight">\(\epsilon\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.LennardJones.phi" title="analphipy.potential.LennardJones.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.LennardJones.dphidr" title="analphipy.potential.LennardJones.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Calculate phi and dphi (=-1/r dphi/dr) at particular r.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJones.sig">
+<span class="sig-name descname"><span class="pre">sig</span></span><a class="headerlink" href="#analphipy.potential.LennardJones.sig" title="Link to this definition">#</a></dt>
+<dd><p>Length parameter <span class="math notranslate nohighlight">\(\sigma\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJones.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#analphipy.potential.LennardJones.eps" title="Link to this definition">#</a></dt>
+<dd><p>Energy parameter <span class="math notranslate nohighlight">\(\epsilon\)</span></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJones.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L147-L153"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.LennardJones.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJones.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L155-L165"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.LennardJones.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Calculate phi and dphi (=-1/r dphi/dr) at particular r.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJonesNM">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">LennardJonesNM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L168-L237"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.LennardJonesNM" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.potential.Analytic" title="analphipy.potential.Analytic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Analytic</span></code></a></p>
+<p>Generalized Lennard-Jones potential</p>
+<div class="math notranslate nohighlight">
+\[\phi(r) = \epsilon \frac{n}{n-m} \left( \frac{n}{m} \right) ^{m / (n-m)}
+\left[ \left(\frac{\sigma}{r}\right)^n - \left(\frac{\sigma}{r}\right)^m\right]\]</div>
+<p class="rubric">Notes</p>
+<p>with parameters <code class="docutils literal notranslate"><span class="pre">n=12</span></code> and <code class="docutils literal notranslate"><span class="pre">m=6</span></code>, this is equivalent to <a class="reference internal" href="#analphipy.potential.LennardJones" title="analphipy.potential.LennardJones"><code class="xref py py-class docutils literal notranslate"><span class="pre">LennardJones</span></code></a>.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.LennardJonesNM.n" title="analphipy.potential.LennardJonesNM.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n</span></code> parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.LennardJonesNM.m" title="analphipy.potential.LennardJonesNM.m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">m</span></code> parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.LennardJonesNM.sig" title="analphipy.potential.LennardJonesNM.sig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig</span></code></a></p></td>
+<td><p>Length parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.LennardJonesNM.eps" title="analphipy.potential.LennardJonesNM.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
+<td><p>Energy parameter</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.LennardJonesNM.phi" title="analphipy.potential.LennardJonesNM.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.LennardJonesNM.dphidr" title="analphipy.potential.LennardJonesNM.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJonesNM.n">
+<span class="sig-name descname"><span class="pre">n</span></span><a class="headerlink" href="#analphipy.potential.LennardJonesNM.n" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">n</span></code> parameter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJonesNM.m">
+<span class="sig-name descname"><span class="pre">m</span></span><a class="headerlink" href="#analphipy.potential.LennardJonesNM.m" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">m</span></code> parameter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJonesNM.sig">
+<span class="sig-name descname"><span class="pre">sig</span></span><a class="headerlink" href="#analphipy.potential.LennardJonesNM.sig" title="Link to this definition">#</a></dt>
+<dd><p>Length parameter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJonesNM.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#analphipy.potential.LennardJonesNM.eps" title="Link to this definition">#</a></dt>
+<dd><p>Energy parameter</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJonesNM.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L220-L226"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.LennardJonesNM.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.LennardJonesNM.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L228-L237"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.LennardJonesNM.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.Yukawa">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">Yukawa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L240-L291"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.Yukawa" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.potential.Analytic" title="analphipy.potential.Analytic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Analytic</span></code></a></p>
+<p>Hard core Yukawa potential</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi(r) =
+\begin{cases}
+    \infty &amp;  r \leq \sigma \\
+    -\epsilon \frac{\sigma}{r} \exp\left[-z (r/\sigma - 1) \right] &amp; r &gt; \sigma
+\end{cases}\end{split}\]</div>
+<p class="rubric">Notes</p>
+<p>Specific subclasses should set values for <code class="docutils literal notranslate"><span class="pre">r_min</span></code>,
+<code class="docutils literal notranslate"><span class="pre">phi_min</span></code>, and <code class="docutils literal notranslate"><span class="pre">segments</span></code>, as well as
+forms for <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code>.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Yukawa.z" title="analphipy.potential.Yukawa.z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></a></p></td>
+<td><p>Interaction parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.Yukawa.sig" title="analphipy.potential.Yukawa.sig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig</span></code></a></p></td>
+<td><p>Length parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Yukawa.eps" title="analphipy.potential.Yukawa.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
+<td><p>Energy parameter</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.Yukawa.phi" title="analphipy.potential.Yukawa.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Yukawa.z">
+<span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#analphipy.potential.Yukawa.z" title="Link to this definition">#</a></dt>
+<dd><p>Interaction parameter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Yukawa.sig">
+<span class="sig-name descname"><span class="pre">sig</span></span><a class="headerlink" href="#analphipy.potential.Yukawa.sig" title="Link to this definition">#</a></dt>
+<dd><p>Length parameter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.Yukawa.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#analphipy.potential.Yukawa.eps" title="Link to this definition">#</a></dt>
+<dd><p>Energy parameter</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.Yukawa.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L278-L291"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.Yukawa.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.HardSphere">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">HardSphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L294-L330"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.HardSphere" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.potential.Analytic" title="analphipy.potential.Analytic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Analytic</span></code></a></p>
+<p>Hard-sphere pair potential</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi(r) =
+\begin{cases}
+\infty &amp; r \leq \sigma \\
+0 &amp; r &gt; \sigma
+\end{cases}\end{split}\]</div>
+<p class="rubric">Notes</p>
+<p>Specific subclasses should set values for <code class="docutils literal notranslate"><span class="pre">r_min</span></code>,
+<code class="docutils literal notranslate"><span class="pre">phi_min</span></code>, and <code class="docutils literal notranslate"><span class="pre">segments</span></code>, as well as
+forms for <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code>.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.HardSphere.sig" title="analphipy.potential.HardSphere.sig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig</span></code></a></p></td>
+<td><p>Length parameter</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.HardSphere.phi" title="analphipy.potential.HardSphere.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.HardSphere.sig">
+<span class="sig-name descname"><span class="pre">sig</span></span><a class="headerlink" href="#analphipy.potential.HardSphere.sig" title="Link to this definition">#</a></dt>
+<dd><p>Length parameter</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.HardSphere.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L320-L330"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.HardSphere.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.SquareWell">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">SquareWell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L333-L388"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.SquareWell" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analphipy.potential.Analytic" title="analphipy.potential.Analytic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Analytic</span></code></a></p>
+<p>Square-well pair potential</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi(r) =
+\begin{cases}
+\infty &amp; r \leq \sigma \\
+\epsilon &amp; \sigma &lt; r \leq \lambda \sigma \\
+0 &amp; r &gt; \lambda \sigma
+\end{cases}\end{split}\]</div>
+<p class="rubric">Notes</p>
+<p>Specific subclasses should set values for <code class="docutils literal notranslate"><span class="pre">r_min</span></code>,
+<code class="docutils literal notranslate"><span class="pre">phi_min</span></code>, and <code class="docutils literal notranslate"><span class="pre">segments</span></code>, as well as
+forms for <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">dphidr</span></code>.</p>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.SquareWell.sig" title="analphipy.potential.SquareWell.sig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig</span></code></a></p></td>
+<td><p>Length parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.SquareWell.eps" title="analphipy.potential.SquareWell.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a></p></td>
+<td><p>Energy parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.SquareWell.lam" title="analphipy.potential.SquareWell.lam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam</span></code></a></p></td>
+<td><p>Well width parameter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.SquareWell.phi" title="analphipy.potential.SquareWell.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.SquareWell.sig">
+<span class="sig-name descname"><span class="pre">sig</span></span><a class="headerlink" href="#analphipy.potential.SquareWell.sig" title="Link to this definition">#</a></dt>
+<dd><p>Length parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.SquareWell.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><a class="headerlink" href="#analphipy.potential.SquareWell.eps" title="Link to this definition">#</a></dt>
+<dd><p>Energy parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.SquareWell.lam">
+<span class="sig-name descname"><span class="pre">lam</span></span><a class="headerlink" href="#analphipy.potential.SquareWell.lam" title="Link to this definition">#</a></dt>
+<dd><p>Well width parameter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.SquareWell.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L371-L388"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.SquareWell.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">CubicTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dphi_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dphi_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L397-L573"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.CubicTable" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="analphipy.base_potential.html#analphipy.base_potential.PhiBase" title="analphipy.base_potential.PhiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhiBase</span></code></a></p>
+<p>Cubic interpolation table potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Location of minimum in potential energy.</p></li>
+<li><p><strong>phi_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Value of potential energy at minimum.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – the minimum and maximum values of squared pair separation <cite>r**2</cite> at which <cite>phi_table</cite> is evaluated.</p></li>
+<li><p><strong>phi_table</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – Values of potential evaluated on even grid of <code class="docutils literal notranslate"><span class="pre">r**2</span></code> values.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Integration segments.  Defaults to <code class="docutils literal notranslate"><span class="pre">sqrt(bounds)</span></code>.</p></li>
+<li><p><strong>phi_left, phi_right, dphi_left, dphi_right</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Values to set for <code class="docutils literal notranslate"><span class="pre">phi</span></code>/<code class="docutils literal notranslate"><span class="pre">-1/r</span> <span class="pre">dphidr</span></code> if  (left) <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">&lt;</span> <span class="pre">bounds[0]</span></code> or (right) <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">&gt;</span> <span class="pre">bounds[1]</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.bounds" title="analphipy.potential.CubicTable.bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds</span></code></a></p></td>
+<td><p>Minimum and maximum values of squared pair separation <span class="math notranslate nohighlight">\(r^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.phi_table" title="analphipy.potential.CubicTable.phi_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_table</span></code></a></p></td>
+<td><p>Values of potential evaluated on even grid of <span class="math notranslate nohighlight">\(r^2\)</span> values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.phi_left" title="analphipy.potential.CubicTable.phi_left"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_left</span></code></a></p></td>
+<td><p>value of <cite>phi</cite> at left bound (<cite>r &lt; bounds[0]</cite>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.phi_right" title="analphipy.potential.CubicTable.phi_right"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_right</span></code></a></p></td>
+<td><p>value of <cite>phi</cite> at right bound (<cite>r &gt; bounds[1]</cite>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.dphi_left" title="analphipy.potential.CubicTable.dphi_left"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphi_left</span></code></a></p></td>
+<td><p>value of <cite>dphi</cite> at left bound</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.dphi_right" title="analphipy.potential.CubicTable.dphi_right"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphi_right</span></code></a></p></td>
+<td><p>value of <cite>dphi</cite> at right bound</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.size" title="analphipy.potential.CubicTable.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<td><p>Size of the array (less 1).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.smin" title="analphipy.potential.CubicTable.smin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smin</span></code></a></p></td>
+<td><p>Minimum value of <cite>s = r**2</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.smax" title="analphipy.potential.CubicTable.smax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smax</span></code></a></p></td>
+<td><p>Maximum value of <cite>s = r**2</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.rsq_table" title="analphipy.potential.CubicTable.rsq_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rsq_table</span></code></a></p></td>
+<td><p>Value of <code class="docutils literal notranslate"><span class="pre">r**2</span></code> where potential is defined.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.r_table" title="analphipy.potential.CubicTable.r_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_table</span></code></a></p></td>
+<td><p>Values of <code class="docutils literal notranslate"><span class="pre">r</span></code> where potential is defined.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.from_phi" title="analphipy.potential.CubicTable.from_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_phi</span></code></a>(phi, rmin, rmax, ds, **kws)</p></td>
+<td><p>Create object from callable pair potential function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.phidphi" title="analphipy.potential.CubicTable.phidphi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phidphi</span></code></a>(r)</p></td>
+<td><p>Values of <cite>phi</cite> and <cite>dphi</cite> at <cite>r</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.phi" title="analphipy.potential.CubicTable.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r)</p></td>
+<td><p>Pair potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.potential.CubicTable.dphidr" title="analphipy.potential.CubicTable.dphidr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dphidr</span></code></a>(r)</p></td>
+<td><p>Derivative of pair potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.bounds">
+<span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.bounds" title="Link to this definition">#</a></dt>
+<dd><p>Minimum and maximum values of squared pair separation <span class="math notranslate nohighlight">\(r^2\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.phi_table">
+<span class="sig-name descname"><span class="pre">phi_table</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.phi_table" title="Link to this definition">#</a></dt>
+<dd><p>Values of potential evaluated on even grid of <span class="math notranslate nohighlight">\(r^2\)</span> values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.phi_left">
+<span class="sig-name descname"><span class="pre">phi_left</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.phi_left" title="Link to this definition">#</a></dt>
+<dd><p>value of <cite>phi</cite> at left bound (<cite>r &lt; bounds[0]</cite>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.phi_right">
+<span class="sig-name descname"><span class="pre">phi_right</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.phi_right" title="Link to this definition">#</a></dt>
+<dd><p>value of <cite>phi</cite> at right bound (<cite>r &gt; bounds[1]</cite>)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.dphi_left">
+<span class="sig-name descname"><span class="pre">dphi_left</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.dphi_left" title="Link to this definition">#</a></dt>
+<dd><p>value of <cite>dphi</cite> at left bound</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.dphi_right">
+<span class="sig-name descname"><span class="pre">dphi_right</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.dphi_right" title="Link to this definition">#</a></dt>
+<dd><p>value of <cite>dphi</cite> at right bound</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.from_phi">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L452-L497"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.CubicTable.from_phi" title="Link to this definition">#</a></dt>
+<dd><p>Create object from callable pair potential function.</p>
+<p>This will evaluate <code class="docutils literal notranslate"><span class="pre">phi</span></code> at even spacing in <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">r**2</span></code> space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – pair potential function</p></li>
+<li><p><strong>rmin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – minimum pair separation <cite>r</cite> to evaluate at.</p></li>
+<li><p><strong>rmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Maximum pair separation <cite>r</cite> to evaluate at.</p></li>
+<li><p><strong>ds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – spaceing in <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">r</span> <span class="pre">**</span> <span class="pre">2</span></code>.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to constructor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>table</strong> (<a class="reference internal" href="#analphipy.potential.CubicTable" title="analphipy.potential.CubicTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CubicTable</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.size">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.size" title="Link to this definition">#</a></dt>
+<dd><p>Size of the array (less 1).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.smin">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">smin</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.smin" title="Link to this definition">#</a></dt>
+<dd><p>Minimum value of <cite>s = r**2</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.smax">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">smax</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.smax" title="Link to this definition">#</a></dt>
+<dd><p>Maximum value of <cite>s = r**2</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.phidphi">
+<span class="sig-name descname"><span class="pre">phidphi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L517-L550"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.CubicTable.phidphi" title="Link to this definition">#</a></dt>
+<dd><p>Values of <cite>phi</cite> and <cite>dphi</cite> at <cite>r</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L552-L555"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.CubicTable.phi" title="Link to this definition">#</a></dt>
+<dd><p>Pair potential.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Evaluated pair potential.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.dphidr">
+<span class="sig-name descname"><span class="pre">dphidr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L557-L561"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.CubicTable.dphidr" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of pair potential.</p>
+<p>This returns the value of <span class="math notranslate nohighlight">\(d \phi(r) / dr\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – pair separation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dphidr</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Pair potential values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.rsq_table">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rsq_table</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.rsq_table" title="Link to this definition">#</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">r**2</span></code> where potential is defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="analphipy.potential.CubicTable.r_table">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">r_table</span></span><a class="headerlink" href="#analphipy.potential.CubicTable.r_table" title="Link to this definition">#</a></dt>
+<dd><p>Values of <code class="docutils literal notranslate"><span class="pre">r</span></code> where potential is defined.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analphipy.potential.factory">
+<span class="sig-prename descclassname"><span class="pre">analphipy.potential.</span></span><span class="sig-name descname"><span class="pre">factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">potential_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rcut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lfs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/potential.py#L580-L648"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.potential.factory" title="Link to this definition">#</a></dt>
+<dd><p>Factory function to construct Phi object by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>potential_name</strong> (<code class="docutils literal notranslate"><span class="pre">{lj,</span> <span class="pre">nm,</span> <span class="pre">sw,</span> <span class="pre">hs,</span> <span class="pre">yk}</span></code>) – Name of potential.</p></li>
+<li><p><strong>rcut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – if passed, Construct either and ‘lfs’ or ‘cut’ version of the potential.</p></li>
+<li><p><strong>lfs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>) – If True, construct a  linear force shifted potential <a class="reference internal" href="analphipy.base_potential.html#analphipy.base_potential.PhiLFS" title="analphipy.base_potential.PhiLFS"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiLFS</span></code></a>.</p></li>
+<li><p><strong>cut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>) – If True, construct a cut potential <a class="reference internal" href="analphipy.base_potential.html#analphipy.base_potential.PhiCut" title="analphipy.base_potential.PhiCut"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiCut</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>phi</strong> (<a class="reference internal" href="analphipy.base_potential.html#analphipy.base_potential.PhiBase" title="analphipy.base_potential.PhiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiBase</span></code></a> subclass) – output potential energy class.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#analphipy.potential.LennardJones" title="analphipy.potential.LennardJones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LennardJones</span></code></a>, <a class="reference internal" href="#analphipy.potential.LennardJonesNM" title="analphipy.potential.LennardJonesNM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LennardJonesNM</span></code></a>, <a class="reference internal" href="#analphipy.potential.SquareWell" title="analphipy.potential.SquareWell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SquareWell</span></code></a>, <a class="reference internal" href="#analphipy.potential.HardSphere" title="analphipy.potential.HardSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HardSphere</span></code></a>, <a class="reference internal" href="#analphipy.potential.Yukawa" title="analphipy.potential.Yukawa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Yukawa</span></code></a></p>
+</div>
+</dd></dl>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="analphipy.norofrenkel.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic"><code class="docutils literal notranslate"><span class="pre">Generic</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.phi_func"><code class="docutils literal notranslate"><span class="pre">Generic.phi_func</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.dphidr_func"><code class="docutils literal notranslate"><span class="pre">Generic.dphidr_func</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.phi"><code class="docutils literal notranslate"><span class="pre">Generic.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Generic.dphidr"><code class="docutils literal notranslate"><span class="pre">Generic.dphidr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic"><code class="docutils literal notranslate"><span class="pre">Analytic</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic.r_min"><code class="docutils literal notranslate"><span class="pre">Analytic.r_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic.phi_min"><code class="docutils literal notranslate"><span class="pre">Analytic.phi_min</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Analytic.segments"><code class="docutils literal notranslate"><span class="pre">Analytic.segments</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones"><code class="docutils literal notranslate"><span class="pre">LennardJones</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.sig"><code class="docutils literal notranslate"><span class="pre">LennardJones.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.eps"><code class="docutils literal notranslate"><span class="pre">LennardJones.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.phi"><code class="docutils literal notranslate"><span class="pre">LennardJones.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJones.dphidr"><code class="docutils literal notranslate"><span class="pre">LennardJones.dphidr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.n"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.n</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.m"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.m</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.sig"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.eps"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.phi"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.LennardJonesNM.dphidr"><code class="docutils literal notranslate"><span class="pre">LennardJonesNM.dphidr()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa"><code class="docutils literal notranslate"><span class="pre">Yukawa</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.z"><code class="docutils literal notranslate"><span class="pre">Yukawa.z</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.sig"><code class="docutils literal notranslate"><span class="pre">Yukawa.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.eps"><code class="docutils literal notranslate"><span class="pre">Yukawa.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.Yukawa.phi"><code class="docutils literal notranslate"><span class="pre">Yukawa.phi()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.HardSphere"><code class="docutils literal notranslate"><span class="pre">HardSphere</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.HardSphere.sig"><code class="docutils literal notranslate"><span class="pre">HardSphere.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.HardSphere.phi"><code class="docutils literal notranslate"><span class="pre">HardSphere.phi()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell"><code class="docutils literal notranslate"><span class="pre">SquareWell</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.sig"><code class="docutils literal notranslate"><span class="pre">SquareWell.sig</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.eps"><code class="docutils literal notranslate"><span class="pre">SquareWell.eps</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.lam"><code class="docutils literal notranslate"><span class="pre">SquareWell.lam</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.SquareWell.phi"><code class="docutils literal notranslate"><span class="pre">SquareWell.phi()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable"><code class="docutils literal notranslate"><span class="pre">CubicTable</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.bounds"><code class="docutils literal notranslate"><span class="pre">CubicTable.bounds</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_table</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi_left"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_left</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi_right"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi_right</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.dphi_left"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphi_left</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.dphi_right"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphi_right</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.from_phi"><code class="docutils literal notranslate"><span class="pre">CubicTable.from_phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.size"><code class="docutils literal notranslate"><span class="pre">CubicTable.size</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.smin"><code class="docutils literal notranslate"><span class="pre">CubicTable.smin</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.smax"><code class="docutils literal notranslate"><span class="pre">CubicTable.smax</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phidphi"><code class="docutils literal notranslate"><span class="pre">CubicTable.phidphi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.phi"><code class="docutils literal notranslate"><span class="pre">CubicTable.phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.dphidr"><code class="docutils literal notranslate"><span class="pre">CubicTable.dphidr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.rsq_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.rsq_table</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.CubicTable.r_table"><code class="docutils literal notranslate"><span class="pre">CubicTable.r_table</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.potential.factory"><code class="docutils literal notranslate"><span class="pre">factory()</span></code></a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By William P. Krekelberg
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021, William P. Krekelberg.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on 2026-02-20.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

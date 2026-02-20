@@ -1,0 +1,1011 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Noro-Frenkel pair potential analysis (analphipy.norofrenkel) &#8212; analphipy 0.4.2.dev15 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css" />
+    <link rel="stylesheet" type="text/css" href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=69045b54"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/analphipy.norofrenkel';</script>
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js"></script>
+    <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"></script>
+    <script src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js"></script>
+    <script src="../../_static/js/leave_notice.js?v=133c5535"></script>
+    <script async="async" id="_fed_au_ua_tag" type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Routines to calculate measures of pair potentials (analphipy.measures)" href="analphipy.measures.html" />
+    <link rel="prev" title="Classes/routines for pair potentials (analphipy.potential)" href="analphipy.potential.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="2026-02-20"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">analphipy 0.4.2.dev15 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    analphipy
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">User guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/usage/usage.html">Why <code class="docutils literal notranslate"><span class="pre">analphipy</span></code></a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analphipy.potential.html">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</a></li>
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.measures.html">Routines to calculate measures of pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.measures</span></code>)</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.utils.html">Utilities module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.utils</span></code>)</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="analphipy.base_potential.html">Base classes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.base_potential</span></code>)</a></li>
+
+
+
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../navigation.html">Indices and tables</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/usnistgov/analphipy/issues/new?title=Issue%20on%20page%20%2Freference/generated/analphipy.norofrenkel.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/reference/generated/analphipy.norofrenkel.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Noro-Frenkel pair potential analysis (analphipy.norofrenkel)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.phi_rep"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.phi_rep()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.from_phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi_class"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.from_phi_class()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.sig"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.eps"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.eps()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.lam"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.lam()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.sw_dict"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sw_dict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.sig_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sig_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.lam_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.lam_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial_sw()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.B2"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_sw"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2_sw()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.table"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.table()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.lam_nf"><code class="docutils literal notranslate"><span class="pre">lam_nf()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.lam_nf_dbeta"><code class="docutils literal notranslate"><span class="pre">lam_nf_dbeta()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.sig_nf"><code class="docutils literal notranslate"><span class="pre">sig_nf()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.sig_nf_dbeta"><code class="docutils literal notranslate"><span class="pre">sig_nf_dbeta()</span></code></a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="noro-frenkel-pair-potential-analysis-analphipy-norofrenkel">
+<span id="module-analphipy.norofrenkel"></span><h1>Noro-Frenkel pair potential analysis (<a class="reference internal" href="#module-analphipy.norofrenkel" title="analphipy.norofrenkel"><code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code></a>)<a class="headerlink" href="#noro-frenkel-pair-potential-analysis-analphipy-norofrenkel" title="Link to this heading">#</a></h1>
+<p>A collection of routines to analyze pair potentials using Noro-Frenkel analysis.</p>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id4">1</a>,<a role="doc-backlink" href="#id7">2</a>,<a role="doc-backlink" href="#id8">3</a>,<a role="doc-backlink" href="#id11">4</a>)</span>
+<p>M.G. Noro and D. Frenkel (2000), ‘Extended corresponding-states behavior for particles with variable range attractions’. Journal of Chemical Physics, 113, 2941.</p>
+</aside>
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id9">2</a>,<a role="doc-backlink" href="#id12">3</a>)</span>
+<p>J.A. Barker and D. Henderson (1976), ‘What Is Liquid? Understanding the States of Matter’. Reviews of Modern Physics, 48, 587-671</p>
+</aside>
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id6">1</a>,<a role="doc-backlink" href="#id10">2</a>,<a role="doc-backlink" href="#id13">3</a>)</span>
+<p>J.D. Weeks, D. Chandler and H.C. Andersen (1971), ‘Role of Repulsive Forces in Determining the Equilibrium Structure of Simple Liquids’, Journal of Chemical Physics 54, 5237-5247</p>
+</aside>
+</aside>
+</section>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair" title="analphipy.norofrenkel.NoroFrenkelPair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoroFrenkelPair</span></code></a>(phi, segments, r_min, phi_min)</p></td>
+<td><p>Class to calculate Noro-Frenkel parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Functions:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.lam_nf" title="analphipy.norofrenkel.lam_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam_nf</span></code></a>(beta, sig, eps, B2)</p></td>
+<td><p>Noro-Frenkel effective lambda parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.lam_nf_dbeta" title="analphipy.norofrenkel.lam_nf_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam_nf_dbeta</span></code></a>(beta, sig, eps, lam, B2, ...)</p></td>
+<td><p>Calculate derivative of <code class="docutils literal notranslate"><span class="pre">lam_nf</span></code>  with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.sig_nf" title="analphipy.norofrenkel.sig_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig_nf</span></code></a>(phi_rep, beta, segments[, err, ...])</p></td>
+<td><p>Noro-Frenkel/Barker-Henderson effective hard sphere diameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.sig_nf_dbeta" title="analphipy.norofrenkel.sig_nf_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig_nf_dbeta</span></code></a>(phi_rep, beta, segments[, err, ...])</p></td>
+<td><p>Derivative with respect to inverse temperature <code class="docutils literal notranslate"><span class="pre">beta</span></code> of <code class="docutils literal notranslate"><span class="pre">sig_nf</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analphipy.norofrenkel.</span></span><span class="sig-name descname"><span class="pre">NoroFrenkelPair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L273-L665"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to calculate Noro-Frenkel parameters.</p>
+<p>See <a class="footnote-reference brackets" href="#id1" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id2" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id3" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – Potential function.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Location of minimum in potential energy.</p></li>
+<li><p><strong>phi_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Value of potential energy at minimum.</p></li>
+<li><p><strong>quad_kws</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-mapping" title="(in Python v3.14)"><span class="xref std std-term">mapping</span></a>, <em>optional</em>) – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.quad_segments" title="analphipy.utils.quad_segments"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.quad_segments()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.phi_rep" title="analphipy.norofrenkel.NoroFrenkelPair.phi_rep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_rep</span></code></a>(r)</p></td>
+<td><p>Repulsive part of potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi" title="analphipy.norofrenkel.NoroFrenkelPair.from_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_phi</span></code></a>(phi, segments[, r_min, bounds, ...])</p></td>
+<td><p>Create object from pair potential function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi_class" title="analphipy.norofrenkel.NoroFrenkelPair.from_phi_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_phi_class</span></code></a>(phi[, r_min, bounds, quad_kws])</p></td>
+<td><p>Create object, trying to use pre computed values for <code class="docutils literal notranslate"><span class="pre">r_min</span></code>, <code class="docutils literal notranslate"><span class="pre">phi_min</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">secondvirial</span></code></a>(beta, **kws)</p></td>
+<td><p>Second virial coefficient.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.sig" title="analphipy.norofrenkel.NoroFrenkelPair.sig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig</span></code></a>(beta, **kws)</p></td>
+<td><p>Effective hard sphere diameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.eps" title="analphipy.norofrenkel.NoroFrenkelPair.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a>([beta])</p></td>
+<td><p>Effective square well epsilon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.lam" title="analphipy.norofrenkel.NoroFrenkelPair.lam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam</span></code></a>(beta, **kws)</p></td>
+<td><p>Effective square well lambda.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.sw_dict" title="analphipy.norofrenkel.NoroFrenkelPair.sw_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sw_dict</span></code></a>(beta, **kws)</p></td>
+<td><p>Dictionary view of Noro-Frenkel parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">secondvirial_dbeta</span></code></a>(beta, **kws)</p></td>
+<td><p>Derivative of <code class="docutils literal notranslate"><span class="pre">secondvirial</span></code> with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.sig_dbeta" title="analphipy.norofrenkel.NoroFrenkelPair.sig_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig_dbeta</span></code></a>(beta, **kws)</p></td>
+<td><p>Derivative of effective hard-sphere diameter with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.lam_dbeta" title="analphipy.norofrenkel.NoroFrenkelPair.lam_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam_dbeta</span></code></a>(beta, **kws)</p></td>
+<td><p>Derivative of effective lambda parameter with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">secondvirial_sw</span></code></a>(beta, **kws)</p></td>
+<td><p>Second virial coefficient of effective square well fluid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.B2" title="analphipy.norofrenkel.NoroFrenkelPair.B2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">B2</span></code></a>(beta, **kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial"><code class="xref py py-meth docutils literal notranslate"><span class="pre">secondvirial()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_dbeta" title="analphipy.norofrenkel.NoroFrenkelPair.B2_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">B2_dbeta</span></code></a>(beta, **kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">secondvirial_dbeta()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_sw" title="analphipy.norofrenkel.NoroFrenkelPair.B2_sw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">B2_sw</span></code></a>(beta, **kws)</p></td>
+<td><p>Alias to <a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">secondvirial_sw()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.table" title="analphipy.norofrenkel.NoroFrenkelPair.table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code></a>(betas[, props, key_format])</p></td>
+<td><p>Create a dictionary of outputs for multiple values of inverse temperature <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.phi_rep">
+<span class="sig-name descname"><span class="pre">phi_rep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L323-L347"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.phi_rep" title="Link to this definition">#</a></dt>
+<dd><p>Repulsive part of potential.</p>
+<p>This is the Weeks-Chandler-Anderson decomposition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – Pair separation distance(s).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">phi_ref</span></code> at separation(s) <code class="docutils literal notranslate"><span class="pre">r</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.from_phi">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L349-L395"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi" title="Link to this definition">#</a></dt>
+<dd><p>Create object from pair potential function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – Potential function.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Optional guess for numerically finding minimum in <cite>phi</cite>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>, <em>optional</em>) – Optional bounds for numerically locating <code class="docutils literal notranslate"><span class="pre">r_min</span></code>.</p></li>
+<li><p><strong>quad_kws</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-mapping" title="(in Python v3.14)"><span class="xref std std-term">mapping</span></a>, <em>optional</em>) – Optional arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.quad_segments" title="analphipy.utils.quad_segments"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.quad_segments()</span></code></a>.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.minimize_phi()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – instance of calling class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.from_phi_class">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_phi_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quad_kws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L397-L447"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi_class" title="Link to this definition">#</a></dt>
+<dd><p>Create object, trying to use pre computed values for <code class="docutils literal notranslate"><span class="pre">r_min</span></code>, <code class="docutils literal notranslate"><span class="pre">phi_min</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<a class="reference internal" href="analphipy.base_potential.html#analphipy.base_potential.PhiAbstract" title="analphipy.base_potential.PhiAbstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">analphipy.base_potential.PhiAbstract</span></code></a>)</p></li>
+<li><p><strong>r_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – Optional guess for numerically finding minimum in <cite>phi</cite>.</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>, <em>optional</em>) – Optional bounds for numerically locating <code class="docutils literal notranslate"><span class="pre">r_min</span></code>.</p></li>
+<li><p><strong>quad_kws</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-mapping" title="(in Python v3.14)"><span class="xref std std-term">mapping</span></a>, <em>optional</em>) – Optional arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.quad_segments" title="analphipy.utils.quad_segments"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.quad_segments()</span></code></a>.</p></li>
+<li><p><strong>**kws</strong> – Extra arguments to <a class="reference internal" href="analphipy.utils.html#analphipy.utils.minimize_phi" title="analphipy.utils.minimize_phi"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.utils.minimize_phi()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – instance of calling class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.secondvirial">
+<span class="sig-name descname"><span class="pre">secondvirial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L449-L460"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial" title="Link to this definition">#</a></dt>
+<dd><p>Second virial coefficient.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.measures.html#analphipy.measures.secondvirial" title="analphipy.measures.secondvirial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">secondvirial</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.sig">
+<span class="sig-name descname"><span class="pre">sig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L466-L482"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.sig" title="Link to this definition">#</a></dt>
+<dd><p>Effective hard sphere diameter.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#analphipy.norofrenkel.sig_nf" title="analphipy.norofrenkel.sig_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig_nf</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.eps">
+<span class="sig-name descname"><span class="pre">eps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L484-L490"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.eps" title="Link to this definition">#</a></dt>
+<dd><p>Effective square well epsilon.</p>
+<p>This is equal to the minimum in <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.lam">
+<span class="sig-name descname"><span class="pre">lam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L492-L515"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.lam" title="Link to this definition">#</a></dt>
+<dd><p>Effective square well lambda.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#analphipy.norofrenkel.lam_nf" title="analphipy.norofrenkel.lam_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam_nf</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.sw_dict">
+<span class="sig-name descname"><span class="pre">sw_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L517-L530"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.sw_dict" title="Link to this definition">#</a></dt>
+<dd><p>Dictionary view of Noro-Frenkel parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta">
+<span class="sig-name descname"><span class="pre">secondvirial_dbeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L532-L545"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of <code class="docutils literal notranslate"><span class="pre">secondvirial</span></code> with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.measures.html#analphipy.measures.secondvirial_dbeta" title="analphipy.measures.secondvirial_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">secondvirial_dbeta</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.sig_dbeta">
+<span class="sig-name descname"><span class="pre">sig_dbeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L547-L558"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.sig_dbeta" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of effective hard-sphere diameter with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#analphipy.norofrenkel.sig_nf_dbeta" title="analphipy.norofrenkel.sig_nf_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sig_nf_dbeta</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.lam_dbeta">
+<span class="sig-name descname"><span class="pre">lam_dbeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L560-L595"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.lam_dbeta" title="Link to this definition">#</a></dt>
+<dd><p>Derivative of effective lambda parameter with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#analphipy.norofrenkel.lam_nf_dbeta" title="analphipy.norofrenkel.lam_nf_dbeta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam_nf_dbeta</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw">
+<span class="sig-name descname"><span class="pre">secondvirial_sw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L597-L617"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw" title="Link to this definition">#</a></dt>
+<dd><p>Second virial coefficient of effective square well fluid.</p>
+<p>For testing.  This should be the same of value from <a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial"><code class="xref py py-meth docutils literal notranslate"><span class="pre">secondvirial()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.B2">
+<span class="sig-name descname"><span class="pre">B2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L619-L621"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.B2" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial"><code class="xref py py-meth docutils literal notranslate"><span class="pre">secondvirial()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.B2_dbeta">
+<span class="sig-name descname"><span class="pre">B2_dbeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L623-L625"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_dbeta" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">secondvirial_dbeta()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.B2_sw">
+<span class="sig-name descname"><span class="pre">B2_sw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L627-L629"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_sw" title="Link to this definition">#</a></dt>
+<dd><p>Alias to <a class="reference internal" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw" title="analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">secondvirial_sw()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.NoroFrenkelPair.table">
+<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">betas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">props</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{prop}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L631-L665"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.NoroFrenkelPair.table" title="Link to this definition">#</a></dt>
+<dd><p>Create a dictionary of outputs for multiple values of inverse temperature <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>betas</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – Array of values of inverse temperature <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p></li>
+<li><p><strong>props</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>) – Name of methods to access.</p></li>
+<li><p><strong>key_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code></a>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">&quot;{prop}&quot;</span></code>) – Each key in the output dictionary will have the value <code class="docutils literal notranslate"><span class="pre">key_format.format(prop=prop)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – dictionary of arrays.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.lam_nf">
+<span class="sig-prename descclassname"><span class="pre">analphipy.norofrenkel.</span></span><span class="sig-name descname"><span class="pre">lam_nf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L180-L220"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.lam_nf" title="Link to this definition">#</a></dt>
+<dd><p>Noro-Frenkel effective lambda parameter</p>
+<p>This is the value of <span class="math notranslate nohighlight">\(\lambda\)</span> in a square well potential which matches second virial
+coefficients.  The square well fluid is defined as <a class="footnote-reference brackets" href="#id1" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi_{\rm sw}(r) =
+\begin{cases}
+    \infty &amp; r \leq \sigma \\
+    \epsilon &amp;  \sigma &lt; r \leq \lambda \sigma \\
+    0 &amp;  r &gt; \lambda \sigma
+\end{cases}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Inverse temperature.</p></li>
+<li><p><strong>sig</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Particle diameter.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Energy parameter in square well potential. The convention is that <code class="docutils literal notranslate"><span class="pre">eps</span></code> is the same as the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum.</p></li>
+<li><p><strong>B2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Second virial coefficient to match.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lam_nf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <cite>lambda</cite> in an effective square well fluid which matches <code class="docutils literal notranslate"><span class="pre">B2</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.lam_nf_dbeta">
+<span class="sig-prename descclassname"><span class="pre">analphipy.norofrenkel.</span></span><span class="sig-name descname"><span class="pre">lam_nf_dbeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B2_dbeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_dbeta</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L223-L270"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.lam_nf_dbeta" title="Link to this definition">#</a></dt>
+<dd><p>Calculate derivative of <code class="docutils literal notranslate"><span class="pre">lam_nf</span></code>  with respect to <code class="docutils literal notranslate"><span class="pre">beta</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Inverse temperature.</p></li>
+<li><p><strong>sig</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Particle diameter.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Energy parameter in square well potential. The convention is that <code class="docutils literal notranslate"><span class="pre">eps</span></code> is the same as the value of <code class="docutils literal notranslate"><span class="pre">phi</span></code> at the minimum.</p></li>
+<li><p><strong>B2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Second virial coefficient to match.</p></li>
+<li><p><strong>lam</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value from <a class="reference internal" href="#analphipy.norofrenkel.lam_nf" title="analphipy.norofrenkel.lam_nf"><code class="xref py py-func docutils literal notranslate"><span class="pre">analphipy.norofrenkel.lam_nf()</span></code></a>.</p></li>
+<li><p><strong>B2_dbeta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – d(B2)/d(beta) at <code class="docutils literal notranslate"><span class="pre">beta</span></code></p></li>
+<li><p><strong>sig_dbeta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – derivative of Noro-Frenkel sigma w.r.t inverse temperature at <cite>beta</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lam_nf_dbeta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of <code class="docutils literal notranslate"><span class="pre">d(lam_nf)/d(beta)</span></code></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#analphipy.norofrenkel.lam_nf" title="analphipy.norofrenkel.lam_nf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lam_nf</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.sig_nf">
+<span class="sig-prename descclassname"><span class="pre">analphipy.norofrenkel.</span></span><span class="sig-name descname"><span class="pre">sig_nf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_rep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L72-L131"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.sig_nf" title="Link to this definition">#</a></dt>
+<dd><p>Noro-Frenkel/Barker-Henderson effective hard sphere diameter.</p>
+<p>This is calculated using the formula <a class="footnote-reference brackets" href="#id1" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id2" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\sigma_{{\rm BH}}(\beta) = \int_0^{{\infty}} dr \left( 1 - \exp[-\beta \phi_{{\rm rep}}(r)]\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\phi_{{\rm rep}}(r)\)</span> is the repulsive part of the potential <a class="footnote-reference brackets" href="#id3" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi_rep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – Repulsive part of pair potential.</p></li>
+<li><p><strong>beta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Inverse temperature.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://docs.python.org/3/glossary.html#term-sequence" title="(in Python v3.14)"><span class="xref std std-term">sequence</span></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Integration limits. For <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(segments)</span></code> integration will be performed over ranges
+<code class="docutils literal notranslate"><span class="pre">(segments[0],</span> <span class="pre">segments[1]),</span> <span class="pre">(segments[1],</span> <span class="pre">segments[2]),</span> <span class="pre">...,</span> <span class="pre">(segments[n-2],</span> <span class="pre">segments[n-]])</span></code></p></li>
+<li><p><strong>phi_rep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – Repulsive part of pair potential.</p></li>
+<li><p><strong>beta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Inverse temperature.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – Integration segments.</p></li>
+<li><p><strong>err</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>) – If True, return error value.</p></li>
+<li><p><strong>full_output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>) – If True, return full_output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>sig_nf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of integral.</p></li>
+<li><p><strong>errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – If <cite>err</cite> or <cite>full_output</cite> are True, then return sum of errors.</p></li>
+<li><p><strong>outputs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a>. If multiple segments, return a list of output.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.utils.html#analphipy.utils.quad_segments" title="analphipy.utils.quad_segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_segments</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analphipy.norofrenkel.sig_nf_dbeta">
+<span class="sig-prename descclassname"><span class="pre">analphipy.norofrenkel.</span></span><span class="sig-name descname"><span class="pre">sig_nf_dbeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_rep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/usnistgov/analphipy/blob/main/src/analphipy/norofrenkel.py#L134-L177"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analphipy.norofrenkel.sig_nf_dbeta" title="Link to this definition">#</a></dt>
+<dd><p>Derivative with respect to inverse temperature <code class="docutils literal notranslate"><span class="pre">beta</span></code> of <code class="docutils literal notranslate"><span class="pre">sig_nf</span></code>.</p>
+<p>See refs <a class="footnote-reference brackets" href="#id1" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id2" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#id3" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\frac{d \sigma_{\rm BH}}{d\beta} = \int_0^{\infty} dr \phi_{\rm rep}(r) \exp[-\beta \phi_{\rm rep}(r)]\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi_rep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="xref py py-func docutils literal notranslate"><span class="pre">callable()</span></code></a>) – Repulsive part of pair potential.</p></li>
+<li><p><strong>beta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Inverse temperature.</p></li>
+<li><p><strong>segments</strong> (<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span class="xref std std-term">array-like</span></a>) – Integration segments.</p></li>
+<li><p><strong>err</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>) – If True, return error value.</p></li>
+<li><p><strong>full_output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <em>default</em> <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>) – If True, return full_output.</p></li>
+<li><p><strong>**kws</strong> – The description is missing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>sig_nf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Value of integral.</p></li>
+<li><p><strong>errors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <em>optional</em>) – If <cite>err</cite> or <cite>full_output</cite> are True, then return sum of errors.</p></li>
+<li><p><strong>outputs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – Output from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="(in SciPy v1.17.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.integrate.quad()</span></code></a>. If multiple segments, return a list of output.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="analphipy.utils.html#analphipy.utils.quad_segments" title="analphipy.utils.quad_segments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_segments</span></code></a></p>
+</div>
+</dd></dl>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="analphipy.potential.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Classes/routines for pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.potential</span></code>)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="analphipy.measures.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Routines to calculate measures of pair potentials (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.measures</span></code>)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Noro-Frenkel pair potential analysis (<code class="xref py py-mod docutils literal notranslate"><span class="pre">analphipy.norofrenkel</span></code>)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.phi_rep"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.phi_rep()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.from_phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.from_phi_class"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.from_phi_class()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.sig"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.eps"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.eps()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.lam"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.lam()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.sw_dict"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sw_dict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.sig_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.sig_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.lam_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.lam_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.secondvirial_sw"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.secondvirial_sw()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.B2"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_dbeta"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2_dbeta()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.B2_sw"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.B2_sw()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.NoroFrenkelPair.table"><code class="docutils literal notranslate"><span class="pre">NoroFrenkelPair.table()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.lam_nf"><code class="docutils literal notranslate"><span class="pre">lam_nf()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.lam_nf_dbeta"><code class="docutils literal notranslate"><span class="pre">lam_nf_dbeta()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.sig_nf"><code class="docutils literal notranslate"><span class="pre">sig_nf()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analphipy.norofrenkel.sig_nf_dbeta"><code class="docutils literal notranslate"><span class="pre">sig_nf_dbeta()</span></code></a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By William P. Krekelberg
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021, William P. Krekelberg.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on 2026-02-20.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
