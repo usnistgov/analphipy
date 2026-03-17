@@ -1,12 +1,8 @@
-<!-- markdownlint-disable MD024 -->
-<!-- markdownlint-disable MD013 -->
-<!-- prettier-ignore-start -->
 # Changelog
 
-Changelog for `analphipy`
+<!-- markdownlint-disable-file -->
 
-## Unreleased
-
+<<<<<<< before updating
 See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy/tree/main/changelog.d)
 
 <!-- prettier-ignore-end -->
@@ -71,3 +67,9 @@ Full set of changes:
 [`v0.0.1...v0.0.2`](https://github.com/usnistgov/analphipy/compare/v0.0.1...v0.0.2)
 
 ## v0.0.1 - 2022-09-26
+=======
+
+Changelog for `analphipy`
+
+## Initial release
+>>>>>>> after updating
