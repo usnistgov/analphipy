@@ -274,13 +274,6 @@ reportUnusedCallResult = false
 analysis.respect-type-ignore-comments = false
 src.include = [ "src", "tests" ]
 
-<<<<<<< before updating
-[tool.pytype]
-inputs = [
-    "src",
-    "tests",
-]
-=======
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
 addopts = [
@@ -328,7 +321,6 @@ report.omit = [
     "*/vendored/*",
 ]
 report.show_missing = true
->>>>>>> after updating
 
 # * Dependency creation --------------------------------------------------------
 [tool.pyproject2conda]
