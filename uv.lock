@@ -15,7 +15,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-03-10T20:27:43.999683Z"
+exclude-newer = "2026-03-10T21:16:45.695243Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -41,7 +41,7 @@ wheels = [
 
 [[package]]
 name = "analphipy"
-version = "0.4.2.dev15"
+version = "0.4.1"
 source = { editable = "." }
 dependencies = [
     { name = "attrs" },
