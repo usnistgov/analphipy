@@ -76,7 +76,7 @@ def test_nf_lj() -> None:
     )
 
     for g, a in iter_phi_lj(table, nsamp):
-        out = a.table(g["beta"], cols)  # ty:ignore[invalid-argument-type]
+        out = a.table(g["beta"], cols)  # ty:ignore[invalid-argument-type]  # pyrefly: ignore[bad-argument-type]
 
         for col in cols:
             left = col + "_eff"
