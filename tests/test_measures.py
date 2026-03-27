@@ -19,7 +19,8 @@ nsamp = 20
 
 def test_B2_sw() -> None:
     table: pd.DataFrame = (
-        pd.read_csv(data / "vir_sw_.csv")
+        pd
+        .read_csv(data / "vir_sw_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
     )
@@ -41,7 +42,8 @@ def test_B2_sw() -> None:
 
 def test_B2_lj() -> None:
     table = (
-        pd.read_csv(data / "vir_lj_.csv")
+        pd
+        .read_csv(data / "vir_lj_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
         .sample(40)
@@ -56,7 +58,8 @@ def test_B2_lj() -> None:
 
 def test_B2_nm() -> None:
     table: pd.DataFrame = (
-        pd.read_csv(data / "vir_lj_nm_.csv")
+        pd
+        .read_csv(data / "vir_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
     )
@@ -81,7 +84,8 @@ def test_B2_nm() -> None:
 
 def test_B2_yk() -> None:
     table: pd.DataFrame = (
-        pd.read_csv(data / "vir_yukawa_.csv")
+        pd
+        .read_csv(data / "vir_yukawa_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
     )
