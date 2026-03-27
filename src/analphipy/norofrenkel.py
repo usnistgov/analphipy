@@ -311,12 +311,10 @@ class NoroFrenkelPair:
 
     @override
     def __repr__(self) -> str:
-        params = ",\n    ".join(
-            [
-                f"{v}={getattr(self, v)}"
-                for v in ("phi", "segments", "r_min", "phi_min", "quad_kws")
-            ]
-        )
+        params = ",\n    ".join([
+            f"{v}={getattr(self, v)}"
+            for v in ("phi", "segments", "r_min", "phi_min", "quad_kws")
+        ])
 
         return f"{type(self).__name__}({params})"
 

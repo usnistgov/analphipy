@@ -69,7 +69,8 @@ def test_nf_lj() -> None:
     cols = ["sig", "eps", "lam", "B2", "sig_dbeta"]
 
     table = (
-        pd.read_csv(data / "eff_lj_.csv")
+        pd
+        .read_csv(data / "eff_lj_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
         .assign(sig_dbeta_eff=lambda x: -x["dsig_eff"])
@@ -86,7 +87,8 @@ def test_nf_lj() -> None:
 def test_nf_nm() -> None:
     cols = ["sig", "eps", "lam", "B2"]
     table: pd.DataFrame = (
-        pd.read_csv(data / "eff_lj_nm_.csv")
+        pd
+        .read_csv(data / "eff_lj_nm_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
     )
@@ -115,7 +117,8 @@ def test_nf_yk() -> None:
     cols = ["sig", "eps", "lam", "B2"]
 
     table: pd.DataFrame = (
-        pd.read_csv(data / "eff_yukawa_.csv")
+        pd
+        .read_csv(data / "eff_yukawa_.csv")
         .assign(beta=lambda x: 1.0 / x["temp"])
         .drop_duplicates()
     )
