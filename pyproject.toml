@@ -275,6 +275,10 @@ reportUnknownMemberType = false
 reportUnknownVariableType = false
 reportUnusedCallResult = false
 
+[[tool.pyright.executionEnvironments]]
+reportUnusedCallResult = false
+root = "examples"
+
 [tool.ty]
 # Disable support for `type: ignore` comments
 analysis.respect-type-ignore-comments = false
