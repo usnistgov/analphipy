@@ -160,8 +160,10 @@ expand_tables = [
     "project.urls",
     "tool.mypy.overrides",
     "tool.pyproject2conda",
+    "tool.pyrefly.sub-config",
     "tool.pyright.executionEnvironments",
     "tool.pytest",
+    "tool.ty.overrides",
     "tool.typos",
     "tool.uv.dependency-groups",
 ]
@@ -219,6 +221,10 @@ project-includes = [
     "tools",
 ]
 search-path = [ "." ]
+
+[[tool.pyrefly.sub-config]]
+ignore-missing-imports = [ "matplotlib.*" ]
+matches = "examples/**"
 
 [tool.pyright]
 exclude = [
@@ -289,6 +295,12 @@ src.include = [
     "noxfile.py",
     "tools",
 ]
+
+[[tool.ty.overrides]]
+include = [ "examples/**" ]
+
+[tool.ty.overrides.analysis]
+allowed-unresolved-imports = [ "matplotlib.*" ]
 
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
