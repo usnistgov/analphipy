@@ -68,13 +68,10 @@ test = [
     { include-group = "pytest" },
 ]
 type = [
-<<<<<<< before updating
     "pandas-stubs",
     "scipy-stubs",
-    { include-group = "pandas" },
-=======
     { include-group = "nox" },
->>>>>>> after updating
+    { include-group = "pandas" },
     { include-group = "pylint" },
     { include-group = "pytest" },
     { include-group = "typecheck-runner" },
