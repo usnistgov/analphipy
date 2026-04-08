@@ -125,7 +125,7 @@ class BaseParams:
 
     def phi(self, r):
         # pyrefly: ignore [unsupported-operation]
-        return self.phidphi(r)[0]  # type: ignore[func-returns-value]  # pyright: ignore[reportOptionalSubscript]  # ty:ignore[not-subscriptable]
+        return self.phidphi(r)[0]  # type: ignore[func-returns-value,index]  # pyright: ignore[reportOptionalSubscript]  # ty:ignore[not-subscriptable]
 
     def get_phi(self):
         return self.phi(self.r)

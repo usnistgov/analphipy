@@ -23,7 +23,7 @@ def test_simple() -> None:
     n = p.to_nf()
 
     # pyrefly: ignore [no-matching-overload]
-    np.testing.assert_allclose(n.secondvirial(1.0), n.secondvirial_sw(1.0))  # pyright: ignore[reportCallIssue]
+    np.testing.assert_allclose(n.secondvirial(1.0), n.secondvirial_sw(1.0))  # pyright: ignore[reportCallIssue]  # ty: ignore[no-matching-overload]
 
     # pyrefly: ignore [no-matching-overload]
     np.testing.assert_allclose(n.secondvirial(1.0), n.B2_sw(1.0))  # pyright: ignore[reportCallIssue]  # ty:ignore[no-matching-overload]
