@@ -30,7 +30,7 @@ dependencies:
   - pytest-xdist
   - scipy
   - scipy-stubs
-  - typecheck-runner>=0.1.0
+  - typecheck-runner>=0.1.6
   - pip
   - pip:
       - pytest-accept
