@@ -15,7 +15,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-01T17:16:01.901179Z"
+exclude-newer = "2026-04-02T18:39:35.784876Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -210,7 +210,7 @@ dev = [
     { name = "pytest-sugar", marker = "python_full_version >= '3.14'" },
     { name = "pytest-xdist", marker = "python_full_version >= '3.14'" },
     { name = "scipy-stubs", marker = "python_full_version >= '3.14'" },
-    { name = "typecheck-runner", marker = "python_full_version >= '3.14'", specifier = ">=0.1.0" },
+    { name = "typecheck-runner", marker = "python_full_version >= '3.14'", specifier = ">=0.1.6" },
 ]
 docs = [
     { name = "analphipy", extras = ["viz"], marker = "python_full_version >= '3.14'" },
@@ -281,9 +281,9 @@ type = [
     { name = "pylint" },
     { name = "pytest" },
     { name = "scipy-stubs" },
-    { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.0" },
+    { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.6" },
 ]
-typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.0" }]
+typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.6" }]
 
 [[package]]
 name = "anyio"
