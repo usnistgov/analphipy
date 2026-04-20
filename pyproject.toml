@@ -99,7 +99,7 @@ docs-spelling = [
 ipython = [ "ipython" ]
 mypy = [ "mypy[faster-cache]>=1.20.1" ]
 notebook = [ "ipykernel", "nbclient" ]
-nox = [ "nox>=2025.5.1" ]
+nox = [ "nox>=2026.4.10" ]
 optional = [ "analphipy[viz]" ]
 pandas = [ "pandas" ]
 pylint = [ "pylint" ]
@@ -113,7 +113,7 @@ test-notebook = [
     { include-group = "optional" },
     { include-group = "test" },
 ]
-typecheck-runner = [ "typecheck-runner>=0.1.6; python_version>'3.9'" ]
+typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
 [tool.uv]

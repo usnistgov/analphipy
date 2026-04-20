@@ -15,7 +15,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-13T14:00:22.328779Z"
+exclude-newer = "2026-04-13T16:50:58.676636Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -200,7 +200,7 @@ dev = [
     { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.20.1" },
     { name = "nbclient", marker = "python_full_version >= '3.14'" },
     { name = "nbval", marker = "python_full_version >= '3.14'" },
-    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2025.5.1" },
+    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
     { name = "pandas", marker = "python_full_version >= '3.14'" },
     { name = "pandas-stubs", marker = "python_full_version >= '3.14'" },
     { name = "pylint", marker = "python_full_version >= '3.14'" },
@@ -210,7 +210,7 @@ dev = [
     { name = "pytest-sugar", marker = "python_full_version >= '3.14'" },
     { name = "pytest-xdist", marker = "python_full_version >= '3.14'" },
     { name = "scipy-stubs", marker = "python_full_version >= '3.14'" },
-    { name = "typecheck-runner", marker = "python_full_version >= '3.14'", specifier = ">=0.1.6" },
+    { name = "typecheck-runner", marker = "python_full_version >= '3.14'", specifier = ">=0.2.0" },
 ]
 docs = [
     { name = "analphipy", extras = ["viz"], marker = "python_full_version >= '3.14'" },
@@ -245,7 +245,7 @@ notebook = [
     { name = "ipykernel", marker = "python_full_version >= '3.14'" },
     { name = "nbclient", marker = "python_full_version >= '3.14'" },
 ]
-nox = [{ name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2025.5.1" }]
+nox = [{ name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" }]
 optional = [{ name = "analphipy", extras = ["viz"] }]
 pandas = [{ name = "pandas" }]
 pylint = [{ name = "pylint" }]
@@ -275,15 +275,15 @@ test-notebook = [
     { name = "pytest-xdist" },
 ]
 type = [
-    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2025.5.1" },
+    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
     { name = "pandas" },
     { name = "pandas-stubs" },
     { name = "pylint" },
     { name = "pytest" },
     { name = "scipy-stubs" },
-    { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.6" },
+    { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" },
 ]
-typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.6" }]
+typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" }]
 
 [[package]]
 name = "anyio"
