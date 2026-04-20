@@ -19,7 +19,7 @@ dependencies:
   - mypy>=1.20.1
   - nbclient
   - nbval
-  - nox>=2025.5.1
+  - nox>=2026.4.10
   - numpy
   - pandas
   - pandas-stubs
@@ -30,7 +30,7 @@ dependencies:
   - pytest-xdist
   - scipy
   - scipy-stubs
-  - typecheck-runner>=0.1.6
+  - typecheck-runner>=0.2.0
   - pip
   - pip:
       - pytest-accept
