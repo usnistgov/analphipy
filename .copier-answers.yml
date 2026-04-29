@@ -7,7 +7,7 @@ email: wpk@nist.gov
 full_name: William P. Krekelberg
 github_username: usnistgov
 project_name: analphipy
-project_short_description: All the boilerplate you need to create a Python package.
+project_short_description: Utilities to perform stat mech analysis of pair potentials
 project_slug: analphipy
 pypi_username: wpk-nist
 sphinx_theme: sphinx_book_theme
