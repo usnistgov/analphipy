@@ -200,7 +200,7 @@ basedpyright = [{ name = "basedpyright", specifier = ">=1.31.3" }]
 dev = [
     { name = "analphipy", extras = ["viz"], marker = "python_full_version >= '3.14'" },
     { name = "ipykernel", marker = "python_full_version >= '3.14'" },
-    { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.20.1" },
+    { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.20.2" },
     { name = "nbclient", marker = "python_full_version >= '3.14'" },
     { name = "nbval", marker = "python_full_version >= '3.14'" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
@@ -243,7 +243,7 @@ docs-spelling = [
     { name = "sphinxcontrib-spelling", marker = "python_full_version >= '3.14'" },
 ]
 ipython = [{ name = "ipython", marker = "python_full_version >= '3.14'" }]
-mypy = [{ name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.20.1" }]
+mypy = [{ name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.20.2" }]
 notebook = [
     { name = "ipykernel", marker = "python_full_version >= '3.14'" },
     { name = "nbclient", marker = "python_full_version >= '3.14'" },
