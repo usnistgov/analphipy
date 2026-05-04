@@ -196,7 +196,7 @@ requires-dist = [
 provides-extras = ["viz"]
 
 [package.metadata.requires-dev]
-basedpyright = [{ name = "basedpyright", specifier = ">=1.31.3" }]
+basedpyright = [{ name = "basedpyright", specifier = ">=1.39.3" }]
 dev = [
     { name = "analphipy", extras = ["viz"], marker = "python_full_version >= '3.14'" },
     { name = "ipykernel", marker = "python_full_version >= '3.14'" },
