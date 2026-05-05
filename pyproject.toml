@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.11.7,<0.12.0",
+    "uv-build>=0.11.8,<0.12.0",
 ]
 
 [project]
@@ -117,7 +117,7 @@ typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
 [tool.uv]
-required-version = ">=0.7.15"
+required-version = ">=0.11.8"
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 exclude-newer = "7 days"
@@ -378,12 +378,21 @@ skip-package = true
 
 [tool.pyproject2conda.envs.uvx-tools]
 reqs = [
+<<<<<<< before updating
     # these used solely for specking tools to be used with uvx ...
     "conda-lock>=2.5.5",
     "copier",
     "copier-template-extensions>=0.3.1",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
+=======
+    # these used solely for specking tools to be run via uvx ...
+    "conda-lock>=4.0.0",
+    "copier-template-extensions>=0.3.3",
+    "copier>=9.14.3",
+    "grayskull>=3.1.0",
+    "nbqa>=1.9.1",
+>>>>>>> after updating
     "prek>=0.3.11",
     "pyrefly>=0.62.0",
     "pyright>=1.1.409",
