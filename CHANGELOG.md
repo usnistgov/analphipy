@@ -4,8 +4,6 @@
 
 Changelog for `analphipy`.
 
-See the fragment files in [changelog.d](https://github.com/usnistgov/analphipy/tree/main/changelog.d)
-
 ## v0.3.0 — 2023-08-04
 
 ### Added
