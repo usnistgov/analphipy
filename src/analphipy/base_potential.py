@@ -327,9 +327,6 @@ class PhiAbstract:
         return Measures(**kws)
 
 
-_docfiller_phiabstract = docfiller.factory_inherit_from_parent(PhiAbstract)
-
-
 @attrs.define(frozen=True)
 @docfiller.inherit(PhiAbstract)
 class PhiCutBase(PhiAbstract):
@@ -383,7 +380,7 @@ class PhiCutBase(PhiAbstract):
             )
         )
 
-    @_docfiller_phiabstract()
+    @docfiller.inherit(PhiAbstract.phi)
     @override
     def phi(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
@@ -398,7 +395,7 @@ class PhiCutBase(PhiAbstract):
             v[left] = self.phi_base.phi(r[left]) + self._vcorrect(r[left])
         return v
 
-    @_docfiller_phiabstract()
+    @docfiller.inherit(PhiAbstract.dphidr)
     @override
     def dphidr(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
         r = np.asarray(r)
