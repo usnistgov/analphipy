@@ -1,5 +1,5 @@
 """Sync minimum versions of pyproject.toml dependencies to locked requirement file"""
-# ruff: noqa: D101, D102, D103
+# ruff: noqa: D101, D103
 # pylint: disable=missing-class-docstring
 # /// script
 # requires-python = ">=3.12"
