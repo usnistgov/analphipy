@@ -82,13 +82,13 @@ strictly-empty-init-modules = false
     "D",
     "S101",
 ]
-"tools/*.py" = [
-    "A",
-    "D102",
-    "DOC402",
-    "S",
-    "SLF001",
-]
+# "tools/*.py" = [
+#     "A",
+#     "D102",
+#     "DOC402",
+#     "S",
+#     "SLF001",
+# ]
 
 # Project specific ignores (avoid changing per-file-ignores directly)
 [lint.extend-per-file-ignores]
