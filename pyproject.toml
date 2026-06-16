@@ -402,7 +402,6 @@ scripts = [
     "noxfile.py",
     "tools/check_dist_version.py",
     "tools/clean_kernelspec.py",
-    "tools/cog_runner.py",
     "tools/sync_pyproject_min_versions.py",
 ]
 
