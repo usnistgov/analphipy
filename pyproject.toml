@@ -86,7 +86,7 @@ docs = [
     { include-group = "optional" },
 ]
 # other groups
-basedpyright = [ "basedpyright>=1.39.7" ]
+basedpyright = [ "basedpyright>=1.39.8" ]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -379,7 +379,7 @@ pip-deps = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=4.0.0",
     "copier-template-extensions>=0.3.3",
-    "copier>=9.15.1",
+    "copier>=9.15.2",
     "grayskull>=3.1.1",
     "nbqa>=1.9.1",
     "prek>=0.4.4",
@@ -387,7 +387,7 @@ pip-deps = [
     "pyright>=1.1.410",
     "rooster>=0.1.1",
     "twine>=6.2.0",
-    "ty>=0.0.48",
+    "ty>=0.0.49",
 ]
 groups = [
     "basedpyright",
