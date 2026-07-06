@@ -1,11 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-<<<<<<< before updating
-    "uv-build>=0.11.22,<0.12.0",
-=======
     "uv-build>=0.11.25,<0.12.0",
->>>>>>> after updating
 ]
 
 [project]
@@ -230,22 +226,12 @@ ignore-missing-imports = [ "matplotlib.*" ]
 matches = "examples/**"
 
 [tool.pyright]
-<<<<<<< before updating
 typeCheckingMode = "standard"
 strict = [
     "noxfile.py",
     "src",
     "tools/*.py",
 ]
-=======
-typeCheckingMode = "strict"
-# strict = [
-#     "noxfile.py",
-#     "src",
-#     "tests",
-#     "tools/*.py",
-# ]
->>>>>>> after updating
 include = [
     "noxfile.py",
     "src",
@@ -396,17 +382,10 @@ pip-deps = [
     "nbqa>=1.9.1",
     "prek>=0.4.5",
     "pyrefly>=1.1.1",
-<<<<<<< before updating
-    "pyright>=1.1.410",
-    "rooster>=0.1.1",
-    "twine>=6.2.0",
-    "ty>=0.0.51",
-=======
     "pyright>=1.1.411",
     "rooster>=0.1.1",
     "twine>=6.2.0",
     "ty>=0.0.55",
->>>>>>> after updating
 ]
 groups = [
     "basedpyright",
