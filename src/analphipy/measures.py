@@ -225,10 +225,10 @@ def diverg_kl_disc(
     """
     p, q = np.asarray(p), np.asarray(q)
     diverg = diverg_kl_integrand(p, q)
-    # fmt: off
-    out: Float_or_Array = diverg.sum(axis=axis)
-    # fmt: on
-    return out
+    out: Float_or_Array | np.floating[Any] = diverg.sum(axis=axis)
+    if isinstance(out, np.ndarray):
+        return out  # ty: ignore[invalid-return-type]
+    return float(out)
 
 
 def _check_volume_func(
