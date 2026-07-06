@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing import Any, Literal
 
-    from ._typing import Array, ArrayLike, Float_or_ArrayLike, Phi_Signature
+    from ._typing import Array, Float_or_ArrayLike, Phi_Signature
     from ._typing_compat import Self
 
 
@@ -416,7 +416,7 @@ class CubicTable(PhiBase):
         validator=_validate_bounds
     )  # validator=_validate_bounds, converter=tuple)
     #: Values of potential evaluated on even grid of :math:`r^2` values.
-    phi_table: ArrayLike = field(converter=np.asarray, repr=field_array_formatter())
+    phi_table: Array = field(converter=np.asarray, repr=field_array_formatter())  # ty: ignore[invalid-assignment]
     #: value of `phi` at left bound (`r < bounds[0]`)
     phi_left: float = field(converter=float, default=np.inf)
     #: value of `phi` at right bound (`r > bounds[1]`)
