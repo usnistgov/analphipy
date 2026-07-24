@@ -11,11 +11,7 @@ from importlib.metadata import version as _version
 
 from . import measures, norofrenkel, potential
 
-<<<<<<< before updating
 try:
-=======
-try:  # ruff:ignore[non-empty-init-module]
->>>>>>> after updating
     __version__ = _version("analphipy")
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "999"
