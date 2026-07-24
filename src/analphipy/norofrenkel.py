@@ -479,7 +479,7 @@ class NoroFrenkelPair:
             **kws,
         )
 
-    def eps(self, beta: float | None = None, **kws: Any) -> float:  # noqa: ARG002
+    def eps(self, beta: float | None = None, **kws: Any) -> float:  # ruff:ignore[unused-method-argument]
         """
         Effective square well epsilon.
 

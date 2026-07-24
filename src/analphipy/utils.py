@@ -111,7 +111,7 @@ def quad_segments(
     errors: float | list[float]
     outputs: dict[str, Any] | list[dict[str, Any]]
 
-    if len(segments) == 2:  # noqa: PLR2004
+    if len(segments) == 2:  # ruff:ignore[magic-value-comparison]
         integrals, errors, outputs = out[0]
     else:
         integrals_list: list[float] = []

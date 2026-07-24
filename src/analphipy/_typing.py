@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence  # noqa: F401
+from collections.abc import Callable, Sequence  # ruff:ignore[unused-import]
 from typing import (
     Any,
     TypedDict,
     TypeVar,
 )
 
-import numpy as np  # noqa: F401
+import numpy as np  # ruff:ignore[unused-import]
 from numpy.typing import NDArray
 
 from ._typing_compat import ParamSpec, TypeAlias

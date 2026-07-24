@@ -189,7 +189,7 @@ def diverg_kl_integrand(
 
     out = np.empty_like(p)
 
-    zero = p == 0.0  # pylint: disable=use-implicit-booleaness-not-comparison-to-zero  # noqa: RUF069
+    zero = p == 0.0  # pylint: disable=use-implicit-booleaness-not-comparison-to-zero  # ruff:ignore[float-equality-comparison]
     hero = ~zero
 
     out[zero] = 0.0
@@ -238,7 +238,7 @@ def _check_volume_func(
         volume = "1d"
     if isinstance(volume, str):
         if volume == "1d":
-            return lambda x: 1.0  # noqa: ARG005
+            return lambda x: 1.0  # ruff:ignore[unused-lambda-argument]
 
         if volume == "2d":
             return lambda x: 2.0 * np.pi * x
