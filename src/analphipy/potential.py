@@ -382,8 +382,8 @@ class SquareWell(Analytic):
         return phi
 
 
-def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None:  # noqa: ARG001
-    if len(bounds) != 2:  # noqa: PLR2004
+def _validate_bounds(self: Any, attribute: Any, bounds: Sequence[float]) -> None:  # ruff:ignore[unused-function-argument]
+    if len(bounds) != 2:  # ruff:ignore[magic-value-comparison]
         msg = "length of bounds must be 2"
         raise ValueError(msg)
 
@@ -431,7 +431,7 @@ class CubicTable(PhiBase):
     _dsinv: float = field(init=False, repr=False)
 
     def __attrs_post_init__(self) -> None:
-        assert isinstance(self.phi_table, np.ndarray)  # noqa: S101
+        assert isinstance(self.phi_table, np.ndarray)  # ruff:ignore[assert]
 
         ds = (self.bounds[1] - self.bounds[0]) / self.size
 

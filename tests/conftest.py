@@ -326,7 +326,7 @@ class HSParams(BaseParams):  # pylint: disable=abstract-method
     def __post_init__(self):
         self.r = get_r(rmin=0.1 * self.sig, rmax=2 * self.sig, n=100)
 
-    def phi(self, r):  # noqa: ARG002
+    def phi(self, r):  # ruff:ignore[unused-method-argument]
         return phi_hs(self.r, sig=self.sig)
 
     @classmethod

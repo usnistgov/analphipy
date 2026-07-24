@@ -113,7 +113,7 @@ class PhiAbstract:
 
         """
         for key, value in kws.items():
-            object.__setattr__(self, key, value)  # noqa: PLC2801
+            object.__setattr__(self, key, value)  # ruff:ignore[unnecessary-dunder-call]
 
     def _get_smart_filter(
         self,
@@ -382,7 +382,7 @@ class PhiCutBase(PhiAbstract):
 
     @docfiller.inherit(PhiAbstract.phi)
     @override
-    def phi(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
+    def phi(self, r: Float_or_ArrayLike) -> Array:  # ruff:ignore[undocumented-public-method]
         r = np.asarray(r)
         v = np.empty_like(r)
 
@@ -397,7 +397,7 @@ class PhiCutBase(PhiAbstract):
 
     @docfiller.inherit(PhiAbstract.dphidr)
     @override
-    def dphidr(self, r: Float_or_ArrayLike) -> Array:  # noqa: D102
+    def dphidr(self, r: Float_or_ArrayLike) -> Array:  # ruff:ignore[undocumented-public-method]
         r = np.asarray(r)
         dvdr = np.empty_like(r)
 
