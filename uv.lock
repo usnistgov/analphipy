@@ -207,7 +207,7 @@ dev = [
     { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=2.3.0" },
     { name = "nbclient", marker = "python_full_version >= '3.14'" },
     { name = "nbval", marker = "python_full_version >= '3.14'" },
-    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
+    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.7.11" },
     { name = "pandas", marker = "python_full_version >= '3.14'" },
     { name = "pandas-stubs", marker = "python_full_version >= '3.14'" },
     { name = "pylint", marker = "python_full_version >= '3.14'" },
@@ -252,7 +252,7 @@ notebook = [
     { name = "ipykernel", marker = "python_full_version >= '3.14'" },
     { name = "nbclient", marker = "python_full_version >= '3.14'" },
 ]
-nox = [{ name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" }]
+nox = [{ name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.7.11" }]
 optional = [{ name = "analphipy", extras = ["viz"] }]
 pandas = [{ name = "pandas" }]
 pylint = [{ name = "pylint" }]
@@ -282,7 +282,7 @@ test-notebook = [
     { name = "pytest-xdist" },
 ]
 type = [
-    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
+    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.7.11" },
     { name = "pandas" },
     { name = "pandas-stubs" },
     { name = "pylint" },
