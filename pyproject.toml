@@ -281,6 +281,7 @@ reportUnusedCallResult = false
 
 [[tool.pyright.executionEnvironments]]
 reportUnusedCallResult = false
+reportMissingImports = false
 root = "examples"
 
 [tool.ty]
