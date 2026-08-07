@@ -2,6 +2,7 @@
 Base classes (:mod:`analphipy.base_potential`)
 ==============================================
 """
+# ruff:file-ignore[unused-method-argument,docstring-extraneous-returns,no-self-use]
 
 from __future__ import annotations
 

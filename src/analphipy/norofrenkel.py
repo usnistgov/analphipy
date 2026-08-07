@@ -14,6 +14,7 @@ References
 
 
 """
+# ruff: file-ignore[invalid-function-name, invalid-argument-name, non-lowercase-variable-in-function]
 
 from __future__ import annotations
 
