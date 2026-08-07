@@ -2,6 +2,7 @@
 Classes/routines for pair potentials (:mod:`analphipy.potential`)
 =================================================================
 """
+# ruff:file-ignore[undocumented-public-method]
 
 from __future__ import annotations
 
