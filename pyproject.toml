@@ -196,14 +196,6 @@ pylint.max-positional-args = 15
 pylint.max-public-methods = 30
 ruff.strictly-empty-init-modules = false
 
-# Project specific ignores
-# Note use tests/.ruff.toml or examples/.ruff.toml for specific ignores
-[tool.ruff.lint.per-file-ignores]
-"src/**/*.py" = [
-    "NPY", # - not using numpy?
-    "PD",  # - not using pandas?
-]
-
 # * Checks ---------------------------------------------------------------------
 [tool.repo-review]
 ignore = [
