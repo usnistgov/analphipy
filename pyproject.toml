@@ -122,6 +122,7 @@ default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 exclude-newer = "7 days"
 managed = true
+build-backend.source-exclude = [ ".*cache" ]
 build-backend.source-include = [ "tests/**" ]
 pip.annotation-style = "line"
 pip.generate-hashes = true
@@ -195,6 +196,27 @@ pylint.max-args = 15
 pylint.max-positional-args = 15
 pylint.max-public-methods = 30
 ruff.strictly-empty-init-modules = false
+
+# Project specific ignores
+[tool.ruff.lint.per-file-ignores]
+"**/*.ipynb" = [
+    "ANN001",
+    "ANN201",
+    "B018",   # - Don't remove useless expressions in notebooks
+    "D100",   # - undocumented-public-module
+    "D103",
+    "E302",
+    "E402",
+    "INP001",
+]
+"tests/**/*.py" = [
+    "ANN",
+    "D",     # - Don't need to document tests
+    "N802",
+    "N806",
+    "PT011",
+    "S101",  # - Assert is fine with tests
+]
 
 # * Checks ---------------------------------------------------------------------
 [tool.repo-review]
