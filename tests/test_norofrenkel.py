@@ -28,16 +28,16 @@ def test_simple() -> None:
     # pyrefly: ignore [no-matching-overload]
     np.testing.assert_allclose(n.secondvirial(1.0), n.B2_sw(1.0))  # pyright: ignore[reportCallIssue]  # ty:ignore[no-matching-overload]
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"Bad kws.*"):
         n.lam(beta=1.0, err=True)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"Bad kws.*"):
         n.sw_dict(beta=1.0, err=True)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"Bad kws.*"):
         n.lam_dbeta(beta=1.0, err=True)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"Bad kws.*"):
         n.secondvirial_sw(beta=1.0, err=True)
 
     assert isinstance(n.sw_dict(1.0), dict)

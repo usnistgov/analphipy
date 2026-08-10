@@ -1,5 +1,6 @@
 # mypy: disable-error-code="no-untyped-def, no-untyped-call"
 # pylint: disable=duplicate-code
+# ruff: file-ignore[invalid-function-name, non-lowercase-variable-in-function]
 from pathlib import Path
 
 import numpy as np
