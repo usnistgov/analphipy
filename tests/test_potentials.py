@@ -53,10 +53,10 @@ def test_asdict() -> None:
     # pyrefly: ignore [no-matching-overload]
     np.testing.assert_allclose(p_lfs.r_min, 1.123148919, atol=1e-5)  # pyright: ignore[reportCallIssue]  # ty:ignore[no-matching-overload]
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"must specify bounds.*"):
         p_lj.lfs(rcut=2.5).assign_min_numeric(r0="mean", bounds=None)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"must set `self.r_min`.*"):
         p_lj.lfs(rcut=2.5).to_nf()
 
 
