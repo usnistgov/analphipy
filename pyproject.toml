@@ -197,25 +197,24 @@ pylint.max-positional-args = 15
 pylint.max-public-methods = 30
 ruff.strictly-empty-init-modules = false
 
-# Project specific ignores
 [tool.ruff.lint.per-file-ignores]
-"**/*.ipynb" = [
-    "ANN001",
-    "ANN201",
-    "B018",   # - Don't remove useless expressions in notebooks
-    "D100",   # - undocumented-public-module
-    "D103",
-    "E302",
-    "E402",
-    "INP001",
+"src/**" = [
+    "NPY", # - not using numpy?
+    "PD",  # - not using pandas?
 ]
-"tests/**/*.py" = [
-    "ANN",
+"tests/**" = [
     "D",     # - Don't need to document tests
-    "N802",
-    "N806",
-    "PT011",
     "S101",  # - Assert is fine with tests
+    "ANN",
+    "N",
+    "PT011",
+]
+"examples/**" = [
+    "B018",   # - Don't remove useless expressions in notebooks
+    "ANN",
+    "D",
+    "E",
+    "INP001",
 ]
 
 # * Checks ---------------------------------------------------------------------
