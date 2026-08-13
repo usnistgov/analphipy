@@ -198,7 +198,7 @@ def minimize_phi(
     xmin = outputs["x"][0]
 
     tmp = outputs["fun"]
-    ymin = tmp[0] if isinstance(tmp, np.ndarray) else tmp  # ty:ignore[invalid-argument-type]
+    ymin = tmp[0] if isinstance(tmp, np.ndarray) else tmp
 
     return cast("tuple[float, float, OptimizeResultInterface]", (xmin, ymin, outputs))
 
