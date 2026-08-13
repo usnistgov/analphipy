@@ -227,7 +227,7 @@ def diverg_kl_disc(
     diverg = diverg_kl_integrand(p, q)
     out: Float_or_Array | np.floating[Any] = diverg.sum(axis=axis)
     if isinstance(out, np.ndarray):
-        return out  # ty: ignore[invalid-return-type]
+        return out
     return float(out)
 
 
