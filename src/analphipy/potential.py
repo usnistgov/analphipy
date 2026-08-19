@@ -559,7 +559,7 @@ class CubicTable(PhiBase):
     def rsq_table(self) -> Array:
         """Value of ``r**2`` where potential is defined."""
         # fmt: off
-        return (self.smin + np.arange(self.size + 1) * self._ds)
+        return (self.smin + np.arange(self.size + 1) * self._ds)  # ty: ignore[invalid-return-type]
         # fmt: on
 
     @property
