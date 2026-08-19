@@ -100,8 +100,11 @@ ipython = [ "ipython" ]
 mypy = [ "mypy[faster-cache]>=2.3.0" ]
 notebook = [ "ipykernel", "nbclient" ]
 nox = [ "nox>=2026.8.10" ]
+<<<<<<< before updating
 optional = [ "analphipy[viz]" ]
 pandas = [ "pandas" ]
+=======
+>>>>>>> after updating
 pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 pytest-accept = [ "pytest-accept" ]
