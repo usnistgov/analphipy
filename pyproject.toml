@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.12.4,<0.13.0",
+    "uv-build>=0.12.5,<0.13.0",
 ]
 
 [project]
@@ -97,7 +97,7 @@ docs-spelling = [
     { include-group = "docs" },
 ]
 ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=2.3.0" ]
+mypy = [ "mypy[faster-cache]>=2.3.1" ]
 notebook = [ "ipykernel", "nbclient" ]
 nox = [ "nox>=2026.8.10" ]
 optional = [ "analphipy[viz]" ]
@@ -405,10 +405,10 @@ minversion = "8"
 strict_xfail = "true"
 
 [tool.coverage]
-run.branch = true
 run.source = [
     "analphipy",
 ]
+run.branch = true
 paths.source = [
     "src/",
     # needed for testing source if not editable install
@@ -416,16 +416,16 @@ paths.source = [
     "*/.nox/**/site-packages",
     "*/src",
 ]
-report.exclude_also = [
-    "@overload",
-    "if TYPE_CHECKING:",
-]
 report.include = [
     "src/*",
 ]
 report.omit = [
     "*/_typing.py",
     "*/vendored/*",
+]
+report.exclude_also = [
+    "@overload",
+    "if TYPE_CHECKING:",
 ]
 report.show_missing = true
 
@@ -465,12 +465,12 @@ pip-deps = [
     "copier>=9.17.1",
     "grayskull>=3.1.1",
     "nbqa>=1.9.1",
-    "prek>=0.4.13",
+    "prek>=0.4.14",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "rooster>=0.1.1",
     "twine>=7.0.0",
-    "ty>=0.0.71",
+    "ty>=0.0.72",
 ]
 groups = [
     "basedpyright",
