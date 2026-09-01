@@ -521,7 +521,7 @@ class CubicTable(PhiBase):
         right = s >= self.smax
         mid = (~left) & (~right)
 
-        v[left] = self.phi_left
+        dv[left] = self.dphi_left
         dv[right] = self.dphi_left
 
         v[right] = self.phi_right
