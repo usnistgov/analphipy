@@ -467,7 +467,7 @@ class CubicTable(PhiBase):
         rmax : float
             Maximum pair separation `r` to evaluate at.
         ds : float
-            spaceing in ``s = r ** 2``.
+            spacing in ``s = r ** 2``.
         **kws :
             Extra arguments to constructor.
 
