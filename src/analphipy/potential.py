@@ -466,8 +466,8 @@ class CubicTable(PhiBase):
             minimum pair separation `r` to evaluate at.
         rmax : float
             Maximum pair separation `r` to evaluate at.
+        ds : float
             spacing in ``s = r ** 2``.
-            spaceing in ``s = r ** 2``.
         **kws :
             Extra arguments to constructor.
 
@@ -521,7 +521,7 @@ class CubicTable(PhiBase):
         right = s >= self.smax
         mid = (~left) & (~right)
 
-        dv[left] = self.dphi_left
+        v[left] = self.phi_left
         dv[right] = self.dphi_left
 
         v[right] = self.phi_right
@@ -626,7 +626,7 @@ def factory(
     elif name == "hs":
         phi = HardSphere(**kws)
 
-        msg = f"{name} must be one of: ('lj', 'nm', 'sw', 'hs', 'yk')"
+    else:
         msg = f"{name} must be in {_PHI_NAMES}"
         raise ValueError(msg)
 
