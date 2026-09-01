@@ -626,7 +626,7 @@ def factory(
     elif name == "hs":
         phi = HardSphere(**kws)
 
-    else:
+        msg = f"{name} must be one of: ('lj', 'nm', 'sw', 'hs', 'yk')"
         msg = f"{name} must be in {_PHI_NAMES}"
         raise ValueError(msg)
 
