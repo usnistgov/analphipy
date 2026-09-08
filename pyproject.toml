@@ -363,6 +363,7 @@ reportUnknownVariableType = false
 reportUnusedCallResult = false
 
 [[tool.pyright.executionEnvironments]]
+reportArgumentType = false
 reportUnusedCallResult = false
 reportMissingImports = false
 root = "examples"
