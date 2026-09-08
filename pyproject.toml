@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.12.6,<0.13.0",
+    "uv-build>=0.12.8,<0.13.0",
 ]
 
 [project]
@@ -154,41 +154,58 @@ fix = true
 # unsafe-fixes = true
 
 [tool.ruff.format]
-docstring-code-format = true
 preview = true  # needed for markdown support
+docstring-code-format = true
+
+[tool.ruff.lint.per-file-ignores]
+"src/**" = [
+    "NPY", # - not using numpy?
+    "PD",  # - not using pandas?
+]
+"tests/**" = [
+    "ANN",
+    "assert", # - Assert is fine with tests
+    "D",      # - Don't need to document tests
+]
+"examples/**" = [
+    "ANN",
+    "D",
+    "implicit-namespace-package",
+    "module-import-not-at-top-of-file",
+    "useless-expression",               # - Don't remove useless expressions in notebooks
+]
 
 [tool.ruff.lint]
-preview = true
 select = [
     "ALL",
-]
-# fixable = [ "ALL" ]
-unfixable = [
-    "non-augmented-assignment",
-    "ERA",
-    "T",
 ]
 ignore = [
     "any-type",                             # - Any ok sometimes
     "COM",                                  # - flake8-commas, formatter should take care of this?
     "CPY",                                  # - Don't require copyright
-    "undocumented-magic-method",            # - Missing magic method docstring
-    "undocumented-public-init",             # - Missing docstring in __init__
-    "incorrect-blank-line-before-class",    # - 1 blank line required before class docstring
-    "missing-blank-line-after-summary",     # - blank line after summary
-    "multi-line-summary-first-line",        # - Multi-line docstring summary should start at the first line
-    "missing-trailing-period",              # - First line should end with a period
-    "non-imperative-mood",                  # - First line of docstring should be in imperative mood: "{first_line}"
-    "docstring-missing-returns",            # - Missing return from documentation
     "docstring-missing-exception",          # - Missing raises from documentation
-    "line-too-long",                        # - line too long - let formatter fix this
-    "lambda-assignment",                    # - do not assign a lambda expression, use a def
+    "docstring-missing-returns",            # - Missing return from documentation
     "FBT",                                  # - bools are ok
     "import-outside-top-level",             # - import should be at top level (leads to issues with imports in func?)
-    "suspicious-subprocess-import",         # - Want to use subprocess sometimes
-    "subprocess-without-shell-equals-true", # - subprocess-without-shell-equals-true
-    "start-process-with-partial-path",      # - start-process-with-partial-path
+    "incorrect-blank-line-before-class",    # - 1 blank line required before class docstring
+    "lambda-assignment",                    # - do not assign a lambda expression, use a def
+    "line-too-long",                        # - line too long - let formatter fix this
+    "missing-blank-line-after-summary",     # - blank line after summary
+    "missing-trailing-period",              # - First line should end with a period
+    "multi-line-summary-first-line",        # - Multi-line docstring summary should start at the first line
+    "non-imperative-mood",                  # - First line of docstring should be in imperative mood: "{first_line}"
     "relative-imports",                     # - Allow relative imports
+    "start-process-with-partial-path",      # - start-process-with-partial-path
+    "subprocess-without-shell-equals-true", # - subprocess-without-shell-equals-true
+    "suspicious-subprocess-import",         # - Want to use subprocess sometimes
+    "undocumented-magic-method",            # - Missing magic method docstring
+    "undocumented-public-init",             # - Missing docstring in __init__
+]
+# fixable = [ "ALL" ]
+unfixable = [
+    "ERA",
+    "non-augmented-assignment",
+    "T",
 ]
 isort.known-first-party = [
     "analphipy",
@@ -197,25 +214,8 @@ pydocstyle.convention = "numpy"
 pylint.max-args = 15
 pylint.max-positional-args = 15
 pylint.max-public-methods = 30
+preview = true
 ruff.strictly-empty-init-modules = false
-
-[tool.ruff.lint.per-file-ignores]
-"src/**" = [
-    "NPY", # - not using numpy?
-    "PD",  # - not using pandas?
-]
-"tests/**" = [
-    "D",      # - Don't need to document tests
-    "assert", # - Assert is fine with tests
-    "ANN",
-]
-"examples/**" = [
-    "useless-expression",               # - Don't remove useless expressions in notebooks
-    "ANN",
-    "D",
-    "module-import-not-at-top-of-file",
-    "implicit-namespace-package",
-]
 
 # * Checks ---------------------------------------------------------------------
 [tool.repo-review]
@@ -295,7 +295,6 @@ module = [ "matplotlib.*" ]
 ignore_missing_imports = true
 
 [tool.pyrefly]
-enabled-ignores = [ "pyrefly" ]
 project-includes = [
     "examples/usage/*.ipynb",
     "noxfile.py",
@@ -304,6 +303,7 @@ project-includes = [
     "tools",
 ]
 search-path = [ "." ]
+enabled-ignores = [ "pyrefly" ]
 
 [[tool.pyrefly.sub-config]]
 ignore-missing-imports = [ "matplotlib.*" ]
@@ -363,6 +363,7 @@ reportUnknownVariableType = false
 reportUnusedCallResult = false
 
 [[tool.pyright.executionEnvironments]]
+reportArgumentType = false
 reportUnusedCallResult = false
 reportMissingImports = false
 root = "examples"
@@ -385,6 +386,12 @@ allowed-unresolved-imports = [ "matplotlib.*" ]
 
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
+minversion = "8"
+testpaths = [
+    "README.md",
+    "analphipy",
+    "tests",
+]
 addopts = [
     "--cov-config=pyproject.toml",
     "--doctest-glob=*.md",
@@ -394,16 +401,10 @@ addopts = [
     "--strict-markers",
     "-ra",
 ]
-testpaths = [
-    "README.md",
-    "analphipy",
-    "tests",
-]
 # options
 filterwarnings = [ "error" ]
-log_cli_level = "INFO"
 log_level = "INFO"
-minversion = "8"
+log_cli_level = "INFO"
 strict_xfail = "true"
 
 [tool.coverage]
@@ -488,6 +489,7 @@ scripts = [
     "noxfile.py",
     "tools/check_dist_version.py",
     "tools/clean_kernelspec.py",
+    "tools/get_version_from_pre_commit_config.py",
 ]
 
 [[tool.uv-locker.requirements]]
