@@ -1,11 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-<<<<<<< before updating
-    "uv-build>=0.12.6,<0.13.0",
-=======
     "uv-build>=0.12.8,<0.13.0",
->>>>>>> after updating
 ]
 
 [project]
@@ -167,13 +163,16 @@ docstring-code-format = true
     "PD",  # - not using pandas?
 ]
 "tests/**" = [
+    "ANN",
     "assert", # - Assert is fine with tests
     "D",      # - Don't need to document tests
 ]
 "examples/**" = [
-    # "useless-expression",         # - Don't remove useless expressions in notebooks
-    # "undocumented-public-module", # - undocumented-public-module
-    # "implicit-namespace-package",
+    "ANN",
+    "D",
+    "implicit-namespace-package",
+    "module-import-not-at-top-of-file",
+    "useless-expression",               # - Don't remove useless expressions in notebooks
 ]
 
 [tool.ruff.lint]
@@ -218,27 +217,6 @@ pylint.max-public-methods = 30
 preview = true
 ruff.strictly-empty-init-modules = false
 
-<<<<<<< before updating
-[tool.ruff.lint.per-file-ignores]
-"src/**" = [
-    "NPY", # - not using numpy?
-    "PD",  # - not using pandas?
-]
-"tests/**" = [
-    "D",      # - Don't need to document tests
-    "assert", # - Assert is fine with tests
-    "ANN",
-]
-"examples/**" = [
-    "useless-expression",               # - Don't remove useless expressions in notebooks
-    "ANN",
-    "D",
-    "module-import-not-at-top-of-file",
-    "implicit-namespace-package",
-]
-
-=======
->>>>>>> after updating
 # * Checks ---------------------------------------------------------------------
 [tool.repo-review]
 ignore = [
@@ -486,19 +464,15 @@ pip-deps = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=4.0.2",
     "copier-template-extensions>=0.3.3",
-    "copier>=9.18.1",
+    "copier>=9.17.2",
     "grayskull>=3.1.1",
     "nbqa>=1.9.1",
-<<<<<<< before updating
     "prek>=0.5.1",
-=======
-    "prek>=0.5.2",
->>>>>>> after updating
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "rooster>=0.1.1",
     "twine>=7.0.0",
-    "ty>=0.0.77",
+    "ty>=0.0.74",
 ]
 groups = [
     "basedpyright",
@@ -514,11 +488,7 @@ scripts = [
     "noxfile.py",
     "tools/check_dist_version.py",
     "tools/clean_kernelspec.py",
-<<<<<<< before updating
-=======
-    "tools/cog_runner.py",
     "tools/get_version_from_pre_commit_config.py",
->>>>>>> after updating
 ]
 
 [[tool.uv-locker.requirements]]
