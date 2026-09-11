@@ -184,7 +184,8 @@ repos:
           - "-ignore"
           - 'specifying action "\$/.+" in invalid format because ref is missing'
           - "-ignore"
-          - 'reusable workflow call "\$/.+" at "uses" is not following the format'
+          - 'reusable workflow call "\$/.+" at "uses" is not following the
+            format'
         language: golang # means renovate will also update `additional_dependencies`
         additional_dependencies:
           # actionlint has a shellcheck integration which extracts shell scripts in `run:` steps from GitHub Actions
