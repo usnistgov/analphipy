@@ -306,6 +306,7 @@ project-includes = [
 search-path = [ "." ]
 enabled-ignores = [ "pyrefly" ]
 min-severity = "warn"
+preset = "strict"
 
 [tool.pyrefly.errors]
 unused-ignore = "error"
