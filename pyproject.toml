@@ -242,11 +242,7 @@ expand_tables = [
     "project.urls",
     "tool.mypy.overrides",
     "tool.pyproject2conda",
-<<<<<<< before updating
-    "tool.pyrefly.sub-config",
-=======
     "tool.pyrefly",
->>>>>>> after updating
     "tool.pyright.executionEnvironments",
     "tool.pytest",
     "tool.ruff.format",
@@ -387,16 +383,14 @@ src.include = [
 ]
 analysis.respect-type-ignore-comments = false
 
-<<<<<<< before updating
+[tool.ty.rules]
+unused-ignore-comment = "error"
+
 [[tool.ty.overrides]]
 include = [ "examples/**" ]
 
 [tool.ty.overrides.analysis]
 allowed-unresolved-imports = [ "matplotlib.*" ]
-=======
-[tool.ty.rules]
-unused-ignore-comment = "error"
->>>>>>> after updating
 
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]

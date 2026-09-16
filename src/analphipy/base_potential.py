@@ -259,7 +259,6 @@ class PhiAbstract:
                 if not isinstance(bounds, tuple):
                     msg = "bounds must be a tuple"
                     raise TypeError(msg)
-                # pyrefly: ignore [no-matching-overload]
                 r0 = cast("float", np.mean(bounds))
             else:
                 msg = 'must specify bounds with r0="mean"'
