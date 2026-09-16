@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from functools import cached_property
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
+
+from analphipy._typing_compat import override  # ruff: ignore[import-private-name]
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -112,8 +115,9 @@ def kws_to_ld(**kws: Iterable[Any]) -> list[dict[str, Any]]:
 
 @dataclass
 class BaseParams:
-    def __post_init__(self):
-        self.r = None  # pyright: ignore[reportUninitializedInstanceVariable]
+    @cached_property
+    def r(self) -> Any:
+        return None
 
     def phidphi(self, r) -> None:
         raise NotImplementedError
@@ -149,8 +153,10 @@ class LJParams(BaseParams):
     sig: float
     eps: float
 
-    def __post_init__(self):
-        self.r = get_r(rmin=0.1 * self.sig, rmax=5.0 * self.sig, n=100)
+    @cached_property
+    @override
+    def r(self) -> Any:
+        return get_r(rmin=0.1 * self.sig, rmax=5.0 * self.sig, n=100)
 
     # pyrefly: ignore [bad-override]
     def phidphi(self, r):  # pyright: ignore[reportIncompatibleMethodOverride]
@@ -169,8 +175,10 @@ class LJParams(BaseParams):
 class LJCutParams(LJParams):
     rcut: float
 
-    def __post_init__(self):
-        self.r = get_r(rmin=0.1 * self.sig, rmax=self.rcut + self.sig, n=100)
+    @cached_property
+    @override
+    def r(self) -> Any:
+        return get_r(rmin=0.1 * self.sig, rmax=self.rcut + self.sig, n=100)
 
     def phidphi(self, r):
         return phidphi_lj_cut(r, sig=self.sig, eps=self.eps, rcut=self.rcut)
@@ -323,8 +331,10 @@ def phi_hs(r, sig=1.0):
 class HSParams(BaseParams):  # pylint: disable=abstract-method
     sig: float
 
-    def __post_init__(self):
-        self.r = get_r(rmin=0.1 * self.sig, rmax=2 * self.sig, n=100)
+    @cached_property
+    @override
+    def r(self) -> Any:
+        return get_r(rmin=0.1 * self.sig, rmax=2 * self.sig, n=100)
 
     def phi(self, r):  # ruff:ignore[unused-method-argument]
         return phi_hs(self.r, sig=self.sig)
