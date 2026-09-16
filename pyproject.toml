@@ -327,11 +327,13 @@ variance-mismatch = "error"
 [[tool.pyrefly.sub-config]]
 ignore-missing-imports = [ "matplotlib.*" ]
 matches = "examples/**"
+errors.unannotated-return = "ignore"
 errors.unused-ignore = "ignore"
 errors.implicit-any-parameter = "ignore"
 
 [[tool.pyrefly.sub-config]]
 matches = "tests/**"
+errors.unannotated-return = "ignore"
 errors.implicit-any-parameter = "ignore"
 errors.implicit-any-lambda = "ignore"
 errors.missing-override-decorator = "ignore"
