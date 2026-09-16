@@ -4,10 +4,12 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, override
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pytest
+
+from analphipy._typing_compat import override  # ruff: ignore[import-private-name]
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
