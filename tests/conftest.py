@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import numpy as np
 import pytest
@@ -112,7 +112,7 @@ def kws_to_ld(**kws: Iterable[Any]) -> list[dict[str, Any]]:
 
 @dataclass
 class BaseParams:
-    r: Any
+    r: ClassVar[Any]
 
     def __post_init__(self):
         self.r = None
