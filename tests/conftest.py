@@ -112,8 +112,10 @@ def kws_to_ld(**kws: Iterable[Any]) -> list[dict[str, Any]]:
 
 @dataclass
 class BaseParams:
+    r: Any
+
     def __post_init__(self):
-        self.r = None  # pyright: ignore[reportUninitializedInstanceVariable]
+        self.r = None
 
     def phidphi(self, r) -> None:
         raise NotImplementedError
