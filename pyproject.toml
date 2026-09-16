@@ -315,6 +315,13 @@ unused-ignore = "error"
 ignore-missing-imports = [ "matplotlib.*" ]
 matches = "examples/**"
 errors.unused-ignore = "ignore"
+errors.implicit-any-parameter = "ignore"
+
+[[tool.pyrefly.sub-config]]
+matches = "tests/**"
+errors.implicit-any-parameter = "ignore"
+errors.implicit-any-lambda = "ignore"
+errors.missing-override-decorator = "ignore"
 
 [tool.pyright]
 typeCheckingMode = "standard"
