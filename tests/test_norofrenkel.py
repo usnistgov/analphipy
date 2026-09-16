@@ -9,7 +9,6 @@ import pytest
 import analphipy.potential as pots
 from analphipy.norofrenkel import NoroFrenkelPair
 
-# pyrefly: ignore [missing-import]
 from .utils import iter_phi_lj
 
 data = Path(__file__).parent / "data"

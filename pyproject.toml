@@ -242,13 +242,14 @@ expand_tables = [
     "project.urls",
     "tool.mypy.overrides",
     "tool.pyproject2conda",
-    "tool.pyrefly.sub-config",
+    "tool.pyrefly",
     "tool.pyright.executionEnvironments",
     "tool.pytest",
     "tool.ruff.format",
     "tool.ruff.lint",
     "tool.ruff.lint.per-file-ignores",
     "tool.ty.overrides",
+    "tool.ty.rules",
     "tool.typos",
     "tool.uv.dependency-groups",
     "tool.uv.exclude-newer-package",
@@ -304,10 +305,15 @@ project-includes = [
 ]
 search-path = [ "." ]
 enabled-ignores = [ "pyrefly" ]
+min-severity = "warn"
+
+[tool.pyrefly.errors]
+unused-ignore = "error"
 
 [[tool.pyrefly.sub-config]]
 ignore-missing-imports = [ "matplotlib.*" ]
 matches = "examples/**"
+errors.unused-ignore = "ignore"
 
 [tool.pyright]
 typeCheckingMode = "standard"
@@ -377,6 +383,9 @@ src.include = [
     "tools",
 ]
 analysis.respect-type-ignore-comments = false
+
+[tool.ty.rules]
+unused-ignore-comment = "error"
 
 [[tool.ty.overrides]]
 include = [ "examples/**" ]

@@ -10,7 +10,6 @@ import analphipy.potential as pots
 from analphipy import measures
 from analphipy.norofrenkel import NoroFrenkelPair
 
-# pyrefly: ignore [missing-import]
 from .utils import iter_phi_lj
 
 data = Path(__file__).parent / "data"
