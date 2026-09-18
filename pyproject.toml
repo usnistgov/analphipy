@@ -326,7 +326,10 @@ unused-ignore = "error"
 variance-mismatch = "error"
 
 [[tool.pyrefly.sub-config]]
-<<<<<<< before updating
+matches = "noxfile.py"
+errors.open-unpacking = "ignore"
+
+[[tool.pyrefly.sub-config]]
 ignore-missing-imports = [ "matplotlib.*" ]
 matches = "examples/**"
 errors.unannotated-return = "ignore"
@@ -339,10 +342,6 @@ errors.unannotated-return = "ignore"
 errors.implicit-any-parameter = "ignore"
 errors.implicit-any-lambda = "ignore"
 errors.missing-override-decorator = "ignore"
-=======
-matches = "noxfile.py"
-errors.open-unpacking = "ignore"
->>>>>>> after updating
 
 [tool.pyright]
 typeCheckingMode = "standard"
