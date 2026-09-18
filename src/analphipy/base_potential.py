@@ -367,7 +367,7 @@ class PhiCutBase(PhiAbstract):
     #: Position to cut the potential
     rcut: float = field(converter=float)
     #: Integration limits
-    segments: Sequence[float] = field(init=False, repr=False)  # pyright: ignore[reportGeneralTypeIssues, reportIncompatibleVariableOverride]
+    segments: Sequence[float] = field(init=False, repr=False)  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __attrs_post_init__(self) -> None:
         if self.phi_base.segments is None:  # pyright: ignore[reportUnnecessaryComparison]
