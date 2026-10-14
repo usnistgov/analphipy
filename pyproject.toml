@@ -116,7 +116,7 @@ test-notebook = [
 ]
 typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
-# * uv -------------------------------------------------------------------------
+# * uv ---------------------------------------------------------------------------------------------
 [tool.uv]
 required-version = ">=0.11.8"
 default-groups = [ "dev" ]
@@ -141,7 +141,7 @@ mypy.requires-python = ">=3.14"
 notebook.requires-python = ">=3.14"
 nox.requires-python = ">=3.14"
 
-# ruff -------------------------------------------------------------------------
+# * ruff -------------------------------------------------------------------------------------------
 [tool.ruff]
 extend-include = [
     "*.ipynb",
@@ -218,7 +218,7 @@ pylint.max-public-methods = 30
 preview = true
 ruff.strictly-empty-init-modules = false
 
-# * Checks ---------------------------------------------------------------------
+# * Checks -----------------------------------------------------------------------------------------
 [tool.repo-review]
 ignore = [
     "NOX103", # I prefer using "nox.options.sessions"
@@ -273,7 +273,7 @@ CPY = "CPY"
 # only check file name for notebooks.  Use nbaq for contents.
 check-file = false
 
-# * typecheck ---------------------------------------------------------------------
+# * typecheck --------------------------------------------------------------------------------------
 [tool.mypy]
 files = [
     "noxfile.py",
@@ -431,7 +431,7 @@ include = [ "examples/**" ]
 [tool.ty.overrides.analysis]
 allowed-unresolved-imports = [ "matplotlib.*" ]
 
-# * Testing --------------------------------------------------------------------
+# * Testing ----------------------------------------------------------------------------------------
 [tool.pytest.ini_options]
 minversion = "8"
 testpaths = [
@@ -482,7 +482,7 @@ report.show_missing = true
 [tool.commitizen]
 use_shortcuts = true
 
-# * Dependency creation --------------------------------------------------------
+# * Dependency creation ----------------------------------------------------------------------------
 [tool.pyproject2conda]
 template-python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
@@ -511,7 +511,7 @@ skip-package = true
 pip-deps = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=4.0.2",
-    "copier-template-extensions>=0.3.3",
+    "copier-template-extensions>=0.3.3", #  sync-pyproject-min-versions: ignore
     "copier>=9.18.2",
     "grayskull>=3.2.0",
     "nbqa>=1.9.1",
@@ -521,7 +521,7 @@ pip-deps = [
     "rooster>=0.1.1",
     "rust-just>=1.58.0",
     "twine>=7.0.0",
-    "ty>=0.0.84",
+    "ty>=0.0.85",
 ]
 groups = [
     "basedpyright",
@@ -549,7 +549,7 @@ options = [
     "--universal",
 ]
 
-# * Other tools ----------------------------------------------------------------
+# * Other tools ------------------------------------------------------------------------------------
 [tool.rooster]
 changelog_contributors = true
 major-labels = [ "breaking" ]
