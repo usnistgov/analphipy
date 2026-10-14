@@ -198,8 +198,7 @@ jobs:
           - test
         include:
           - os: ubuntu-latest
-            python-version:
-              ${{ needs.build-package.outputs.default-python-version }}
+            python-version: ${{ needs.build-package.outputs.default-python-version }}
             session: test-notebook
           - os: windows-latest
             python-version: ${{ needs.build-package.outputs.default-python-version }}

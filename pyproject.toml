@@ -425,17 +425,13 @@ possibly-unresolved-reference = "error"
 unsupported-dynamic-base = "error"
 unused-ignore-comment = "error"
 
-<<<<<<< before updating
 [[tool.ty.overrides]]
 include = [ "examples/**" ]
 
 [tool.ty.overrides.analysis]
 allowed-unresolved-imports = [ "matplotlib.*" ]
 
-# * Testing --------------------------------------------------------------------
-=======
 # * Testing ----------------------------------------------------------------------------------------
->>>>>>> after updating
 [tool.pytest.ini_options]
 minversion = "8"
 testpaths = [
