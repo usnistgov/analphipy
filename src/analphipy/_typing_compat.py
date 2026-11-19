@@ -1,11 +1,6 @@
 # pyright: reportUnreachable=false
 import sys
-from typing import Concatenate, ParamSpec, TypeAlias, TypeGuard
-
-if sys.version_info >= (3, 11):
-    from typing import Self
-else:
-    from typing import Self
+from typing import Concatenate, ParamSpec, Self, TypeAlias, TypeGuard
 
 if sys.version_info >= (3, 12):
     from typing import override
